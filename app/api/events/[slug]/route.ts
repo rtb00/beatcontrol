@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { initDB, sql } from '@/app/lib/db';
 
+const MASTER_PASSWORD = 'djmaster2027';
+
 export async function GET(
   _req: NextRequest,
   { params }: { params: { slug: string } }
@@ -24,6 +26,10 @@ export async function PATCH(
   req: NextRequest,
   { params }: { params: { slug: string } }
 ) {
+  if (req.headers.get('x-dj-master') !== MASTER_PASSWORD) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
   await initDB();
 
   const body = await req.json();

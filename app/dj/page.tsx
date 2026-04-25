@@ -26,8 +26,17 @@ function generateSlug(title: string): string {
 }
 
 export default function DJDashboard() {
+  // Master auth
+  const [masterAuthed, setMasterAuthed] = useState(false);
+  const [masterToken, setMasterToken] = useState('');
+  const [authInput, setAuthInput] = useState('');
+  const [authError, setAuthError] = useState('');
+  const [authChecking, setAuthChecking] = useState(true);
+  const [authSubmitting, setAuthSubmitting] = useState(false);
+
+  // Events
   const [events, setEvents] = useState<Event[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   // Create form
   const [showForm, setShowForm] = useState(false);
@@ -45,14 +54,66 @@ export default function DJDashboard() {
     subtitle: '',
   });
 
+  // On mount: restore master auth from localStorage
   useEffect(() => {
-    loadEvents();
+    const stored = localStorage.getItem('dj-master-auth') ?? '';
+    if (stored) {
+      setMasterToken(stored);
+      setMasterAuthed(true);
+    }
+    setAuthChecking(false);
   }, []);
 
-  async function loadEvents() {
+  // Load events once authed
+  useEffect(() => {
+    if (masterAuthed && masterToken) {
+      loadEvents(masterToken);
+    }
+  }, [masterAuthed, masterToken]);
+
+  function masterHeaders(token: string) {
+    return {
+      'Content-Type': 'application/json',
+      'x-dj-master': token,
+    };
+  }
+
+  async function handleAuth(e: React.FormEvent) {
+    e.preventDefault();
+    setAuthError('');
+    setAuthSubmitting(true);
+    try {
+      const res = await fetch('/api/auth', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password: authInput }),
+      });
+      if (!res.ok) {
+        setAuthError('Falsches Passwort.');
+        return;
+      }
+      localStorage.setItem('dj-master-auth', authInput);
+      setMasterToken(authInput);
+      setMasterAuthed(true);
+    } catch {
+      setAuthError('Verbindungsfehler.');
+    } finally {
+      setAuthSubmitting(false);
+    }
+  }
+
+  async function loadEvents(token: string) {
     setLoading(true);
     try {
-      const res = await fetch('/api/events');
+      const res = await fetch('/api/events', {
+        headers: { 'x-dj-master': token },
+      });
+      if (res.status === 401) {
+        localStorage.removeItem('dj-master-auth');
+        setMasterAuthed(false);
+        setMasterToken('');
+        return;
+      }
       if (res.ok) {
         setEvents(await res.json());
       }
@@ -81,7 +142,7 @@ export default function DJDashboard() {
     try {
       const res = await fetch('/api/events', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: masterHeaders(masterToken),
         body: JSON.stringify({
           title: formTitle.trim(),
           subtitle: formSubtitle.trim() || undefined,
@@ -94,13 +155,12 @@ export default function DJDashboard() {
         setFormError(data.error ?? 'Fehler beim Erstellen.');
         return;
       }
-      // Reset
       setFormTitle('');
       setFormSubtitle('');
       setFormSlug('');
       setFormPassword('hochzeit2027');
       setShowForm(false);
-      loadEvents();
+      loadEvents(masterToken);
     } catch {
       setFormError('Verbindungsfehler.');
     } finally {
@@ -111,20 +171,63 @@ export default function DJDashboard() {
   async function handleToggleActive(event: Event) {
     await fetch(`/api/events/${event.slug}`, {
       method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
+      headers: masterHeaders(masterToken),
       body: JSON.stringify({ active: !event.active }),
     });
-    loadEvents();
+    loadEvents(masterToken);
   }
 
   async function handleEdit(event: Event, data: { title: string; subtitle: string }) {
     await fetch(`/api/events/${event.slug}`, {
       method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
+      headers: masterHeaders(masterToken),
       body: JSON.stringify({ title: data.title, subtitle: data.subtitle || null }),
     });
     setEditingId(null);
-    loadEvents();
+    loadEvents(masterToken);
+  }
+
+  // Auth loading screen
+  if (authChecking) {
+    return (
+      <div className="min-h-screen bg-cream flex items-center justify-center">
+        <p className="text-muted text-sm">Lädt…</p>
+      </div>
+    );
+  }
+
+  // Auth screen
+  if (!masterAuthed) {
+    return (
+      <div className="min-h-screen bg-cream flex flex-col items-center justify-center px-4">
+        <p className="text-gold text-3xl mb-3">♪</p>
+        <h1 className="font-serif text-3xl font-semibold text-ink mb-1">DJ-Dashboard</h1>
+        <p className="text-muted text-sm mb-8">Bitte Passwort eingeben</p>
+        <form
+          onSubmit={handleAuth}
+          className="w-full max-w-sm bg-ivory rounded-3xl p-6 border border-champagne shadow-sm space-y-4"
+        >
+          <input
+            type="password"
+            placeholder="Master-Passwort"
+            value={authInput}
+            onChange={(e) => setAuthInput(e.target.value)}
+            autoFocus
+            className="w-full px-4 py-3 rounded-2xl border border-champagne bg-cream text-ink placeholder:text-muted/50 focus:outline-none focus:border-gold transition-colors"
+          />
+          {authError && (
+            <p className="text-red-600 text-sm text-center">{authError}</p>
+          )}
+          <button
+            type="submit"
+            disabled={authSubmitting}
+            className="w-full py-3 bg-gold text-cream rounded-2xl font-semibold hover:opacity-90 active:scale-95 disabled:opacity-50 transition-all"
+          >
+            {authSubmitting ? 'Prüfe…' : 'Anmelden'}
+          </button>
+        </form>
+      </div>
+    );
   }
 
   return (
@@ -137,8 +240,18 @@ export default function DJDashboard() {
       </div>
 
       <div className="px-4 max-w-2xl mx-auto pb-16">
-        {/* Create button */}
-        <div className="mb-4 flex justify-end">
+        {/* Toolbar */}
+        <div className="mb-4 flex justify-between items-center gap-3">
+          <button
+            onClick={() => {
+              localStorage.removeItem('dj-master-auth');
+              setMasterAuthed(false);
+              setMasterToken('');
+            }}
+            className="px-4 py-2 text-sm text-muted border border-champagne rounded-2xl hover:border-ink hover:text-ink transition-all"
+          >
+            Abmelden
+          </button>
           <button
             onClick={() => setShowForm((v) => !v)}
             className="px-5 py-2.5 bg-gold text-cream rounded-2xl font-semibold hover:opacity-90 active:scale-95 transition-all"
@@ -217,7 +330,6 @@ export default function DJDashboard() {
                 }`}
               >
                 {editingId === event.id ? (
-                  /* Inline edit form */
                   <div className="space-y-3">
                     <input
                       type="text"
@@ -248,7 +360,6 @@ export default function DJDashboard() {
                     </div>
                   </div>
                 ) : (
-                  /* Normal card */
                   <div>
                     <div className="flex items-start justify-between gap-3 mb-1">
                       <div className="min-w-0">

@@ -1,7 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { initDB, sql } from '@/app/lib/db';
 
-export async function GET() {
+const MASTER_PASSWORD = 'djmaster2027';
+
+function checkMaster(req: NextRequest): boolean {
+  return req.headers.get('x-dj-master') === MASTER_PASSWORD;
+}
+
+export async function GET(req: NextRequest) {
+  if (!checkMaster(req)) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
   await initDB();
 
   const { rows } = await sql`
@@ -23,6 +33,10 @@ export async function GET() {
 }
 
 export async function POST(req: NextRequest) {
+  if (!checkMaster(req)) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
   await initDB();
 
   const body = await req.json();
@@ -37,7 +51,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'title required' }, { status: 400 });
   }
 
-  // Validate slug: only lowercase a-z, 0-9, hyphens; min 2 chars
   if (!slug || !/^[a-z0-9][a-z0-9-]{1,}$/.test(slug)) {
     return NextResponse.json(
       { error: 'slug must be at least 2 chars and contain only a-z, 0-9, hyphens' },
