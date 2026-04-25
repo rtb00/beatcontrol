@@ -23,6 +23,40 @@ interface Event {
   subtitle: string | null;
 }
 
+// ── Canvas helpers ────────────────────────────────────────────────────────────
+
+function rrect(
+  ctx: CanvasRenderingContext2D,
+  x: number, y: number, w: number, h: number, r: number
+) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.lineTo(x + w - r, y);
+  ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+  ctx.lineTo(x + w, y + h - r);
+  ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+  ctx.lineTo(x + r, y + h);
+  ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+  ctx.lineTo(x, y + r);
+  ctx.quadraticCurveTo(x, y, x + r, y);
+  ctx.closePath();
+}
+
+function fitText(
+  ctx: CanvasRenderingContext2D,
+  text: string,
+  maxWidth: number
+): string {
+  if (ctx.measureText(text).width <= maxWidth) return text;
+  let t = text;
+  while (t.length > 0 && ctx.measureText(t + '…').width > maxWidth) {
+    t = t.slice(0, -1);
+  }
+  return t + '…';
+}
+
+// ── Main component ────────────────────────────────────────────────────────────
+
 export default function DJEventPage() {
   const { slug } = useParams<{ slug: string }>();
 
@@ -32,6 +66,7 @@ export default function DJEventPage() {
 
   const [togglingId, setTogglingId] = useState<number | null>(null);
   const [deletingId, setDeletingId] = useState<number | null>(null);
+  const [downloading, setDownloading] = useState(false);
 
   const [origin, setOrigin] = useState('');
 
@@ -93,6 +128,214 @@ export default function DJEventPage() {
     setDeletingId(null);
   }
 
+  async function downloadGuestCard() {
+    if (!origin) return;
+    setDownloading(true);
+    try {
+      await document.fonts.ready;
+
+      const QRCode = (await import('qrcode')).default;
+      const qrDataUrl: string = await QRCode.toDataURL(guestUrl, {
+        width: 340,
+        margin: 1,
+        color: { dark: '#2a2520', light: '#ffffff' },
+      });
+
+      const qrImg = new Image();
+      await new Promise<void>((resolve) => {
+        qrImg.onload = () => resolve();
+        qrImg.src = qrDataUrl;
+      });
+
+      const W = 900;
+      const H = 1220;
+      const canvas = document.createElement('canvas');
+      canvas.width = W;
+      canvas.height = H;
+      const ctx = canvas.getContext('2d')!;
+
+      const GOLD = '#c9a961';
+      const INK = '#2a2520';
+      const MUTED = '#8a7a6e';
+      const CHAMPAGNE = '#e8d9b8';
+      const CREAM = '#faf6f0';
+      const WHITE = '#ffffff';
+
+      // Background
+      ctx.fillStyle = CREAM;
+      ctx.fillRect(0, 0, W, H);
+
+      // Gold border (outer + inner)
+      ctx.strokeStyle = GOLD;
+      ctx.lineWidth = 2;
+      rrect(ctx, 14, 14, W - 28, H - 28, 12);
+      ctx.stroke();
+      ctx.lineWidth = 0.5;
+      rrect(ctx, 22, 22, W - 44, H - 44, 8);
+      ctx.stroke();
+
+      // ♪
+      ctx.fillStyle = GOLD;
+      ctx.font = '24px "Playfair Display", Georgia, serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('♪', W / 2, 65);
+
+      // "Musikwünsche"
+      ctx.fillStyle = INK;
+      ctx.font = '600 50px "Playfair Display", Georgia, serif';
+      ctx.fillText('Musikwünsche', W / 2, 118);
+
+      // Event title
+      ctx.fillStyle = GOLD;
+      ctx.font = 'italic 24px "Playfair Display", Georgia, serif';
+      ctx.fillText(fitText(ctx, event?.title ?? slug, 760), W / 2, 153);
+
+      // Subtitle
+      ctx.fillStyle = MUTED;
+      ctx.font = '17px "Inter", system-ui, sans-serif';
+      ctx.fillText('Wünsch dir deinen Lieblingssong!', W / 2, 186);
+
+      // Decorative gold line
+      ctx.strokeStyle = GOLD;
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(W / 2 - 90, 208);
+      ctx.lineTo(W / 2 + 90, 208);
+      ctx.stroke();
+
+      // QR white box (380×380 centered)
+      const qrBoxX = (W - 380) / 2;
+      const qrBoxY = 220;
+      ctx.fillStyle = WHITE;
+      rrect(ctx, qrBoxX, qrBoxY, 380, 380, 18);
+      ctx.fill();
+      ctx.strokeStyle = CHAMPAGNE;
+      ctx.lineWidth = 2;
+      rrect(ctx, qrBoxX, qrBoxY, 380, 380, 18);
+      ctx.stroke();
+
+      // QR code image (340×340 with 20px padding)
+      ctx.drawImage(qrImg, qrBoxX + 20, qrBoxY + 20, 340, 340);
+
+      // URL
+      ctx.fillStyle = MUTED;
+      ctx.font = '13px monospace';
+      ctx.textAlign = 'center';
+      ctx.fillText(guestUrl, W / 2, 628);
+
+      // Divider
+      ctx.strokeStyle = GOLD;
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(W / 2 - 110, 654);
+      ctx.lineTo(W / 2 + 110, 654);
+      ctx.stroke();
+
+      // "So funktioniert's:"
+      ctx.fillStyle = INK;
+      ctx.font = '600 20px "Inter", system-ui, sans-serif';
+      ctx.textAlign = 'left';
+      ctx.fillText("So funktioniert's:", 55, 684);
+
+      const steps = [
+        {
+          num: '1',
+          title: 'Song suchen',
+          lines: [
+            'Tippe den Songtitel oder Interpreten ein.',
+            'Wähle aus den Vorschlägen oder gib manuell ein.',
+          ],
+        },
+        {
+          num: '2',
+          title: 'Abstimmen',
+          lines: [
+            'Siehst du einen Song, den du auch hören willst?',
+            'Tippe auf das Herz ♥ um deine Stimme abzugeben.',
+          ],
+        },
+        {
+          num: '3',
+          title: 'Tanzen!',
+          lines: [
+            'Die beliebtesten Songs werden zuerst gespielt.',
+            'Je mehr Stimmen, desto höher die Chance!',
+          ],
+        },
+      ];
+
+      let stepY = 720;
+      for (const step of steps) {
+        // Gold circle
+        ctx.fillStyle = GOLD;
+        ctx.beginPath();
+        ctx.arc(70, stepY + 10, 14, 0, Math.PI * 2);
+        ctx.fill();
+        // Number in circle
+        ctx.fillStyle = WHITE;
+        ctx.font = '700 13px "Inter", system-ui, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(step.num, 70, stepY + 15);
+        // Step title
+        ctx.fillStyle = INK;
+        ctx.font = '600 17px "Inter", system-ui, sans-serif';
+        ctx.textAlign = 'left';
+        ctx.fillText(step.title, 96, stepY + 15);
+        // Description
+        ctx.fillStyle = MUTED;
+        ctx.font = '14px "Inter", system-ui, sans-serif';
+        ctx.fillText(step.lines[0], 96, stepY + 35);
+        ctx.fillText(step.lines[1], 96, stepY + 53);
+
+        stepY += 83;
+      }
+
+      // "Gut zu wissen:"
+      const gwY = stepY + 8;
+      ctx.fillStyle = GOLD;
+      ctx.font = '600 17px "Inter", system-ui, sans-serif';
+      ctx.textAlign = 'left';
+      ctx.fillText('Gut zu wissen:', 55, gwY);
+
+      const bullets = [
+        'Max. 3 Songs vorschlagen',
+        'Abstimmen so oft du willst',
+        'Kein Account nötig',
+        'Liste aktualisiert sich automatisch',
+      ];
+
+      ctx.fillStyle = MUTED;
+      ctx.font = '14px "Inter", system-ui, sans-serif';
+      bullets.forEach((b, i) => {
+        ctx.fillText(`• ${b}`, 55, gwY + 28 + i * 24);
+      });
+
+      // Footer
+      const footerLineY = gwY + 28 + bullets.length * 24 + 28;
+      ctx.strokeStyle = GOLD;
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(W / 2 - 160, footerLineY);
+      ctx.lineTo(W / 2 + 160, footerLineY);
+      ctx.stroke();
+
+      ctx.fillStyle = GOLD;
+      ctx.font = 'italic 21px "Playfair Display", Georgia, serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('♪ Viel Spaß beim Feiern! ♪', W / 2, footerLineY + 38);
+
+      // Download
+      const a = document.createElement('a');
+      a.download = `gaestekarte-${slug}.png`;
+      a.href = canvas.toDataURL('image/png');
+      a.click();
+    } catch (err) {
+      console.error('Card generation failed', err);
+    } finally {
+      setDownloading(false);
+    }
+  }
+
   const unplayed = songs.filter((s) => !s.played);
   const played = songs.filter((s) => s.played);
   const guestUrl = `${origin}/${slug}`;
@@ -141,6 +384,30 @@ export default function DJEventPage() {
           <p className="text-muted/60 text-xs text-center font-mono break-all leading-relaxed max-w-[220px]">
             {guestUrl}
           </p>
+
+          {/* Download button */}
+          <button
+            onClick={downloadGuestCard}
+            disabled={downloading || !origin}
+            className="flex items-center gap-2 px-4 py-2 rounded-2xl text-xs font-medium text-muted border border-champagne hover:border-gold hover:text-gold transition-all active:scale-95 disabled:opacity-40"
+          >
+            {downloading ? (
+              <span>Generiere…</span>
+            ) : (
+              <>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                  className="w-3.5 h-3.5"
+                >
+                  <path d="M10.75 2.75a.75.75 0 00-1.5 0v8.614L6.295 8.235a.75.75 0 10-1.09 1.03l4.25 4.5a.75.75 0 001.09 0l4.25-4.5a.75.75 0 00-1.09-1.03l-2.955 3.129V2.75z" />
+                  <path d="M3.5 12.75a.75.75 0 00-1.5 0v2.5A2.75 2.75 0 004.75 18h10.5A2.75 2.75 0 0018 15.25v-2.5a.75.75 0 00-1.5 0v2.5c0 .69-.56 1.25-1.25 1.25H4.75c-.69 0-1.25-.56-1.25-1.25v-2.5z" />
+                </svg>
+                Gäste-Karte herunterladen
+              </>
+            )}
+          </button>
         </div>
 
         {/* Gold divider */}
