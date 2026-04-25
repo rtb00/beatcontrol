@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { initDB, sql } from '@/app/lib/db';
 import { getFingerprint } from '@/app/lib/fingerprint';
 import { containsProfanity } from '@/app/lib/profanity';
+import { getGenreAndSuggestions } from '@/app/lib/ai';
 
 export async function GET(
   req: NextRequest,
@@ -18,10 +19,13 @@ export async function GET(
       s.artist,
       s.deezer_id,
       s.album_art_url,
+      s.genre,
+      s.suggestions,
       s.created_at,
       s.played,
       COUNT(v.id)::int AS vote_count,
-      BOOL_OR(v.voter_ip = ${fp}) AS has_voted
+      BOOL_OR(v.voter_ip = ${fp}) AS has_voted,
+      (s.submitter_ip = ${fp}) AS is_mine
     FROM songs s
     JOIN events e ON e.id = s.event_id
     LEFT JOIN votes v ON v.song_id = s.id
@@ -49,7 +53,6 @@ export async function POST(
     albumArt?: string;
   };
 
-  // Validation
   if (!title?.trim() || !artist?.trim()) {
     return NextResponse.json({ error: 'title and artist required' }, { status: 400 });
   }
@@ -57,12 +60,10 @@ export async function POST(
     return NextResponse.json({ error: 'title/artist too long' }, { status: 400 });
   }
 
-  // Profanity filter
   if (containsProfanity(title) || containsProfanity(artist)) {
     return NextResponse.json({ error: 'Bitte keine anstößigen Inhalte.' }, { status: 422 });
   }
 
-  // Look up event
   const { rows: eventRows } = await sql`
     SELECT id FROM events WHERE slug = ${params.slug}
   `;
@@ -81,12 +82,8 @@ export async function POST(
     `;
     if (dupeRows.length > 0) {
       const songId = dupeRows[0].id;
-      // Auto-vote (ignore conflict if already voted)
       try {
-        await sql`
-          INSERT INTO votes (song_id, voter_ip)
-          VALUES (${songId}, ${fp})
-        `;
+        await sql`INSERT INTO votes (song_id, voter_ip) VALUES (${songId}, ${fp})`;
       } catch {
         // Already voted — ignore
       }
@@ -94,7 +91,7 @@ export async function POST(
     }
   }
 
-  // Manual duplicate check (no deezerId): case-insensitive title+artist, not played
+  // Manual duplicate check
   if (!deezerId) {
     const { rows: manualDupe } = await sql`
       SELECT id FROM songs
@@ -106,10 +103,7 @@ export async function POST(
     if (manualDupe.length > 0) {
       const songId = manualDupe[0].id;
       try {
-        await sql`
-          INSERT INTO votes (song_id, voter_ip)
-          VALUES (${songId}, ${fp})
-        `;
+        await sql`INSERT INTO votes (song_id, voter_ip) VALUES (${songId}, ${fp})`;
       } catch {
         // Already voted — ignore
       }
@@ -117,12 +111,13 @@ export async function POST(
     }
   }
 
-  // Spam check: max 3 submissions per fingerprint per event
+  // Spam check: only count unplayed songs (played songs free up slots)
   const { rows: spamRows } = await sql`
     SELECT COUNT(*)::int AS cnt
     FROM songs
     WHERE event_id = ${eventId}
       AND submitter_ip = ${fp}
+      AND played = FALSE
   `;
   if (spamRows[0].cnt >= 3) {
     return NextResponse.json(
@@ -131,7 +126,6 @@ export async function POST(
     );
   }
 
-  // Insert song
   const { rows: inserted } = await sql`
     INSERT INTO songs (event_id, title, artist, deezer_id, album_art_url, submitter_ip)
     VALUES (
@@ -148,13 +142,26 @@ export async function POST(
 
   // Auto-vote for submitter
   try {
-    await sql`
-      INSERT INTO votes (song_id, voter_ip)
-      VALUES (${songId}, ${fp})
-    `;
+    await sql`INSERT INTO votes (song_id, voter_ip) VALUES (${songId}, ${fp})`;
   } catch {
     // Ignore
   }
+
+  // Fire-and-forget: enrich with AI genre + suggestions after response is sent
+  const titleForAI = title.trim();
+  const artistForAI = artist.trim();
+  ;(async () => {
+    try {
+      const { genre, suggestions } = await getGenreAndSuggestions(titleForAI, artistForAI);
+      await sql`
+        UPDATE songs
+        SET genre = ${genre}, suggestions = ${JSON.stringify(suggestions)}
+        WHERE id = ${songId}
+      `;
+    } catch {
+      // ignore — song already saved, just without genre/suggestions
+    }
+  })();
 
   return NextResponse.json({ songId }, { status: 201 });
 }
