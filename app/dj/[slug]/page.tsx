@@ -352,9 +352,13 @@ function DJCard({
         </div>
         <p className="text-muted text-sm truncate">{song.artist}</p>
         {suggestions.length > 0 && (
-          <p className="text-muted/60 text-xs mt-0.5 truncate">
-            Passt danach: {suggestions.join(' · ')}
-          </p>
+          <div className="flex flex-wrap gap-1 mt-1">
+            {suggestions.map((s, i) => (
+              <span key={i} className="px-2 py-0.5 bg-champagne/60 text-muted text-xs rounded-full leading-tight">
+                {s}
+              </span>
+            ))}
+          </div>
         )}
         <p className="text-champagne text-xs mt-0.5">
           {new Date(song.created_at).toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' })}
