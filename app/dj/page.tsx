@@ -45,7 +45,6 @@ export default function DJDashboard() {
   const [formTitle, setFormTitle] = useState('');
   const [formSubtitle, setFormSubtitle] = useState('');
   const [formSlug, setFormSlug] = useState('');
-  const [formPassword, setFormPassword] = useState('hochzeit2027');
 
   // Edit
   const [editingId, setEditingId] = useState<number | null>(null);
@@ -147,7 +146,6 @@ export default function DJDashboard() {
           title: formTitle.trim(),
           subtitle: formSubtitle.trim() || undefined,
           slug,
-          djPassword: formPassword.trim() || 'hochzeit2027',
         }),
       });
       const data = await res.json().catch(() => ({}));
@@ -158,7 +156,6 @@ export default function DJDashboard() {
       setFormTitle('');
       setFormSubtitle('');
       setFormSlug('');
-      setFormPassword('hochzeit2027');
       setShowForm(false);
       loadEvents(masterToken);
     } catch {
@@ -295,13 +292,6 @@ export default function DJDashboard() {
                 className="flex-1 px-4 py-3 rounded-2xl border border-champagne bg-cream text-ink font-mono placeholder:text-muted/50 focus:outline-none focus:border-gold transition-colors"
               />
             </div>
-            <input
-              type="text"
-              placeholder="DJ-Passwort"
-              value={formPassword}
-              onChange={(e) => setFormPassword(e.target.value)}
-              className="w-full px-4 py-3 rounded-2xl border border-champagne bg-cream text-ink placeholder:text-muted/50 focus:outline-none focus:border-gold transition-colors"
-            />
             {formError && (
               <p className="text-red-600 text-sm text-center">{formError}</p>
             )}

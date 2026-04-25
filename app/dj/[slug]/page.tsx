@@ -25,11 +25,6 @@ interface Event {
 
 export default function DJEventPage() {
   const { slug } = useParams<{ slug: string }>();
-  const STORAGE_KEY = `dj-auth-${slug}`;
-
-  const [token, setToken] = useState<string | null>(null);
-  const [password, setPassword] = useState('');
-  const [authError, setAuthError] = useState('');
 
   const [event, setEvent] = useState<Event | null>(null);
   const [songs, setSongs] = useState<Song[]>([]);
@@ -40,15 +35,10 @@ export default function DJEventPage() {
 
   const [origin, setOrigin] = useState('');
 
-  // Init: restore token from localStorage
   useEffect(() => {
-    const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved) setToken(saved);
-    else setLoading(false);
     setOrigin(window.location.origin);
-  }, [STORAGE_KEY]);
+  }, []);
 
-  // Load event info
   const loadEvent = useCallback(async () => {
     try {
       const res = await fetch(`/api/events/${slug}`);
@@ -70,38 +60,21 @@ export default function DJEventPage() {
   }, [slug]);
 
   useEffect(() => {
-    if (!token) return;
     loadEvent();
     fetchSongs();
     const interval = setInterval(fetchSongs, 3000);
     return () => clearInterval(interval);
-  }, [token, loadEvent, fetchSongs]);
-
-  async function handleLogin(e: React.FormEvent) {
-    e.preventDefault();
-    setAuthError('');
-    const res = await fetch(`/api/events/${slug}/auth`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ password }),
-    });
-    if (res.ok) {
-      localStorage.setItem(STORAGE_KEY, password);
-      setToken(password);
-    } else {
-      setAuthError('Falsches Passwort.');
-    }
-  }
+  }, [loadEvent, fetchSongs]);
 
   async function handleToggle(songId: number) {
-    if (togglingId !== null || !token) return;
+    if (togglingId !== null) return;
     setTogglingId(songId);
     setSongs((prev) =>
       prev.map((s) => (s.id === songId ? { ...s, played: !s.played } : s))
     );
     await fetch(`/api/events/${slug}/songs/toggle-played`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-dj-token': token },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ songId }),
     });
     setTogglingId(null);
@@ -109,61 +82,17 @@ export default function DJEventPage() {
   }
 
   async function handleDelete(songId: number, title: string) {
-    if (!token || !confirm(`"${title}" wirklich löschen?`)) return;
+    if (!confirm(`"${title}" wirklich löschen?`)) return;
     setDeletingId(songId);
     setSongs((prev) => prev.filter((s) => s.id !== songId));
     await fetch(`/api/events/${slug}/songs/delete`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-dj-token': token },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ songId }),
     });
     setDeletingId(null);
   }
 
-  function handleLogout() {
-    localStorage.removeItem(STORAGE_KEY);
-    setToken(null);
-    setPassword('');
-    setSongs([]);
-  }
-
-  // ── Login screen ───────────────────────────────────────────────────────────
-  if (!token) {
-    return (
-      <div className="min-h-screen bg-cream flex items-center justify-center p-8">
-        <div className="w-full max-w-sm">
-          <div className="text-center mb-8">
-            <p className="text-gold text-3xl mb-2">♪</p>
-            <h1 className="font-serif text-3xl font-semibold text-ink">DJ-Ansicht</h1>
-          </div>
-          <form
-            onSubmit={handleLogin}
-            className="bg-ivory rounded-3xl p-6 border border-champagne shadow-sm space-y-4"
-          >
-            <input
-              type="password"
-              placeholder="Passwort"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              autoFocus
-              className="w-full px-4 py-4 rounded-2xl border border-champagne bg-cream text-ink text-xl tracking-widest placeholder:tracking-normal placeholder:text-muted/50 focus:outline-none focus:border-gold transition-colors"
-            />
-            {authError && (
-              <p className="text-red-600 text-sm text-center">{authError}</p>
-            )}
-            <button
-              type="submit"
-              className="w-full py-4 bg-ink text-cream rounded-2xl text-lg font-semibold hover:opacity-90 active:scale-95 transition-all"
-            >
-              Einloggen
-            </button>
-          </form>
-        </div>
-      </div>
-    );
-  }
-
-  // ── DJ split-screen ────────────────────────────────────────────────────────
   const unplayed = songs.filter((s) => !s.played);
   const played = songs.filter((s) => s.played);
   const guestUrl = `${origin}/${slug}`;
@@ -180,12 +109,6 @@ export default function DJEventPage() {
             {unplayed.length} offen · {played.length} gespielt
           </span>
           <span className="w-2 h-2 rounded-full bg-gold animate-pulse" title="Live" />
-          <button
-            onClick={handleLogout}
-            className="text-muted text-sm hover:text-ink transition-colors"
-          >
-            Logout
-          </button>
         </div>
       </div>
 
