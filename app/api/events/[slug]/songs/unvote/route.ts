@@ -8,7 +8,7 @@ export async function POST(
 ) {
   await initDB();
 
-  const fp = getFingerprint(req);
+  const fp = getFingerprint(req, params.slug);
   const { songId } = await req.json();
 
   if (!songId) {

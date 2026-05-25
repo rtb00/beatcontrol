@@ -1,8 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { createHash } from 'crypto';
 import { initDB, sql } from '@/app/lib/db';
 import { getFingerprint } from '@/app/lib/fingerprint';
 import { containsProfanity } from '@/app/lib/profanity';
 import { getGenreAndSuggestions } from '@/app/lib/ai';
+import { getEffectivePlan, getPlanLimits } from '@/app/lib/plans';
 
 export async function GET(
   req: NextRequest,
@@ -10,7 +12,7 @@ export async function GET(
 ) {
   await initDB();
 
-  const fp = getFingerprint(req);
+  const fp = getFingerprint(req, params.slug);
 
   const { rows } = await sql`
     SELECT
@@ -34,7 +36,27 @@ export async function GET(
     ORDER BY s.played ASC, vote_count DESC, s.created_at ASC
   `;
 
-  return NextResponse.json(rows);
+  const body = JSON.stringify(rows);
+  const etag = `W/"${createHash('sha1').update(body).digest('hex').slice(0, 16)}"`;
+
+  if (req.headers.get('if-none-match') === etag) {
+    return new NextResponse(null, {
+      status: 304,
+      headers: {
+        ETag: etag,
+        'Cache-Control': 'private, no-store',
+      },
+    });
+  }
+
+  return new NextResponse(body, {
+    status: 200,
+    headers: {
+      'Content-Type': 'application/json',
+      ETag: etag,
+      'Cache-Control': 'private, no-store',
+    },
+  });
 }
 
 export async function POST(
@@ -43,7 +65,7 @@ export async function POST(
 ) {
   await initDB();
 
-  const fp = getFingerprint(req);
+  const fp = getFingerprint(req, params.slug);
   const body = await req.json();
 
   const { title, artist, deezerId, albumArt } = body as {
@@ -65,12 +87,40 @@ export async function POST(
   }
 
   const { rows: eventRows } = await sql`
-    SELECT id FROM events WHERE slug = ${params.slug}
+    SELECT id, dj_id FROM events WHERE slug = ${params.slug}
   `;
   if (eventRows.length === 0) {
     return NextResponse.json({ error: 'event not found' }, { status: 404 });
   }
   const eventId = eventRows[0].id;
+  const djId = eventRows[0].dj_id as string;
+
+  // Plan-Check: DJ-Besitzer laden, Songs zählen, gegen Limit prüfen
+  const { rows: ownerRows } = await sql`
+    SELECT plan, plan_status, current_period_end
+    FROM users WHERE id = ${djId}
+  `;
+  if (ownerRows.length > 0) {
+    const owner = ownerRows[0];
+    const plan = getEffectivePlan({
+      plan: owner.plan,
+      plan_status: owner.plan_status,
+      current_period_end: owner.current_period_end,
+    });
+    const limits = getPlanLimits(plan);
+    if (Number.isFinite(limits.maxSongs)) {
+      const { rows: countRows } = await sql`
+        SELECT COUNT(*)::int AS cnt FROM songs WHERE event_id = ${eventId}
+      `;
+      const songCount = countRows[0].cnt as number;
+      if (songCount >= limits.maxSongs) {
+        return NextResponse.json(
+          { error: 'plan_limit', limit: 'songs', current: songCount, max: limits.maxSongs },
+          { status: 402 }
+        );
+      }
+    }
+  }
 
   // Deezer duplicate check
   if (deezerId) {

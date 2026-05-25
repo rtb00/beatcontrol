@@ -1,0 +1,91 @@
+{
+  "brand": {
+    "name": "BeatControl",
+    "tagline": "Live music requests for your wedding",
+    "story": "We connect your guests like stars into a constellation of music."
+  },
+  "common": {
+    "loading": "Loading…",
+    "error": "Something went wrong",
+    "retry": "Try again",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "back": "Back"
+  },
+  "landing": {
+    "headline": "Insurance against a flop dance floor",
+    "subheadline": "Your guests suggest songs, the DJ sees them live. No WhatsApp chaos, no paper notes, no awkward silence.",
+    "ctaPrimary": "Set up for our wedding",
+    "ctaSecondary": "How it works"
+  },
+  "guest": {
+    "title": "What do you want to hear?",
+    "subtitle": "Suggest a song or vote for your favourites",
+    "suggestSong": "Suggest a song",
+    "searchPlaceholder": "Search by title or artist",
+    "vote": "Vote",
+    "voted": "Voted",
+    "unvote": "Remove vote",
+    "retract": "Withdraw song",
+    "alreadySubmittedMax": "You've already suggested 3 songs. Please wait until one has been played.",
+    "profanity": "Please keep it clean."
+  },
+  "dj": {
+    "title": "DJ console",
+    "noSongsYet": "No songs yet",
+    "markPlayed": "Mark as played",
+    "votes": "Votes",
+    "queue": "Queue",
+    "played": "Already played",
+    "exportPlaylist": "Export playlist"
+  },
+  "pricing": {
+    "headline": "Three clear plans",
+    "subheadline": "Free to try. Pro for regular bookings. Event-Pass for your wedding. Studio for academies.",
+    "free": {
+      "name": "Free",
+      "price": "€0",
+      "cta": "Start free",
+      "features": ["1 event", "30 songs", "Basic branding"]
+    },
+    "eventPass": {
+      "name": "Event Pass",
+      "price": "€19 one-time",
+      "subtitle": "Valid 30 days before to 1 day after the wedding",
+      "cta": "Buy Event Pass",
+      "features": ["1 event", "Unlimited songs", "Custom branding", "Aftermovie playlist export"]
+    },
+    "pro": {
+      "name": "Pro",
+      "priceMonthly": "€59.99/month",
+      "priceYearly": "€599/year",
+      "subtitle": "For active wedding DJs",
+      "cta": "Start Pro",
+      "features": ["Unlimited events", "Branding & export", "30-day money-back"]
+    },
+    "studio": {
+      "name": "Studio",
+      "priceMonthly": "€149/month",
+      "subtitle": "For DJ academies & event agencies",
+      "cta": "Request Studio",
+      "features": ["Everything in Pro", "Sub-accounts for your DJs", "Custom domain", "White-label branding"]
+    }
+  },
+  "auth": {
+    "signIn": "Sign in",
+    "signUp": "Sign up",
+    "signOut": "Sign out",
+    "email": "Email",
+    "password": "Password",
+    "passwordTooShort": "Password must be at least 8 characters",
+    "invalidCredentials": "Wrong email or password"
+  },
+  "account": {
+    "title": "My account",
+    "currentPlan": "Current plan",
+    "manageBilling": "Manage billing",
+    "myEvents": "My events",
+    "newEvent": "New event"
+  }
+}

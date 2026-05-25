@@ -1,0 +1,91 @@
+{
+  "brand": {
+    "name": "BeatControl",
+    "tagline": "Live-Musikwünsche für eure Hochzeit",
+    "story": "Wir verbinden eure Gäste wie Sterne zu einer Konstellation aus Musik."
+  },
+  "common": {
+    "loading": "Lädt…",
+    "error": "Etwas ist schiefgegangen",
+    "retry": "Erneut versuchen",
+    "cancel": "Abbrechen",
+    "save": "Speichern",
+    "delete": "Löschen",
+    "back": "Zurück"
+  },
+  "landing": {
+    "headline": "Die Versicherung gegen Party-Flop",
+    "subheadline": "Eure Gäste schlagen Songs vor, der DJ sieht sie live. Kein WhatsApp-Chaos, kein Zettel-Stress, keine peinliche Stille auf der Tanzfläche.",
+    "ctaPrimary": "Jetzt für unsere Hochzeit anlegen",
+    "ctaSecondary": "Wie es funktioniert"
+  },
+  "guest": {
+    "title": "Was wollt ihr hören?",
+    "subtitle": "Schlagt einen Song vor oder stimmt für eure Lieblinge",
+    "suggestSong": "Song vorschlagen",
+    "searchPlaceholder": "Titel oder Künstler suchen",
+    "vote": "Stimme abgeben",
+    "voted": "Stimme abgegeben",
+    "unvote": "Stimme zurückziehen",
+    "retract": "Song zurückziehen",
+    "alreadySubmittedMax": "Du hast bereits 3 Songs vorgeschlagen. Bitte warte, bis einer gespielt wurde.",
+    "profanity": "Bitte keine anstößigen Inhalte."
+  },
+  "dj": {
+    "title": "DJ-Übersicht",
+    "noSongsYet": "Noch keine Songs",
+    "markPlayed": "Als gespielt markieren",
+    "votes": "Stimmen",
+    "queue": "Warteschlange",
+    "played": "Bereits gespielt",
+    "exportPlaylist": "Playlist exportieren"
+  },
+  "pricing": {
+    "headline": "Drei klare Tarife",
+    "subheadline": "Free zum Ausprobieren. Pro für regelmäßiges Buchen. Event-Pass für eure Hochzeit. Studio für Akademien.",
+    "free": {
+      "name": "Free",
+      "price": "€0",
+      "cta": "Kostenlos starten",
+      "features": ["1 Event", "30 Songs", "Basis-Branding"]
+    },
+    "eventPass": {
+      "name": "Event-Pass",
+      "price": "€19 einmalig",
+      "subtitle": "30 Tage vor bis 1 Tag nach der Feier gültig",
+      "cta": "Event-Pass kaufen",
+      "features": ["1 Event", "Unbegrenzt Songs", "Eigenes Branding", "Aftermovie-Songliste"]
+    },
+    "pro": {
+      "name": "Pro",
+      "priceMonthly": "€59,99/Monat",
+      "priceYearly": "€599/Jahr",
+      "subtitle": "Für aktive Hochzeits-DJs",
+      "cta": "Pro starten",
+      "features": ["Unbegrenzt Events", "Branding & Export", "30 Tage Geld-zurück"]
+    },
+    "studio": {
+      "name": "Studio",
+      "priceMonthly": "€149/Monat",
+      "subtitle": "Für DJ-Akademien & Eventagenturen",
+      "cta": "Studio anfragen",
+      "features": ["Alles aus Pro", "Sub-Accounts für deine DJs", "Custom-Domain", "Whitelabel-Branding"]
+    }
+  },
+  "auth": {
+    "signIn": "Anmelden",
+    "signUp": "Registrieren",
+    "signOut": "Abmelden",
+    "email": "E-Mail",
+    "password": "Passwort",
+    "passwordTooShort": "Passwort muss mindestens 8 Zeichen lang sein",
+    "invalidCredentials": "E-Mail oder Passwort falsch"
+  },
+  "account": {
+    "title": "Mein Account",
+    "currentPlan": "Aktueller Tarif",
+    "manageBilling": "Abrechnung verwalten",
+    "myEvents": "Meine Events",
+    "newEvent": "Neues Event"
+  }
+}

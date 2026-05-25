@@ -1,16 +1,36 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { randomBytes } from 'crypto';
 import { initDB, sql } from '@/app/lib/db';
+import { auth } from '@/auth';
+import { getEffectivePlan, getPlanLimits } from '@/app/lib/plans';
 
-const MASTER_PASSWORD = 'djmaster2027';
+const SLUG_ALPHABET = 'abcdefghijklmnopqrstuvwxyz0123456789';
+const SLUG_LENGTH = 8;
 
-function checkMaster(req: NextRequest): boolean {
-  return req.headers.get('x-dj-master') === MASTER_PASSWORD;
+function generateSlug(): string {
+  const bytes = randomBytes(SLUG_LENGTH);
+  let result = '';
+  for (let i = 0; i < SLUG_LENGTH; i++) {
+    result += SLUG_ALPHABET[bytes[i] % SLUG_ALPHABET.length];
+  }
+  return result;
 }
 
-export async function GET(req: NextRequest) {
-  if (!checkMaster(req)) {
+async function generateUniqueSlug(): Promise<string> {
+  for (let attempt = 0; attempt < 5; attempt++) {
+    const slug = generateSlug();
+    const { rows } = await sql`SELECT 1 FROM events WHERE slug = ${slug} LIMIT 1`;
+    if (rows.length === 0) return slug;
+  }
+  throw new Error('Could not generate unique slug after 5 attempts');
+}
+
+export async function GET() {
+  const session = await auth();
+  if (!session?.user?.id) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
+  const userId = session.user.id;
 
   await initDB();
 
@@ -19,12 +39,13 @@ export async function GET(req: NextRequest) {
       e.id,
       e.slug,
       e.title,
-      e.subtitle,
       e.active,
+      e.event_date,
       e.created_at,
       COUNT(s.id)::int AS song_count
     FROM events e
     LEFT JOIN songs s ON s.event_id = e.id
+    WHERE e.dj_id = ${userId}
     GROUP BY e.id
     ORDER BY e.active DESC, e.created_at DESC
   `;
@@ -33,48 +54,67 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
-  if (!checkMaster(req)) {
+  const session = await auth();
+  if (!session?.user?.id) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
+  const userId = session.user.id;
 
   await initDB();
 
   const body = await req.json();
-  const { title, subtitle, slug, djPassword } = body as {
-    title: string;
-    subtitle?: string;
-    slug: string;
-    djPassword?: string;
-  };
+  const { title, event_date } = body as { title: string; event_date?: string };
 
   if (!title?.trim()) {
     return NextResponse.json({ error: 'title required' }, { status: 400 });
   }
 
-  if (!slug || !/^[a-z0-9][a-z0-9-]{1,}$/.test(slug)) {
-    return NextResponse.json(
-      { error: 'slug must be at least 2 chars and contain only a-z, 0-9, hyphens' },
-      { status: 400 }
-    );
+  let normalizedDate: string | null = null;
+  if (event_date) {
+    const d = new Date(event_date);
+    if (Number.isNaN(d.getTime())) {
+      return NextResponse.json({ error: 'invalid event_date' }, { status: 400 });
+    }
+    normalizedDate = event_date.slice(0, 10);
   }
 
-  try {
-    const { rows } = await sql`
-      INSERT INTO events (slug, title, subtitle, dj_password)
-      VALUES (
-        ${slug},
-        ${title.trim()},
-        ${subtitle?.trim() ?? null},
-        ${djPassword?.trim() || 'hochzeit2027'}
-      )
-      RETURNING id, slug, title, subtitle, active, created_at
+  // Plan-Check: aktive Events zählen
+  const { rows: ownerRows } = await sql`
+    SELECT plan, plan_status, current_period_end
+    FROM users WHERE id = ${userId}
+  `;
+  const owner = ownerRows[0] ?? { plan: 'free', plan_status: null, current_period_end: null };
+  const plan = getEffectivePlan({
+    plan: owner.plan,
+    plan_status: owner.plan_status,
+    current_period_end: owner.current_period_end,
+  });
+  const limits = getPlanLimits(plan);
+  if (Number.isFinite(limits.maxEvents)) {
+    const { rows: countRows } = await sql`
+      SELECT COUNT(*)::int AS cnt FROM events
+      WHERE dj_id = ${userId} AND active = TRUE
     `;
-    return NextResponse.json(rows[0], { status: 201 });
-  } catch (err: unknown) {
-    const pgErr = err as { code?: string };
-    if (pgErr?.code === '23505') {
-      return NextResponse.json({ error: 'slug already taken' }, { status: 409 });
+    const eventCount = countRows[0].cnt as number;
+    if (eventCount >= limits.maxEvents) {
+      return NextResponse.json(
+        { error: 'plan_limit', limit: 'events', current: eventCount, max: limits.maxEvents },
+        { status: 402 }
+      );
     }
-    throw err;
   }
+
+  const slug = await generateUniqueSlug();
+
+  const { rows } = await sql`
+    INSERT INTO events (slug, title, dj_id, event_date)
+    VALUES (
+      ${slug},
+      ${title.trim()},
+      ${userId},
+      ${normalizedDate}
+    )
+    RETURNING id, slug, title, active, event_date, created_at
+  `;
+  return NextResponse.json(rows[0], { status: 201 });
 }

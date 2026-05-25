@@ -2,13 +2,15 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useParams } from 'next/navigation';
+import { usePolling } from '@/app/lib/use-polling';
 
 interface Event {
   id: number;
   slug: string;
   title: string;
-  subtitle: string | null;
   active: boolean;
+  branding_name: string | null;
+  branding_logo_url: string | null;
 }
 
 interface Song {
@@ -79,23 +81,20 @@ export default function GuestPage() {
     } catch { /* ignore */ }
   }, [slug]);
 
-  const fetchSongs = useCallback(async () => {
-    try {
-      const res = await fetch(`/api/events/${slug}/songs`, { headers: clientHeaders() });
-      if (res.ok) setSongs(await res.json());
-    } catch { /* keep existing */ } finally {
-      setLoading(false);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [slug]);
+  const handlePollData = useCallback((data: Song[]) => {
+    setSongs(data);
+    setLoading(false);
+  }, []);
 
   useEffect(() => { loadEvent(); }, [loadEvent]);
 
-  useEffect(() => {
-    fetchSongs();
-    const interval = setInterval(fetchSongs, 2500);
-    return () => clearInterval(interval);
-  }, [fetchSongs]);
+  usePolling<Song[]>({
+    url: `/api/events/${slug}/songs`,
+    baseInterval: 2500,
+    maxInterval: 15000,
+    headers: () => ({ 'x-client-id': clientIdRef.current }),
+    onData: handlePollData,
+  });
 
   useEffect(() => {
     if (!message) return;
@@ -150,7 +149,7 @@ export default function GuestPage() {
         ? { text: 'Song ist schon in der Liste — deine Stimme wurde gezählt! 👍', ok: true }
         : { text: 'Song vorgeschlagen – du bist dabei! 🎵', ok: true }
       );
-      fetchSongs();
+      // Polling picks up the new song on the next tick.
     } catch {
       setMessage({ text: 'Verbindungsfehler. Bitte nochmal versuchen.', ok: false });
     } finally { setSubmitting(false); }
@@ -221,10 +220,23 @@ export default function GuestPage() {
   return (
     <div className="min-h-screen bg-cream">
       {/* Header */}
-      <div className="text-center pt-10 pb-6 px-4">
-        <p className="text-gold text-3xl mb-1">♪</p>
+      <div className="text-center pb-6 px-4 safe-top-pad-10">
+        {event?.branding_logo_url ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={event.branding_logo_url}
+            alt={event.branding_name ?? 'Logo'}
+            className="mx-auto mb-2 h-10 w-auto object-contain"
+          />
+        ) : (
+          <p className="text-gold text-3xl mb-1">♪</p>
+        )}
         <h1 className="font-serif text-4xl font-semibold text-ink">{event?.title ?? 'Musikwünsche'}</h1>
-        {event?.subtitle && <p className="text-muted mt-1 text-sm">{event.subtitle}</p>}
+        {event?.branding_name && (
+          <p className="text-muted text-xs uppercase tracking-widest mt-1.5">
+            {event.branding_name}
+          </p>
+        )}
       </div>
 
       {/* Flash message */}

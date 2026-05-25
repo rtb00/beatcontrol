@@ -1,0 +1,41 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    name: Type-Check + Tests + Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: TypeScript check
+        run: npm run typecheck
+
+      - name: Unit tests
+        run: npm test
+        env:
+          BEATCONTROL_HASH_PEPPER: ci-test-pepper-do-not-use
+
+      - name: Next.js build
+        run: npm run build
+        env:
+          # Build needs these env-vars even if just placeholders, otherwise
+          # next will fail on missing env reads in api routes.
+          POSTGRES_URL: postgres://ci:ci@localhost/ci
+          POSTGRES_URL_NON_POOLING: postgres://ci:ci@localhost/ci
+          AUTH_SECRET: ci-test-secret-do-not-use-in-prod
+          BEATCONTROL_HASH_PEPPER: ci-test-pepper-do-not-use
