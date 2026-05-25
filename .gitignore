@@ -10,3 +10,6 @@ next-env.d.ts
 
 # DB-Backups (lokal, nicht committen)
 backups/
+
+# Lokaler Stripe-Test-Output
+scripts/.stripe-prices.env

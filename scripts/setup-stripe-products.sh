@@ -21,17 +21,25 @@
 set -euo pipefail
 
 DRY_RUN=false
-if [[ "${1:-}" == "--dry-run" ]]; then
-  DRY_RUN=true
-  echo "🔍 DRY-RUN — nichts wird wirklich angelegt"
-fi
+TEST_LOCAL=false
+for arg in "$@"; do
+  case "$arg" in
+    --dry-run) DRY_RUN=true; echo "🔍 DRY-RUN — nichts wird wirklich angelegt" ;;
+    # Lokaler Test-Modus: legt Test-Produkte/-Preise an, überspringt 1Password
+    # und den Production-Webhook (lokal übernimmt das `stripe listen`),
+    # und schreibt die Price-IDs als .env-Block nach scripts/.stripe-prices.env
+    --test-local) TEST_LOCAL=true; echo "🧪 TEST-LOCAL — Test-Mode, ohne 1Password & ohne Prod-Webhook" ;;
+  esac
+done
 
 OP_VAULT="${OP_VAULT:-BeatControl}"
 OP_ITEM="BeatControl Stripe Prices"
 
 # Sanity Checks
 command -v stripe >/dev/null 2>&1 || { echo "❌ stripe CLI fehlt. brew install stripe/stripe-cli/stripe"; exit 1; }
-command -v op >/dev/null 2>&1 || { echo "❌ op (1Password CLI) fehlt. brew install --cask 1password-cli"; exit 1; }
+if ! $TEST_LOCAL; then
+  command -v op >/dev/null 2>&1 || { echo "❌ op (1Password CLI) fehlt. brew install --cask 1password-cli (oder --test-local nutzen)"; exit 1; }
+fi
 
 # Stripe-Auth prüfen
 if ! stripe config --list >/dev/null 2>&1; then
@@ -126,20 +134,38 @@ STUDIO_YEARLY_PRICE=$(run_stripe prices create \
   | grep -E '"id":' | head -1 | sed -E 's/.*"id": *"([^"]+)".*/\1/')
 echo "  ✓ Studio Yearly: $STUDIO_YEARLY_PRICE"
 
-# Webhook-Endpoint
-echo "→ Erstelle Webhook-Endpoint"
-WEBHOOK=$(run_stripe webhook_endpoints create \
-  --url="https://beatcontrol.io/api/stripe/webhook" \
-  --enabled-events="checkout.session.completed" \
-  --enabled-events="customer.subscription.updated" \
-  --enabled-events="customer.subscription.deleted" \
-  --enabled-events="invoice.paid" \
-  --enabled-events="invoice.payment_failed" \
-  | grep -E '"secret":' | head -1 | sed -E 's/.*"secret": *"([^"]+)".*/\1/')
-echo "  ✓ Webhook Secret extrahiert"
+# Webhook-Endpoint (im lokalen Test-Modus übernimmt `stripe listen` den Webhook)
+if $TEST_LOCAL; then
+  WEBHOOK="(lokal via 'stripe listen' — whsec aus dessen Ausgabe nehmen)"
+  echo "→ Webhook übersprungen (Test-Local; nutze 'stripe listen')"
+else
+  echo "→ Erstelle Webhook-Endpoint"
+  WEBHOOK=$(run_stripe webhook_endpoints create \
+    --url="https://beatcontrol.io/api/stripe/webhook" \
+    --enabled-events="checkout.session.completed" \
+    --enabled-events="customer.subscription.updated" \
+    --enabled-events="customer.subscription.deleted" \
+    --enabled-events="invoice.paid" \
+    --enabled-events="invoice.payment_failed" \
+    | grep -E '"secret":' | head -1 | sed -E 's/.*"secret": *"([^"]+)".*/\1/')
+  echo "  ✓ Webhook Secret extrahiert"
+fi
 
-# 4) In 1Password speichern (falls nicht dry-run)
-if ! $DRY_RUN; then
+# Test-Local: Price-IDs als .env-Block rausschreiben (zum direkten Übernehmen in .env.local)
+if $TEST_LOCAL && ! $DRY_RUN; then
+  OUT="scripts/.stripe-prices.env"
+  cat > "$OUT" <<ENVBLOCK
+STRIPE_PRICE_EVENT_PASS=$EVENT_PASS_PRICE
+STRIPE_PRICE_PRO_MONTHLY=$PRO_MONTHLY_PRICE
+STRIPE_PRICE_PRO_YEARLY=$PRO_YEARLY_PRICE
+STRIPE_PRICE_STUDIO_MONTHLY=$STUDIO_MONTHLY_PRICE
+STRIPE_PRICE_STUDIO_YEARLY=$STUDIO_YEARLY_PRICE
+ENVBLOCK
+  echo "  ✓ Price-IDs nach $OUT geschrieben (in .env.local übernehmen)"
+fi
+
+# 4) In 1Password speichern (nur Production-Modus, nicht dry-run/test-local)
+if ! $DRY_RUN && ! $TEST_LOCAL; then
   echo "→ Speichere in 1Password vault '$OP_VAULT'"
 
   # Item anlegen oder updaten
