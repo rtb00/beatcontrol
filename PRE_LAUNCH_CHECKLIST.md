@@ -31,7 +31,7 @@ Dann `beatcontrol.io` separat (Vercel TLD-Support fehlt):
 **Wo:** Vercel Dashboard
 **Warum:** sonst zeigt beatcontrol.io nur Vercel-Default-Page
 
-1. Vercel Dashboard → Project `dj-wedding-wishlist` → Settings → Domains
+1. Vercel Dashboard → Project `beatcontrol` → Settings → Domains
 2. Add Domain `beatcontrol.io` (als Primary)
 3. Add Domain `*.beatcontrol.io` als Wildcard für Whitelabel-Subdomains
 4. DNS auto-konfiguriert via Vercel
