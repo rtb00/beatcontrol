@@ -13,3 +13,4 @@ backups/
 
 # Lokaler Stripe-Test-Output
 scripts/.stripe-prices.env
+scripts/.bc-*

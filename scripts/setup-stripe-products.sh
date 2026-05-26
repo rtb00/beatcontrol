@@ -61,76 +61,76 @@ echo "🎵 BeatControl Stripe Setup gestartet"
 # 1) Event-Pass — One-time payment €19,00
 echo "→ Erstelle Product: BeatControl Event-Pass"
 EVENT_PASS_PRODUCT=$(run_stripe products create \
-  --name="BeatControl Event-Pass" \
-  --description="Einmalige Hochzeits-Wunschliste, 30 Tage vor bis 1 Tag nach der Feier gültig." \
-  --metadata="tier=event_pass" \
-  --metadata="brand=beatcontrol" \
+  -d "name=BeatControl Event-Pass" \
+  -d "description=Einmalige Hochzeits-Wunschliste, 30 Tage vor bis 1 Tag nach der Feier gültig." \
+  -d "metadata[tier]=event_pass" \
+  -d "metadata[brand]=beatcontrol" \
   | grep -E '"id":' | head -1 | sed -E 's/.*"id": *"([^"]+)".*/\1/')
 
 EVENT_PASS_PRICE=$(run_stripe prices create \
-  --product="$EVENT_PASS_PRODUCT" \
-  --currency=eur \
-  --unit-amount=1900 \
-  --metadata="tier=event_pass" \
-  --tax-behavior=inclusive \
+  -d "product=$EVENT_PASS_PRODUCT" \
+  -d "currency=eur" \
+  -d "unit_amount=1900" \
+  -d "metadata[tier]=event_pass" \
+  -d "tax_behavior=inclusive" \
   | grep -E '"id":' | head -1 | sed -E 's/.*"id": *"([^"]+)".*/\1/')
 echo "  ✓ Event-Pass: $EVENT_PASS_PRICE"
 
 # 2) Pro — Monthly €59,99 + Yearly €599,88
 echo "→ Erstelle Product: BeatControl Pro"
 PRO_PRODUCT=$(run_stripe products create \
-  --name="BeatControl Pro" \
-  --description="Für aktive Hochzeits-DJs: unbegrenzt Events, Branding, Export." \
-  --metadata="tier=pro" \
-  --metadata="brand=beatcontrol" \
+  -d "name=BeatControl Pro" \
+  -d "description=Für aktive Hochzeits-DJs: unbegrenzt Events, Branding, Export." \
+  -d "metadata[tier]=pro" \
+  -d "metadata[brand]=beatcontrol" \
   | grep -E '"id":' | head -1 | sed -E 's/.*"id": *"([^"]+)".*/\1/')
 
 PRO_MONTHLY_PRICE=$(run_stripe prices create \
-  --product="$PRO_PRODUCT" \
-  --currency=eur \
-  --unit-amount=5999 \
-  --recurring="interval=month" \
-  --metadata="tier=pro_monthly" \
-  --tax-behavior=inclusive \
+  -d "product=$PRO_PRODUCT" \
+  -d "currency=eur" \
+  -d "unit_amount=5999" \
+  -d "recurring[interval]=month" \
+  -d "metadata[tier]=pro_monthly" \
+  -d "tax_behavior=inclusive" \
   | grep -E '"id":' | head -1 | sed -E 's/.*"id": *"([^"]+)".*/\1/')
 echo "  ✓ Pro Monthly: $PRO_MONTHLY_PRICE"
 
 PRO_YEARLY_PRICE=$(run_stripe prices create \
-  --product="$PRO_PRODUCT" \
-  --currency=eur \
-  --unit-amount=59988 \
-  --recurring="interval=year" \
-  --metadata="tier=pro_yearly" \
-  --tax-behavior=inclusive \
+  -d "product=$PRO_PRODUCT" \
+  -d "currency=eur" \
+  -d "unit_amount=59988" \
+  -d "recurring[interval]=year" \
+  -d "metadata[tier]=pro_yearly" \
+  -d "tax_behavior=inclusive" \
   | grep -E '"id":' | head -1 | sed -E 's/.*"id": *"([^"]+)".*/\1/')
 echo "  ✓ Pro Yearly: $PRO_YEARLY_PRICE"
 
 # 3) Studio — Monthly €149 + Yearly €1488
 echo "→ Erstelle Product: BeatControl Studio"
 STUDIO_PRODUCT=$(run_stripe products create \
-  --name="BeatControl Studio" \
-  --description="Whitelabel für DJ-Akademien und Eventagenturen: Sub-Accounts, Custom-Domain, eigenes Branding." \
-  --metadata="tier=studio" \
-  --metadata="brand=beatcontrol" \
+  -d "name=BeatControl Studio" \
+  -d "description=Whitelabel für DJ-Akademien und Eventagenturen: Sub-Accounts, Custom-Domain, eigenes Branding." \
+  -d "metadata[tier]=studio" \
+  -d "metadata[brand]=beatcontrol" \
   | grep -E '"id":' | head -1 | sed -E 's/.*"id": *"([^"]+)".*/\1/')
 
 STUDIO_MONTHLY_PRICE=$(run_stripe prices create \
-  --product="$STUDIO_PRODUCT" \
-  --currency=eur \
-  --unit-amount=14900 \
-  --recurring="interval=month" \
-  --metadata="tier=studio_monthly" \
-  --tax-behavior=inclusive \
+  -d "product=$STUDIO_PRODUCT" \
+  -d "currency=eur" \
+  -d "unit_amount=14900" \
+  -d "recurring[interval]=month" \
+  -d "metadata[tier]=studio_monthly" \
+  -d "tax_behavior=inclusive" \
   | grep -E '"id":' | head -1 | sed -E 's/.*"id": *"([^"]+)".*/\1/')
 echo "  ✓ Studio Monthly: $STUDIO_MONTHLY_PRICE"
 
 STUDIO_YEARLY_PRICE=$(run_stripe prices create \
-  --product="$STUDIO_PRODUCT" \
-  --currency=eur \
-  --unit-amount=148800 \
-  --recurring="interval=year" \
-  --metadata="tier=studio_yearly" \
-  --tax-behavior=inclusive \
+  -d "product=$STUDIO_PRODUCT" \
+  -d "currency=eur" \
+  -d "unit_amount=148800" \
+  -d "recurring[interval]=year" \
+  -d "metadata[tier]=studio_yearly" \
+  -d "tax_behavior=inclusive" \
   | grep -E '"id":' | head -1 | sed -E 's/.*"id": *"([^"]+)".*/\1/')
 echo "  ✓ Studio Yearly: $STUDIO_YEARLY_PRICE"
 
@@ -141,12 +141,12 @@ if $TEST_LOCAL; then
 else
   echo "→ Erstelle Webhook-Endpoint"
   WEBHOOK=$(run_stripe webhook_endpoints create \
-    --url="https://beatcontrol.io/api/stripe/webhook" \
-    --enabled-events="checkout.session.completed" \
-    --enabled-events="customer.subscription.updated" \
-    --enabled-events="customer.subscription.deleted" \
-    --enabled-events="invoice.paid" \
-    --enabled-events="invoice.payment_failed" \
+    -d "url=https://beatcontrol.io/api/stripe/webhook" \
+    -d "enabled_events[]=checkout.session.completed" \
+    -d "enabled_events[]=customer.subscription.updated" \
+    -d "enabled_events[]=customer.subscription.deleted" \
+    -d "enabled_events[]=invoice.paid" \
+    -d "enabled_events[]=invoice.payment_failed" \
     | grep -E '"secret":' | head -1 | sed -E 's/.*"secret": *"([^"]+)".*/\1/')
   echo "  ✓ Webhook Secret extrahiert"
 fi
