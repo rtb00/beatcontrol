@@ -157,10 +157,10 @@ export default function LandingPage() {
   const mockSlug =
     audience === 'hochzeit' ? 'hochzeit-mueller' : audience === 'geburtstag' ? 'sandras-40er' : 'sommerfest-gmbh';
   const mockSongs = [
-    { title: "Can't Stop the Feeling", artist: 'Justin Timberlake', genre: 'Pop', votes: 12 },
-    { title: 'Shut Up and Dance', artist: 'Walk the Moon', genre: 'Rock', votes: 9 },
-    { title: 'Uptown Funk', artist: 'Bruno Mars', genre: 'Funk', votes: 7 },
-    { title: 'Levitating', artist: 'Dua Lipa', genre: 'Pop', votes: 5 },
+    { title: "Can't Stop the Feeling", artist: 'Justin Timberlake', genre: 'Pop', votes: 12, art: 'https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/68/19/43/68194388-efa7-3afe-8a15-a4c3eebef1f6/886445915211.jpg/200x200bb.jpg' },
+    { title: 'Shut Up and Dance', artist: 'Walk the Moon', genre: 'Rock', votes: 9, art: 'https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/bf/b6/76/bfb67621-b78d-3924-6d29-4f367697a674/886445045758.jpg/200x200bb.jpg' },
+    { title: 'Uptown Funk', artist: 'Bruno Mars', genre: 'Funk', votes: 7, art: 'https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/7e/30/c5/7e30c572-aa47-5f7b-c6fd-42d50cd2c56d/886444959797.jpg/200x200bb.jpg' },
+    { title: 'Levitating', artist: 'Dua Lipa', genre: 'Pop', votes: 5, art: 'https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/6c/11/d6/6c11d681-aa3a-d59e-4c2e-f77e181026ab/190295092665.jpg/200x200bb.jpg' },
   ];
 
   // Social-Proof-Kennzahlen, live aus der DB (/api/stats), niemals erfunden.
@@ -176,10 +176,9 @@ export default function LandingPage() {
   // Label + Untertitel psychologisch getunt (konkrete Zahl, emotionale Einheit).
   const proofCards = stats
     ? ([
-        { value: stats.djs, min: 3, label: 'DJs vertrauen BeatControl', sub: 'im echten Live-Einsatz' },
-        { value: stats.events, min: 5, label: 'Veranstaltungen begleitet', sub: 'Hochzeiten, Partys & Firmenfeiern' },
-        { value: stats.songRequests, min: 50, label: 'Songwünsche aus dem Publikum', sub: 'jeder einzelne direkt aus dem Raum' },
-        { value: stats.minutes, min: 200, label: 'Minuten Tanzfläche', sub: 'gemeinsam mit den Gästen gefüllt' },
+        { value: stats.events, min: 1, label: 'Veranstaltungen begleitet', sub: 'Hochzeiten, Partys & Firmenfeiern' },
+        { value: stats.songRequests, min: 10, label: 'Songwünsche aus dem Publikum', sub: 'jeder einzelne direkt aus dem Raum' },
+        { value: stats.minutes, min: 10, label: 'Minuten gespielter Songs', sub: 'live auf der Tanzfläche' },
       ] as const).filter((s) => s.value >= s.min)
     : [];
 
@@ -352,9 +351,8 @@ export default function LandingPage() {
                   {mockSongs.map((s, i) => (
                     <div key={s.title} className="bg-ivory rounded-lg p-1.5 flex items-center gap-1.5 border border-champagne shadow-sm">
                       <span className="font-serif italic text-[15px] text-gold/70 leading-none w-3.5 text-center shrink-0 tabular-nums" aria-hidden="true">{i + 1}</span>
-                      <div className="w-6 h-6 rounded bg-champagne/70 flex items-center justify-center shrink-0">
-                        <span className="text-muted text-[8px]">♪</span>
-                      </div>
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={s.art} alt={s.title} className="w-6 h-6 rounded object-cover shrink-0 bg-champagne/70" />
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-1">
                           <p className="font-semibold text-ink text-[7px] truncate flex-1 min-w-0">{s.title}</p>
