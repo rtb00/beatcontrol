@@ -546,7 +546,7 @@ export default function LandingPage() {
       <section ref={setupPricingObserver} className="bg-[#f4ede0] py-20" id="pricing">
         <div className="max-w-5xl mx-auto px-4">
           <h2 className="font-serif text-3xl font-bold text-center mb-3">
-            Dein Netz unter der nächsten Entscheidung.
+            Für jeden Gig der passende Tarif.
           </h2>
           <p className="text-[#8a7a6e] text-center mb-3 max-w-xl mx-auto">
             Free zum Ausprobieren. Pro Hochzeit für Gelegenheits-Gigs. Pro-Abo für aktive DJs. <Link href="/pricing" className="text-[#c9a961] underline">Studio</Link> für Akademien.
