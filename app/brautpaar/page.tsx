@@ -144,7 +144,7 @@ export default function BrautpaarLanding() {
             &ldquo;Die Gäste haben den ganzen Abend gevotet. Ich wusste jederzeit, was als Nächstes zieht, statt zu raten.&rdquo;
           </blockquote>
           <cite className="text-sm text-[#8a7a6e] not-italic block">
-            Daniel · Hochzeits-DJ · erste Pilot-Hochzeit 2026
+            Hochzeits-DJ · erste Pilot-Hochzeit 2026
           </cite>
         </div>
       </section>

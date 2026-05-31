@@ -8,6 +8,7 @@ import PaywallModal, { PaywallLimit } from '@/app/components/PaywallModal';
 import { useBranding } from '@/app/lib/branding-context';
 
 const ONBOARDING_KEY = 'beatcontrol-onboarding-seen';
+const PENDING_EVENT_KEY = 'bc_pending_event';
 
 interface Event {
   id: number;
@@ -70,6 +71,7 @@ export default function DJDashboard() {
   const [exportingSlug, setExportingSlug] = useState<string | null>(null);
 
   const [showOnboarding, setShowOnboarding] = useState(false);
+  const [funnelPrefill, setFunnelPrefill] = useState(false);
 
   const [paywall, setPaywall] = useState<{ open: boolean; type: PaywallLimit; current?: number; max?: number }>({
     open: false,
@@ -79,7 +81,25 @@ export default function DJDashboard() {
   useEffect(() => {
     loadEvents();
     loadMe();
-    if (typeof window !== 'undefined' && !localStorage.getItem(ONBOARDING_KEY)) {
+    if (typeof window === 'undefined') return;
+
+    // Event aus dem Funnel (/start) vorbefüllen, falls vorhanden.
+    const pending = localStorage.getItem(PENDING_EVENT_KEY);
+    if (pending) {
+      try {
+        const data = JSON.parse(pending) as { title?: string; date?: string };
+        if (data.title) setFormTitle(data.title);
+        if (data.date) setFormDate(data.date);
+        setShowForm(true);
+        setFunnelPrefill(true);
+      } catch {
+        /* defektes JSON ignorieren */
+      }
+      localStorage.removeItem(PENDING_EVENT_KEY);
+      return; // Onboarding-Overlay diesmal überspringen — der Funnel war das Onboarding.
+    }
+
+    if (!localStorage.getItem(ONBOARDING_KEY)) {
       setShowOnboarding(true);
     }
   }, []);
@@ -372,6 +392,16 @@ export default function DJDashboard() {
             <span className="hidden sm:inline">+ Neues Event erstellen</span>
           </button>
         </div>
+
+        {/* Funnel-Prefill-Banner */}
+        {funnelPrefill && showForm && (
+          <div className="mb-3 rounded-2xl bg-gold/10 border border-gold/40 px-5 py-3 animate-fade-in">
+            <p className="text-sm text-ink leading-snug">
+              <span className="font-semibold">Dein Event aus dem Schnellstart ist fast fertig 🎉</span>{' '}
+              Prüf kurz Name und Datum — dann auf „Event erstellen", und der QR-Code steht.
+            </p>
+          </div>
+        )}
 
         {/* Create form */}
         {showForm && (

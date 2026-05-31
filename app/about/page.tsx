@@ -67,7 +67,7 @@ export default function AboutPage() {
           <h2 className="font-serif text-2xl font-bold mt-12 mb-4">Pilot-Saison 2026</h2>
 
           <p>
-            Erste echte Hochzeit lief im April 2026 auf Schloss Platen mit DJ Daniel Lemke. 64 Live-Songs in einer Nacht. Das Brautpaar wollte das System bis um drei Uhr morgens nicht abdrehen.
+            Erste echte Hochzeit lief im April 2026. 64 Live-Songs in einer Nacht. Das Brautpaar wollte das System bis um drei Uhr morgens nicht abdrehen.
           </p>
 
           <p>

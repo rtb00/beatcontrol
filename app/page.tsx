@@ -2,10 +2,19 @@
 
 import { useState, useEffect, useRef, useCallback, type ReactNode } from 'react';
 import Link from 'next/link';
+import { QRCodeSVG } from 'qrcode.react';
 import { useBranding } from '@/app/lib/branding-context';
 
 type Cycle = 'yearly' | 'monthly';
 type Audience = 'hochzeit' | 'geburtstag' | 'firma';
+type Stats = {
+  djs: number;
+  events: number;
+  songRequests: number;
+  votes: number;
+  playedSongs: number;
+  minutes: number;
+};
 
 const PRO_PRICE_YEARLY_PER_MONTH = '49,99';
 const PRO_PRICE_YEARLY_TOTAL = '599,88';
@@ -34,7 +43,7 @@ const COPY: Record<Audience, {
   hochzeit: {
     eyebrow: 'Für DJs · Hochzeit',
     heroSub:
-      'Deine Gäste voten still vom Handy — der Favorit steht mit Stimmenzahl oben auf deinem Screen. Du siehst schwarz auf weiß, was die Fläche trägt, und behältst das letzte Wort.',
+      'Deine Gäste voten vom Handy, welche Songs ihnen gut gefallen würden. Der mit den meisten Stimmen steht oben auf deinem Screen, du siehst, was gerade gefragt ist, und entscheidest wie immer selbst.',
     painEyebrow: '22:14 Uhr, die Fläche ist voll',
     painH2: (
       <>
@@ -44,27 +53,27 @@ const COPY: Record<Audience, {
     painCards: [
       {
         label: 'Der Moment kippt schnell',
-        text: 'Drei Songs könnten passen. Welcher hält die Fläche, welcher leert sie? Im Zweifel nimmst du das Sichere, das du heute Abend schon zweimal gespielt hast.',
+        text: 'Drei Songs könnten passen. Welcher hält die Leute, welcher leert die Fläche? Im Zweifel greifst du zu dem, der nicht wirklich passt, aber von dem du weißt, dass er schon irgendwie läuft.',
       },
       {
-        label: 'Du liest, aber im Halbdunkeln',
-        text: 'Achtzig Gäste, drei Generationen. Der Song, bei dem die Tante strahlt, schickt die Trauzeugen an die Bar. Du gewinnst die eine Hälfte und verlierst die andere.',
+        label: 'Ein Wunsch ist noch keine Mehrheit',
+        text: 'Jemand wünscht sich einen Song, den du kaum kennst. Will den der eine Gast, oder die halbe Feier? Einem einzelnen Zettel hörst du das nicht an, und im Zweifel legst du ihn lieber nicht auf.',
       },
       {
         label: 'Einer reicht',
         text: 'Ein Griff daneben und zwanzig Leute setzen sich. An die volle Stunde davor erinnert sich am nächsten Tag keiner. An die fünf Minuten leere Fläche schon.',
       },
     ],
-    transitionH2: 'Der Floor redet die ganze Zeit. Jetzt hörst du ihn.',
+    transitionH2: 'Der Floor redet die ganze Zeit. Jetzt kannst du ihm zuhören.',
     transitionBody:
       'Deine Gäste voten für die Songs, die sie hören wollen, und der Favorit steht oben in deiner Liste. Du liest den Raum wie immer, nur mit einem Sinn mehr. Ob du zugreifst, entscheidest du.',
     finalBody:
-      'Eine leere Fläche kostet dich die Weiterempfehlung, und die nächste Buchung gleich mit. Probier es bei deiner nächsten Hochzeit. Bringt es dir nichts, hast du nichts verloren.',
+      'DJs setzen BeatControl längst auf echten Hochzeiten ein und sehen mit einem Blick, welcher Song die Leute hält. Starte kostenlos und sei bei deiner nächsten Hochzeit dabei.',
   },
   geburtstag: {
     eyebrow: 'Für DJs · Geburtstag & Party',
     heroSub:
-      'Deine Gäste voten still vom Handy — der Favorit steht mit Stimmenzahl oben auf deinem Screen. Du siehst schwarz auf weiß, was die Fläche trägt, und behältst das letzte Wort.',
+      'Deine Gäste voten vom Handy, welche Songs ihnen gut gefallen würden. Der mit den meisten Stimmen steht oben auf deinem Screen, du siehst, was gerade gefragt ist, und entscheidest wie immer selbst.',
     painEyebrow: '23:30 Uhr, die Stimmung wackelt',
     painH2: (
       <>
@@ -78,23 +87,23 @@ const COPY: Record<Audience, {
       },
       {
         label: 'Keiner sagt dir was',
-        text: 'Auf der Party geht keiner ans Pult. Wenn die Fläche leer wird, denken alle „wird schon wieder" — und am Ende heißt es, zwischendurch sei es zäh geworden.',
+        text: 'Auf der Party geht keiner ans Pult. Wenn die Fläche leer wird, denken alle „wird schon wieder", und am Ende heißt es, zwischendurch sei es zäh geworden.',
       },
       {
         label: 'Die Kurve entscheidet',
         text: 'Eine Party lebt vom Schwung. Verlierst du ihn einmal, holst du ihn den ganzen Abend nicht mehr zurück. Genau da darfst du nicht daneben greifen.',
       },
     ],
-    transitionH2: 'Der Raum redet die ganze Zeit. Jetzt hörst du ihn.',
+    transitionH2: 'Der Raum redet die ganze Zeit. Jetzt kannst du ihm zuhören.',
     transitionBody:
       'Deine Gäste voten für die Songs, die sie hören wollen, und der Favorit steht oben in deiner Liste. Du liest den Raum wie immer, nur mit einem Sinn mehr. Ob du zugreifst, entscheidest du.',
     finalBody:
-      'Eine Party, die kippt, spricht sich rum, und die nächste Anfrage bleibt aus. Probier es bei deinem nächsten Gig. Bringt es dir nichts, hast du nichts verloren.',
+      'DJs setzen BeatControl längst auf echten Partys ein und sehen mit einem Blick, welcher Song die Leute hält. Starte kostenlos und sei bei deinem nächsten Gig dabei.',
   },
   firma: {
     eyebrow: 'Für DJs · Firmenfeier',
     heroSub:
-      'Deine Gäste voten still vom Handy — der Favorit steht mit Stimmenzahl oben auf deinem Screen. Du siehst schwarz auf weiß, was die Fläche trägt, und behältst das letzte Wort.',
+      'Deine Gäste voten vom Handy, welche Songs ihnen gut gefallen würden. Der mit den meisten Stimmen steht oben auf deinem Screen, du siehst, was gerade gefragt ist, und entscheidest wie immer selbst.',
     painEyebrow: '21:00 Uhr, noch sitzen alle',
     painH2: (
       <>
@@ -115,11 +124,11 @@ const COPY: Record<Audience, {
         text: 'Hier entscheidet sich, ob du nächstes Jahr wieder gebucht wirst. Eine zähe Firmenfeier merkt sich die Person, die den Scheck unterschreibt.',
       },
     ],
-    transitionH2: 'Der Saal redet die ganze Zeit. Jetzt hörst du ihn.',
+    transitionH2: 'Der Saal redet die ganze Zeit. Jetzt kannst du ihm zuhören.',
     transitionBody:
       'Deine Gäste voten für die Songs, die sie hören wollen, und der Favorit steht oben in deiner Liste. Ohne Briefing, ohne Wunschliste weißt du auf einen Blick, was diese fremde Crowd trägt. Ob du zugreifst, entscheidest du.',
     finalBody:
-      'Eine zähe Firmenfeier kostet dich den Folgeauftrag fürs nächste Jahr. Probier es bei deinem nächsten Gig. Bringt es dir nichts, hast du nichts verloren.',
+      'DJs setzen BeatControl längst auf echten Firmenfeiern ein und sehen mit einem Blick, welcher Song die Leute hält. Starte kostenlos und sei bei deinem nächsten Gig dabei.',
   },
 };
 
@@ -141,6 +150,38 @@ export default function LandingPage() {
   const [audienceOpen, setAudienceOpen] = useState(false);
   const pricingTracked = useRef(false);
   const c = COPY[audience];
+
+  // Mock-Daten für die iPad-Vorschau des echten DJ-Live-Views
+  const mockEventTitle =
+    audience === 'hochzeit' ? 'Hochzeit Müller' : audience === 'geburtstag' ? 'Sandras 40er' : 'Sommerfest GmbH';
+  const mockSlug =
+    audience === 'hochzeit' ? 'hochzeit-mueller' : audience === 'geburtstag' ? 'sandras-40er' : 'sommerfest-gmbh';
+  const mockSongs = [
+    { title: "Can't Stop the Feeling", artist: 'Justin Timberlake', genre: 'Pop', votes: 12 },
+    { title: 'Shut Up and Dance', artist: 'Walk the Moon', genre: 'Rock', votes: 9 },
+    { title: 'Uptown Funk', artist: 'Bruno Mars', genre: 'Funk', votes: 7 },
+    { title: 'Levitating', artist: 'Dua Lipa', genre: 'Pop', votes: 5 },
+  ];
+
+  // Social-Proof-Kennzahlen, live aus der DB (/api/stats), niemals erfunden.
+  const [stats, setStats] = useState<Stats | null>(null);
+  useEffect(() => {
+    fetch('/api/stats')
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d) => d && setStats(d))
+      .catch(() => {});
+  }, []);
+
+  // Kartendefinition: Wert (live), Schwelle (darunter wird die Karte ausgeblendet),
+  // Label + Untertitel psychologisch getunt (konkrete Zahl, emotionale Einheit).
+  const proofCards = stats
+    ? ([
+        { value: stats.djs, min: 3, label: 'DJs vertrauen BeatControl', sub: 'im echten Live-Einsatz' },
+        { value: stats.events, min: 5, label: 'Veranstaltungen begleitet', sub: 'Hochzeiten, Partys & Firmenfeiern' },
+        { value: stats.songRequests, min: 50, label: 'Songwünsche aus dem Publikum', sub: 'jeder einzelne direkt aus dem Raum' },
+        { value: stats.minutes, min: 200, label: 'Minuten Tanzfläche', sub: 'gemeinsam mit den Gästen gefüllt' },
+      ] as const).filter((s) => s.value >= s.min)
+    : [];
 
   useEffect(() => {
     track('page_view');
@@ -242,7 +283,8 @@ export default function LandingPage() {
       </nav>
 
       {/* Hero */}
-      <section className="max-w-6xl mx-auto px-4 py-20 md:py-28 grid md:grid-cols-2 gap-16 items-center">
+      <section className="max-w-6xl mx-auto px-4 py-20 md:py-28">
+        <div className="grid md:grid-cols-2 gap-16 items-center">
         <div>
           <h1 className="font-serif text-5xl md:text-6xl font-bold leading-[1.1] mb-6">
             Dein Gespür für die Tanzfläche.<br />Von den Gästen bestätigt.
@@ -252,62 +294,109 @@ export default function LandingPage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-3">
             <Link
-              href="/auth/signin"
+              href="/start"
               onClick={() => trackCta('free')}
               className="px-7 py-3.5 rounded-full bg-[#c9a961] text-white font-semibold text-sm hover:bg-[#b8953a] transition-colors shadow-sm text-center"
             >
-              Kostenlos anmelden
-            </Link>
-            <Link
-              href="/auth/signin?plan=pro_yearly"
-              onClick={() => trackCta('pro_yearly')}
-              className="px-7 py-3.5 rounded-full border border-[#2a2520]/20 text-sm font-medium hover:border-[#c9a961] transition-colors text-center"
-            >
-              Pro starten
+              Kostenlos ausprobieren
             </Link>
           </div>
           <p className="text-xs text-[#8a7a6e] mt-4 leading-relaxed">
-            Von Hochzeits-DJ Daniel im Echtbetrieb gespielt · von DJs mitentwickelt · kein Download für deine Gäste
+            Von DJs für DJs gebaut · läuft neben Rekordbox & Serato · kein Download nötig
           </p>
         </div>
 
-        {/* Phone mockup */}
+        {/* iPad-Mockup, exakte Nachbildung des echten DJ-Live-Views (dj/[slug]) */}
         <div className="flex justify-center">
-          <div className="relative w-[230px] h-[440px] bg-[#2a2520] rounded-[2.5rem] shadow-2xl flex flex-col overflow-hidden border-[5px] border-[#2a2520]">
-            <div className="absolute top-3 left-1/2 -translate-x-1/2 w-16 h-1.5 bg-[#3a342e] rounded-full" />
-            <div className="flex-1 bg-[#faf6f0] mt-8 px-3 py-4 flex flex-col gap-2 overflow-hidden">
-              <p className="font-serif text-[11px] font-semibold text-center text-[#2a2520] mb-0.5">
-                {audience === 'hochzeit' ? 'Hochzeit Müller' : audience === 'geburtstag' ? 'Sandras 40er' : 'Sommerfest GmbH'} · live
-              </p>
-              <p className="text-[8px] uppercase tracking-widest text-[#c9a961] font-semibold mb-0.5">
-                Nächster sicherer Song
-              </p>
-              {[
-                { title: "Can't Stop the Feeling", artist: 'Justin Timberlake', votes: 12, top: true },
-                { title: 'Shut Up and Dance', artist: 'Walk the Moon', votes: 9, top: false },
-                { title: 'Uptown Funk', artist: 'Bruno Mars', votes: 7, top: false },
-                { title: 'Levitating', artist: 'Dua Lipa', votes: 5, top: false },
-              ].map((s) => (
-                <div
-                  key={s.title}
-                  className={`rounded-xl p-2 flex items-center gap-2 shadow-sm ${
-                    s.top ? 'bg-[#c9a961]/15 ring-1 ring-[#c9a961]' : 'bg-white'
-                  }`}
-                >
-                  <div className={`w-7 h-7 rounded-lg flex-shrink-0 ${s.top ? 'bg-[#c9a961]' : 'bg-[#e8d9b8]'}`} />
-                  <div className="flex-1 min-w-0">
-                    <p className="text-[9px] font-semibold truncate">{s.title}</p>
-                    <p className="text-[8px] text-[#8a7a6e] truncate">{s.artist}</p>
+          <div className="relative w-full max-w-[480px] aspect-[4/3] rounded-[1.9rem] bg-[#1d1a16] p-[11px] shadow-2xl ring-1 ring-black/20">
+            {/* Front-Kamera im Bezel */}
+            <div className="absolute top-[5px] left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-[#0a0907] ring-1 ring-white/10" />
+            {/* Screen */}
+            <div className="h-full w-full overflow-hidden rounded-[1.1rem] bg-cream flex flex-col">
+
+              {/* Header, wie im echten DJ-View */}
+              <div className="shrink-0 bg-ivory border-b border-champagne px-2.5 py-1.5 flex items-center justify-between gap-2">
+                <div className="flex items-center gap-1.5 min-w-0">
+                  <div className="h-5 w-5 flex items-center justify-center rounded-md border border-champagne text-muted">
+                    <svg viewBox="0 0 20 20" fill="currentColor" className="w-2.5 h-2.5"><path fillRule="evenodd" d="M7.793 2.232a.75.75 0 01-.025 1.06L3.622 7.25h10.003a5.375 5.375 0 010 10.75H10.75a.75.75 0 010-1.5h2.875a3.875 3.875 0 000-7.75H3.622l4.146 3.957a.75.75 0 01-1.036 1.085l-5.5-5.25a.75.75 0 010-1.085l5.5-5.25a.75.75 0 011.06.025z" clipRule="evenodd" /></svg>
                   </div>
-                  <span className="text-[9px] font-bold text-[#c9a961]">+{s.votes}</span>
+                  <div className="h-5 w-5 flex items-center justify-center rounded-md border border-gold text-gold bg-gold/10">
+                    <svg viewBox="0 0 24 24" fill="currentColor" className="w-2.5 h-2.5"><path d="M3 3h8v8H3V3zm2 2v4h4V5H5z" /><path d="M13 3h8v8h-8V3zm2 2v4h4V5h-4z" /><path d="M3 13h8v8H3v-8zm2 2v4h4v-4H5z" /><path d="M13 13h2v2h-2zm4 0h2v2h-2v2h2v2h-2v2h-2v-2h-2v-2h2v-2h2v-2zm2 6h2v2h-2zm0-4h2v2h-2z" /></svg>
+                  </div>
+                  <p className="font-serif text-[10px] font-semibold text-ink truncate">{mockEventTitle}</p>
+                </div>
+                <div className="flex items-center gap-1.5 shrink-0">
+                  <span className="text-[6px] uppercase tracking-widest text-muted/70 border border-champagne rounded-full px-1.5 py-px">Pro</span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-gold animate-pulse" title="Live" />
+                </div>
+              </div>
+
+              {/* Body, QR-Sidebar + Songliste */}
+              <div className="flex-1 flex overflow-hidden">
+
+                {/* QR-Sidebar */}
+                <div className="w-[31%] shrink-0 border-r border-gold/30 flex flex-col items-center justify-center gap-1 px-2 py-2">
+                  <p className="text-gold text-[9px] leading-none">♪</p>
+                  <p className="font-serif text-[10px] font-semibold text-ink leading-tight text-center">Musikwünsche</p>
+                  <p className="text-muted text-[6px] -mt-0.5 mb-0.5">Scanne mich!</p>
+                  <div className="bg-white rounded-md p-1 border border-champagne shadow-[0_2px_8px_rgba(201,169,97,0.18)]">
+                    <QRCodeSVG value={`https://beatcontrol.io/${mockSlug}`} size={42} fgColor="#2a2520" bgColor="#ffffff" level="M" />
+                  </div>
+                  <p className="text-muted/60 text-[5px] font-mono break-all text-center leading-tight max-w-[90%]">beatcontrol.io/{mockSlug}</p>
+                </div>
+
+                {/* Songliste */}
+                <div className="flex-1 overflow-hidden px-2 py-2 flex flex-col gap-1.5">
+
+                  {/* Gerankte Song-Cards */}
+                  {mockSongs.map((s, i) => (
+                    <div key={s.title} className="bg-ivory rounded-lg p-1.5 flex items-center gap-1.5 border border-champagne shadow-sm">
+                      <span className="font-serif italic text-[15px] text-gold/70 leading-none w-3.5 text-center shrink-0 tabular-nums" aria-hidden="true">{i + 1}</span>
+                      <div className="w-6 h-6 rounded bg-champagne/70 flex items-center justify-center shrink-0">
+                        <span className="text-muted text-[8px]">♪</span>
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-1">
+                          <p className="font-semibold text-ink text-[7px] truncate flex-1 min-w-0">{s.title}</p>
+                          <span className="shrink-0 px-1 py-px bg-gold/15 text-gold text-[5px] font-semibold rounded-full leading-none">{s.genre}</span>
+                        </div>
+                        <div className="flex items-center gap-1 mt-px">
+                          <p className="text-muted text-[6px] truncate min-w-0">{s.artist}</p>
+                          <span className="inline-flex items-center gap-0.5 shrink-0 px-1 rounded-full bg-gold/10 border border-gold/25 text-gold text-[5px] font-semibold tabular-nums leading-none">
+                            <svg viewBox="0 0 20 20" fill="currentColor" className="w-1.5 h-1.5"><path d="M9.653 16.915l-.005-.003-.019-.01a20.759 20.759 0 01-1.162-.682 22.045 22.045 0 01-2.582-1.9C4.045 12.733 2 10.352 2 7.5a4.5 4.5 0 018-2.828A4.5 4.5 0 0118 7.5c0 2.852-2.044 5.233-3.885 6.82a22.049 22.049 0 01-3.744 2.582l-.019.01-.005.003h-.002a.739.739 0 01-.69.001l-.002-.001z" /></svg>
+                            {s.votes}
+                          </span>
+                        </div>
+                      </div>
+                      <div className="shrink-0 px-1.5 py-1 rounded-md bg-ink text-cream text-[5px] font-semibold leading-none">✓ Gespielt</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        </div>
+
+        {/* Social Proof, Live-Kennzahlen aus der DB, direkt in der Hero-Section. Blendet sich aus, solange die Zahlen zu klein sind. */}
+        {proofCards.length >= 2 && (
+          <div className="mt-16 md:mt-20 pt-10 border-t border-[#e8d9b8]">
+            <div className={`grid gap-8 sm:gap-6 ${proofCards.length >= 4 ? 'grid-cols-2 lg:grid-cols-4' : proofCards.length === 3 ? 'grid-cols-1 sm:grid-cols-3' : 'grid-cols-2'}`}>
+              {proofCards.map((s) => (
+                <div key={s.label} className="text-center">
+                  <p className="font-serif text-4xl md:text-5xl font-bold text-[#2a2520] tabular-nums leading-none mb-2">
+                    {s.value.toLocaleString('de-DE')}
+                  </p>
+                  <p className="text-sm font-semibold text-[#2a2520] leading-snug">{s.label}</p>
+                  <p className="text-xs text-[#8a7a6e] mt-1 leading-snug">{s.sub}</p>
                 </div>
               ))}
             </div>
           </div>
-        </div>
+        )}
       </section>
 
-      {/* Pilot-Saison Strip — ein Job: 2 Pilot-DJs gewinnen */}
+      {/* Pilot-Saison Strip, ein Job: 2 Pilot-DJs gewinnen */}
       <section className="bg-[#f4ede0] border-y border-[#e8d9b8] py-6">
         <div className="max-w-4xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
           <div>
@@ -318,7 +407,7 @@ export default function LandingPage() {
               Wir suchen 2 DJs für diese Saison.
             </p>
             <p className="text-xs text-[#8a7a6e] mt-1">
-              Pro gratis für die ganze Saison — dafür dein ehrliches Feedback nach der Hochzeit.
+              Pro gratis für die ganze Saison, dafür dein ehrliches Feedback nach der Hochzeit.
             </p>
           </div>
           <Link
@@ -438,18 +527,18 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Reference Case — Hochzeit Platen / DJ Daniel Lemke */}
+      {/* Von DJs für DJs, Herkunft statt erfundenem Testimonial */}
       <section className="max-w-3xl mx-auto px-4 py-24 text-center">
         <p className="text-xs font-semibold uppercase tracking-widest text-[#c9a961] mb-6">
-          Aus der Pilot-Saison
+          Von DJs für DJs
         </p>
         <div className="w-8 h-px bg-[#c9a961] mx-auto mb-8" />
-        <blockquote className="font-serif text-2xl md:text-3xl leading-relaxed text-[#2a2520] mb-8">
-          &ldquo;Wenn ich im Übergang unter Druck stehe, schaue ich auf die Liste und weiß: dieser Song ist durch die Votes abgesichert. Ich muss nicht mehr raten, ich kann mich drauf verlassen.&rdquo;
-        </blockquote>
-        <cite className="text-sm text-[#8a7a6e] not-italic block">
-          Daniel · Hochzeits-DJ · Pilot-Saison 2026
-        </cite>
+        <h2 className="font-serif text-2xl md:text-3xl leading-snug text-[#2a2520] mb-6">
+          Gebaut von einem, der selbst am Pult steht.
+        </h2>
+        <p className="text-[#8a7a6e] text-lg leading-relaxed max-w-2xl mx-auto">
+          BeatControl entsteht nicht am Schreibtisch, sondern auf echten Hochzeiten. Jede Funktion kommt aus dem, was am Pult wirklich gebraucht wird, und wird mit DJs zusammen getestet. Was im Einsatz nicht hilft, fliegt wieder raus.
+        </p>
         <div className="w-8 h-px bg-[#c9a961] mx-auto mt-8" />
       </section>
 
@@ -487,11 +576,11 @@ export default function LandingPage() {
                 ))}
               </ul>
               <Link
-                href="/auth/signin"
+                href="/start"
                 onClick={() => trackCta('free')}
                 className="w-full py-2.5 rounded-full border border-[#2a2520]/20 text-sm font-medium hover:border-[#c9a961] transition-colors text-center"
               >
-                Kostenlos anmelden
+                Kostenlos ausprobieren
               </Link>
             </div>
 
@@ -502,7 +591,7 @@ export default function LandingPage() {
               </div>
               <p className="font-semibold text-sm mb-3 text-[#e8d9b8]">Pro</p>
 
-              {/* Cycle toggle — inside the Pro card */}
+              {/* Cycle toggle, inside the Pro card */}
               <div className="inline-flex self-start items-center bg-white/5 border border-white/10 rounded-full p-0.5 mb-4 text-[11px]">
                 <button
                   type="button"
@@ -564,7 +653,7 @@ export default function LandingPage() {
                 <p className="font-serif text-4xl font-bold">€{EVENT_PASS_PRICE}</p>
                 <p className="text-sm text-[#8a7a6e]">/Hochzeit</p>
               </div>
-              <p className="text-xs text-[#8a7a6e] mb-6">einmalig · die Kosten gibst du einfach ans Brautpaar weiter</p>
+              <p className="text-xs text-[#8a7a6e] mb-6">einmalig</p>
               <ul className="flex flex-col gap-3 text-sm text-[#2a2520] mb-8 flex-1">
                 {[
                   '1 Hochzeit, rund um deinen Termin',
@@ -596,17 +685,17 @@ export default function LandingPage() {
       {/* Final CTA */}
       <section className="max-w-2xl mx-auto px-4 py-24 text-center">
         <h2 className="font-serif text-3xl md:text-4xl font-bold mb-4">
-          Dein nächstes Set. Mit einem Sinn mehr.
+          Du bist in guter Gesellschaft.
         </h2>
         <p className="text-[#8a7a6e] text-lg mb-10 leading-relaxed">
           {c.finalBody}
         </p>
         <Link
-          href="/auth/signin"
+          href="/start"
           onClick={() => trackCta('pro')}
           className="inline-block px-8 py-4 rounded-full bg-[#c9a961] text-white font-semibold hover:bg-[#b8953a] transition-colors shadow-sm text-sm"
         >
-          Jetzt kostenlos anmelden
+          Jetzt kostenlos ausprobieren
         </Link>
         <p className="text-xs text-[#8a7a6e] mt-4">Free für immer · keine Kreditkarte nötig.</p>
       </section>
