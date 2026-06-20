@@ -101,8 +101,8 @@ export default function PilotLanding() {
               <p className="text-[#c9a961] text-4xl mb-4">♪</p>
               <h2 className="font-serif text-3xl font-bold mb-4">Danke, wir melden uns.</h2>
               <p className="text-[#a89786] leading-relaxed">
-                Wir antworten innerhalb von 48 Stunden — meistens schneller. Wenn du nichts hörst, schreib direkt an{' '}
-                <a href="mailto:hallo@beatcontrol.io" className="text-[#c9a961] underline">hallo@beatcontrol.io</a>.
+                Wir antworten innerhalb von 48 Stunden, meistens schneller. Wenn du nichts hörst, kannst du uns auch direkt eine{' '}
+                <a href="mailto:nibor.bauer1+beatcontrol@gmail.com" className="text-[#c9a961] underline">Mail schicken</a>.
               </p>
             </div>
           ) : (
@@ -125,7 +125,7 @@ export default function PilotLanding() {
                     `Stadt: ${fd.get('city')}\n` +
                     `Über mich: ${fd.get('note')}\n`
                   );
-                  window.location.href = `mailto:hallo@beatcontrol.io?subject=${subject}&body=${body}`;
+                  window.location.href = `mailto:nibor.bauer1+beatcontrol@gmail.com?subject=${subject}&body=${body}`;
                   setSubmitted(true);
                 }}
                 className="space-y-4"
@@ -168,8 +168,8 @@ export default function PilotLanding() {
                   Bewerbung senden
                 </button>
                 <p className="text-xs text-[#a89786] text-center mt-3">
-                  Wir öffnen damit deinen Mail-Client. Alternativ schreib direkt an{' '}
-                  <a href="mailto:hallo@beatcontrol.io" className="text-[#c9a961] underline">hallo@beatcontrol.io</a>.
+                  Wir öffnen damit deinen Mail-Client. Alternativ kannst du uns direkt eine{' '}
+                  <a href="mailto:nibor.bauer1+beatcontrol@gmail.com" className="text-[#c9a961] underline">Mail schicken</a>.
                 </p>
               </form>
             </>

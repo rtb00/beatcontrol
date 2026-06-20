@@ -389,7 +389,7 @@ function PricingPageInner() {
               </button>
             ) : (
               <a
-                href="mailto:hallo@beatcontrol.io?subject=Studio-Anfrage%20BeatControl&body=Hallo%2C%0A%0Aich%20bin%20interessiert%20am%20Studio-Tier%20und%20m%C3%B6chte%20gerne%20ein%20pers%C3%B6nliches%20Onboarding-Gespr%C3%A4ch.%0A%0AMein%20Use-Case%3A%20%5BAkademie%20%2F%20Eventagentur%20%2F%20...%5D%0AAnzahl%20Sub-DJs%3A%20%5B...%5D%0A%0AViele%20Gr%C3%BC%C3%9Fe%0A%5BName%5D"
+                href="mailto:nibor.bauer1+beatcontrol@gmail.com?subject=Studio-Anfrage%20BeatControl&body=Hallo%2C%0A%0Aich%20bin%20interessiert%20am%20Studio-Tier%20und%20m%C3%B6chte%20gerne%20ein%20pers%C3%B6nliches%20Onboarding-Gespr%C3%A4ch.%0A%0AMein%20Use-Case%3A%20%5BAkademie%20%2F%20Eventagentur%20%2F%20...%5D%0AAnzahl%20Sub-DJs%3A%20%5B...%5D%0A%0AViele%20Gr%C3%BC%C3%9Fe%0A%5BName%5D"
                 className="w-full py-2.5 rounded-full bg-[#2a2520] text-[#e8d9b8] text-sm font-semibold hover:bg-[#1a1510] transition-colors text-center inline-block"
               >
                 Studio anfragen

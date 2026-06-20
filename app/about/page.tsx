@@ -75,9 +75,9 @@ export default function AboutPage() {
             <Link href="/auth/signin?callbackUrl=/dj" className="text-[#c9a961] underline">
               hier anmelden
             </Link>{' '}
-            oder direkt schreiben an{' '}
-            <a href="mailto:hallo@beatcontrol.io" className="text-[#c9a961] underline">
-              hallo@beatcontrol.io
+            oder mir direkt eine{' '}
+            <a href="mailto:nibor.bauer1+beatcontrol@gmail.com" className="text-[#c9a961] underline">
+              Mail schicken
             </a>
             .
           </p>
@@ -96,7 +96,7 @@ export default function AboutPage() {
           <p>
             Direkter Draht für DJs, Brautpaare, Hochzeitsplaner und Akademien:
             <br />
-            <a href="mailto:hallo@beatcontrol.io" className="text-[#c9a961] underline">hallo@beatcontrol.io</a>
+            <a href="mailto:nibor.bauer1+beatcontrol@gmail.com" className="text-[#c9a961] underline">Mail schicken</a>
           </p>
 
           <p className="text-sm text-[#8a7a6e] mt-8">

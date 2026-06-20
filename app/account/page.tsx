@@ -559,7 +559,7 @@ export default function AccountPage() {
             </form>
           ) : (
             <Link
-              href="mailto:hallo@beatcontrol.io?subject=Studio-Anfrage%20BeatControl"
+              href="mailto:nibor.bauer1+beatcontrol@gmail.com?subject=Studio-Anfrage%20BeatControl"
               className="inline-block px-5 py-2.5 rounded-2xl bg-ink text-cream text-sm font-semibold hover:opacity-90 transition-opacity"
             >
               Studio anfragen
