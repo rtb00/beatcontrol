@@ -407,7 +407,7 @@ export default function DJEventPage() {
                 }}
                 aria-label="Titel bearbeiten"
                 title="Titel bearbeiten"
-                className="shrink-0 h-7 w-7 flex items-center justify-center rounded-lg text-fg-muted/60 hover:text-neon-gold hover:bg-neon-gold/10 transition-all active:scale-95"
+                className="shrink-0 h-7 w-7 flex items-center justify-center rounded-lg text-fg-muted hover:text-neon-gold hover:bg-neon-gold/10 transition-all active:scale-95"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-3.5 h-3.5" aria-hidden="true">
                   <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
@@ -509,7 +509,7 @@ export default function DJEventPage() {
             </div>
             {origin ? (
               <div className="bg-white rounded-2xl md:rounded-3xl p-3 md:p-4 border-2 border-neon-gold/40 glow-gold">
-                <QRCodeSVG value={guestUrl} size={180} fgColor="#2a2520" bgColor="#ffffff" level="M" />
+                <QRCodeSVG value={guestUrl} size={180} fgColor="#150a26" bgColor="#ffffff" level="M" />
               </div>
             ) : (
               <div className="w-[204px] h-[204px] md:w-[212px] md:h-[212px] rounded-2xl md:rounded-3xl bg-panel border-2 border-line animate-pulse" />

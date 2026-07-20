@@ -35,7 +35,7 @@ export default function AboutPage() {
 
         <div className="prose prose-lg text-fg leading-relaxed space-y-6">
           <p>
-            Ich bin Robin Bauer, lebe in Mainz und bin seit Jahren in der DJ-Szene unterwegs — eher Club-Sets als Hochzeits-Premium, aber genug Hochzeiten gesehen, um das eine Muster zu erkennen:
+            Ich bin Robin Bauer, lebe in Mainz und bin seit Jahren in der DJ-Szene unterwegs, eher Club-Sets als Hochzeits-Premium, aber genug Hochzeiten gesehen, um das eine Muster zu erkennen:
           </p>
 
           <p className="text-xl font-display italic text-fg-muted">
@@ -53,7 +53,7 @@ export default function AboutPage() {
           <h2 className="font-display text-2xl font-bold uppercase mt-12 mb-4">Was BeatControl anders macht</h2>
 
           <p>
-            Web-App, kein App-Download. Gäste scannen einen QR-Code, schlagen Songs vor, voten. Der DJ sieht alles live auf dem iPad neben dem Pult — sortiert nach Stimmen. Er spielt was passt, markiert gespielte Songs ab. Alle sehen sofort, dass ihr Wunsch durchkam.
+            Web-App, kein App-Download. Gäste scannen einen QR-Code, schlagen Songs vor, voten. Der DJ sieht alles live auf dem iPad neben dem Pult, sortiert nach Stimmen. Er spielt was passt, markiert gespielte Songs ab. Alle sehen sofort, dass ihr Wunsch durchkam.
           </p>
 
           <p>

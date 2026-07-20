@@ -420,7 +420,7 @@ function PricingPageInner() {
 
 export default function PricingPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen bg-[#faf6f0]" />}>
+    <Suspense fallback={<div className="min-h-screen bg-base" />}>
       <PricingPageInner />
     </Suspense>
   );

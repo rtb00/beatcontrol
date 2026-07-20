@@ -44,7 +44,7 @@ const COPY: Record<Audience, {
   hochzeit: {
     eyebrow: 'Für DJs · Hochzeit',
     heroSub:
-      'Deine Gäste voten vom Handy für ihre Favoriten. Du siehst live, was zieht — und entscheidest wie immer selbst.',
+      'Deine Gäste schicken Musikwünsche vom Handy und voten für ihre Favoriten. Du siehst live, was wirklich zieht.',
     painEyebrow: '22:14 Uhr, die Fläche ist voll',
     painH2: (
       <>
@@ -74,7 +74,7 @@ const COPY: Record<Audience, {
   geburtstag: {
     eyebrow: 'Für DJs · Geburtstag & Party',
     heroSub:
-      'Deine Gäste voten vom Handy für ihre Favoriten. Du siehst live, was zieht — und entscheidest wie immer selbst.',
+      'Deine Gäste schicken Musikwünsche vom Handy und voten für ihre Favoriten. Du siehst live, was wirklich zieht.',
     painEyebrow: '23:30 Uhr, die Stimmung wackelt',
     painH2: (
       <>
@@ -104,7 +104,7 @@ const COPY: Record<Audience, {
   firma: {
     eyebrow: 'Für DJs · Firmenfeier',
     heroSub:
-      'Deine Gäste voten vom Handy für ihre Favoriten. Du siehst live, was zieht — und entscheidest wie immer selbst.',
+      'Deine Gäste schicken Musikwünsche vom Handy und voten für ihre Favoriten. Du siehst live, was wirklich zieht.',
     painEyebrow: '21:00 Uhr, noch sitzen alle',
     painH2: (
       <>
@@ -305,7 +305,7 @@ export default function LandingPage() {
         <div>
           <h1 className="font-display font-bold uppercase leading-[1.05] mb-4 text-4xl sm:text-5xl md:text-6xl">
             <span className="block text-fg">Dein Gespür für die <span className="text-glow-gold">Tanzfläche</span>.</span>
-            <span className="block text-fg mt-1 text-3xl sm:text-4xl md:text-5xl">Von den Gästen <span className="text-glow-gold">bestätigt</span>.</span>
+            <span className="block text-fg mt-1 text-xl sm:text-2xl md:text-3xl">Von den Gästen <span className="text-glow-gold">bestätigt</span>.</span>
           </h1>
           <p className="text-fg-muted text-lg leading-relaxed mb-8">
             {c.heroSub}
@@ -340,11 +340,11 @@ export default function LandingPage() {
           <div className="relative w-full max-w-[480px]">
             {/* Ambient Glow hinter dem Geraet, nicht auf der Kante selbst (sonst wirkt der Rand verwaschen) */}
             <div className="absolute -inset-8 bg-magenta/25 blur-3xl rounded-full" aria-hidden="true" />
-            <div className="relative aspect-[4/3] rounded-[1.4rem] bg-gradient-to-br from-[#3a3a3e] to-[#0d0d0f] p-3 shadow-[0_40px_80px_-20px_rgba(0,0,0,0.75)] ring-1 ring-white/10 rotate-1">
-              {/* Front-Kamera im Bezel */}
-              <div className="absolute top-2.5 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-black ring-2 ring-[#4a4a4e]" />
+            <div className="relative aspect-[4/3] rounded-[1.2rem] bg-black p-1 shadow-[0_40px_80px_-20px_rgba(0,0,0,0.85)] ring-1 ring-white/10 rotate-1">
               {/* Screen */}
-              <div className="relative h-full w-full overflow-hidden rounded-2xl bg-panel flex flex-col ring-1 ring-black/40">
+              <div className="relative h-full w-full overflow-hidden rounded-[0.85rem] bg-panel flex flex-col ring-1 ring-black/60">
+                {/* Notch */}
+                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-14 h-3.5 bg-black rounded-b-xl z-20" aria-hidden="true" />
                 {/* Glas-Reflexion oben, fuer den premium Eindruck */}
                 <div className="pointer-events-none absolute inset-x-0 top-0 h-12 bg-gradient-to-b from-white/[0.08] to-transparent z-10" />
 
@@ -692,13 +692,13 @@ export default function LandingPage() {
             Kurz und ehrlich beantwortet
           </h2>
           <p className="text-fg-muted leading-relaxed mb-12 text-center max-w-xl mx-auto">
-            Ein Song, der wirklich zieht, füllt die Fläche. Volle Fläche heißt zufriedene Gäste — und zufriedene Gäste sind es, die dich weiterempfehlen.
+            Ein Song, der wirklich zieht, füllt die Fläche. Volle Fläche heißt zufriedene Gäste, und zufriedene Gäste empfehlen dich weiter.
           </p>
           <Accordion
             items={[
               {
                 question: '„Übernehmen die Gäste mein Set?"',
-                answer: 'Nein. Du entscheidest. BeatControl zeigt dir nur, was die Leute wollen. Gespielt wird, was du auflegst — genau wie immer.',
+                answer: 'Nein. Du entscheidest. BeatControl zeigt dir nur, was die Leute wollen. Gespielt wird, was du auflegst, genau wie immer.',
               },
               {
                 question: '„Was, wenn ein Wunsch nicht passt?"',
@@ -714,7 +714,7 @@ export default function LandingPage() {
               },
               {
                 question: '„Hängen dann alle nur am Handy?"',
-                answer: 'Voten dauert 10 Sekunden. Kein Scrollen, keine App, kein Account. Kurz antippen, Handy wieder weg — dann wird getanzt.',
+                answer: 'Voten dauert 10 Sekunden. Kein Scrollen, keine App, kein Account. Kurz antippen, Handy wieder weg, dann wird getanzt.',
               },
               {
                 question: '„Noch ein Gerät neben Licht & Software?"',

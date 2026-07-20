@@ -77,7 +77,7 @@ export default function PilotLanding() {
         <ol className="space-y-6 text-fg">
           {[
             'Du hast eine echte Hochzeit zwischen Mai und Juli 2026 gebucht (DACH, dein eigener Setup).',
-            'Du nutzt BeatControl live auf der Hochzeit — als Ergänzung zu deinem normalen Workflow, nicht als Ersatz.',
+            'Du nutzt BeatControl live auf der Hochzeit, als Ergänzung zu deinem normalen Workflow, nicht als Ersatz.',
             'Nach der Hochzeit: ein kurzes O-Ton-Zitat vom Brautpaar (max 2 Sätze, gerne Audio per WhatsApp).',
             'Wenn dein Videograf Aftermovie macht: ein 15–30-Sek-Schnipsel mit Tool-Bezug (QR-Code-Display oder iPad-Shot).',
             'Ein ehrliches 20-Minuten-Feedback-Gespräch eine Woche nach der Hochzeit.',
@@ -107,7 +107,7 @@ export default function PilotLanding() {
                 Klingt nach dir?
               </h2>
               <p className="text-fg-muted leading-relaxed mb-10 text-center">
-                Schreib uns kurz — wir melden uns in 48 Stunden. Wer früher schreibt, hat bessere Karten (nur 2 Plätze).
+                Schreib uns kurz. Wir melden uns in 48 Stunden. Wer früher schreibt, hat bessere Karten (nur 2 Plätze).
               </p>
               <form
                 onSubmit={(e) => {

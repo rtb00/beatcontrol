@@ -66,14 +66,14 @@ export default function BrautpaarLanding() {
             {[
               {
                 t: 'Der DJ kennt eure Gäste nicht',
-                d: 'Er weiß nicht, dass dein bester Freund auf 90er-Hits steht und deine Cousine nur tanzt, wenn etwas Italienisches läuft. Er spielt das, was er denkt — nicht das, was zündet.',
+                d: 'Er weiß nicht, dass dein bester Freund auf 90er-Hits steht und deine Cousine nur tanzt, wenn etwas Italienisches läuft. Er spielt das, was er denkt, nicht das, was zündet.',
               },
               {
                 t: 'Zettel, WhatsApp und Geschrei',
                 d: 'Gäste schreiben Wünsche auf Servietten, schicken sie per WhatsApp, gehen ans Pult. Manche Wünsche gehen verloren, andere wiederholen sich. Stress für alle.',
               },
               {
-                t: 'Niemand sagt was — bis es zu spät ist',
+                t: 'Niemand sagt was, bis es zu spät ist',
                 d: 'Wenn die Stimmung kippt, geht keiner zum DJ. Die Gäste denken "das wird schon", der DJ denkt "läuft", und am Ende reden alle drüber, dass es zwischen 23 und 24 Uhr "ruhig wurde".',
               },
             ].map(({ t, d }) => (
@@ -152,7 +152,7 @@ export default function BrautpaarLanding() {
             },
             {
               q: 'Was muss unser DJ tun?',
-              a: 'Wir senden euch einen Link, den ihr eurem DJ weitergebt. Er öffnet ihn auf seinem iPad — fertig. Kein Account-Setup auf seiner Seite, keine extra Software.',
+              a: 'Wir senden euch einen Link, den ihr eurem DJ weitergebt. Er öffnet ihn auf seinem iPad, fertig. Kein Account-Setup auf seiner Seite, keine extra Software.',
             },
             {
               q: 'Was wenn unser DJ das nicht möchte?',
