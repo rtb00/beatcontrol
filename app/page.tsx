@@ -44,7 +44,7 @@ const COPY: Record<Audience, {
   hochzeit: {
     eyebrow: 'Für DJs · Hochzeit',
     heroSub:
-      'Deine Gäste voten vom Handy, welche Songs ihnen gut gefallen würden. Der mit den meisten Stimmen steht oben auf deinem Screen, du siehst, was gerade gefragt ist, und entscheidest wie immer selbst.',
+      'Deine Gäste voten vom Handy für ihre Favoriten. Du siehst live, was zieht — und entscheidest wie immer selbst.',
     painEyebrow: '22:14 Uhr, die Fläche ist voll',
     painH2: (
       <>
@@ -65,7 +65,7 @@ const COPY: Record<Audience, {
         text: 'Ein Griff daneben und zwanzig Leute setzen sich. An die volle Stunde davor erinnert sich am nächsten Tag keiner. An die fünf Minuten leere Fläche schon.',
       },
     ],
-    transitionH2: 'Der Floor redet die ganze Zeit. Jetzt kannst du ihm zuhören',
+    transitionH2: 'Der Floor redet. Jetzt kannst du ihm zuhören',
     transitionBody:
       'Deine Gäste voten für die Songs, die sie hören wollen, und der Favorit steht oben in deiner Liste. Du liest den Raum wie immer, nur mit einem Sinn mehr. Ob du zugreifst, entscheidest du.',
     finalBody:
@@ -74,7 +74,7 @@ const COPY: Record<Audience, {
   geburtstag: {
     eyebrow: 'Für DJs · Geburtstag & Party',
     heroSub:
-      'Deine Gäste voten vom Handy, welche Songs ihnen gut gefallen würden. Der mit den meisten Stimmen steht oben auf deinem Screen, du siehst, was gerade gefragt ist, und entscheidest wie immer selbst.',
+      'Deine Gäste voten vom Handy für ihre Favoriten. Du siehst live, was zieht — und entscheidest wie immer selbst.',
     painEyebrow: '23:30 Uhr, die Stimmung wackelt',
     painH2: (
       <>
@@ -95,7 +95,7 @@ const COPY: Record<Audience, {
         text: 'Eine Party lebt vom Schwung. Verlierst du ihn einmal, holst du ihn den ganzen Abend nicht mehr zurück. Genau da darfst du nicht daneben greifen.',
       },
     ],
-    transitionH2: 'Der Raum redet die ganze Zeit. Jetzt kannst du ihm zuhören',
+    transitionH2: 'Der Raum redet. Jetzt kannst du ihm zuhören',
     transitionBody:
       'Deine Gäste voten für die Songs, die sie hören wollen, und der Favorit steht oben in deiner Liste. Du liest den Raum wie immer, nur mit einem Sinn mehr. Ob du zugreifst, entscheidest du.',
     finalBody:
@@ -104,7 +104,7 @@ const COPY: Record<Audience, {
   firma: {
     eyebrow: 'Für DJs · Firmenfeier',
     heroSub:
-      'Deine Gäste voten vom Handy, welche Songs ihnen gut gefallen würden. Der mit den meisten Stimmen steht oben auf deinem Screen, du siehst, was gerade gefragt ist, und entscheidest wie immer selbst.',
+      'Deine Gäste voten vom Handy für ihre Favoriten. Du siehst live, was zieht — und entscheidest wie immer selbst.',
     painEyebrow: '21:00 Uhr, noch sitzen alle',
     painH2: (
       <>
@@ -125,7 +125,7 @@ const COPY: Record<Audience, {
         text: 'Hier entscheidet sich, ob du nächstes Jahr wieder gebucht wirst. Eine zähe Firmenfeier merkt sich die Person, die den Scheck unterschreibt.',
       },
     ],
-    transitionH2: 'Der Saal redet die ganze Zeit. Jetzt kannst du ihm zuhören',
+    transitionH2: 'Der Saal redet. Jetzt kannst du ihm zuhören',
     transitionBody:
       'Deine Gäste voten für die Songs, die sie hören wollen, und der Favorit steht oben in deiner Liste. Ohne Briefing, ohne Wunschliste weißt du auf einen Blick, was diese fremde Crowd trägt. Ob du zugreifst, entscheidest du.',
     finalBody:
@@ -303,9 +303,9 @@ export default function LandingPage() {
         <ConfettiCanvas className="absolute inset-0 z-0" />
         <div className="relative z-10 grid md:grid-cols-2 gap-16 items-center">
         <div>
-          <h1 className="font-display font-bold uppercase leading-[1.05] mb-4">
-            <span className="block text-4xl sm:text-5xl md:text-6xl text-glow-gold">Dein Gespür für die Tanzfläche.</span>
-            <span className="block text-xl sm:text-2xl md:text-3xl text-fg-muted mt-2 normal-case font-semibold">Von den Gästen bestätigt.</span>
+          <h1 className="font-display font-bold uppercase leading-[1.05] mb-4 text-4xl sm:text-5xl md:text-6xl">
+            <span className="block text-fg">Dein Gespür für die <span className="text-glow-gold">Tanzfläche</span>.</span>
+            <span className="block text-fg mt-1 text-3xl sm:text-4xl md:text-5xl">Von den Gästen <span className="text-glow-gold">bestätigt</span>.</span>
           </h1>
           <p className="text-fg-muted text-lg leading-relaxed mb-8">
             {c.heroSub}
@@ -319,7 +319,7 @@ export default function LandingPage() {
               Kostenlos ausprobieren
             </Link>
           </div>
-          <ul className="flex flex-col gap-2 mt-6 text-xs text-fg-muted">
+          <ul className="flex flex-wrap gap-x-5 gap-y-2 mt-6 text-xs text-fg-muted">
             {[
               'Von DJs für DJs gebaut',
               'läuft neben Rekordbox & Serato',
@@ -337,11 +337,16 @@ export default function LandingPage() {
 
         {/* iPad-Mockup, exakte Nachbildung des echten DJ-Live-Views (dj/[slug]) */}
         <div className="flex justify-center">
-          <div className="relative w-full max-w-[480px] aspect-[4/3] rounded-[1.9rem] bg-[#1d1a16] p-[11px] shadow-2xl ring-1 ring-black/20 glow-magenta rotate-1">
-            {/* Front-Kamera im Bezel */}
-            <div className="absolute top-[5px] left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-[#0a0907] ring-1 ring-white/10" />
-            {/* Screen */}
-            <div className="h-full w-full overflow-hidden rounded-[1.1rem] bg-panel flex flex-col">
+          <div className="relative w-full max-w-[480px]">
+            {/* Ambient Glow hinter dem Geraet, nicht auf der Kante selbst (sonst wirkt der Rand verwaschen) */}
+            <div className="absolute -inset-8 bg-magenta/25 blur-3xl rounded-full" aria-hidden="true" />
+            <div className="relative aspect-[4/3] rounded-[1.4rem] bg-gradient-to-br from-[#3a3a3e] to-[#0d0d0f] p-3 shadow-[0_40px_80px_-20px_rgba(0,0,0,0.75)] ring-1 ring-white/10 rotate-1">
+              {/* Front-Kamera im Bezel */}
+              <div className="absolute top-2.5 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-black ring-2 ring-[#4a4a4e]" />
+              {/* Screen */}
+              <div className="relative h-full w-full overflow-hidden rounded-2xl bg-panel flex flex-col ring-1 ring-black/40">
+                {/* Glas-Reflexion oben, fuer den premium Eindruck */}
+                <div className="pointer-events-none absolute inset-x-0 top-0 h-12 bg-gradient-to-b from-white/[0.08] to-transparent z-10" />
 
               {/* Header, wie im echten DJ-View */}
               <div className="shrink-0 bg-panel-elevated border-b border-line px-2.5 py-1.5 flex items-center justify-between gap-2">
@@ -404,6 +409,7 @@ export default function LandingPage() {
           </div>
         </div>
         </div>
+        </div>
 
         {/* Social Proof, Live-Kennzahlen aus der DB, direkt in der Hero-Section. Blendet sich aus, solange die Zahlen zu klein sind. */}
         {proofCards.length >= 2 && (
@@ -431,7 +437,7 @@ export default function LandingPage() {
       <section className="bg-panel border-y border-line py-6">
         <div className="max-w-4xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
           <div>
-            <p className="text-[11px] font-mono font-semibold uppercase tracking-widest text-magenta mb-1">
+            <p className="text-[11px] font-mono font-semibold uppercase tracking-widest text-neon-gold mb-1">
               Pilot-Saison 2026
             </p>
             <p className="font-display text-xl md:text-2xl font-semibold text-fg">
@@ -450,7 +456,7 @@ export default function LandingPage() {
       {/* Pain section */}
       <section className="max-w-4xl mx-auto px-4 py-24">
         <Reveal>
-        <p className="text-xs font-mono font-semibold uppercase tracking-widest text-magenta mb-6 text-center">
+        <p className="text-xs font-mono font-semibold uppercase tracking-widest text-neon-gold mb-6 text-center">
           {c.painEyebrow}
         </p>
         <h2 className="font-display text-4xl font-bold uppercase text-center leading-tight mb-16">
@@ -459,7 +465,7 @@ export default function LandingPage() {
         <div className="grid md:grid-cols-3 gap-10">
           {c.painCards.map(({ label, text }, i) => (
             <Card key={label} tone="party">
-              <svg viewBox="0 0 24 24" fill="none" className="w-7 h-7 mb-4 text-magenta" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" className="w-7 h-7 mb-4 text-neon-gold" aria-hidden="true">
                 {PAIN_ICON_PATHS[i]}
               </svg>
               <h3 className="font-display font-bold uppercase text-sm mb-3 text-neon-gold">{label}</h3>
@@ -497,7 +503,7 @@ export default function LandingPage() {
             {
               step: '02',
               title: 'Der Saal stimmt ab',
-              desc: 'Voten dauert 10 Sekunden, ganz ohne App. Jede Stimme schiebt einen Song nach oben, oben steht immer der Track, den gerade die meisten hören wollen. Keine Vermutung, sondern echte Stimmen aus dem Raum, niemand hängt dafür am Handy fest.',
+              desc: 'Voten dauert 10 Sekunden, ganz ohne App. Jede Stimme schiebt einen Song nach oben, oben steht immer der Track, den gerade die meisten hören wollen. Keine Vermutung, sondern echte Stimmen aus dem Raum.',
             },
             {
               step: '03',
@@ -506,7 +512,7 @@ export default function LandingPage() {
             },
           ].map(({ step, title, desc }, i) => (
             <Reveal key={step} delay={i * 120}>
-              <p className="font-display text-6xl font-bold text-magenta/40 mb-5 leading-none">{step}</p>
+              <p className="font-display text-6xl font-bold text-neon-gold/30 mb-5 leading-none">{step}</p>
               <h3 className="font-display font-bold uppercase mb-3 text-fg">{title}</h3>
               <p className="text-sm text-fg-muted leading-relaxed">{desc}</p>
             </Reveal>
@@ -517,12 +523,12 @@ export default function LandingPage() {
       {/* Von DJs für DJs, Herkunft statt erfundenem Testimonial */}
       <section className="max-w-3xl mx-auto px-4 py-24 text-center">
         <Reveal>
-        <p className="text-xs font-mono font-semibold uppercase tracking-widest text-magenta mb-6">
+        <p className="text-xs font-mono font-semibold uppercase tracking-widest text-neon-gold mb-6">
           Von DJs für DJs
         </p>
         <div className="w-8 h-px bg-neon-gold mx-auto mb-8" />
         <h2 className="font-display text-2xl md:text-3xl font-bold uppercase leading-snug text-fg mb-6">
-          Gebaut von einem, der selbst am Pult steht
+          Gebaut von DJs für DJs
         </h2>
         <p className="text-fg-muted text-lg leading-relaxed max-w-2xl mx-auto">
           BeatControl entsteht nicht am Schreibtisch, sondern auf echten Hochzeiten. Jede Funktion kommt aus dem, was am Pult wirklich gebraucht wird, und wird mit DJs zusammen getestet. Was im Einsatz nicht hilft, fliegt wieder raus.
@@ -679,7 +685,7 @@ export default function LandingPage() {
       {/* Einwände, kompakt als Einwand→Entkräftung-Karten statt generischer Vertikallinien */}
       <section className="bg-panel border-y border-line py-20">
         <Reveal className="max-w-4xl mx-auto px-4">
-          <p className="text-magenta text-xs font-mono font-semibold uppercase tracking-widest mb-4 text-center">
+          <p className="text-neon-gold text-xs font-mono font-semibold uppercase tracking-widest mb-4 text-center">
             Die häufigsten Einwände
           </p>
           <h2 className="font-display text-3xl font-bold uppercase leading-tight mb-4 text-center">
