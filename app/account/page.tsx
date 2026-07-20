@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useBranding } from '@/app/lib/branding-context';
+import { CalmScope, Card, Badge, NavBar, Button, buttonVariants } from '@/app/components/ui';
 
 interface Me {
   id: string;
@@ -196,9 +197,9 @@ export default function AccountPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-cream flex items-center justify-center">
-        <p className="text-muted">Lädt…</p>
-      </div>
+      <CalmScope className="min-h-screen bg-base flex items-center justify-center">
+        <p className="text-fg-muted">Lädt…</p>
+      </CalmScope>
     );
   }
 
@@ -212,99 +213,96 @@ export default function AccountPage() {
   const periodEnd = fmtDate(me.currentPeriodEnd);
 
   return (
-    <div className="min-h-screen bg-cream">
-      <nav className="sticky top-0 z-30 bg-cream/90 backdrop-blur border-b border-champagne">
-        <div className="max-w-3xl mx-auto px-4 h-14 flex items-center justify-between">
-          <Link href="/dj" className="text-sm text-muted hover:text-ink transition-colors inline-flex items-center gap-1.5">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-3.5 h-3.5">
-              <path fillRule="evenodd" d="M7.793 2.232a.75.75 0 01-.025 1.06L3.622 7.25h10.003a5.375 5.375 0 010 10.75H10.75a.75.75 0 010-1.5h2.875a3.875 3.875 0 000-7.75H3.622l4.146 3.957a.75.75 0 01-1.036 1.085l-5.5-5.25a.75.75 0 010-1.085l5.5-5.25a.75.75 0 011.06.025z" clipRule="evenodd" />
-            </svg>
-            Zurück zum Dashboard
-          </Link>
-          {branding.brandingLogoUrl ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img src={branding.brandingLogoUrl} alt={brandName} className="h-7 w-auto object-contain" />
-          ) : (
-            <span className="font-serif text-lg font-bold text-ink">{brandName}</span>
-          )}
-        </div>
-      </nav>
+    <CalmScope className="min-h-screen bg-base">
+      <NavBar tone="calm">
+        <Link href="/dj" className="text-sm text-fg-muted hover:text-fg transition-colors inline-flex items-center gap-1.5">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-3.5 h-3.5">
+            <path fillRule="evenodd" d="M7.793 2.232a.75.75 0 01-.025 1.06L3.622 7.25h10.003a5.375 5.375 0 010 10.75H10.75a.75.75 0 010-1.5h2.875a3.875 3.875 0 000-7.75H3.622l4.146 3.957a.75.75 0 01-1.036 1.085l-5.5-5.25a.75.75 0 010-1.085l5.5-5.25a.75.75 0 011.06.025z" clipRule="evenodd" />
+          </svg>
+          Zurück zum Dashboard
+        </Link>
+        {branding.brandingLogoUrl ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={branding.brandingLogoUrl} alt={brandName} className="h-7 w-auto object-contain" />
+        ) : (
+          <span className="font-display text-lg font-bold text-fg">{brandName}</span>
+        )}
+      </NavBar>
 
       <main className="max-w-3xl mx-auto px-4 py-10 pb-20 space-y-8">
         <header>
-          <p className="text-gold text-xs font-semibold uppercase tracking-widest mb-2">Konto</p>
-          <h1 className="font-serif text-4xl font-bold text-ink">Einstellungen</h1>
+          <p className="text-neon-gold text-xs font-semibold uppercase tracking-widest mb-2">Konto</p>
+          <h1 className="font-display text-4xl font-bold text-fg">Einstellungen</h1>
         </header>
 
         {/* Plan banner — past_due */}
         {isPro && status === 'past_due' && (
-          <div className="rounded-2xl border border-red-300 bg-red-50 px-5 py-4">
-            <p className="font-semibold text-red-800 text-sm mb-1">Zahlung fehlgeschlagen</p>
-            <p className="text-red-700 text-sm leading-relaxed">
+          <div className="rounded-2xl border border-danger/40 bg-danger-bg px-5 py-4">
+            <p className="font-semibold text-danger text-sm mb-1">Zahlung fehlgeschlagen</p>
+            <p className="text-danger text-sm leading-relaxed">
               Deine letzte Zahlung konnte nicht abgebucht werden. Bitte aktualisiere deine
               Zahlungsmethode, sonst endet dein Pro-Plan in Kürze.
             </p>
-            <button
+            <Button
               onClick={openPortal}
               disabled={portalBusy}
-              className="mt-3 inline-flex items-center px-4 py-2 rounded-xl bg-red-600 text-white text-xs font-semibold hover:bg-red-700 transition-colors disabled:opacity-60"
+              tone="calm"
+              variant="danger"
+              size="sm"
+              className="mt-3"
             >
               {portalBusy ? 'Lädt…' : 'Zahlungsmethode aktualisieren'}
-            </button>
+            </Button>
           </div>
         )}
 
         {/* Profile */}
-        <section className="bg-ivory rounded-3xl border border-champagne p-6 sm:p-8">
-          <h2 className="font-serif text-xl font-semibold text-ink mb-1">Profil</h2>
-          <p className="text-muted text-sm mb-6">Wie wir dich in der App ansprechen.</p>
+        <Card tone="calm" className="p-6 sm:p-8">
+          <h2 className="font-display text-xl font-semibold text-fg mb-1">Profil</h2>
+          <p className="text-fg-muted text-sm mb-6">Wie wir dich in der App ansprechen.</p>
 
           <form onSubmit={saveProfile} className="space-y-5">
             <div>
-              <label className="block text-xs text-muted mb-1.5 px-1">E-Mail</label>
+              <label className="block text-xs text-fg-muted mb-1.5 px-1">E-Mail</label>
               <input
                 type="email"
                 value={me.email}
                 disabled
-                className="w-full px-4 py-3 rounded-2xl border border-champagne bg-cream text-muted cursor-not-allowed"
+                className="w-full px-4 py-3 rounded-2xl border border-line bg-base text-fg-muted cursor-not-allowed"
               />
-              <p className="text-xs text-muted/70 mt-1.5 px-1">
+              <p className="text-xs text-fg-muted/70 mt-1.5 px-1">
                 Die E-Mail kann derzeit nicht geändert werden. Schreib uns, falls nötig.
               </p>
             </div>
             <div>
-              <label className="block text-xs text-muted mb-1.5 px-1">Name</label>
+              <label className="block text-xs text-fg-muted mb-1.5 px-1">Name</label>
               <input
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Dein Name"
                 maxLength={100}
-                className="w-full px-4 py-3 rounded-2xl border border-champagne bg-cream text-ink placeholder:text-muted/50 focus:outline-none focus:border-gold transition-colors"
+                className="w-full px-4 py-3 rounded-2xl border border-line bg-base text-fg placeholder:text-fg-muted/50 focus:outline-none focus:border-neon-gold transition-colors"
               />
             </div>
             <div className="flex items-center gap-3">
-              <button
-                type="submit"
-                disabled={savingProfile}
-                className="px-5 py-2.5 rounded-2xl bg-ink text-cream text-sm font-semibold hover:opacity-90 active:scale-95 disabled:opacity-50 transition-all"
-              >
+              <Button type="submit" tone="calm" variant="primary" size="sm" disabled={savingProfile}>
                 {savingProfile ? 'Speichert…' : 'Speichern'}
-              </button>
+              </Button>
               {profileMessage && (
-                <span className="text-sm text-muted">{profileMessage}</span>
+                <span className="text-sm text-fg-muted">{profileMessage}</span>
               )}
             </div>
           </form>
-        </section>
+        </Card>
 
         {/* Plan */}
-        <section className="bg-ivory rounded-3xl border border-champagne p-6 sm:p-8">
-          <h2 className="font-serif text-xl font-semibold text-ink mb-1">Plan</h2>
-          <p className="text-muted text-sm mb-6">Dein aktuelles Abonnement.</p>
+        <Card tone="calm" className="p-6 sm:p-8">
+          <h2 className="font-display text-xl font-semibold text-fg mb-1">Plan</h2>
+          <p className="text-fg-muted text-sm mb-6">Dein aktuelles Abonnement.</p>
 
           {portalError && (
-            <div className="mb-4 px-4 py-2.5 rounded-xl bg-red-50 text-red-700 text-sm">
+            <div className="mb-4 px-4 py-2.5 rounded-xl bg-danger-bg text-danger text-sm">
               {portalError}
             </div>
           )}
@@ -313,14 +311,14 @@ export default function AccountPage() {
           {me.plan === 'free' && (
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
               <div>
-                <p className="font-semibold text-ink">Free Plan</p>
-                <p className="text-muted text-sm mt-1">
+                <p className="font-semibold text-fg">Free Plan</p>
+                <p className="text-fg-muted text-sm mt-1">
                   1 aktives Event · bis zu 30 Songwünsche · BeatControl-Branding.
                 </p>
               </div>
               <Link
                 href="/pricing?cycle=yearly"
-                className="shrink-0 px-5 py-2.5 rounded-2xl bg-gold text-cream text-sm font-semibold hover:opacity-90 transition-opacity text-center"
+                className={buttonVariants({ tone: 'calm', variant: 'primary', size: 'sm', className: 'shrink-0 text-center' })}
               >
                 Auf Pro upgraden
               </Link>
@@ -331,41 +329,46 @@ export default function AccountPage() {
           {isPro && !cancelAtEnd && status !== 'past_due' && (
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
               <div>
-                <p className="font-semibold text-ink">Pro Plan</p>
-                <p className="text-muted text-sm mt-1">
+                <p className="font-semibold text-fg">Pro Plan</p>
+                <p className="text-fg-muted text-sm mt-1">
                   {periodEnd
                     ? <>Verlängert sich am {periodEnd}.</>
                     : 'Aktiv.'}
                 </p>
               </div>
-              <button
+              <Button
                 onClick={openPortal}
                 disabled={portalBusy}
-                className="shrink-0 px-5 py-2.5 rounded-2xl border border-ink/20 text-ink text-sm font-semibold hover:border-gold hover:text-gold transition-colors disabled:opacity-60"
+                tone="calm"
+                variant="secondary"
+                size="sm"
+                className="shrink-0"
               >
                 {portalBusy ? 'Lädt…' : 'Plan verwalten'}
-              </button>
+              </Button>
             </div>
           )}
 
           {/* Pro — cancel_at_period_end */}
           {isPro && cancelAtEnd && (
             <div className="space-y-4">
-              <div className="rounded-2xl border border-yellow-300 bg-yellow-50 px-4 py-3">
-                <p className="text-yellow-900 text-sm font-medium">
+              <div className="rounded-2xl border border-neon-gold/40 bg-neon-gold/10 px-4 py-3">
+                <p className="text-fg text-sm font-medium">
                   Dein Pro-Plan endet {periodEnd ? `am ${periodEnd}` : 'am Ende der laufenden Periode'}.
                 </p>
-                <p className="text-yellow-900/80 text-xs mt-1">
+                <p className="text-fg-muted text-xs mt-1">
                   Bis dahin behältst du alle Pro-Funktionen.
                 </p>
               </div>
-              <button
+              <Button
                 onClick={openPortal}
                 disabled={portalBusy}
-                className="px-5 py-2.5 rounded-2xl bg-ink text-cream text-sm font-semibold hover:opacity-90 transition-opacity disabled:opacity-60"
+                tone="calm"
+                variant="primary"
+                size="sm"
               >
                 {portalBusy ? 'Lädt…' : 'Kündigung zurückziehen'}
-              </button>
+              </Button>
             </div>
           )}
 
@@ -373,16 +376,19 @@ export default function AccountPage() {
           {isPro && status === 'past_due' && (
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
               <div>
-                <p className="font-semibold text-ink">Pro Plan</p>
-                <p className="text-red-700 text-sm mt-1">Letzte Zahlung fehlgeschlagen.</p>
+                <p className="font-semibold text-fg">Pro Plan</p>
+                <p className="text-danger text-sm mt-1">Letzte Zahlung fehlgeschlagen.</p>
               </div>
-              <button
+              <Button
                 onClick={openPortal}
                 disabled={portalBusy}
-                className="shrink-0 px-5 py-2.5 rounded-2xl bg-ink text-cream text-sm font-semibold hover:opacity-90 transition-opacity disabled:opacity-60"
+                tone="calm"
+                variant="primary"
+                size="sm"
+                className="shrink-0"
               >
                 {portalBusy ? 'Lädt…' : 'Plan verwalten'}
-              </button>
+              </Button>
             </div>
           )}
 
@@ -390,18 +396,21 @@ export default function AccountPage() {
           {isEventPass && (
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
               <div>
-                <p className="font-semibold text-ink">Event-Pass</p>
-                <p className="text-muted text-sm mt-1">
+                <p className="font-semibold text-fg">Event-Pass</p>
+                <p className="text-fg-muted text-sm mt-1">
                   {periodEnd ? <>Gültig bis {periodEnd}.</> : 'Gültig.'}
                 </p>
               </div>
-              <button
+              <Button
                 onClick={openPortal}
                 disabled={portalBusy}
-                className="shrink-0 px-5 py-2.5 rounded-2xl border border-ink/20 text-ink text-sm font-semibold hover:border-gold hover:text-gold transition-colors disabled:opacity-60"
+                tone="calm"
+                variant="secondary"
+                size="sm"
+                className="shrink-0"
               >
                 {portalBusy ? 'Lädt…' : 'Rechnung ansehen'}
-              </button>
+              </Button>
             </div>
           )}
 
@@ -409,40 +418,43 @@ export default function AccountPage() {
           {isStudio && (
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
               <div>
-                <p className="font-semibold text-ink">Studio Plan</p>
-                <p className="text-muted text-sm mt-1">
+                <p className="font-semibold text-fg">Studio Plan</p>
+                <p className="text-fg-muted text-sm mt-1">
                   Whitelabel, Sub-Accounts und Custom-Domain freigeschaltet.
                   {periodEnd && <> Verlängert sich am {periodEnd}.</>}
                 </p>
               </div>
-              <button
+              <Button
                 onClick={openPortal}
                 disabled={portalBusy}
-                className="shrink-0 px-5 py-2.5 rounded-2xl border border-ink/20 text-ink text-sm font-semibold hover:border-gold hover:text-gold transition-colors disabled:opacity-60"
+                tone="calm"
+                variant="secondary"
+                size="sm"
+                className="shrink-0"
               >
                 {portalBusy ? 'Lädt…' : 'Plan verwalten'}
-              </button>
+              </Button>
             </div>
           )}
-        </section>
+        </Card>
 
         {/* Branding */}
-        <section className="bg-ivory rounded-3xl border border-champagne p-6 sm:p-8">
+        <Card tone="calm" className="p-6 sm:p-8">
           <div className="flex items-center justify-between gap-3 mb-1 flex-wrap">
-            <h2 className="font-serif text-xl font-semibold text-ink">Branding</h2>
+            <h2 className="font-display text-xl font-semibold text-fg">Branding</h2>
             {!me.limits.branding && (
-              <span className="text-[10px] uppercase tracking-widest text-gold border border-gold/40 bg-gold/5 px-2 py-0.5 rounded-full">
+              <Badge color="gold" tone="calm">
                 Pro
-              </span>
+              </Badge>
             )}
           </div>
-          <p className="text-muted text-sm mb-6">
+          <p className="text-fg-muted text-sm mb-6">
             Ersetze BeatControl in der Gäste-Ansicht durch deinen eigenen Namen und dein Logo.
           </p>
 
           <form onSubmit={saveBranding} className="space-y-5">
             <div>
-              <label className="block text-xs text-muted mb-1.5 px-1">Name</label>
+              <label className="block text-xs text-fg-muted mb-1.5 px-1">Name</label>
               <input
                 type="text"
                 value={brandingName}
@@ -450,11 +462,11 @@ export default function AccountPage() {
                 placeholder="z.B. DJ Marcus"
                 maxLength={80}
                 disabled={!me.limits.branding}
-                className="w-full px-4 py-3 rounded-2xl border border-champagne bg-cream text-ink placeholder:text-muted/50 focus:outline-none focus:border-gold transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full px-4 py-3 rounded-2xl border border-line bg-base text-fg placeholder:text-fg-muted/50 focus:outline-none focus:border-neon-gold transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               />
             </div>
             <div>
-              <label className="block text-xs text-muted mb-1.5 px-1">Logo-URL</label>
+              <label className="block text-xs text-fg-muted mb-1.5 px-1">Logo-URL</label>
               <input
                 type="url"
                 value={brandingLogoUrl}
@@ -462,16 +474,16 @@ export default function AccountPage() {
                 placeholder="https://…"
                 maxLength={500}
                 disabled={!me.limits.branding}
-                className="w-full px-4 py-3 rounded-2xl border border-champagne bg-cream text-ink placeholder:text-muted/50 focus:outline-none focus:border-gold transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full px-4 py-3 rounded-2xl border border-line bg-base text-fg placeholder:text-fg-muted/50 focus:outline-none focus:border-neon-gold transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               />
               {brandingLogoUrl && /^https?:\/\//i.test(brandingLogoUrl) && (
                 <div className="mt-3 flex items-center gap-3">
-                  <span className="text-xs text-muted">Vorschau:</span>
+                  <span className="text-xs text-fg-muted">Vorschau:</span>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={brandingLogoUrl}
                     alt="Logo Vorschau"
-                    className="h-10 w-auto object-contain rounded border border-champagne bg-white p-1"
+                    className="h-10 w-auto object-contain rounded border border-line bg-white p-1"
                     onError={(e) => {
                       (e.currentTarget as HTMLImageElement).style.display = 'none';
                     }}
@@ -480,39 +492,41 @@ export default function AccountPage() {
               )}
             </div>
             <div className="flex items-center gap-3 flex-wrap">
-              <button
+              <Button
                 type="submit"
+                tone="calm"
+                variant="primary"
+                size="sm"
                 disabled={savingBranding || !me.limits.branding}
-                className="px-5 py-2.5 rounded-2xl bg-ink text-cream text-sm font-semibold hover:opacity-90 active:scale-95 disabled:opacity-50 transition-all"
               >
                 {savingBranding ? 'Speichert…' : 'Speichern'}
-              </button>
+              </Button>
               {brandingMessage && (
-                <span className="text-sm text-muted">{brandingMessage}</span>
+                <span className="text-sm text-fg-muted">{brandingMessage}</span>
               )}
               {!me.limits.branding && (
                 <Link
                   href="/pricing?cycle=yearly"
-                  className="text-sm text-gold hover:underline"
+                  className="text-sm text-neon-gold hover:underline"
                 >
                   Auf Pro upgraden, um Branding zu nutzen →
                 </Link>
               )}
             </div>
           </form>
-        </section>
+        </Card>
 
         {/* Studio: Subdomain & Whitelabel */}
-        <section className="bg-ivory rounded-3xl border border-champagne p-6 sm:p-8">
+        <Card tone="calm" className="p-6 sm:p-8">
           <div className="flex items-center justify-between gap-3 mb-1 flex-wrap">
-            <h2 className="font-serif text-xl font-semibold text-ink">Studio: Eigene Subdomain</h2>
+            <h2 className="font-display text-xl font-semibold text-fg">Studio: Eigene Subdomain</h2>
             {!isStudio && (
-              <span className="text-[10px] uppercase tracking-widest text-gold border border-gold/40 bg-gold/5 px-2 py-0.5 rounded-full">
+              <Badge color="gold" tone="calm">
                 Studio
-              </span>
+              </Badge>
             )}
           </div>
-          <p className="text-muted text-sm mb-6">
+          <p className="text-fg-muted text-sm mb-6">
             {isStudio
               ? 'Wähle deine eigene URL — z. B. deinakademie.beatcontrol.io. Custom-Domain auf Wunsch (per Mail anfragen).'
               : 'Studio-Tarif gibt deiner Akademie oder Agentur eine eigene Subdomain unter beatcontrol.io, komplettes Whitelabel-Branding und Sub-Accounts für deine DJs.'}
@@ -521,7 +535,7 @@ export default function AccountPage() {
           {isStudio ? (
             <form onSubmit={saveSubdomain} className="space-y-5">
               <div>
-                <label className="block text-xs text-muted mb-1.5 px-1">Subdomain</label>
+                <label className="block text-xs text-fg-muted mb-1.5 px-1">Subdomain</label>
                 <div className="flex items-center gap-2">
                   <input
                     type="text"
@@ -530,73 +544,79 @@ export default function AccountPage() {
                     placeholder="deinakademie"
                     maxLength={30}
                     pattern="[a-z0-9-]+"
-                    className="flex-1 px-4 py-3 rounded-2xl border border-champagne bg-cream text-ink placeholder:text-muted/50 focus:outline-none focus:border-gold transition-colors font-mono text-sm"
+                    className="flex-1 px-4 py-3 rounded-2xl border border-line bg-base text-fg placeholder:text-fg-muted/50 focus:outline-none focus:border-neon-gold transition-colors font-mono text-sm"
                   />
-                  <span className="text-muted text-sm whitespace-nowrap">.beatcontrol.io</span>
+                  <span className="text-fg-muted text-sm whitespace-nowrap">.beatcontrol.io</span>
                 </div>
-                <p className="text-xs text-muted/70 mt-1.5 px-1">
+                <p className="text-xs text-fg-muted/70 mt-1.5 px-1">
                   3–30 Zeichen, nur a–z, 0–9 und Bindestrich. Wird live, sobald der DNS aktiv ist.
                 </p>
               </div>
               <div className="flex items-center gap-3 flex-wrap">
-                <button
+                <Button
                   type="submit"
+                  tone="calm"
+                  variant="primary"
+                  size="sm"
                   disabled={savingSubdomain}
-                  className="px-5 py-2.5 rounded-2xl bg-ink text-cream text-sm font-semibold hover:opacity-90 active:scale-95 disabled:opacity-50 transition-all"
                 >
                   {savingSubdomain ? 'Speichert…' : 'Subdomain speichern'}
-                </button>
+                </Button>
                 {subdomainMessage && (
-                  <span className="text-sm text-muted">{subdomainMessage}</span>
+                  <span className="text-sm text-fg-muted">{subdomainMessage}</span>
                 )}
               </div>
               {me.subdomain && (
-                <div className="mt-2 px-4 py-3 rounded-2xl bg-cream border border-champagne">
-                  <p className="text-xs text-muted mb-1">Deine URL (sobald DNS aktiv):</p>
-                  <p className="font-mono text-sm text-ink">https://{me.subdomain}.beatcontrol.io</p>
+                <div className="mt-2 px-4 py-3 rounded-2xl bg-base border border-line">
+                  <p className="text-xs text-fg-muted mb-1">Deine URL (sobald DNS aktiv):</p>
+                  <p className="font-mono text-sm text-fg">https://{me.subdomain}.beatcontrol.io</p>
                 </div>
               )}
             </form>
           ) : (
             <Link
               href="mailto:nibor.bauer1+beatcontrol@gmail.com?subject=Studio-Anfrage%20BeatControl"
-              className="inline-block px-5 py-2.5 rounded-2xl bg-ink text-cream text-sm font-semibold hover:opacity-90 transition-opacity"
+              className={buttonVariants({ tone: 'calm', variant: 'primary', size: 'sm', className: 'inline-block' })}
             >
               Studio anfragen
             </Link>
           )}
-        </section>
+        </Card>
 
         {/* Sign out */}
-        <section className="bg-ivory rounded-3xl border border-champagne p-6 sm:p-8">
-          <h2 className="font-serif text-xl font-semibold text-ink mb-1">Sitzung</h2>
-          <p className="text-muted text-sm mb-6">Auf diesem Gerät abmelden.</p>
-          <button
+        <Card tone="calm" className="p-6 sm:p-8">
+          <h2 className="font-display text-xl font-semibold text-fg mb-1">Sitzung</h2>
+          <p className="text-fg-muted text-sm mb-6">Auf diesem Gerät abmelden.</p>
+          <Button
             onClick={() => signOut({ callbackUrl: '/' })}
-            className="px-5 py-2.5 rounded-2xl border border-ink/20 text-ink text-sm font-semibold hover:border-gold hover:text-gold transition-colors"
+            tone="calm"
+            variant="secondary"
+            size="sm"
           >
             Abmelden
-          </button>
-        </section>
+          </Button>
+        </Card>
 
         {/* Danger zone */}
-        <section className="bg-ivory rounded-3xl border border-red-200 p-6 sm:p-8">
-          <h2 className="font-serif text-xl font-semibold text-ink mb-1">Konto löschen</h2>
-          <p className="text-muted text-sm mb-6">
+        <Card tone="calm" className="border-danger/30 p-6 sm:p-8">
+          <h2 className="font-display text-xl font-semibold text-fg mb-1">Konto löschen</h2>
+          <p className="text-fg-muted text-sm mb-6">
             Löscht dein Konto, alle Events und alle gesammelten Songwünsche unwiderruflich.
             Ein laufendes Abonnement wird gleichzeitig bei Stripe gekündigt.
           </p>
 
           {!showDeleteConfirm ? (
-            <button
+            <Button
               onClick={() => setShowDeleteConfirm(true)}
-              className="px-5 py-2.5 rounded-2xl border border-red-300 text-red-700 text-sm font-semibold hover:bg-red-50 transition-colors"
+              tone="calm"
+              variant="danger"
+              size="sm"
             >
               Konto löschen
-            </button>
+            </Button>
           ) : (
             <div className="space-y-4">
-              <p className="text-sm text-ink">
+              <p className="text-sm text-fg">
                 Tippe <span className="font-mono font-bold">LÖSCHEN</span>, um zu bestätigen.
               </p>
               <input
@@ -604,35 +624,39 @@ export default function AccountPage() {
                 value={deleteText}
                 onChange={(e) => setDeleteText(e.target.value)}
                 placeholder="LÖSCHEN"
-                className="w-full px-4 py-3 rounded-2xl border border-red-300 bg-cream text-ink placeholder:text-muted/50 focus:outline-none focus:border-red-500 transition-colors"
+                className="w-full px-4 py-3 rounded-2xl border border-danger/40 bg-base text-fg placeholder:text-fg-muted/50 focus:outline-none focus:border-danger transition-colors"
               />
               {deleteError && (
-                <p className="text-sm text-red-700">{deleteError}</p>
+                <p className="text-sm text-danger">{deleteError}</p>
               )}
               <div className="flex gap-3">
-                <button
+                <Button
                   onClick={handleDelete}
                   disabled={deleting}
-                  className="px-5 py-2.5 rounded-2xl bg-red-600 text-white text-sm font-semibold hover:bg-red-700 disabled:opacity-50 transition-colors"
+                  tone="calm"
+                  variant="danger"
+                  size="sm"
                 >
                   {deleting ? 'Lösche…' : 'Endgültig löschen'}
-                </button>
-                <button
+                </Button>
+                <Button
                   onClick={() => {
                     setShowDeleteConfirm(false);
                     setDeleteText('');
                     setDeleteError(null);
                   }}
                   disabled={deleting}
-                  className="px-5 py-2.5 rounded-2xl border border-ink/20 text-ink text-sm font-semibold hover:border-ink transition-colors disabled:opacity-50"
+                  tone="calm"
+                  variant="secondary"
+                  size="sm"
                 >
                   Abbrechen
-                </button>
+                </Button>
               </div>
             </div>
           )}
-        </section>
+        </Card>
       </main>
-    </div>
+    </CalmScope>
   );
 }
