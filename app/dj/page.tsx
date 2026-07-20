@@ -65,9 +65,6 @@ export default function DJDashboard() {
   const [formTitle, setFormTitle] = useState('');
   const [formDate, setFormDate] = useState('');
 
-  const [editingId, setEditingId] = useState<number | null>(null);
-  const [editData, setEditData] = useState<{ title: string }>({ title: '' });
-
   const [exportingSlug, setExportingSlug] = useState<string | null>(null);
 
   const [showOnboarding, setShowOnboarding] = useState(false);
@@ -260,16 +257,6 @@ export default function DJDashboard() {
     } finally {
       setExportingSlug(null);
     }
-  }
-
-  async function handleEdit(event: Event, data: { title: string }) {
-    await fetch(`/api/events/${event.slug}`, {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ title: data.title }),
-    });
-    setEditingId(null);
-    loadEvents();
   }
 
   function fmtDate(d: string | null) {
@@ -495,90 +482,48 @@ export default function DJDashboard() {
               <div
                 key={event.id}
                 className={`bg-ivory rounded-3xl p-5 border border-champagne shadow-sm transition-opacity ${
-                  event.active ? '' : 'opacity-50'
+                  event.active ? '' : 'opacity-60'
                 }`}
               >
-                {editingId === event.id ? (
-                  <div className="space-y-3">
-                    <input
-                      type="text"
-                      value={editData.title}
-                      onChange={(e) => setEditData({ title: e.target.value })}
-                      className="w-full px-4 py-3 rounded-2xl border border-champagne bg-cream text-ink focus:outline-none focus:border-gold transition-colors"
-                    />
-                    <div className="flex gap-2">
-                      <button
-                        onClick={() => handleEdit(event, editData)}
-                        className="px-4 py-2 bg-ink text-cream rounded-xl text-sm font-semibold hover:opacity-90 active:scale-95 transition-all"
-                      >
-                        Speichern
-                      </button>
-                      <button
-                        onClick={() => setEditingId(null)}
-                        className="px-4 py-2 bg-cream text-muted rounded-xl text-sm border border-champagne hover:border-ink hover:text-ink transition-all"
-                      >
-                        Abbrechen
-                      </button>
-                    </div>
-                  </div>
-                ) : (
-                  <div className="flex items-start justify-between gap-3">
-                    <Link
-                      href={`/dj/${event.slug}`}
-                      className="min-w-0 flex-1 group"
-                    >
-                      <h2 className="font-serif text-xl font-semibold text-ink truncate group-hover:text-gold transition-colors">
-                        {event.title}
-                      </h2>
-                      <p className="text-muted/60 text-xs font-mono mt-0.5">/{event.slug}</p>
-                      <p className="text-muted text-xs mt-0.5">
-                        {event.song_count} Songs
-                        {event.event_date && <> · {fmtDate(event.event_date)}</>}
-                      </p>
-                    </Link>
-                    <div className="flex items-center gap-2 shrink-0">
-                      <button
-                        onClick={() => handleToggleActive(event)}
-                        className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all active:scale-95 ${
-                          event.active
-                            ? 'bg-emerald-100 text-emerald-800 hover:bg-emerald-200'
-                            : 'bg-cream text-muted border border-champagne hover:border-ink hover:text-ink'
-                        }`}
-                      >
-                        {event.active ? 'Aktiv' : 'Inaktiv'}
-                      </button>
-                      <button
-                        onClick={() => handleExport(event)}
-                        disabled={exportingSlug === event.slug}
-                        aria-label={me?.limits.export ? 'Wunschliste als CSV exportieren' : 'CSV-Export (Pro)'}
-                        title={me?.limits.export ? 'CSV exportieren' : 'CSV-Export ist Pro-Feature'}
-                        className="inline-flex items-center gap-1 h-7 px-2.5 rounded-xl text-xs font-semibold bg-cream text-muted border border-champagne hover:border-gold hover:text-gold transition-all active:scale-95 disabled:opacity-50"
-                      >
-                        {exportingSlug === event.slug ? (
-                          <span>…</span>
-                        ) : (
-                          <>
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-3.5 h-3.5" aria-hidden="true">
-                              <path d="M10.75 2.75a.75.75 0 00-1.5 0v8.614L6.295 8.235a.75.75 0 10-1.09 1.03l4.25 4.5a.75.75 0 001.09 0l4.25-4.5a.75.75 0 00-1.09-1.03l-2.955 3.129V2.75z" />
-                              <path d="M3.5 12.75a.75.75 0 00-1.5 0v2.5A2.75 2.75 0 004.75 18h10.5A2.75 2.75 0 0018 15.25v-2.5a.75.75 0 00-1.5 0v2.5c0 .69-.56 1.25-1.25 1.25H4.75c-.69 0-1.25-.56-1.25-1.25v-2.5z" />
-                            </svg>
-                            <span>CSV</span>
-                            {!me?.limits.export && <span className="text-gold">·Pro</span>}
-                          </>
-                        )}
-                      </button>
-                      <button
-                        onClick={() => {
-                          setEditingId(event.id);
-                          setEditData({ title: event.title });
-                        }}
-                        className="px-3 py-1.5 rounded-xl text-xs font-semibold bg-cream text-muted border border-champagne hover:border-ink hover:text-ink transition-all active:scale-95"
-                      >
-                        Bearbeiten
-                      </button>
-                    </div>
-                  </div>
-                )}
+                <div className="flex items-center justify-between gap-3">
+                  <Link href={`/dj/${event.slug}`} className="min-w-0 flex-1 group">
+                    <h2 className="font-serif text-xl font-semibold text-ink break-words group-hover:text-gold transition-colors">
+                      {event.title}
+                    </h2>
+                  </Link>
+                  <button
+                    onClick={() => handleExport(event)}
+                    disabled={exportingSlug === event.slug}
+                    aria-label={me?.limits.export ? 'Wunschliste als CSV exportieren' : 'CSV-Export (Pro)'}
+                    title={me?.limits.export ? 'CSV exportieren' : 'CSV-Export ist Pro-Feature'}
+                    className="shrink-0 h-8 w-8 flex items-center justify-center rounded-xl text-muted border border-champagne hover:border-gold hover:text-gold transition-all active:scale-95 disabled:opacity-50"
+                  >
+                    {exportingSlug === event.slug ? (
+                      <span className="text-xs">…</span>
+                    ) : (
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4" aria-hidden="true">
+                        <path d="M10.75 2.75a.75.75 0 00-1.5 0v8.614L6.295 8.235a.75.75 0 10-1.09 1.03l4.25 4.5a.75.75 0 001.09 0l4.25-4.5a.75.75 0 00-1.09-1.03l-2.955 3.129V2.75z" />
+                        <path d="M3.5 12.75a.75.75 0 00-1.5 0v2.5A2.75 2.75 0 004.75 18h10.5A2.75 2.75 0 0018 15.25v-2.5a.75.75 0 00-1.5 0v2.5c0 .69-.56 1.25-1.25 1.25H4.75c-.69 0-1.25-.56-1.25-1.25v-2.5z" />
+                      </svg>
+                    )}
+                  </button>
+                </div>
+                <div className="flex items-center gap-2.5 mt-2.5 flex-wrap">
+                  <button
+                    onClick={() => handleToggleActive(event)}
+                    className={`px-3 py-1 rounded-lg text-xs font-bold tracking-wide transition-all active:scale-95 ${
+                      event.active
+                        ? 'bg-emerald-500 text-white hover:bg-emerald-600'
+                        : 'bg-ink/10 text-ink/70 hover:bg-ink/20'
+                    }`}
+                  >
+                    {event.active ? 'AKTIV' : 'INAKTIV'}
+                  </button>
+                  <span className="text-muted text-xs">
+                    {event.song_count} Songs
+                    {event.event_date && <> · {fmtDate(event.event_date)}</>}
+                  </span>
+                </div>
               </div>
             ))}
           </div>

@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { QRCodeSVG } from 'qrcode.react';
 import { usePolling } from '@/app/lib/use-polling';
+import PaywallModal, { PaywallLimit } from '@/app/components/PaywallModal';
 
 interface Me {
   plan: 'free' | 'pro' | 'event_pass' | 'studio';
@@ -69,6 +70,13 @@ export default function DJEventPage() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [deactivating, setDeactivating] = useState(false);
 
+  const [editingTitle, setEditingTitle] = useState(false);
+  const [titleDraft, setTitleDraft] = useState('');
+  const [savingTitle, setSavingTitle] = useState(false);
+
+  const [exporting, setExporting] = useState(false);
+  const [paywall, setPaywall] = useState<{ open: boolean; type: PaywallLimit }>({ open: false, type: 'export' });
+
   const [origin, setOrigin] = useState('');
 
   useEffect(() => {
@@ -101,6 +109,51 @@ export default function DJEventPage() {
     maxInterval: 18000,
     onData: handlePollData,
   });
+
+  async function saveTitle() {
+    const trimmed = titleDraft.trim();
+    if (!trimmed) {
+      setEditingTitle(false);
+      return;
+    }
+    setSavingTitle(true);
+    try {
+      await fetch(`/api/events/${slug}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title: trimmed }),
+      });
+      setEvent((e) => (e ? { ...e, title: trimmed } : e));
+      setEditingTitle(false);
+    } finally {
+      setSavingTitle(false);
+    }
+  }
+
+  async function handleExport() {
+    if (!me?.limits.export) {
+      setPaywall({ open: true, type: 'export' });
+      return;
+    }
+    setExporting(true);
+    try {
+      const res = await fetch(`/api/events/${slug}/export`);
+      if (res.status === 402) {
+        setPaywall({ open: true, type: 'export' });
+        return;
+      }
+      if (!res.ok) return;
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `wunschliste-${slug}.csv`;
+      a.click();
+      URL.revokeObjectURL(url);
+    } finally {
+      setExporting(false);
+    }
+  }
 
   async function handleDeactivate() {
     if (!confirm('Event wirklich deaktivieren? Gäste können dann keine Songs mehr wünschen.')) return;
@@ -287,9 +340,81 @@ export default function DJEventPage() {
               )}
             </svg>
           </button>
-          <h1 className="font-serif text-base sm:text-xl font-semibold text-ink truncate">{event?.title ?? 'DJ-Ansicht'}</h1>
+          {editingTitle ? (
+            <div className="flex items-center gap-1.5 min-w-0 flex-1">
+              <input
+                type="text"
+                value={titleDraft}
+                onChange={(e) => setTitleDraft(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') saveTitle();
+                  if (e.key === 'Escape') setEditingTitle(false);
+                }}
+                autoFocus
+                className="min-w-0 flex-1 px-2.5 py-1 rounded-lg border border-champagne bg-cream text-ink text-sm sm:text-base focus:outline-none focus:border-gold transition-colors"
+              />
+              <button
+                onClick={saveTitle}
+                disabled={savingTitle}
+                aria-label="Titel speichern"
+                title="Speichern"
+                className="shrink-0 h-8 w-8 flex items-center justify-center rounded-lg bg-ink text-cream hover:opacity-90 active:scale-95 disabled:opacity-50 transition-all"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4" aria-hidden="true">
+                  <path fillRule="evenodd" d="M16.704 5.29a1 1 0 010 1.42l-7.5 7.5a1 1 0 01-1.42 0l-3.5-3.5a1 1 0 111.42-1.42l2.79 2.79 6.79-6.79a1 1 0 011.42 0z" clipRule="evenodd" />
+                </svg>
+              </button>
+              <button
+                onClick={() => setEditingTitle(false)}
+                aria-label="Abbrechen"
+                title="Abbrechen"
+                className="shrink-0 h-8 w-8 flex items-center justify-center rounded-lg text-muted border border-champagne hover:border-ink hover:text-ink transition-all active:scale-95"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-3.5 h-3.5" aria-hidden="true">
+                  <path d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z" />
+                </svg>
+              </button>
+            </div>
+          ) : (
+            <div className="flex items-center gap-1.5 min-w-0">
+              <h1 className="font-serif text-base sm:text-xl font-semibold text-ink truncate">{event?.title ?? 'DJ-Ansicht'}</h1>
+              <button
+                onClick={() => {
+                  setTitleDraft(event?.title ?? '');
+                  setEditingTitle(true);
+                }}
+                aria-label="Titel bearbeiten"
+                title="Titel bearbeiten"
+                className="shrink-0 h-7 w-7 flex items-center justify-center rounded-lg text-muted/60 hover:text-gold hover:bg-gold/10 transition-all active:scale-95"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-3.5 h-3.5" aria-hidden="true">
+                  <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                </svg>
+              </button>
+            </div>
+          )}
         </div>
         <div className="flex items-center gap-2 sm:gap-4 shrink-0">
+          <button
+            onClick={handleExport}
+            disabled={exporting}
+            aria-label={me?.limits.export ? 'Wunschliste als CSV exportieren' : 'CSV-Export (Pro)'}
+            title={me?.limits.export ? 'CSV exportieren' : 'CSV-Export ist Pro-Feature'}
+            className="inline-flex items-center gap-1 h-8 px-2.5 rounded-xl text-xs font-semibold bg-cream text-muted border border-champagne hover:border-gold hover:text-gold transition-all active:scale-95 disabled:opacity-50 shrink-0"
+          >
+            {exporting ? (
+              <span>…</span>
+            ) : (
+              <>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-3.5 h-3.5" aria-hidden="true">
+                  <path d="M10.75 2.75a.75.75 0 00-1.5 0v8.614L6.295 8.235a.75.75 0 10-1.09 1.03l4.25 4.5a.75.75 0 001.09 0l4.25-4.5a.75.75 0 00-1.09-1.03l-2.955 3.129V2.75z" />
+                  <path d="M3.5 12.75a.75.75 0 00-1.5 0v2.5A2.75 2.75 0 004.75 18h10.5A2.75 2.75 0 0018 15.25v-2.5a.75.75 0 00-1.5 0v2.5c0 .69-.56 1.25-1.25 1.25H4.75c-.69 0-1.25-.56-1.25-1.25v-2.5z" />
+                </svg>
+                <span className="hidden sm:inline">CSV</span>
+                {!me?.limits.export && <span className="text-gold hidden sm:inline">·Pro</span>}
+              </>
+            )}
+          </button>
           {me && (
             <span className="hidden sm:inline-block text-[10px] uppercase tracking-widest text-muted/70 border border-champagne rounded-full px-2 py-0.5">
               {me.plan === 'pro' ? 'Pro' : me.plan === 'event_pass' ? 'Event-Pass' : 'Free'}
@@ -298,6 +423,12 @@ export default function DJEventPage() {
           <span className="w-2 h-2 rounded-full bg-gold animate-pulse" title="Live" />
         </div>
       </div>
+
+      <PaywallModal
+        isOpen={paywall.open}
+        onClose={() => setPaywall((p) => ({ ...p, open: false }))}
+        limitType={paywall.type}
+      />
 
       {songLimitHit && (
         <div className="shrink-0 bg-[#fdf3d8] border-b border-gold/40 px-4 py-3">
