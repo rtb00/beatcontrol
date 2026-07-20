@@ -9,13 +9,13 @@ export default function OGImage() {
     (
       <div
         style={{
-          background: 'linear-gradient(135deg, #faf6f0 0%, #f4ede0 100%)',
+          background: 'linear-gradient(135deg, #1c0b32 0%, #06030c 100%)',
           width: '100%',
           height: '100%',
           display: 'flex',
           flexDirection: 'column',
           padding: '80px',
-          fontFamily: 'serif',
+          fontFamily: 'sans-serif',
         }}
       >
         <div
@@ -30,8 +30,8 @@ export default function OGImage() {
             style={{
               width: 56,
               height: 56,
-              background: '#2a2520',
-              color: '#c9a961',
+              background: '#150a26',
+              color: '#ffce54',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -45,7 +45,7 @@ export default function OGImage() {
             style={{
               fontSize: 36,
               fontWeight: 700,
-              color: '#2a2520',
+              color: '#f7f3fb',
               letterSpacing: '-0.02em',
             }}
           >
@@ -57,7 +57,7 @@ export default function OGImage() {
           style={{
             fontSize: 84,
             fontWeight: 700,
-            color: '#2a2520',
+            color: '#f7f3fb',
             lineHeight: 1.05,
             letterSpacing: '-0.02em',
             marginBottom: 32,
@@ -70,7 +70,7 @@ export default function OGImage() {
         <div
           style={{
             fontSize: 28,
-            color: '#8a7a6e',
+            color: '#b9a9cc',
             lineHeight: 1.4,
             maxWidth: 900,
             fontFamily: 'sans-serif',
@@ -89,7 +89,7 @@ export default function OGImage() {
             justifyContent: 'space-between',
             alignItems: 'center',
             fontSize: 20,
-            color: '#c9a961',
+            color: '#ffce54',
             fontFamily: 'sans-serif',
             letterSpacing: '0.1em',
             textTransform: 'uppercase',
