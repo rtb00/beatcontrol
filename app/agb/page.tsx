@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { CalmScope, NavBar, Badge, Card } from '@/app/components/ui';
 
 export const metadata = {
   title: 'AGB · BeatControl',
@@ -7,29 +8,27 @@ export const metadata = {
 
 export default function AgbPage() {
   return (
-    <div className="min-h-screen bg-[#faf6f0] text-[#2a2520] font-sans">
-      <nav className="sticky top-0 z-40 bg-[#faf6f0]/90 backdrop-blur border-b border-[#e8d9b8]">
-        <div className="max-w-3xl mx-auto px-4 h-14 flex items-center justify-between">
-          <Link href="/" className="font-serif text-xl font-bold tracking-tight hover:text-[#c9a961] transition-colors">
-            BeatControl
-          </Link>
-          <Link href="/" className="text-sm text-[#8a7a6e] hover:text-[#c9a961] transition-colors">
-            ← Zurück zur Startseite
-          </Link>
-        </div>
-      </nav>
+    <CalmScope className="min-h-screen bg-base text-fg font-sans">
+      <NavBar tone="calm">
+        <Link href="/" className="font-display text-xl font-bold tracking-tight hover:text-neon-gold transition-colors">
+          BeatControl
+        </Link>
+        <Link href="/" className="text-sm text-fg-muted hover:text-neon-gold transition-colors">
+          ← Zurück zur Startseite
+        </Link>
+      </NavBar>
 
       <main className="max-w-3xl mx-auto px-4 py-16">
-        <p className="text-xs font-semibold uppercase tracking-widest text-[#c9a961] mb-4">Rechtliches</p>
-        <h1 className="font-serif text-4xl md:text-5xl font-bold mb-3">
+        <Badge color="gold" tone="calm" className="mb-4">Rechtliches</Badge>
+        <h1 className="font-display text-3xl md:text-4xl font-bold mb-3">
           Allgemeine Geschäftsbedingungen
         </h1>
-        <p className="text-sm text-[#8a7a6e] mb-12">Stand: April 2026</p>
+        <p className="text-sm text-fg-muted mb-12">Stand: April 2026</p>
 
-        <div className="space-y-12 text-[#2a2520] leading-relaxed">
+        <div className="space-y-12 text-fg leading-relaxed">
 
           <section>
-            <h2 className="font-serif text-2xl font-bold mb-4">§ 1 Geltungsbereich, Anbieter</h2>
+            <h2 className="font-display text-2xl font-bold mb-4">§ 1 Geltungsbereich, Anbieter</h2>
             <p className="mb-3">
               (1) Diese Allgemeinen Geschäftsbedingungen (nachfolgend „AGB") gelten für alle Verträge zwischen Robin Bauer, Spotlight Eventtechnik (nachfolgend „Anbieter") und seinen Kunden (nachfolgend „Nutzer") über die Nutzung des Online-Dienstes BeatControl (nachfolgend „Dienst").
             </p>
@@ -39,12 +38,12 @@ export default function AgbPage() {
               Robin Bauer, Spotlight Eventtechnik
               <br />
               E-Mail:{' '}
-              <a href="mailto:info@spotlight-eventtechnik.com" className="text-[#c9a961] hover:underline">
+              <a href="mailto:info@spotlight-eventtechnik.com" className="text-neon-gold hover:underline">
                 info@spotlight-eventtechnik.com
               </a>
               <br />
               Vollständige Anbieterkennzeichnung im{' '}
-              <Link href="/impressum" className="text-[#c9a961] hover:underline">
+              <Link href="/impressum" className="text-neon-gold hover:underline">
                 Impressum
               </Link>
               .
@@ -55,7 +54,7 @@ export default function AgbPage() {
           </section>
 
           <section>
-            <h2 className="font-serif text-2xl font-bold mb-4">§ 2 Vertragsgegenstand</h2>
+            <h2 className="font-display text-2xl font-bold mb-4">§ 2 Vertragsgegenstand</h2>
             <p className="mb-3">
               (1) BeatControl ist eine webbasierte Software-as-a-Service-Anwendung, die DJs ermöglicht, Musikwünsche von Hochzeitsgästen zu sammeln, nach Beliebtheit zu sortieren und während eines Events live einzusehen.
             </p>
@@ -75,7 +74,7 @@ export default function AgbPage() {
           </section>
 
           <section>
-            <h2 className="font-serif text-2xl font-bold mb-4">§ 3 Vertragsschluss, Registrierung</h2>
+            <h2 className="font-display text-2xl font-bold mb-4">§ 3 Vertragsschluss, Registrierung</h2>
             <p className="mb-3">
               (1) Voraussetzung für die Nutzung der DJ-Funktionen ist die Registrierung eines Nutzerkontos. Mit Absenden der Registrierung gibt der Nutzer ein Angebot auf Abschluss eines Nutzungsvertrags ab. Der Vertrag kommt mit Bestätigung der Registrierung durch den Anbieter (z. B. Bestätigungs-E-Mail oder Freischaltung) zustande.
             </p>
@@ -88,7 +87,7 @@ export default function AgbPage() {
           </section>
 
           <section>
-            <h2 className="font-serif text-2xl font-bold mb-4">§ 4 Leistungen, Tarife</h2>
+            <h2 className="font-display text-2xl font-bold mb-4">§ 4 Leistungen, Tarife</h2>
             <p className="mb-3">
               (1) Der Anbieter stellt die folgenden Tarife bereit:
             </p>
@@ -109,7 +108,7 @@ export default function AgbPage() {
           </section>
 
           <section>
-            <h2 className="font-serif text-2xl font-bold mb-4">§ 5 Preise und Zahlung</h2>
+            <h2 className="font-display text-2xl font-bold mb-4">§ 5 Preise und Zahlung</h2>
             <p className="mb-3">
               (1) Es gelten die zum Zeitpunkt der Buchung auf der Website angegebenen Preise. Alle Preise sind Endpreise. Aufgrund der Anwendung der Kleinunternehmerregelung nach § 19 UStG wird keine Umsatzsteuer ausgewiesen.
             </p>
@@ -122,10 +121,10 @@ export default function AgbPage() {
           </section>
 
           <section>
-            <h2 className="font-serif text-2xl font-bold mb-4">§ 6 Geld-zurück-Garantie</h2>
+            <h2 className="font-display text-2xl font-bold mb-4">§ 6 Geld-zurück-Garantie</h2>
             <p>
               Unabhängig vom gesetzlichen Widerrufsrecht (§ 7) gewährt der Anbieter eine 30-tägige Geld-zurück-Garantie auf Pro-Abonnements und Event-Pässe. Sofern der Nutzer innerhalb von 30 Tagen nach Buchung per E-Mail an{' '}
-              <a href="mailto:info@spotlight-eventtechnik.com" className="text-[#c9a961] hover:underline">
+              <a href="mailto:info@spotlight-eventtechnik.com" className="text-neon-gold hover:underline">
                 info@spotlight-eventtechnik.com
               </a>{' '}
               eine Rückerstattung verlangt, erstattet der Anbieter den vollen Kaufpreis ohne Angabe von Gründen.
@@ -133,15 +132,15 @@ export default function AgbPage() {
           </section>
 
           <section>
-            <h2 className="font-serif text-2xl font-bold mb-4">§ 7 Widerrufsrecht für Verbraucher</h2>
-            <div className="bg-[#f4ede0] border border-[#e8d9b8] rounded-xl p-6 mb-4">
-              <h3 className="font-semibold mb-3">Widerrufsbelehrung</h3>
+            <h2 className="font-display text-2xl font-bold mb-4">§ 7 Widerrufsrecht für Verbraucher</h2>
+            <Card tone="calm" className="mb-4">
+              <h3 className="font-display font-semibold mb-3">Widerrufsbelehrung</h3>
               <p className="mb-3">
                 <strong>Widerrufsrecht:</strong> Du hast das Recht, binnen vierzehn Tagen ohne Angabe von Gründen diesen Vertrag zu widerrufen. Die Widerrufsfrist beträgt vierzehn Tage ab dem Tag des Vertragsabschlusses.
               </p>
               <p className="mb-3">
                 Um dein Widerrufsrecht auszuüben, musst du uns (Robin Bauer, Spotlight Eventtechnik,{' '}
-                <a href="mailto:info@spotlight-eventtechnik.com" className="text-[#c9a961] hover:underline">
+                <a href="mailto:info@spotlight-eventtechnik.com" className="text-neon-gold hover:underline">
                   info@spotlight-eventtechnik.com
                 </a>
                 ) mittels einer eindeutigen Erklärung (z. B. ein mit der Post versandter Brief oder eine E-Mail) über deinen Entschluss, diesen Vertrag zu widerrufen, informieren.
@@ -152,11 +151,11 @@ export default function AgbPage() {
               <p>
                 <strong>Vorzeitiges Erlöschen des Widerrufsrechts bei digitalen Inhalten / Dienstleistungen:</strong> Das Widerrufsrecht erlischt vorzeitig, wenn der Anbieter mit der Ausführung der Dienstleistung begonnen hat, nachdem du deine ausdrückliche Zustimmung dazu erteilt und gleichzeitig deine Kenntnis davon bestätigt hast, dass du dein Widerrufsrecht mit Beginn der Ausführung verlierst.
               </p>
-            </div>
+            </Card>
           </section>
 
           <section>
-            <h2 className="font-serif text-2xl font-bold mb-4">§ 8 Pflichten des Nutzers</h2>
+            <h2 className="font-display text-2xl font-bold mb-4">§ 8 Pflichten des Nutzers</h2>
             <p className="mb-3">(1) Der Nutzer verpflichtet sich,</p>
             <ul className="list-disc pl-6 space-y-1 mb-3">
               <li>seine Zugangsdaten geheim zu halten und vor unbefugtem Zugriff Dritter zu schützen,</li>
@@ -170,14 +169,14 @@ export default function AgbPage() {
           </section>
 
           <section>
-            <h2 className="font-serif text-2xl font-bold mb-4">§ 9 Verfügbarkeit</h2>
+            <h2 className="font-display text-2xl font-bold mb-4">§ 9 Verfügbarkeit</h2>
             <p>
               Der Anbieter ist um eine möglichst hohe Verfügbarkeit des Dienstes bemüht, schuldet jedoch keine ununterbrochene Verfügbarkeit. Wartungsfenster, Updates und kurzfristige Störungen können zu vorübergehenden Einschränkungen führen.
             </p>
           </section>
 
           <section>
-            <h2 className="font-serif text-2xl font-bold mb-4">§ 10 Haftung</h2>
+            <h2 className="font-display text-2xl font-bold mb-4">§ 10 Haftung</h2>
             <p className="mb-3">
               (1) Der Anbieter haftet uneingeschränkt bei Vorsatz und grober Fahrlässigkeit, bei Verletzung von Leben, Körper oder Gesundheit sowie nach Maßgabe des Produkthaftungsgesetzes.
             </p>
@@ -190,7 +189,7 @@ export default function AgbPage() {
           </section>
 
           <section>
-            <h2 className="font-serif text-2xl font-bold mb-4">§ 11 Vertragslaufzeit, Kündigung</h2>
+            <h2 className="font-display text-2xl font-bold mb-4">§ 11 Vertragslaufzeit, Kündigung</h2>
             <p className="mb-3">
               (1) Free-Accounts laufen auf unbestimmte Zeit und können vom Nutzer jederzeit ohne Frist gekündigt bzw. gelöscht werden.
             </p>
@@ -206,10 +205,10 @@ export default function AgbPage() {
           </section>
 
           <section>
-            <h2 className="font-serif text-2xl font-bold mb-4">§ 12 Datenschutz</h2>
+            <h2 className="font-display text-2xl font-bold mb-4">§ 12 Datenschutz</h2>
             <p>
               Informationen zur Verarbeitung personenbezogener Daten findest du in unserer{' '}
-              <Link href="/datenschutz" className="text-[#c9a961] hover:underline">
+              <Link href="/datenschutz" className="text-neon-gold hover:underline">
                 Datenschutzerklärung
               </Link>
               .
@@ -217,14 +216,14 @@ export default function AgbPage() {
           </section>
 
           <section>
-            <h2 className="font-serif text-2xl font-bold mb-4">§ 13 Änderungen der AGB</h2>
+            <h2 className="font-display text-2xl font-bold mb-4">§ 13 Änderungen der AGB</h2>
             <p>
               Der Anbieter behält sich vor, diese AGB anzupassen, soweit dies aus rechtlichen oder technischen Gründen erforderlich ist. Über Änderungen wird der Nutzer in geeigneter Form (z. B. per E-Mail) informiert. Widerspricht der Nutzer den Änderungen nicht innerhalb von sechs Wochen, gelten diese als angenommen. Auf das Widerspruchsrecht und die Folgen eines Schweigens wird in der Mitteilung gesondert hingewiesen.
             </p>
           </section>
 
           <section>
-            <h2 className="font-serif text-2xl font-bold mb-4">§ 14 Schlussbestimmungen</h2>
+            <h2 className="font-display text-2xl font-bold mb-4">§ 14 Schlussbestimmungen</h2>
             <p className="mb-3">
               (1) Es gilt das Recht der Bundesrepublik Deutschland unter Ausschluss des UN-Kaufrechts. Bei Verbrauchern gilt diese Rechtswahl nur, soweit hierdurch der durch zwingende Bestimmungen des Rechts des Staates des gewöhnlichen Aufenthalts des Verbrauchers gewährte Schutz nicht entzogen wird.
             </p>
@@ -238,12 +237,12 @@ export default function AgbPage() {
 
         </div>
 
-        <div className="mt-16 pt-8 border-t border-[#e8d9b8]">
-          <Link href="/" className="text-sm text-[#c9a961] hover:underline">
+        <div className="mt-16 pt-8 border-t border-line">
+          <Link href="/" className="text-sm text-neon-gold hover:underline">
             ← Zurück zur Startseite
           </Link>
         </div>
       </main>
-    </div>
+    </CalmScope>
   );
 }
