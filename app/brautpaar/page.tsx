@@ -177,7 +177,7 @@ export default function BrautpaarLanding() {
 
       {/* CTA */}
       <section className="py-20">
-        <Card tone="party" tilt={1} elevated className="max-w-2xl mx-auto px-4 py-16 text-center">
+        <Card tone="party" elevated className="max-w-2xl mx-auto px-4 py-16 text-center">
           <h2 className="font-display text-3xl md:text-4xl font-black uppercase leading-tight mb-6 text-glow-gold">
             Ihr plant alles. Plant auch die Tanzfläche.
           </h2>

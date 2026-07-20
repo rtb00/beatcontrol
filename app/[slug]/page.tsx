@@ -5,10 +5,6 @@ import { useParams } from 'next/navigation';
 import { usePolling } from '@/app/lib/use-polling';
 import { Button, Card, Input } from '@/app/components/ui';
 
-function cx(...parts: (string | false | undefined | null)[]) {
-  return parts.filter(Boolean).join(' ');
-}
-
 interface Event {
   id: number;
   slug: string;
@@ -254,7 +250,7 @@ export default function GuestPage() {
 
       {/* Input card */}
       <div className="px-4 max-w-lg mx-auto mb-8">
-        <Card tone="party" tilt={-1}>
+        <Card tone="party">
           {manualMode ? (
             <div className="space-y-3">
               <div className="flex items-center justify-between mb-1">
@@ -378,12 +374,8 @@ function SongCard({
   onRetract: (song: Song) => void;
   retracting: boolean;
 }) {
-  const tiltClass = rank !== null ? (rank % 2 === 0 ? 'tilt-r' : 'tilt-l') : '';
   return (
-    <div className={cx(
-      'bg-panel rounded-2xl p-4 flex items-center gap-3 border border-line shadow-lg shadow-black/20 animate-fade-up',
-      tiltClass
-    )}>
+    <div className="bg-panel rounded-2xl p-4 flex items-center gap-3 border border-line shadow-lg shadow-black/20 animate-fade-up">
       {song.album_art_url ? (
         // eslint-disable-next-line @next/next/no-img-element
         <img src={song.album_art_url} alt={song.title} width={40} height={40} className="rounded-xl shrink-0 object-cover" />

@@ -296,9 +296,20 @@ export default function LandingPage() {
               Kostenlos ausprobieren
             </Link>
           </div>
-          <p className="text-xs text-fg-muted mt-4 leading-relaxed">
-            Von DJs für DJs gebaut · läuft neben Rekordbox & Serato · kein Download, Voting dauert 10 Sekunden
-          </p>
+          <ul className="flex flex-col gap-2 mt-6 text-xs text-fg-muted">
+            {[
+              'Von DJs für DJs gebaut',
+              'läuft neben Rekordbox & Serato',
+              'kein Download, Voting dauert 10 Sekunden',
+            ].map((item) => (
+              <li key={item} className="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4 shrink-0 text-neon-gold" aria-hidden="true">
+                  <path fillRule="evenodd" d="M16.704 5.29a1 1 0 010 1.42l-7.5 7.5a1 1 0 01-1.42 0l-3.5-3.5a1 1 0 111.42-1.42l2.79 2.79 6.79-6.79a1 1 0 011.42 0z" clipRule="evenodd" />
+                </svg>
+                {item}
+              </li>
+            ))}
+          </ul>
         </div>
 
         {/* iPad-Mockup, exakte Nachbildung des echten DJ-Live-Views (dj/[slug]) */}
@@ -379,7 +390,6 @@ export default function LandingPage() {
                 <Card
                   key={s.label}
                   tone="party"
-                  tilt={i % 2 === 0 ? -2 : 2}
                   className="text-center"
                 >
                   <p className="font-display text-4xl md:text-5xl font-bold text-neon-gold tabular-nums leading-none mb-2 text-glow-gold">
@@ -423,8 +433,8 @@ export default function LandingPage() {
           {c.painH2}
         </h2>
         <div className="grid md:grid-cols-3 gap-10">
-          {c.painCards.map(({ label, text }, i) => (
-            <Card key={label} tone="party" tilt={i % 2 === 0 ? -2 : 2}>
+          {c.painCards.map(({ label, text }) => (
+            <Card key={label} tone="party">
               <h3 className="font-display font-bold uppercase text-sm mb-3 text-neon-gold">{label}</h3>
               <p className="text-sm text-fg-muted leading-relaxed">{text}</p>
             </Card>
@@ -553,7 +563,7 @@ export default function LandingPage() {
           <div className="grid md:grid-cols-3 gap-6">
 
             {/* Free */}
-            <Card tone="party" tilt={-2} className="flex flex-col">
+            <Card tone="party" className="flex flex-col">
               <p className="font-semibold text-sm mb-1 text-fg">Free</p>
               <p className="font-display text-4xl font-bold mb-1 text-fg">€0</p>
               <p className="text-xs text-fg-muted mb-6">für immer kostenlos</p>
@@ -565,7 +575,9 @@ export default function LandingPage() {
                   'BeatControl-Branding',
                 ].map((f) => (
                   <li key={f} className="flex items-start gap-2.5">
-                    <span className="text-neon-gold text-base leading-none mt-px">·</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4 shrink-0 text-neon-gold mt-0.5" aria-hidden="true">
+                      <path fillRule="evenodd" d="M16.704 5.29a1 1 0 010 1.42l-7.5 7.5a1 1 0 01-1.42 0l-3.5-3.5a1 1 0 111.42-1.42l2.79 2.79 6.79-6.79a1 1 0 011.42 0z" clipRule="evenodd" />
+                    </svg>
                     <span>{f}</span>
                   </li>
                 ))}
@@ -580,7 +592,7 @@ export default function LandingPage() {
             </Card>
 
             {/* Pro */}
-            <Card tone="party" tilt={2} elevated className="flex flex-col relative glow-magenta">
+            <Card tone="party" elevated className="flex flex-col relative glow-magenta">
               <Badge color="magenta" className="absolute -top-3.5 left-1/2 -translate-x-1/2 whitespace-nowrap">
                 Für aktive DJs
               </Badge>
@@ -623,7 +635,9 @@ export default function LandingPage() {
                   'Dein Branding mit persönlichem Namen und Logo',
                 ].map((f) => (
                   <li key={f} className="flex items-start gap-2.5">
-                    <span className="text-neon-gold text-base leading-none mt-px">·</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4 shrink-0 text-neon-gold mt-0.5" aria-hidden="true">
+                      <path fillRule="evenodd" d="M16.704 5.29a1 1 0 010 1.42l-7.5 7.5a1 1 0 01-1.42 0l-3.5-3.5a1 1 0 111.42-1.42l2.79 2.79 6.79-6.79a1 1 0 011.42 0z" clipRule="evenodd" />
+                    </svg>
                     <span>{f}</span>
                   </li>
                 ))}
@@ -641,7 +655,7 @@ export default function LandingPage() {
             </Card>
 
             {/* Pro Hochzeit (Pay-per-Use) */}
-            <Card tone="party" tilt={-2} className="flex flex-col">
+            <Card tone="party" className="flex flex-col">
               <p className="font-semibold text-sm mb-1 text-fg">Pro Hochzeit</p>
               <div className="flex items-baseline gap-1 mb-1">
                 <p className="font-display text-4xl font-bold text-fg">€{EVENT_PASS_PRICE}</p>
@@ -658,7 +672,9 @@ export default function LandingPage() {
                   'Kein Abo, keine Bindung',
                 ].map((f) => (
                   <li key={f} className="flex items-start gap-2.5">
-                    <span className="text-neon-gold text-base leading-none mt-px">·</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4 shrink-0 text-neon-gold mt-0.5" aria-hidden="true">
+                      <path fillRule="evenodd" d="M16.704 5.29a1 1 0 010 1.42l-7.5 7.5a1 1 0 01-1.42 0l-3.5-3.5a1 1 0 111.42-1.42l2.79 2.79 6.79-6.79a1 1 0 011.42 0z" clipRule="evenodd" />
+                    </svg>
                     <span>{f}</span>
                   </li>
                 ))}

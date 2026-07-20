@@ -256,7 +256,7 @@ export default function StartFunnel() {
                 />
               </div>
               {method && (
-                <Card tone="party" tilt={-1} className="mb-8 animate-fade-in border-magenta/40">
+                <Card tone="party" className="mb-8 animate-fade-in border-magenta/40">
                   <p className="text-sm leading-relaxed text-fg">
                     {METHODS.find((m) => m.id === method)?.jab}
                   </p>
@@ -331,7 +331,7 @@ export default function StartFunnel() {
                 QR-Code, Live-Voting und dein DJ-Screen sind eingerichtet. Sichere dir dein Event kostenlos, dann liegt es startklar in deinem Dashboard.
               </p>
 
-              <Card tone="party" tilt={-1} className="mb-8 text-left max-w-md mx-auto">
+              <Card tone="party" className="mb-8 text-left max-w-md mx-auto">
                 <ul className="flex flex-col gap-2.5 text-sm">
                   {[
                     'Live-Voting per QR, kein Download für deine Gäste',

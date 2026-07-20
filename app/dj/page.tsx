@@ -375,15 +375,21 @@ export default function DJDashboard() {
             </h2>
             <ul className="space-y-4 text-fg/90 text-sm sm:text-base leading-relaxed mb-8">
               <li className="flex gap-3">
-                <span className="text-neon-gold shrink-0">·</span>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5 shrink-0 text-neon-gold" aria-hidden="true">
+                  <path fillRule="evenodd" d="M16.704 5.29a1 1 0 010 1.42l-7.5 7.5a1 1 0 01-1.42 0l-3.5-3.5a1 1 0 111.42-1.42l2.79 2.79 6.79-6.79a1 1 0 011.42 0z" clipRule="evenodd" />
+                </svg>
                 <span>Du legst ein Event an und bekommst einen QR-Code für deine Gäste.</span>
               </li>
               <li className="flex gap-3">
-                <span className="text-neon-gold shrink-0">·</span>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5 shrink-0 text-neon-gold" aria-hidden="true">
+                  <path fillRule="evenodd" d="M16.704 5.29a1 1 0 010 1.42l-7.5 7.5a1 1 0 01-1.42 0l-3.5-3.5a1 1 0 111.42-1.42l2.79 2.79 6.79-6.79a1 1 0 011.42 0z" clipRule="evenodd" />
+                </svg>
                 <span>Gäste scannen den Code und tragen ihre Songwünsche ein.</span>
               </li>
               <li className="flex gap-3">
-                <span className="text-neon-gold shrink-0">·</span>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5 shrink-0 text-neon-gold" aria-hidden="true">
+                  <path fillRule="evenodd" d="M16.704 5.29a1 1 0 010 1.42l-7.5 7.5a1 1 0 01-1.42 0l-3.5-3.5a1 1 0 111.42-1.42l2.79 2.79 6.79-6.79a1 1 0 011.42 0z" clipRule="evenodd" />
+                </svg>
                 <span>Die Wünsche erscheinen live auf deinem iPad, sortiert nach Beliebtheit.</span>
               </li>
             </ul>
@@ -482,11 +488,10 @@ export default function DJDashboard() {
           <p className="text-center text-fg-muted py-12">Noch keine Events. Erstelle dein erstes!</p>
         ) : (
           <div className="space-y-4">
-            {events.map((event, i) => (
+            {events.map((event) => (
               <Card
                 key={event.id}
                 tone="party"
-                tilt={i % 2 === 0 ? -1 : 1}
                 className={eventCardClass(event.active)}
               >
                 <div className="flex items-center justify-between gap-3">

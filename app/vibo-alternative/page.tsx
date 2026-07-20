@@ -107,7 +107,7 @@ export default function ViboAlternative() {
           Aber: wir sind nicht VC-finanziert mit Burn-Rate-Risiko. Solo-Founder, profitable Lifestyle-Ambition. In 12 Monaten existiert BeatControl — weil ich rechne, nicht weil ich Investor-Druck habe.
         </p>
 
-        <Card tilt={-1} elevated className="mt-16 text-center p-8">
+        <Card elevated className="mt-16 text-center p-8">
           <h3 className="font-display text-2xl md:text-3xl font-bold uppercase mb-4 text-glow-gold">
             Kostenlos testen, dann entscheiden.
           </h3>

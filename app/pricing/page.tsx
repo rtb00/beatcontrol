@@ -181,7 +181,7 @@ function PricingPageInner() {
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {/* Free */}
-          <Card tone="party" tilt={-2} className="flex flex-col">
+          <Card tone="party" className="flex flex-col">
             <div className="flex items-center justify-between mb-1">
               <p className="font-semibold text-sm text-fg">Free</p>
               {me?.plan === 'free' && (
@@ -200,7 +200,9 @@ function PricingPageInner() {
                 'BeatControl-Branding',
               ].map((f) => (
                 <li key={f} className="flex items-start gap-2.5">
-                  <span className="text-neon-gold text-base leading-none mt-px">·</span>
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4 shrink-0 text-neon-gold mt-0.5" aria-hidden="true">
+                    <path fillRule="evenodd" d="M16.704 5.29a1 1 0 010 1.42l-7.5 7.5a1 1 0 01-1.42 0l-3.5-3.5a1 1 0 111.42-1.42l2.79 2.79 6.79-6.79a1 1 0 011.42 0z" clipRule="evenodd" />
+                  </svg>
                   <span>{f}</span>
                 </li>
               ))}
@@ -223,7 +225,7 @@ function PricingPageInner() {
           </Card>
 
           {/* Pro Hochzeit (Pay-per-Use) */}
-          <Card tone="party" tilt={2} id="event-pass" className="flex flex-col">
+          <Card tone="party" id="event-pass" className="flex flex-col">
             <div className="flex items-center justify-between mb-1">
               <p className="font-semibold text-sm text-fg">Pro Hochzeit</p>
               {isCurrentEventPass && (
@@ -247,7 +249,9 @@ function PricingPageInner() {
                 'Kein Abo, keine Bindung',
               ].map((f) => (
                 <li key={f} className="flex items-start gap-2.5">
-                  <span className="text-neon-gold text-base leading-none mt-px">·</span>
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4 shrink-0 text-neon-gold mt-0.5" aria-hidden="true">
+                    <path fillRule="evenodd" d="M16.704 5.29a1 1 0 010 1.42l-7.5 7.5a1 1 0 01-1.42 0l-3.5-3.5a1 1 0 111.42-1.42l2.79 2.79 6.79-6.79a1 1 0 011.42 0z" clipRule="evenodd" />
+                  </svg>
                   <span>{f}</span>
                 </li>
               ))}
@@ -262,7 +266,7 @@ function PricingPageInner() {
           </Card>
 
           {/* Pro */}
-          <Card tone="party" tilt={-2} elevated className="flex flex-col relative glow-magenta">
+          <Card tone="party" elevated className="flex flex-col relative glow-magenta">
             <Badge color="magenta" className="absolute -top-3.5 left-1/2 -translate-x-1/2 whitespace-nowrap">
               Meist gewählt
             </Badge>
@@ -311,7 +315,9 @@ function PricingPageInner() {
                 'Dein Branding mit Namen und Logo',
               ].map((f) => (
                 <li key={f} className="flex items-start gap-2.5">
-                  <span className="text-neon-gold text-base leading-none mt-px">·</span>
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4 shrink-0 text-neon-gold mt-0.5" aria-hidden="true">
+                    <path fillRule="evenodd" d="M16.704 5.29a1 1 0 010 1.42l-7.5 7.5a1 1 0 01-1.42 0l-3.5-3.5a1 1 0 111.42-1.42l2.79 2.79 6.79-6.79a1 1 0 011.42 0z" clipRule="evenodd" />
+                  </svg>
                   <span>{f}</span>
                 </li>
               ))}
@@ -339,7 +345,7 @@ function PricingPageInner() {
           </Card>
 
           {/* Studio */}
-          <Card tone="party" tilt={2} className="border-2 border-neon-gold flex flex-col relative">
+          <Card tone="party" className="border-2 border-neon-gold flex flex-col relative">
             <Badge color="neutral" className="absolute -top-3.5 left-1/2 -translate-x-1/2 whitespace-nowrap">
               Für Akademien
             </Badge>
@@ -366,7 +372,9 @@ function PricingPageInner() {
                 'Persönliches Onboarding',
               ].map((f) => (
                 <li key={f} className="flex items-start gap-2.5">
-                  <span className="text-neon-gold text-base leading-none mt-px">·</span>
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4 shrink-0 text-neon-gold mt-0.5" aria-hidden="true">
+                    <path fillRule="evenodd" d="M16.704 5.29a1 1 0 010 1.42l-7.5 7.5a1 1 0 01-1.42 0l-3.5-3.5a1 1 0 111.42-1.42l2.79 2.79 6.79-6.79a1 1 0 011.42 0z" clipRule="evenodd" />
+                  </svg>
                   <span>{f}</span>
                 </li>
               ))}
