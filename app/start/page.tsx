@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { Button, Card } from '@/app/components/ui';
 
 // ── Funnel: anonymer Nutzer richtet sein Event ein, beantwortet feature-deckende
 // Fragen und wird auf die Nutzung „heiß gemacht". Antworten + Event landen in
@@ -117,24 +118,24 @@ export default function StartFunnel() {
   const progress = step >= 1 && step <= QUESTION_STEPS ? (step / QUESTION_STEPS) * 100 : null;
 
   return (
-    <div className="min-h-[100dvh] bg-[#faf6f0] text-[#2a2520] font-sans flex flex-col">
+    <div className="min-h-[100dvh] bg-rave-gradient text-fg font-sans flex flex-col">
       {/* Top bar */}
-      <header className="shrink-0 border-b border-[#e8d9b8] bg-[#faf6f0]/90 backdrop-blur">
+      <header className="shrink-0 border-b border-line bg-base/80 backdrop-blur">
         <div className="max-w-2xl mx-auto px-4 h-14 flex items-center justify-between">
-          <Link href="/" className="font-serif text-xl font-bold tracking-tight">BeatControl</Link>
+          <Link href="/" className="font-display text-xl font-bold uppercase tracking-tight text-glow-gold">BeatControl</Link>
           {step > 0 ? (
-            <button onClick={back} className="text-sm text-[#8a7a6e] hover:text-[#c9a961] transition-colors">
+            <button onClick={back} className="text-sm text-fg-muted hover:text-neon-gold transition-colors">
               ← Zurück
             </button>
           ) : (
-            <Link href="/" className="text-sm text-[#8a7a6e] hover:text-[#c9a961] transition-colors">
+            <Link href="/" className="text-sm text-fg-muted hover:text-neon-gold transition-colors">
               Abbrechen
             </Link>
           )}
         </div>
         {progress !== null && (
-          <div className="h-1 w-full bg-[#e8d9b8]/50">
-            <div className="h-full bg-[#c9a961] transition-all duration-500 ease-out" style={{ width: `${progress}%` }} />
+          <div className="h-1 w-full bg-line/50">
+            <div className="h-full bg-gradient-to-r from-magenta to-neon-gold transition-all duration-500 ease-out" style={{ width: `${progress}%` }} />
           </div>
         )}
       </header>
@@ -145,11 +146,11 @@ export default function StartFunnel() {
           {/* Step 0, Namens-Erfassung (Commitment-Anker statt reiner Intro) */}
           {step === 0 && (
             <div className="m-auto w-full max-w-md text-center animate-fade-up">
-              <p className="text-[#c9a961] text-3xl mb-4">♪</p>
-              <h1 className="font-serif text-4xl md:text-5xl font-bold leading-tight mb-4">
+              <p className="text-neon-gold text-3xl mb-4">♪</p>
+              <h1 className="font-display text-4xl md:text-5xl font-black uppercase leading-tight mb-4 text-glow-gold">
                 Wie heißt deine nächste Feier?
               </h1>
-              <p className="text-[#8a7a6e] text-lg leading-relaxed mb-8">
+              <p className="text-fg-muted text-lg leading-relaxed mb-8">
                 Gib ihr einen Namen, und wir richten in einer Minute alles ein, damit die Tanzfläche an dem Abend nicht leer bleibt.
               </p>
               <input
@@ -159,16 +160,20 @@ export default function StartFunnel() {
                 onKeyDown={(e) => { if (e.key === 'Enter' && title.trim()) next(); }}
                 autoFocus
                 placeholder="z. B. Hochzeit Müller"
-                className="w-full px-5 py-4 rounded-2xl border border-[#e8d9b8] bg-white text-[#2a2520] text-center placeholder:text-[#8a7a6e]/50 focus:outline-none focus:border-[#c9a961] transition-colors mb-4"
+                className="w-full px-5 py-4 rounded-2xl border border-line bg-panel text-fg text-center placeholder:text-fg-muted/60 focus:outline-none focus:border-neon-gold transition-colors mb-4"
               />
-              <button
+              <Button
                 onClick={next}
                 disabled={!title.trim()}
-                className="w-full px-8 py-4 rounded-full bg-[#c9a961] text-white font-semibold text-sm hover:bg-[#b8953a] transition-colors shadow-sm disabled:opacity-40 disabled:cursor-not-allowed"
+                variant="primary"
+                tone="party"
+                size="lg"
+                tilt
+                className="w-full"
               >
                 Los geht&apos;s
-              </button>
-              <p className="text-xs text-[#8a7a6e] mt-5">Kein Download, keine Kreditkarte. Dauert keine Minute.</p>
+              </Button>
+              <p className="text-xs text-fg-muted mt-5">Kein Download, keine Kreditkarte. Dauert keine Minute.</p>
             </div>
           )}
 
@@ -183,10 +188,10 @@ export default function StartFunnel() {
                     selected={type === t.id}
                     onClick={() => { setType(t.id); setTimeout(next, 180); }}
                   >
-                    <FunnelIcon name={t.icon} className="w-6 h-6 mr-3 shrink-0 text-[#c9a961]" />
+                    <FunnelIcon name={t.icon} className="w-6 h-6 mr-3 shrink-0 text-neon-gold" />
                     <span className="min-w-0">
-                      <span className="block font-semibold">{t.label}</span>
-                      <span className="block text-sm text-[#8a7a6e]">{t.sub}</span>
+                      <span className="block font-display font-bold">{t.label}</span>
+                      <span className="block text-sm text-fg-muted">{t.sub}</span>
                     </span>
                   </SelectCard>
                 ))}
@@ -205,19 +210,19 @@ export default function StartFunnel() {
               <div className="flex flex-col gap-3 mb-3">
                 {PAINS.map((p) => (
                   <SelectCard key={p.id} selected={pains.includes(p.id)} onClick={() => togglePain(p.id)} multi>
-                    <FunnelIcon name={p.icon} className="w-5 h-5 mr-3 shrink-0 text-[#c9a961]" />
+                    <FunnelIcon name={p.icon} className="w-5 h-5 mr-3 shrink-0 text-neon-gold" />
                     <span className="min-w-0">{p.label}</span>
                   </SelectCard>
                 ))}
               </div>
               <div className="relative mb-8">
-                <FunnelIcon name="pencil" className="w-5 h-5 text-[#c9a961] absolute left-5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                <FunnelIcon name="pencil" className="w-5 h-5 text-neon-gold absolute left-5 top-1/2 -translate-y-1/2 pointer-events-none" />
                 <input
                   type="text"
                   value={painsOther}
                   onChange={(e) => setPainsOther(e.target.value)}
                   placeholder="Sonstiges …"
-                  className="w-full pl-12 pr-5 py-4 rounded-2xl border border-[#e8d9b8] bg-white text-[#2a2520] placeholder:text-[#8a7a6e]/60 focus:outline-none focus:border-[#c9a961] transition-colors"
+                  className="w-full pl-12 pr-5 py-4 rounded-2xl border border-line bg-panel text-fg placeholder:text-fg-muted/60 focus:outline-none focus:border-neon-gold transition-colors"
                 />
               </div>
               <StepFooter onNext={next} disabled={false} label={pains.length || painsOther.trim() ? 'Weiter' : 'Kenne ich alles nicht, weiter'} />
@@ -235,27 +240,27 @@ export default function StartFunnel() {
                     selected={method === m.id}
                     onClick={() => { setMethod(m.id); setMethodOther(''); }}
                   >
-                    <FunnelIcon name={m.icon} className="w-5 h-5 mr-3 shrink-0 text-[#c9a961]" />
+                    <FunnelIcon name={m.icon} className="w-5 h-5 mr-3 shrink-0 text-neon-gold" />
                     <span className="min-w-0">{m.label}</span>
                   </SelectCard>
                 ))}
               </div>
               <div className="relative mb-6">
-                <FunnelIcon name="pencil" className="w-5 h-5 text-[#c9a961] absolute left-5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                <FunnelIcon name="pencil" className="w-5 h-5 text-neon-gold absolute left-5 top-1/2 -translate-y-1/2 pointer-events-none" />
                 <input
                   type="text"
                   value={methodOther}
                   onChange={(e) => { setMethodOther(e.target.value); if (e.target.value) setMethod(null); }}
                   placeholder="Sonstiges …"
-                  className="w-full pl-12 pr-5 py-4 rounded-2xl border border-[#e8d9b8] bg-white text-[#2a2520] placeholder:text-[#8a7a6e]/60 focus:outline-none focus:border-[#c9a961] transition-colors"
+                  className="w-full pl-12 pr-5 py-4 rounded-2xl border border-line bg-panel text-fg placeholder:text-fg-muted/60 focus:outline-none focus:border-neon-gold transition-colors"
                 />
               </div>
               {method && (
-                <div className="rounded-2xl bg-[#2a2520] text-[#faf6f0] px-5 py-4 mb-8 animate-fade-in">
-                  <p className="text-sm leading-relaxed">
+                <Card tone="party" tilt={-1} className="mb-8 animate-fade-in border-magenta/40">
+                  <p className="text-sm leading-relaxed text-fg">
                     {METHODS.find((m) => m.id === method)?.jab}
                   </p>
-                </div>
+                </Card>
               )}
               <StepFooter onNext={next} disabled={!method && !methodOther.trim()} label="Weiter" />
             </div>
@@ -303,7 +308,7 @@ export default function StartFunnel() {
                   type="date"
                   value={date}
                   onChange={(e) => setDate(e.target.value)}
-                  className="w-full px-4 py-3.5 rounded-2xl border border-[#e8d9b8] bg-white text-[#2a2520] focus:outline-none focus:border-[#c9a961] transition-colors"
+                  className="w-full px-4 py-3.5 rounded-2xl border border-line bg-panel text-fg focus:outline-none focus:border-neon-gold transition-colors"
                 />
               </div>
               <StepFooter onNext={next} disabled={!date} label="Mein Event ist startklar →" />
@@ -313,20 +318,20 @@ export default function StartFunnel() {
           {/* Step 6, Finish / Hype + CTA */}
           {step === 6 && (
             <div className="m-auto text-center animate-fade-up">
-              <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-[#c9a961]/15 border border-[#c9a961]/40 mb-6">
-                <FunnelIcon name="check" className="w-8 h-8 text-[#c9a961]" />
+              <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-neon-gold/15 border border-neon-gold/40 mb-6 glow-gold">
+                <FunnelIcon name="check" className="w-8 h-8 text-neon-gold" />
               </div>
-              <p className="text-[11px] font-semibold uppercase tracking-widest text-[#c9a961] mb-3">
+              <p className="text-[11px] font-mono font-semibold uppercase tracking-widest text-neon-gold mb-3">
                 Dein Event ist angelegt
               </p>
-              <h1 className="font-serif text-3xl md:text-4xl font-bold leading-tight mb-4">
+              <h1 className="font-display text-3xl md:text-4xl font-black uppercase leading-tight mb-4 text-glow-gold">
                 „{title.trim() || 'Dein Event'}" wartet auf dich.
               </h1>
-              <p className="text-[#8a7a6e] text-lg leading-relaxed mb-8 max-w-md mx-auto">
+              <p className="text-fg-muted text-lg leading-relaxed mb-8 max-w-md mx-auto">
                 QR-Code, Live-Voting und dein DJ-Screen sind eingerichtet. Sichere dir dein Event kostenlos, dann liegt es startklar in deinem Dashboard.
               </p>
 
-              <div className="rounded-2xl border border-[#e8d9b8] bg-white/60 px-6 py-5 mb-8 text-left max-w-md mx-auto">
+              <Card tone="party" tilt={-1} className="mb-8 text-left max-w-md mx-auto">
                 <ul className="flex flex-col gap-2.5 text-sm">
                   {[
                     'Live-Voting per QR, kein Download für deine Gäste',
@@ -335,20 +340,17 @@ export default function StartFunnel() {
                     'Free für immer, keine Kreditkarte',
                   ].map((f) => (
                     <li key={f} className="flex items-start gap-2.5">
-                      <span className="text-[#c9a961] mt-px">✓</span>
-                      <span>{f}</span>
+                      <span className="text-neon-gold mt-px">✓</span>
+                      <span className="text-fg">{f}</span>
                     </li>
                   ))}
                 </ul>
-              </div>
+              </Card>
 
-              <button
-                onClick={finish}
-                className="px-8 py-4 rounded-full bg-[#c9a961] text-white font-semibold text-sm hover:bg-[#b8953a] transition-colors shadow-sm"
-              >
+              <Button onClick={finish} variant="primary" tone="party" size="lg" tilt>
                 Event kostenlos sichern
-              </button>
-              <p className="text-xs text-[#8a7a6e] mt-4">
+              </Button>
+              <p className="text-xs text-fg-muted mt-4">
                 Pilot-Saison 2026, gerade kostenlos. Anmeldung in 20 Sekunden.
               </p>
             </div>
@@ -364,9 +366,9 @@ export default function StartFunnel() {
 function StepHeader({ eyebrow, title, sub }: { eyebrow: string; title: string; sub?: string }) {
   return (
     <div className="mb-7">
-      <p className="text-[11px] font-semibold uppercase tracking-widest text-[#c9a961] mb-3">{eyebrow}</p>
-      <h2 className="font-serif text-2xl md:text-3xl font-bold leading-tight">{title}</h2>
-      {sub && <p className="text-[#8a7a6e] text-sm mt-2">{sub}</p>}
+      <p className="text-[11px] font-mono font-semibold uppercase tracking-widest text-neon-gold mb-3">{eyebrow}</p>
+      <h2 className="font-display text-2xl md:text-3xl font-black uppercase leading-tight">{title}</h2>
+      {sub && <p className="text-fg-muted text-sm mt-2">{sub}</p>}
     </div>
   );
 }
@@ -385,15 +387,15 @@ function SelectCard({
       onClick={onClick}
       className={`w-full flex items-center text-left px-5 py-4 rounded-2xl border transition-all active:scale-[0.99] ${
         selected
-          ? 'border-[#c9a961] bg-[#c9a961]/10 ring-1 ring-[#c9a961]'
-          : 'border-[#e8d9b8] bg-white hover:border-[#c9a961]/60'
+          ? 'border-magenta bg-magenta/10 ring-1 ring-magenta glow-magenta'
+          : 'border-line bg-panel hover:border-magenta/60'
       }`}
     >
       <span className="flex-1 flex items-center min-w-0">{children}</span>
       <span
         className={`shrink-0 ml-3 w-5 h-5 flex items-center justify-center border transition-colors ${
           multi ? 'rounded-md' : 'rounded-full'
-        } ${selected ? 'bg-[#c9a961] border-[#c9a961] text-white' : 'border-[#c9a961]/40 text-transparent'}`}
+        } ${selected ? 'bg-magenta border-magenta text-white' : 'border-neon-gold/40 text-transparent'}`}
       >
         <svg viewBox="0 0 20 20" fill="currentColor" className="w-3 h-3">
           <path fillRule="evenodd" d="M16.704 5.29a1 1 0 010 1.42l-7.5 7.5a1 1 0 01-1.42 0l-3.5-3.5a1 1 0 011.42-1.42l2.79 2.79 6.79-6.79a1 1 0 011.42 0z" clipRule="evenodd" />
@@ -406,14 +408,9 @@ function SelectCard({
 function StepFooter({ onNext, disabled, label }: { onNext: () => void; disabled: boolean; label: string }) {
   return (
     <div className="mt-auto">
-      <button
-        type="button"
-        onClick={onNext}
-        disabled={disabled}
-        className="w-full py-3.5 rounded-full bg-[#c9a961] text-white font-semibold text-sm hover:bg-[#b8953a] transition-colors shadow-sm disabled:opacity-40 disabled:cursor-not-allowed"
-      >
+      <Button type="button" onClick={onNext} disabled={disabled} variant="primary" tone="party" size="lg" tilt className="w-full">
         {label}
-      </button>
+      </Button>
     </div>
   );
 }
@@ -421,12 +418,12 @@ function StepFooter({ onNext, disabled, label }: { onNext: () => void; disabled:
 function RevealRow({ big, title, text }: { big: string; title: string; text: string }) {
   return (
     <div className="flex gap-4 items-start">
-      <span className="shrink-0 w-12 h-12 rounded-2xl bg-[#c9a961]/15 border border-[#c9a961]/30 flex items-center justify-center font-serif font-bold text-[#c9a961]">
+      <span className="shrink-0 w-12 h-12 rounded-2xl bg-neon-gold/15 border border-neon-gold/30 flex items-center justify-center font-display font-bold text-neon-gold">
         {big}
       </span>
       <div>
-        <p className="font-semibold mb-0.5">{title}</p>
-        <p className="text-sm text-[#8a7a6e] leading-relaxed">{text}</p>
+        <p className="font-semibold mb-0.5 text-fg">{title}</p>
+        <p className="text-sm text-fg-muted leading-relaxed">{text}</p>
       </div>
     </div>
   );
