@@ -3,6 +3,11 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useParams } from 'next/navigation';
 import { usePolling } from '@/app/lib/use-polling';
+import { Button, Card, Input } from '@/app/components/ui';
+
+function cx(...parts: (string | false | undefined | null)[]) {
+  return parts.filter(Boolean).join(' ');
+}
 
 interface Event {
   id: number;
@@ -203,11 +208,11 @@ export default function GuestPage() {
 
   if (notFound) {
     return (
-      <div className="min-h-screen bg-cream flex items-center justify-center p-8">
+      <div className="min-h-screen bg-rave-gradient flex items-center justify-center p-8">
         <div className="text-center">
-          <p className="text-gold text-5xl mb-4">♪</p>
-          <h1 className="font-serif text-3xl font-semibold text-ink mb-2">Event nicht gefunden</h1>
-          <p className="text-muted">Bitte überprüfe den Link.</p>
+          <p className="text-neon-gold text-glow-gold text-5xl mb-4">♪</p>
+          <h1 className="font-display text-3xl font-extrabold uppercase text-fg mb-2">Event nicht gefunden</h1>
+          <p className="text-fg-muted">Bitte überprüfe den Link.</p>
         </div>
       </div>
     );
@@ -217,7 +222,7 @@ export default function GuestPage() {
   const played = songs.filter((s) => s.played);
 
   return (
-    <div className="min-h-screen bg-cream">
+    <div className="min-h-screen bg-rave-gradient">
       {/* Header */}
       <div className="text-center pb-6 px-4 safe-top-pad-10">
         {event?.branding_logo_url ? (
@@ -228,11 +233,11 @@ export default function GuestPage() {
             className="mx-auto mb-2 h-10 w-auto object-contain"
           />
         ) : (
-          <p className="text-gold text-3xl mb-1">♪</p>
+          <p className="text-neon-gold text-glow-gold text-3xl mb-1">♪</p>
         )}
-        <h1 className="font-serif text-4xl font-semibold text-ink">{event?.title ?? 'Musikwünsche'}</h1>
+        <h1 className="font-display text-4xl font-extrabold uppercase text-fg text-glow-gold">{event?.title ?? 'Musikwünsche'}</h1>
         {event?.branding_name && (
-          <p className="text-muted text-xs uppercase tracking-widest mt-1.5">
+          <p className="font-mono text-fg-muted text-xs uppercase tracking-widest mt-1.5">
             {event.branding_name}
           </p>
         )}
@@ -241,7 +246,7 @@ export default function GuestPage() {
       {/* Flash message */}
       {message && (
         <div className={`mx-4 mb-4 rounded-2xl px-4 py-3 text-center text-sm font-medium animate-fade-up max-w-lg mx-auto ${
-          message.ok ? 'bg-emerald-50 text-emerald-800' : 'bg-red-50 text-red-700'
+          message.ok ? 'bg-success-bg text-success border border-success/40' : 'bg-danger-bg text-danger border border-danger/40'
         }`}>
           {message.text}
         </div>
@@ -249,57 +254,63 @@ export default function GuestPage() {
 
       {/* Input card */}
       <div className="px-4 max-w-lg mx-auto mb-8">
-        <div className="bg-ivory rounded-3xl p-5 shadow-sm border border-champagne">
+        <Card tone="party" tilt={-1}>
           {manualMode ? (
             <div className="space-y-3">
               <div className="flex items-center justify-between mb-1">
-                <span className="text-muted text-sm">Manuell eingeben</span>
-                <button type="button" onClick={() => { setManualMode(false); setManualTitle(''); setManualArtist(''); }} className="text-gold text-sm hover:underline">
+                <span className="font-mono text-fg-muted text-xs uppercase tracking-widest">Manuell eingeben</span>
+                <button type="button" onClick={() => { setManualMode(false); setManualTitle(''); setManualArtist(''); }} className="text-neon-gold text-sm hover:underline">
                   ← Suche
                 </button>
               </div>
-              <input type="text" placeholder="Songtitel" value={manualTitle} onChange={(e) => setManualTitle(e.target.value)} maxLength={200}
-                className="w-full px-4 py-4 rounded-2xl border border-champagne bg-cream text-ink text-lg placeholder:text-muted/50 focus:outline-none focus:border-gold transition-colors" />
-              <input type="text" placeholder="Künstler / Band" value={manualArtist} onChange={(e) => setManualArtist(e.target.value)} maxLength={200}
-                className="w-full px-4 py-4 rounded-2xl border border-champagne bg-cream text-ink text-lg placeholder:text-muted/50 focus:outline-none focus:border-gold transition-colors" />
-              <button type="button" disabled={submitting || !manualTitle.trim() || !manualArtist.trim()}
+              <Input type="text" placeholder="Songtitel" value={manualTitle} onChange={(e) => setManualTitle(e.target.value)} maxLength={200}
+                className="text-lg py-4" />
+              <Input type="text" placeholder="Künstler / Band" value={manualArtist} onChange={(e) => setManualArtist(e.target.value)} maxLength={200}
+                className="text-lg py-4" />
+              <Button
+                type="button"
+                tone="party"
+                size="lg"
+                tilt
+                disabled={submitting || !manualTitle.trim() || !manualArtist.trim()}
                 onClick={() => submitSong({ title: manualTitle.trim(), artist: manualArtist.trim() })}
-                className="w-full py-4 bg-gold text-cream rounded-2xl text-lg font-semibold tracking-wide hover:opacity-90 active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed transition-all">
+                className="w-full"
+              >
                 {submitting ? 'Wird eingereicht…' : '♪  Vorschlagen'}
-              </button>
+              </Button>
             </div>
           ) : (
             <div className="relative" ref={dropdownRef}>
               <div className="relative">
-                <input type="text" placeholder="Song suchen…" value={query} onChange={handleSearchChange}
+                <Input type="text" placeholder="Song suchen…" value={query} onChange={handleSearchChange}
                   onFocus={() => { if (searchResults.length > 0) setShowDropdown(true); }}
-                  className="w-full px-4 py-4 rounded-2xl border border-champagne bg-cream text-ink text-lg placeholder:text-muted/50 focus:outline-none focus:border-gold transition-colors pr-10" />
+                  className="text-lg py-4 pr-10" />
                 {searching && (
                   <div className="absolute right-4 top-1/2 -translate-y-1/2">
-                    <div className="w-4 h-4 border-2 border-gold border-t-transparent rounded-full animate-spin" />
+                    <div className="w-4 h-4 border-2 border-neon-gold border-t-transparent rounded-full animate-spin" />
                   </div>
                 )}
               </div>
               {showDropdown && searchResults.length > 0 && (
-                <div className="absolute z-10 left-0 right-0 mt-1 bg-ivory border border-champagne rounded-2xl shadow-lg overflow-hidden">
+                <div className="absolute z-10 left-0 right-0 mt-1 bg-panel-elevated border border-line rounded-2xl shadow-lg shadow-black/30 overflow-hidden">
                   {searchResults.map((result) => (
                     <button key={result.deezerId} type="button" onMouseDown={(e) => e.preventDefault()}
                       onClick={() => handleSelectResult(result)}
-                      className="w-full flex items-center gap-3 px-4 py-3 hover:bg-cream transition-colors text-left">
+                      className="w-full flex items-center gap-3 px-4 py-3 hover:bg-panel transition-colors text-left">
                       {result.albumArt && (
                         // eslint-disable-next-line @next/next/no-img-element
                         <img src={result.albumArt} alt={result.title} width={40} height={40} className="rounded-lg shrink-0 object-cover" />
                       )}
                       <div className="min-w-0">
-                        <p className="font-medium text-ink text-sm truncate">{result.title}</p>
-                        <p className="text-muted text-xs truncate">{result.artist}</p>
+                        <p className="font-medium text-fg text-sm truncate">{result.title}</p>
+                        <p className="text-fg-muted text-xs truncate">{result.artist}</p>
                       </div>
                     </button>
                   ))}
-                  <div className="border-t border-champagne px-4 py-2">
+                  <div className="border-t border-line px-4 py-2">
                     <button type="button" onMouseDown={(e) => e.preventDefault()}
                       onClick={() => { setShowDropdown(false); setManualMode(true); }}
-                      className="text-muted text-xs hover:text-gold transition-colors">
+                      className="text-fg-muted text-xs hover:text-neon-gold transition-colors">
                       Song nicht gefunden? Manuell eingeben →
                     </button>
                   </div>
@@ -307,27 +318,27 @@ export default function GuestPage() {
               )}
               {!showDropdown && query.length >= 2 && !searching && (
                 <div className="mt-2 text-center">
-                  <button type="button" onClick={() => setManualMode(true)} className="text-muted text-sm hover:text-gold transition-colors">
+                  <button type="button" onClick={() => setManualMode(true)} className="text-fg-muted text-sm hover:text-neon-gold transition-colors">
                     Song nicht gefunden? Manuell eingeben →
                   </button>
                 </div>
               )}
             </div>
           )}
-        </div>
+        </Card>
       </div>
 
       {/* Song list */}
       <div className="px-4 max-w-lg mx-auto pb-16">
         {loading ? (
-          <p className="text-center text-muted py-8">Lädt…</p>
+          <p className="text-center text-fg-muted py-8">Lädt…</p>
         ) : songs.length === 0 ? (
-          <p className="text-center text-muted py-8">Noch keine Vorschläge – sei der Erste! 🎶</p>
+          <p className="text-center text-fg-muted py-8">Noch keine Vorschläge – sei der Erste! 🎶</p>
         ) : (
           <>
-            <h2 className="font-serif text-xl text-ink text-center mb-4">
+            <h2 className="font-display text-xl font-extrabold uppercase text-fg text-center mb-4">
               Wunschliste
-              {unplayed.length > 0 && <span className="ml-2 text-gold text-base font-normal">({unplayed.length})</span>}
+              {unplayed.length > 0 && <span className="ml-2 text-neon-gold text-base font-normal normal-case">({unplayed.length})</span>}
             </h2>
             <div className="space-y-2">
               {unplayed.map((song, i) => (
@@ -338,9 +349,9 @@ export default function GuestPage() {
             {played.length > 0 && (
               <div className="mt-6">
                 <div className="flex items-center gap-3 mb-3">
-                  <div className="flex-1 h-px bg-champagne" />
-                  <span className="text-muted text-xs uppercase tracking-widest">Gespielt</span>
-                  <div className="flex-1 h-px bg-champagne" />
+                  <div className="flex-1 h-px bg-line" />
+                  <span className="font-mono text-fg-muted text-xs uppercase tracking-widest">Gespielt</span>
+                  <div className="flex-1 h-px bg-line" />
                 </div>
                 <div className="space-y-2 opacity-40">
                   {played.map((song) => (
@@ -367,24 +378,28 @@ function SongCard({
   onRetract: (song: Song) => void;
   retracting: boolean;
 }) {
+  const tiltClass = rank !== null ? (rank % 2 === 0 ? 'tilt-r' : 'tilt-l') : '';
   return (
-    <div className="bg-ivory rounded-2xl p-4 flex items-center gap-3 border border-champagne shadow-sm animate-fade-up">
+    <div className={cx(
+      'bg-panel rounded-2xl p-4 flex items-center gap-3 border border-line shadow-lg shadow-black/20 animate-fade-up',
+      tiltClass
+    )}>
       {song.album_art_url ? (
         // eslint-disable-next-line @next/next/no-img-element
         <img src={song.album_art_url} alt={song.title} width={40} height={40} className="rounded-xl shrink-0 object-cover" />
       ) : rank !== null ? (
-        <span className="font-serif text-champagne text-xl font-bold w-10 text-center shrink-0">{rank}</span>
+        <span className="font-display text-magenta text-xl font-black w-10 text-center shrink-0">{rank}</span>
       ) : null}
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-1.5 flex-wrap">
-          <p className="font-medium text-ink text-base truncate">{song.title}</p>
+          <p className="font-medium text-fg text-base truncate">{song.title}</p>
         </div>
-        <p className="text-muted text-sm truncate">{song.artist}</p>
+        <p className="text-fg-muted text-sm truncate">{song.artist}</p>
         {song.is_mine && !song.played && (
           <button
             onClick={() => onRetract(song)}
             disabled={retracting}
-            className="text-xs text-muted/50 hover:text-red-400 transition-colors mt-0.5 disabled:opacity-40"
+            className="text-xs text-fg-muted/60 hover:text-danger transition-colors mt-0.5 disabled:opacity-40"
           >
             {retracting ? 'Wird zurückgenommen…' : 'Zurücknehmen'}
           </button>
@@ -397,7 +412,7 @@ function SongCard({
         className={`
           flex items-center gap-1.5 px-4 py-2.5 rounded-xl font-semibold text-base min-w-[4.5rem]
           justify-center transition-all active:scale-90 shrink-0
-          ${song.has_voted ? 'bg-gold text-cream shadow-sm' : 'bg-cream text-muted border border-champagne hover:border-gold hover:text-gold'}
+          ${song.has_voted ? 'bg-neon-gold text-base glow-gold' : 'bg-panel text-fg-muted border border-line hover:border-neon-gold hover:text-neon-gold'}
           ${voting ? 'opacity-50 cursor-wait' : ''}
           ${song.played ? 'pointer-events-none' : ''}
         `}
