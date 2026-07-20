@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { CalmScope, NavBar, Badge } from '@/app/components/ui';
 
 export const metadata = {
   title: 'Impressum · BeatControl',
@@ -7,25 +8,23 @@ export const metadata = {
 
 export default function ImpressumPage() {
   return (
-    <div className="min-h-screen bg-[#faf6f0] text-[#2a2520] font-sans">
-      <nav className="sticky top-0 z-40 bg-[#faf6f0]/90 backdrop-blur border-b border-[#e8d9b8]">
-        <div className="max-w-3xl mx-auto px-4 h-14 flex items-center justify-between">
-          <Link href="/" className="font-serif text-xl font-bold tracking-tight hover:text-[#c9a961] transition-colors">
-            BeatControl
-          </Link>
-          <Link href="/" className="text-sm text-[#8a7a6e] hover:text-[#c9a961] transition-colors">
-            ← Zurück zur Startseite
-          </Link>
-        </div>
-      </nav>
+    <CalmScope className="min-h-screen bg-base text-fg font-sans">
+      <NavBar tone="calm">
+        <Link href="/" className="font-display text-xl font-bold tracking-tight hover:text-neon-gold transition-colors">
+          BeatControl
+        </Link>
+        <Link href="/" className="text-sm text-fg-muted hover:text-neon-gold transition-colors">
+          ← Zurück zur Startseite
+        </Link>
+      </NavBar>
 
       <main className="max-w-3xl mx-auto px-4 py-16">
-        <p className="text-xs font-semibold uppercase tracking-widest text-[#c9a961] mb-4">Rechtliches</p>
-        <h1 className="font-serif text-4xl md:text-5xl font-bold mb-10">Impressum</h1>
+        <Badge color="gold" tone="calm" className="mb-4">Rechtliches</Badge>
+        <h1 className="font-display text-3xl md:text-4xl font-bold mb-10">Impressum</h1>
 
-        <div className="space-y-10 text-[#2a2520] leading-relaxed">
+        <div className="space-y-10 text-fg leading-relaxed">
           <section>
-            <h2 className="font-serif text-xl font-bold mb-3">Angaben gemäß § 5 TMG</h2>
+            <h2 className="font-display text-xl font-bold mb-3">Angaben gemäß § 5 TMG</h2>
             <p>
               Spotlight Eventtechnik<br />
               Inhaber: Robin Bauer<br />
@@ -36,24 +35,24 @@ export default function ImpressumPage() {
           </section>
 
           <section>
-            <h2 className="font-serif text-xl font-bold mb-3">Kontakt</h2>
+            <h2 className="font-display text-xl font-bold mb-3">Kontakt</h2>
             <p>
               E-Mail:{' '}
-              <a href="mailto:info@spotlight-eventtechnik.com" className="text-[#c9a961] hover:underline">
+              <a href="mailto:info@spotlight-eventtechnik.com" className="text-neon-gold hover:underline">
                 info@spotlight-eventtechnik.com
               </a>
             </p>
           </section>
 
           <section>
-            <h2 className="font-serif text-xl font-bold mb-3">Umsatzsteuer</h2>
+            <h2 className="font-display text-xl font-bold mb-3">Umsatzsteuer</h2>
             <p>
               Kleinunternehmer im Sinne von § 19 UStG. Es wird daher keine Umsatzsteuer ausgewiesen.
             </p>
           </section>
 
           <section>
-            <h2 className="font-serif text-xl font-bold mb-3">
+            <h2 className="font-display text-xl font-bold mb-3">
               Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV
             </h2>
             <p>
@@ -64,14 +63,14 @@ export default function ImpressumPage() {
           </section>
 
           <section>
-            <h2 className="font-serif text-xl font-bold mb-3">EU-Streitschlichtung</h2>
+            <h2 className="font-display text-xl font-bold mb-3">EU-Streitschlichtung</h2>
             <p className="mb-3">
               Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS) bereit:{' '}
               <a
                 href="https://ec.europa.eu/consumers/odr/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-[#c9a961] hover:underline"
+                className="text-neon-gold hover:underline"
               >
                 https://ec.europa.eu/consumers/odr/
               </a>
@@ -81,7 +80,7 @@ export default function ImpressumPage() {
           </section>
 
           <section>
-            <h2 className="font-serif text-xl font-bold mb-3">
+            <h2 className="font-display text-xl font-bold mb-3">
               Verbraucherstreitbeilegung / Universalschlichtungsstelle
             </h2>
             <p>
@@ -90,7 +89,7 @@ export default function ImpressumPage() {
           </section>
 
           <section>
-            <h2 className="font-serif text-xl font-bold mb-3">Haftung für Inhalte</h2>
+            <h2 className="font-display text-xl font-bold mb-3">Haftung für Inhalte</h2>
             <p className="mb-3">
               Als Diensteanbieter sind wir gemäß § 7 Abs. 1 TMG für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich. Nach §§ 8 bis 10 TMG sind wir als Diensteanbieter jedoch nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen zu überwachen oder nach Umständen zu forschen, die auf eine rechtswidrige Tätigkeit hinweisen.
             </p>
@@ -100,26 +99,26 @@ export default function ImpressumPage() {
           </section>
 
           <section>
-            <h2 className="font-serif text-xl font-bold mb-3">Haftung für Links</h2>
+            <h2 className="font-display text-xl font-bold mb-3">Haftung für Links</h2>
             <p>
               Unser Angebot enthält ggf. Links zu externen Websites Dritter, auf deren Inhalte wir keinen Einfluss haben. Deshalb können wir für diese fremden Inhalte auch keine Gewähr übernehmen. Für die Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter oder Betreiber der Seiten verantwortlich. Eine permanente inhaltliche Kontrolle der verlinkten Seiten ist ohne konkrete Anhaltspunkte einer Rechtsverletzung nicht zumutbar. Bei Bekanntwerden von Rechtsverletzungen werden wir derartige Links umgehend entfernen.
             </p>
           </section>
 
           <section>
-            <h2 className="font-serif text-xl font-bold mb-3">Urheberrecht</h2>
+            <h2 className="font-display text-xl font-bold mb-3">Urheberrecht</h2>
             <p>
               Die durch die Seitenbetreiber erstellten Inhalte und Werke auf diesen Seiten unterliegen dem deutschen Urheberrecht. Die Vervielfältigung, Bearbeitung, Verbreitung und jede Art der Verwertung außerhalb der Grenzen des Urheberrechtes bedürfen der schriftlichen Zustimmung des jeweiligen Autors bzw. Erstellers.
             </p>
           </section>
         </div>
 
-        <div className="mt-16 pt-8 border-t border-[#e8d9b8]">
-          <Link href="/" className="text-sm text-[#c9a961] hover:underline">
+        <div className="mt-16 pt-8 border-t border-line">
+          <Link href="/" className="text-sm text-neon-gold hover:underline">
             ← Zurück zur Startseite
           </Link>
         </div>
       </main>
-    </div>
+    </CalmScope>
   );
 }
