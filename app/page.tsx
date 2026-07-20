@@ -4,7 +4,7 @@ import { useState, useEffect, useRef, useCallback, type ReactNode } from 'react'
 import Link from 'next/link';
 import { QRCodeSVG } from 'qrcode.react';
 import { useBranding } from '@/app/lib/branding-context';
-import { Card, Badge, NavBar, buttonVariants } from '@/app/components/ui';
+import { Card, Badge, NavBar, Reveal, ConfettiCanvas, Accordion, buttonVariants } from '@/app/components/ui';
 
 type Cycle = 'yearly' | 'monthly';
 type Audience = 'hochzeit' | 'geburtstag' | 'firma';
@@ -132,6 +132,27 @@ const COPY: Record<Audience, {
       'DJs setzen BeatControl längst auf echten Firmenfeiern ein und sehen mit einem Blick, welcher Song die Leute hält. Starte kostenlos und sei bei deinem nächsten Gig dabei.',
   },
 };
+
+// Je Audience sind die 3 Pain-Cards konzeptionell gleich sortiert: 0 = welcher
+// Song ist der richtige (Unsicherheit), 1 = keiner gibt dir Signal, 2 = die
+// Konsequenz wenn's schiefgeht. Icons folgen dieser Reihenfolge, nicht dem Text.
+const PAIN_ICON_PATHS: ReactNode[] = [
+  <>
+    <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.5" />
+    <path d="M9.5 9a2.5 2.5 0 014.9.8c0 1.7-2.4 2-2.4 3.7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    <circle cx="12" cy="16.5" r="1" fill="currentColor" stroke="none" />
+  </>,
+  <>
+    <path d="M9 17a3 3 0 006 0" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    <path d="M6 17h12l-1.5-2.5V10a4.5 4.5 0 00-4-4.47V4a1 1 0 10-2 0v1.53A4.5 4.5 0 007.5 10v4.5L6 17z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
+    <line x1="4" y1="4" x2="20" y2="20" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+  </>,
+  <>
+    <path d="M12 4l9 16H3l9-16z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
+    <line x1="12" y1="10" x2="12" y2="14" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    <circle cx="12" cy="17" r="0.8" fill="currentColor" stroke="none" />
+  </>,
+];
 
 function track(event_type: string, tier_clicked?: string) {
   fetch('/api/analytics', {
@@ -278,11 +299,13 @@ export default function LandingPage() {
       </NavBar>
 
       {/* Hero */}
-      <section className="max-w-6xl mx-auto px-4 py-20 md:py-28">
-        <div className="grid md:grid-cols-2 gap-16 items-center">
+      <section className="relative overflow-hidden max-w-6xl mx-auto px-4 py-20 md:py-28">
+        <ConfettiCanvas className="absolute inset-0 z-0" />
+        <div className="relative z-10 grid md:grid-cols-2 gap-16 items-center">
         <div>
-          <h1 className="font-display text-5xl md:text-6xl font-bold uppercase leading-[1.1] mb-6 text-glow-gold">
-            Dein Gespür für die Tanzfläche.<br />Von den Gästen bestätigt
+          <h1 className="font-display font-bold uppercase leading-[1.05] mb-4">
+            <span className="block text-4xl sm:text-5xl md:text-6xl text-glow-gold">Dein Gespür für die Tanzfläche.</span>
+            <span className="block text-xl sm:text-2xl md:text-3xl text-fg-muted mt-2 normal-case font-semibold">Von den Gästen bestätigt.</span>
           </h1>
           <p className="text-fg-muted text-lg leading-relaxed mb-8">
             {c.heroSub}
@@ -291,7 +314,7 @@ export default function LandingPage() {
             <Link
               href="/start"
               onClick={() => trackCta('free')}
-              className={buttonVariants({ variant: 'primary', size: 'lg', tilt: true })}
+              className={buttonVariants({ variant: 'primary', size: 'lg' })}
             >
               Kostenlos ausprobieren
             </Link>
@@ -426,6 +449,7 @@ export default function LandingPage() {
 
       {/* Pain section */}
       <section className="max-w-4xl mx-auto px-4 py-24">
+        <Reveal>
         <p className="text-xs font-mono font-semibold uppercase tracking-widest text-magenta mb-6 text-center">
           {c.painEyebrow}
         </p>
@@ -433,30 +457,36 @@ export default function LandingPage() {
           {c.painH2}
         </h2>
         <div className="grid md:grid-cols-3 gap-10">
-          {c.painCards.map(({ label, text }) => (
+          {c.painCards.map(({ label, text }, i) => (
             <Card key={label} tone="party">
+              <svg viewBox="0 0 24 24" fill="none" className="w-7 h-7 mb-4 text-magenta" aria-hidden="true">
+                {PAIN_ICON_PATHS[i]}
+              </svg>
               <h3 className="font-display font-bold uppercase text-sm mb-3 text-neon-gold">{label}</h3>
               <p className="text-sm text-fg-muted leading-relaxed">{text}</p>
             </Card>
           ))}
         </div>
+        </Reveal>
       </section>
 
       {/* Transition */}
       <section className="bg-base text-fg py-20 text-center">
-        <div className="max-w-2xl mx-auto px-4">
+        <Reveal className="max-w-2xl mx-auto px-4">
           <h2 className="font-display text-3xl md:text-4xl font-bold uppercase leading-tight mb-6 text-glow-gold">
             {c.transitionH2}
           </h2>
           <p className="text-fg-muted text-lg leading-relaxed">
             {c.transitionBody}
           </p>
-        </div>
+        </Reveal>
       </section>
 
       {/* How it works */}
       <section className="max-w-4xl mx-auto px-4 py-24">
+        <Reveal>
         <h2 className="font-display text-3xl font-bold uppercase text-center mb-16">In drei Schritten zum sicheren Song</h2>
+        </Reveal>
         <div className="grid md:grid-cols-3 gap-12">
           {[
             {
@@ -474,66 +504,19 @@ export default function LandingPage() {
               title: 'Du greifst zu',
               desc: 'Ein Blick aufs iPad im Übergang, Song in Rekordbox oder Serato laden, auflegen. Passt er gerade nicht? Weg damit, ohne ein Wort. Du behältst das letzte Wort wie immer.',
             },
-          ].map(({ step, title, desc }) => (
-            <div key={step}>
+          ].map(({ step, title, desc }, i) => (
+            <Reveal key={step} delay={i * 120}>
               <p className="font-display text-6xl font-bold text-magenta/40 mb-5 leading-none">{step}</p>
               <h3 className="font-display font-bold uppercase mb-3 text-fg">{title}</h3>
               <p className="text-sm text-fg-muted leading-relaxed">{desc}</p>
-            </div>
+            </Reveal>
           ))}
-        </div>
-      </section>
-
-      {/* Control objection */}
-      <section className="bg-panel border-y border-line py-20">
-        <div className="max-w-4xl mx-auto px-4 grid md:grid-cols-2 gap-16 items-start">
-          <div>
-            <p className="text-magenta text-xs font-mono font-semibold uppercase tracking-widest mb-4">
-              Die häufigste Frage
-            </p>
-            <h2 className="font-display text-3xl font-bold uppercase leading-tight mb-6">
-              &ldquo;Übernehmen dann nicht die Gäste mein Set?&rdquo;
-            </h2>
-            <p className="text-fg-muted leading-relaxed mb-4">
-              Nein. BeatControl sagt dir, was die Leute wollen. Spielen tust immer noch du.
-            </p>
-            <p className="text-fg-muted leading-relaxed">
-              Passt ein Wunsch nicht in deinen Aufbau, ignorierst du ihn. Niemand kommt ans Pult, niemand sieht, wer was vorgeschlagen hat. Es ist kein Jukebox-Modus, bei dem die Gäste auf Play drücken. Es ist ein Spickzettel, den nur du liest.
-            </p>
-          </div>
-          <div className="flex flex-col gap-6 pt-1">
-            {[
-              {
-                title: 'Songs entfernen',
-                desc: 'Songs, die nicht in den Abend passen, entfernst du mit einem Klick. Kein Grund, keine Erklärung gegenüber dem Gast.',
-              },
-              {
-                title: 'Du spielst in deiner Software',
-                desc: 'BeatControl zeigt dir, was gewünscht wird. Den Song suchst du in Rekordbox, Serato oder deiner DJ-Software und spielst ihn selbst.',
-              },
-              {
-                title: 'Wünsche sind anonym',
-                desc: 'Alle sehen die Wunschliste und wie viele Votes ein Song hat. Wer was vorgeschlagen hat, bleibt anonym. Kein sozialer Druck, keine Konfrontation.',
-              },
-              {
-                title: 'Gespielt heißt gespielt',
-                desc: 'Du markierst einen Song in BeatControl als gespielt. Alle Gäste sehen das sofort. Du brauchst nichts zu erklären.',
-              },
-            ].map(({ title, desc }) => (
-              <div key={title} className="flex gap-4">
-                <div className="w-px bg-neon-gold self-stretch flex-shrink-0" />
-                <div>
-                  <p className="font-semibold text-sm mb-1 text-fg">{title}</p>
-                  <p className="text-sm text-fg-muted leading-relaxed">{desc}</p>
-                </div>
-              </div>
-            ))}
-          </div>
         </div>
       </section>
 
       {/* Von DJs für DJs, Herkunft statt erfundenem Testimonial */}
       <section className="max-w-3xl mx-auto px-4 py-24 text-center">
+        <Reveal>
         <p className="text-xs font-mono font-semibold uppercase tracking-widest text-magenta mb-6">
           Von DJs für DJs
         </p>
@@ -545,6 +528,7 @@ export default function LandingPage() {
           BeatControl entsteht nicht am Schreibtisch, sondern auf echten Hochzeiten. Jede Funktion kommt aus dem, was am Pult wirklich gebraucht wird, und wird mit DJs zusammen getestet. Was im Einsatz nicht hilft, fliegt wieder raus.
         </p>
         <div className="w-8 h-px bg-neon-gold mx-auto mt-8" />
+        </Reveal>
       </section>
 
       {/* Pricing */}
@@ -692,8 +676,52 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* Einwände, kompakt als Einwand→Entkräftung-Karten statt generischer Vertikallinien */}
+      <section className="bg-panel border-y border-line py-20">
+        <Reveal className="max-w-4xl mx-auto px-4">
+          <p className="text-magenta text-xs font-mono font-semibold uppercase tracking-widest mb-4 text-center">
+            Die häufigsten Einwände
+          </p>
+          <h2 className="font-display text-3xl font-bold uppercase leading-tight mb-4 text-center">
+            Kurz und ehrlich beantwortet
+          </h2>
+          <p className="text-fg-muted leading-relaxed mb-12 text-center max-w-xl mx-auto">
+            Ein Song, der wirklich zieht, füllt die Fläche. Volle Fläche heißt zufriedene Gäste — und zufriedene Gäste sind es, die dich weiterempfehlen.
+          </p>
+          <Accordion
+            items={[
+              {
+                question: '„Übernehmen die Gäste mein Set?"',
+                answer: 'Nein. Du entscheidest. BeatControl zeigt dir nur, was die Leute wollen. Gespielt wird, was du auflegst — genau wie immer.',
+              },
+              {
+                question: '„Was, wenn ein Wunsch nicht passt?"',
+                answer: 'Mit einem Klick weg. Songs, die nicht in den Abend passen, entfernst du sofort. Kein Grund, keine Erklärung gegenüber dem Gast.',
+              },
+              {
+                question: '„Muss ich in neuer Software spielen?"',
+                answer: 'Nein, deine gewohnte. Du spielst weiter in Rekordbox, Serato oder deiner DJ-Software. BeatControl zeigt dir nur, was gewünscht wird.',
+              },
+              {
+                question: '„Sehen Gäste, wer was wollte?"',
+                answer: 'Alles anonym. Alle sehen die Wunschliste und die Stimmen, aber nie, wer vorgeschlagen hat. Kein sozialer Druck.',
+              },
+              {
+                question: '„Hängen dann alle nur am Handy?"',
+                answer: 'Voten dauert 10 Sekunden. Kein Scrollen, keine App, kein Account. Kurz antippen, Handy wieder weg — dann wird getanzt.',
+              },
+              {
+                question: '„Noch ein Gerät neben Licht & Software?"',
+                answer: 'Läuft im Browser, auf deinem Laptop. Ein Tab neben Rekordbox oder Serato. Kein Zusatzgerät, kein neues Kabel am Pult.',
+              },
+            ]}
+          />
+        </Reveal>
+      </section>
+
       {/* Final CTA */}
       <section className="max-w-2xl mx-auto px-4 py-24 text-center">
+        <Reveal>
         <h2 className="font-display text-3xl md:text-4xl font-bold uppercase mb-4 text-glow-gold">
           Du bist in guter Gesellschaft
         </h2>
@@ -708,6 +736,7 @@ export default function LandingPage() {
           Jetzt kostenlos ausprobieren
         </Link>
         <p className="text-xs text-fg-muted mt-4">Free für immer · keine Kreditkarte nötig.</p>
+        </Reveal>
       </section>
 
       {/* Footer */}
