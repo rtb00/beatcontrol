@@ -1,7 +1,5 @@
 {
   "app/page.tsx": [
-    "#2a2520",
-    "#ffffff",
     "&ldquo;Übernehmen dann nicht die Gäste mein Set?&rdquo;",
     "/Hochzeit",
     "/Monat",
@@ -31,7 +29,6 @@
     "Jährlich −25%",
     "Kostenlos ausprobieren",
     "Live",
-    "M",
     "Monatlich",
     "Musikwünsche",
     "Nein. BeatControl sagt dir, was die Leute wollen. Spielen tust immer noch du.",
@@ -347,8 +344,6 @@
     "🎉"
   ],
   "app/dj/[slug]/page.tsx": [
-    "#2a2520",
-    "#ffffff",
     "Abbrechen",
     "CSV",
     "CSV exportieren",
@@ -364,7 +359,6 @@
     "Gäste-Karte herunterladen",
     "Live",
     "Lädt…",
-    "M",
     "Musikwünsche",
     "Noch keine Vorschläge.",
     "Pro",

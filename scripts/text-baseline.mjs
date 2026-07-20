@@ -62,6 +62,9 @@ const DOM_TEXT_ATTRS = new Set(['aria-label', 'title', 'alt', 'placeholder']);
 const COMPONENT_ATTR_EXCLUDE = new Set([
   'className', 'style', 'tone', 'variant', 'color', 'size', 'type', 'href',
   'id', 'key', 'ref', 'onClick', 'onChange', 'onSubmit', 'onKeyDown', 'disabled',
+  // Pure styling/color values on non-DOM components (e.g. QRCodeSVG's
+  // fgColor/bgColor) — not user-visible copy, would otherwise false-positive.
+  'fgColor', 'bgColor', 'level', 'width', 'height', 'tilt', 'elevated', 'sticky',
 ]);
 
 function isLowerCaseTag(tagNameNode) {

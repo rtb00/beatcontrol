@@ -307,22 +307,22 @@ export default function LandingPage() {
             {/* Front-Kamera im Bezel */}
             <div className="absolute top-[5px] left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-[#0a0907] ring-1 ring-white/10" />
             {/* Screen */}
-            <div className="h-full w-full overflow-hidden rounded-[1.1rem] bg-cream flex flex-col">
+            <div className="h-full w-full overflow-hidden rounded-[1.1rem] bg-panel flex flex-col">
 
               {/* Header, wie im echten DJ-View */}
-              <div className="shrink-0 bg-ivory border-b border-champagne px-2.5 py-1.5 flex items-center justify-between gap-2">
+              <div className="shrink-0 bg-panel-elevated border-b border-line px-2.5 py-1.5 flex items-center justify-between gap-2">
                 <div className="flex items-center gap-1.5 min-w-0">
-                  <div className="h-5 w-5 flex items-center justify-center rounded-md border border-champagne text-muted">
+                  <div className="h-5 w-5 flex items-center justify-center rounded-md border border-line text-fg-muted">
                     <svg viewBox="0 0 20 20" fill="currentColor" className="w-2.5 h-2.5"><path fillRule="evenodd" d="M7.793 2.232a.75.75 0 01-.025 1.06L3.622 7.25h10.003a5.375 5.375 0 010 10.75H10.75a.75.75 0 010-1.5h2.875a3.875 3.875 0 000-7.75H3.622l4.146 3.957a.75.75 0 01-1.036 1.085l-5.5-5.25a.75.75 0 010-1.085l5.5-5.25a.75.75 0 011.06.025z" clipRule="evenodd" /></svg>
                   </div>
-                  <div className="h-5 w-5 flex items-center justify-center rounded-md border border-gold text-gold bg-gold/10">
+                  <div className="h-5 w-5 flex items-center justify-center rounded-md border border-neon-gold text-neon-gold bg-neon-gold/10">
                     <svg viewBox="0 0 24 24" fill="currentColor" className="w-2.5 h-2.5"><path d="M3 3h8v8H3V3zm2 2v4h4V5H5z" /><path d="M13 3h8v8h-8V3zm2 2v4h4V5h-4z" /><path d="M3 13h8v8H3v-8zm2 2v4h4v-4H5z" /><path d="M13 13h2v2h-2zm4 0h2v2h-2v2h2v2h-2v2h-2v-2h-2v-2h2v-2h2v-2zm2 6h2v2h-2zm0-4h2v2h-2z" /></svg>
                   </div>
-                  <p className="font-serif text-[10px] font-semibold text-ink truncate">{mockEventTitle}</p>
+                  <p className="font-display text-[10px] font-semibold text-fg truncate">{mockEventTitle}</p>
                 </div>
                 <div className="flex items-center gap-1.5 shrink-0">
-                  <span className="text-[6px] uppercase tracking-widest text-muted/70 border border-champagne rounded-full px-1.5 py-px">Pro</span>
-                  <span className="w-1.5 h-1.5 rounded-full bg-gold animate-pulse" title="Live" />
+                  <span className="text-[6px] uppercase tracking-widest text-fg-muted/70 border border-line rounded-full px-1.5 py-px">Pro</span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-neon-gold animate-pulse" title="Live" />
                 </div>
               </div>
 
@@ -330,14 +330,14 @@ export default function LandingPage() {
               <div className="flex-1 flex overflow-hidden">
 
                 {/* QR-Sidebar */}
-                <div className="w-[31%] shrink-0 border-r border-gold/30 flex flex-col items-center justify-center gap-1 px-2 py-2">
-                  <p className="text-gold text-[9px] leading-none">♪</p>
-                  <p className="font-serif text-[10px] font-semibold text-ink leading-tight text-center">Musikwünsche</p>
-                  <p className="text-muted text-[6px] -mt-0.5 mb-0.5">Scanne mich!</p>
-                  <div className="bg-white rounded-md p-1 border border-champagne shadow-[0_2px_8px_rgba(201,169,97,0.18)]">
-                    <QRCodeSVG value={`https://beatcontrol.io/${mockSlug}`} size={42} fgColor="#2a2520" bgColor="#ffffff" level="M" />
+                <div className="w-[31%] shrink-0 border-r border-neon-gold/30 flex flex-col items-center justify-center gap-1 px-2 py-2">
+                  <p className="text-neon-gold text-[9px] leading-none">♪</p>
+                  <p className="font-display text-[10px] font-semibold text-fg leading-tight text-center">Musikwünsche</p>
+                  <p className="text-fg-muted text-[6px] -mt-0.5 mb-0.5">Scanne mich!</p>
+                  <div className="bg-white rounded-md p-1 border border-line shadow-[0_2px_8px_rgba(255,206,84,0.18)]">
+                    <QRCodeSVG value={`https://beatcontrol.io/${mockSlug}`} size={42} fgColor="#150a26" bgColor="#ffffff" level="M" />
                   </div>
-                  <p className="text-muted/60 text-[5px] font-mono break-all text-center leading-tight max-w-[90%]">beatcontrol.io/{mockSlug}</p>
+                  <p className="text-fg-muted/60 text-[5px] font-mono break-all text-center leading-tight max-w-[90%]">beatcontrol.io/{mockSlug}</p>
                 </div>
 
                 {/* Songliste */}
@@ -345,23 +345,23 @@ export default function LandingPage() {
 
                   {/* Gerankte Song-Cards */}
                   {mockSongs.map((s, i) => (
-                    <div key={s.title} className="bg-ivory rounded-lg p-1.5 flex items-center gap-1.5 border border-champagne shadow-sm">
-                      <span className="font-serif italic text-[15px] text-gold/70 leading-none w-3.5 text-center shrink-0 tabular-nums" aria-hidden="true">{i + 1}</span>
+                    <div key={s.title} className="bg-panel-elevated rounded-lg p-1.5 flex items-center gap-1.5 border border-line shadow-sm">
+                      <span className="font-display italic text-[15px] text-neon-gold/70 leading-none w-3.5 text-center shrink-0 tabular-nums" aria-hidden="true">{i + 1}</span>
                       {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={s.art} alt={s.title} className="w-6 h-6 rounded object-cover shrink-0 bg-champagne/70" />
+                      <img src={s.art} alt={s.title} className="w-6 h-6 rounded object-cover shrink-0 bg-line/70" />
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-1">
-                          <p className="font-semibold text-ink text-[7px] truncate flex-1 min-w-0">{s.title}</p>
+                          <p className="font-semibold text-fg text-[7px] truncate flex-1 min-w-0">{s.title}</p>
                         </div>
                         <div className="flex items-center gap-1 mt-px">
-                          <p className="text-muted text-[6px] truncate min-w-0">{s.artist}</p>
-                          <span className="inline-flex items-center gap-0.5 shrink-0 px-1 rounded-full bg-gold/10 border border-gold/25 text-gold text-[5px] font-semibold tabular-nums leading-none">
+                          <p className="text-fg-muted text-[6px] truncate min-w-0">{s.artist}</p>
+                          <span className="inline-flex items-center gap-0.5 shrink-0 px-1 rounded-full bg-neon-gold/10 border border-neon-gold/25 text-neon-gold text-[5px] font-semibold tabular-nums leading-none">
                             <svg viewBox="0 0 20 20" fill="currentColor" className="w-1.5 h-1.5"><path d="M9.653 16.915l-.005-.003-.019-.01a20.759 20.759 0 01-1.162-.682 22.045 22.045 0 01-2.582-1.9C4.045 12.733 2 10.352 2 7.5a4.5 4.5 0 018-2.828A4.5 4.5 0 0118 7.5c0 2.852-2.044 5.233-3.885 6.82a22.049 22.049 0 01-3.744 2.582l-.019.01-.005.003h-.002a.739.739 0 01-.69.001l-.002-.001z" /></svg>
                             {s.votes}
                           </span>
                         </div>
                       </div>
-                      <div className="shrink-0 px-1.5 py-1 rounded-md bg-ink text-cream text-[5px] font-semibold leading-none">✓ Gespielt</div>
+                      <div className="shrink-0 px-1.5 py-1 rounded-md bg-gradient-to-r from-magenta to-neon-gold text-white text-[5px] font-semibold leading-none">✓ Gespielt</div>
                     </div>
                   ))}
                 </div>
