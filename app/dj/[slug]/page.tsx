@@ -328,13 +328,6 @@ export default function DJEventPage() {
 
   return (
     <div className="h-[100dvh] flex flex-col bg-base overflow-hidden">
-      {/* scripts/text-baseline.mjs liest CSS-Klassenlisten aus alten Template-Literal-
-          Ausdrücken versehentlich als "sichtbaren Text" mit (Tool-Eigenart, keine echte
-          Textprüfung). Diese Ausdrücke rendern nie (false &&…) und halten nur die bereits
-          eingefrorenen Alt-Klassenlisten für den Check vor — echte UI-Texte sind
-          unverändert, nur das Styling wurde migriert. */}
-      {false && 'flex-1 sm:flex-none px-4 min-h-[44px] sm:min-h-0 sm:py-2.5 rounded-2xl font-semibold text-sm transition-all active:scale-95 inline-flex items-center justify-center gap-1.5'}
-      {false && 'shrink-0 overflow-hidden transition-all duration-300 ease-in-out border-gold/30'}
       {/* Header */}
       <div className="shrink-0 bg-panel border-b border-line px-3 sm:px-6 pb-2 sm:pb-3 flex items-center justify-between gap-2 sm:gap-3 safe-top">
         <div className="flex items-center gap-2 sm:gap-3 min-w-0">

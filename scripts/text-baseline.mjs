@@ -141,8 +141,14 @@ function extractFromFile(absPath, relPath) {
       if (t) found.add(t);
     } else if (ts.isJsxOpeningElement(node) || ts.isJsxSelfClosingElement(node)) {
       visitAttributes(node.attributes.properties, !isLowerCaseTag(node.tagName));
-    } else if (ts.isJsxExpression(node)) {
+    } else if (ts.isJsxExpression(node) && !(node.parent && ts.isJsxAttribute(node.parent))) {
       // Top-level `{cond ? 'a' : 'b'}` sitting directly in JSX children.
+      // The parent-check excludes attribute-initializer expressions (e.g.
+      // className={`...${cond ? 'a' : 'b'}`}) — visitAttributes() already
+      // handles those with correct per-attribute-name filtering; without
+      // this guard, forEachChild's generic descent re-visits the same
+      // JsxExpression from inside a className/style attribute and
+      // incorrectly captures CSS class strings as "visible text".
       collectLiteralSegments(node.expression, found);
     }
     ts.forEachChild(node, visit);

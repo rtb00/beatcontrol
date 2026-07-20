@@ -280,13 +280,6 @@ export default function DJDashboard() {
 
   return (
     <div className="min-h-screen bg-rave-gradient">
-      {/* scripts/text-baseline.mjs liest CSS-Klassenlisten aus alten Template-Literal-
-          Ausdrücken versehentlich als "sichtbaren Text" mit (Tool-Eigenart, keine echte
-          Textprüfung). Diese beiden Ausdrücke rendern nie (false &&…) und halten nur die
-          bereits eingefrorenen Alt-Klassenlisten für den Check vor — echte UI-Texte sind
-          unverändert, nur das Styling wurde migriert. */}
-      {false && 'bg-ivory rounded-3xl p-5 border border-champagne shadow-sm transition-opacity'}
-      {false && 'px-3 py-1 rounded-lg text-xs font-bold tracking-wide transition-all active:scale-95'}
       {/* Top bar with account link */}
       <div className="px-4 pt-4 max-w-2xl mx-auto flex items-center justify-end">
         <Link
