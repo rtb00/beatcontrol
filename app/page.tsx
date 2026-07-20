@@ -64,7 +64,7 @@ const COPY: Record<Audience, {
         text: 'Ein Griff daneben und zwanzig Leute setzen sich. An die volle Stunde davor erinnert sich am nächsten Tag keiner. An die fünf Minuten leere Fläche schon.',
       },
     ],
-    transitionH2: 'Der Floor redet die ganze Zeit. Jetzt kannst du ihm zuhören.',
+    transitionH2: 'Der Floor redet die ganze Zeit. Jetzt kannst du ihm zuhören',
     transitionBody:
       'Deine Gäste voten für die Songs, die sie hören wollen, und der Favorit steht oben in deiner Liste. Du liest den Raum wie immer, nur mit einem Sinn mehr. Ob du zugreifst, entscheidest du.',
     finalBody:
@@ -77,7 +77,7 @@ const COPY: Record<Audience, {
     painEyebrow: '23:30 Uhr, die Stimmung wackelt',
     painH2: (
       <>
-        Die eine Hälfte will tanzen.<br />Die andere will ihren Song.
+        Die eine Hälfte will tanzen.<br />Die andere will ihren Song
       </>
     ),
     painCards: [
@@ -94,7 +94,7 @@ const COPY: Record<Audience, {
         text: 'Eine Party lebt vom Schwung. Verlierst du ihn einmal, holst du ihn den ganzen Abend nicht mehr zurück. Genau da darfst du nicht daneben greifen.',
       },
     ],
-    transitionH2: 'Der Raum redet die ganze Zeit. Jetzt kannst du ihm zuhören.',
+    transitionH2: 'Der Raum redet die ganze Zeit. Jetzt kannst du ihm zuhören',
     transitionBody:
       'Deine Gäste voten für die Songs, die sie hören wollen, und der Favorit steht oben in deiner Liste. Du liest den Raum wie immer, nur mit einem Sinn mehr. Ob du zugreifst, entscheidest du.',
     finalBody:
@@ -107,7 +107,7 @@ const COPY: Record<Audience, {
     painEyebrow: '21:00 Uhr, noch sitzen alle',
     painH2: (
       <>
-        Sechzig Kollegen.<br />Und du kennst keinen.
+        Sechzig Kollegen.<br />Und du kennst keinen
       </>
     ),
     painCards: [
@@ -124,7 +124,7 @@ const COPY: Record<Audience, {
         text: 'Hier entscheidet sich, ob du nächstes Jahr wieder gebucht wirst. Eine zähe Firmenfeier merkt sich die Person, die den Scheck unterschreibt.',
       },
     ],
-    transitionH2: 'Der Saal redet die ganze Zeit. Jetzt kannst du ihm zuhören.',
+    transitionH2: 'Der Saal redet die ganze Zeit. Jetzt kannst du ihm zuhören',
     transitionBody:
       'Deine Gäste voten für die Songs, die sie hören wollen, und der Favorit steht oben in deiner Liste. Ohne Briefing, ohne Wunschliste weißt du auf einen Blick, was diese fremde Crowd trägt. Ob du zugreifst, entscheidest du.',
     finalBody:
@@ -157,10 +157,10 @@ export default function LandingPage() {
   const mockSlug =
     audience === 'hochzeit' ? 'hochzeit-mueller' : audience === 'geburtstag' ? 'sandras-40er' : 'sommerfest-gmbh';
   const mockSongs = [
-    { title: "Can't Stop the Feeling", artist: 'Justin Timberlake', genre: 'Pop', votes: 12, art: 'https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/68/19/43/68194388-efa7-3afe-8a15-a4c3eebef1f6/886445915211.jpg/200x200bb.jpg' },
-    { title: 'Shut Up and Dance', artist: 'Walk the Moon', genre: 'Rock', votes: 9, art: 'https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/bf/b6/76/bfb67621-b78d-3924-6d29-4f367697a674/886445045758.jpg/200x200bb.jpg' },
-    { title: 'Uptown Funk', artist: 'Bruno Mars', genre: 'Funk', votes: 7, art: 'https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/7e/30/c5/7e30c572-aa47-5f7b-c6fd-42d50cd2c56d/886444959797.jpg/200x200bb.jpg' },
-    { title: 'Levitating', artist: 'Dua Lipa', genre: 'Pop', votes: 5, art: 'https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/6c/11/d6/6c11d681-aa3a-d59e-4c2e-f77e181026ab/190295092665.jpg/200x200bb.jpg' },
+    { title: "Can't Stop the Feeling", artist: 'Justin Timberlake', votes: 12, art: 'https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/68/19/43/68194388-efa7-3afe-8a15-a4c3eebef1f6/886445915211.jpg/200x200bb.jpg' },
+    { title: 'Shut Up and Dance', artist: 'Walk the Moon', votes: 9, art: 'https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/bf/b6/76/bfb67621-b78d-3924-6d29-4f367697a674/886445045758.jpg/200x200bb.jpg' },
+    { title: 'Uptown Funk', artist: 'Bruno Mars', votes: 7, art: 'https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/7e/30/c5/7e30c572-aa47-5f7b-c6fd-42d50cd2c56d/886444959797.jpg/200x200bb.jpg' },
+    { title: 'Levitating', artist: 'Dua Lipa', votes: 5, art: 'https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/6c/11/d6/6c11d681-aa3a-d59e-4c2e-f77e181026ab/190295092665.jpg/200x200bb.jpg' },
   ];
 
   // Social-Proof-Kennzahlen, live aus der DB (/api/stats), niemals erfunden.
@@ -286,7 +286,7 @@ export default function LandingPage() {
         <div className="grid md:grid-cols-2 gap-16 items-center">
         <div>
           <h1 className="font-serif text-5xl md:text-6xl font-bold leading-[1.1] mb-6">
-            Dein Gespür für die Tanzfläche.<br />Von den Gästen bestätigt.
+            Dein Gespür für die Tanzfläche.<br />Von den Gästen bestätigt
           </h1>
           <p className="text-[#8a7a6e] text-lg leading-relaxed mb-8">
             {c.heroSub}
@@ -301,7 +301,7 @@ export default function LandingPage() {
             </Link>
           </div>
           <p className="text-xs text-[#8a7a6e] mt-4 leading-relaxed">
-            Von DJs für DJs gebaut · läuft neben Rekordbox & Serato · kein Download nötig
+            Von DJs für DJs gebaut · läuft neben Rekordbox & Serato · kein Download, Voting dauert 10 Sekunden
           </p>
         </div>
 
@@ -356,7 +356,6 @@ export default function LandingPage() {
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-1">
                           <p className="font-semibold text-ink text-[7px] truncate flex-1 min-w-0">{s.title}</p>
-                          <span className="shrink-0 px-1 py-px bg-gold/15 text-gold text-[5px] font-semibold rounded-full leading-none">{s.genre}</span>
                         </div>
                         <div className="flex items-center gap-1 mt-px">
                           <p className="text-muted text-[6px] truncate min-w-0">{s.artist}</p>
@@ -460,7 +459,7 @@ export default function LandingPage() {
             {
               step: '02',
               title: 'Der Saal stimmt ab',
-              desc: 'Jede Stimme schiebt einen Song nach oben. Oben steht immer der Track, den gerade die meisten hören wollen. Keine Vermutung, sondern echte Stimmen aus dem Raum.',
+              desc: 'Voten dauert 10 Sekunden, ganz ohne App. Jede Stimme schiebt einen Song nach oben, oben steht immer der Track, den gerade die meisten hören wollen. Keine Vermutung, sondern echte Stimmen aus dem Raum, niemand hängt dafür am Handy fest.',
             },
             {
               step: '03',
@@ -532,7 +531,7 @@ export default function LandingPage() {
         </p>
         <div className="w-8 h-px bg-[#c9a961] mx-auto mb-8" />
         <h2 className="font-serif text-2xl md:text-3xl leading-snug text-[#2a2520] mb-6">
-          Gebaut von einem, der selbst am Pult steht.
+          Gebaut von einem, der selbst am Pult steht
         </h2>
         <p className="text-[#8a7a6e] text-lg leading-relaxed max-w-2xl mx-auto">
           BeatControl entsteht nicht am Schreibtisch, sondern auf echten Hochzeiten. Jede Funktion kommt aus dem, was am Pult wirklich gebraucht wird, und wird mit DJs zusammen getestet. Was im Einsatz nicht hilft, fliegt wieder raus.
@@ -544,7 +543,7 @@ export default function LandingPage() {
       <section ref={setupPricingObserver} className="bg-[#f4ede0] py-20" id="pricing">
         <div className="max-w-5xl mx-auto px-4">
           <h2 className="font-serif text-3xl font-bold text-center mb-3">
-            Für jeden Gig der passende Tarif.
+            Für jeden Gig der passende Tarif
           </h2>
           <p className="text-[#8a7a6e] text-center mb-3 max-w-xl mx-auto">
             Free zum Ausprobieren. Pro Hochzeit für Gelegenheits-Gigs. Pro-Abo für aktive DJs. <Link href="/pricing" className="text-[#c9a961] underline">Studio</Link> für Akademien.
@@ -620,7 +619,6 @@ export default function LandingPage() {
                 {[
                   'Unbegrenzte Events',
                   'Unbegrenzte Songwünsche',
-                  'Live-Genre-Analyse',
                   'Gast-Karten als Download',
                   'Export der Musikwünsche zur Nachbereitung',
                   'Songs entfernen wenn sie nicht passen',
@@ -683,7 +681,7 @@ export default function LandingPage() {
       {/* Final CTA */}
       <section className="max-w-2xl mx-auto px-4 py-24 text-center">
         <h2 className="font-serif text-3xl md:text-4xl font-bold mb-4">
-          Du bist in guter Gesellschaft.
+          Du bist in guter Gesellschaft
         </h2>
         <p className="text-[#8a7a6e] text-lg mb-10 leading-relaxed">
           {c.finalBody}

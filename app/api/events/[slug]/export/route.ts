@@ -48,7 +48,6 @@ export async function GET(
     SELECT
       s.title,
       s.artist,
-      s.genre,
       s.created_at,
       s.played,
       COUNT(v.id)::int AS vote_count
@@ -59,14 +58,13 @@ export async function GET(
     ORDER BY s.played ASC, vote_count DESC, s.created_at ASC
   `;
 
-  const header = ['Titel', 'Artist', 'Genre', 'Stimmen', 'Eingegangen', 'Gespielt'];
+  const header = ['Titel', 'Artist', 'Stimmen', 'Eingegangen', 'Gespielt'];
   const lines = [
     '﻿' + header.join(';'),
     ...songs.map((row) =>
       [
         csvEscape(row.title),
         csvEscape(row.artist),
-        csvEscape(row.genre),
         csvEscape(row.vote_count),
         csvEscape(new Date(row.created_at as string).toLocaleString('de-DE')),
         csvEscape(row.played ? 'ja' : 'nein'),

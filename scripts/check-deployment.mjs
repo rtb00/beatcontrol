@@ -51,7 +51,7 @@ const recommended = {
   STRIPE_PRICE_PRO_MONTHLY: 'Stripe Pro Monthly',
   STRIPE_PRICE_PRO_YEARLY: 'Stripe Pro Yearly',
   STRIPE_PRICE_STUDIO_MONTHLY: 'Stripe Studio Monthly',
-  GROQ_API_KEY: 'AI Genre Detection',
+  GROQ_API_KEY: 'AI Song-Vorschläge',
 };
 
 for (const [k, label] of Object.entries(required)) {

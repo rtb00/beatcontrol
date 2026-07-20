@@ -1,10 +1,10 @@
 const GROQ_API_KEY = process.env.GROQ_API_KEY ?? '';
 
-export async function getGenreAndSuggestions(
+export async function getSongSuggestions(
   title: string,
   artist: string
-): Promise<{ genre: string; suggestions: string[] }> {
-  const fallback = { genre: 'Unbekannt', suggestions: [] };
+): Promise<string[]> {
+  const fallback: string[] = [];
 
   if (!GROQ_API_KEY) return fallback;
 
@@ -28,7 +28,7 @@ export async function getGenreAndSuggestions(
           },
           {
             role: 'user',
-            content: `Für den Song "${title}" von "${artist}": 1) Bestimme das Genre (ein Wort, z.B. Pop, Rock, Hip-Hop, Schlager, EDM, R&B, Latin, Jazz, Klassik). 2) Schlage 3 Songs vor die gut danach passen würden (Titel - Artist Format). Antwort als JSON: {"genre": "...", "suggestions": ["Song1 - Artist1", "Song2 - Artist2", "Song3 - Artist3"]}`,
+            content: `Für den Song "${title}" von "${artist}": Schlage 3 Songs vor die gut danach passen würden (Titel - Artist Format). Antwort als JSON: {"suggestions": ["Song1 - Artist1", "Song2 - Artist2", "Song3 - Artist3"]}`,
           },
         ],
         temperature: 0.3,
@@ -49,12 +49,9 @@ export async function getGenreAndSuggestions(
     if (start === -1 || end === -1) return fallback;
 
     const parsed = JSON.parse(content.slice(start, end + 1));
-    return {
-      genre: typeof parsed.genre === 'string' && parsed.genre.trim() ? parsed.genre.trim() : 'Unbekannt',
-      suggestions: Array.isArray(parsed.suggestions)
-        ? parsed.suggestions.filter((s: unknown) => typeof s === 'string').slice(0, 3)
-        : [],
-    };
+    return Array.isArray(parsed.suggestions)
+      ? parsed.suggestions.filter((s: unknown) => typeof s === 'string').slice(0, 3)
+      : fallback;
   } catch {
     return fallback;
   }

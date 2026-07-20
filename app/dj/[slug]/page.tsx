@@ -17,7 +17,6 @@ interface Song {
   artist: string;
   deezer_id: string | null;
   album_art_url: string | null;
-  genre: string | null;
   suggestions: string | null; // JSON string: ["Song - Artist", ...]
   created_at: string;
   played: boolean;
@@ -29,17 +28,6 @@ interface Event {
   id: number;
   slug: string;
   title: string;
-}
-
-// ── Genre palette ─────────────────────────────────────────────────────────────
-
-const GENRE_PALETTE = ['#c9a961', '#c19ba5', '#9eb091', '#b8b0a5'] as const;
-
-function genreColor(genre: string, items: { genre: string }[]): string {
-  if (genre === 'Sonstige') return GENRE_PALETTE[3];
-  const idx = items.findIndex((i) => i.genre === genre);
-  if (idx < 0) return GENRE_PALETTE[3];
-  return GENRE_PALETTE[Math.min(idx, 2)];
 }
 
 // ── Canvas helpers ────────────────────────────────────────────────────────────
@@ -263,35 +251,6 @@ export default function DJEventPage() {
     !songLimitHit &&
     songs.length >= Math.floor(me.limits.maxSongs * 0.8);
 
-  // Aggregate genre distribution (only counts songs with a known genre)
-  const genreCounts = (() => {
-    const counts: Record<string, number> = {};
-    let total = 0;
-    for (const s of songs) {
-      const g = s.genre;
-      if (!g || g === 'Unbekannt') continue;
-      counts[g] = (counts[g] ?? 0) + 1;
-      total++;
-    }
-    if (total === 0) return null;
-    const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]);
-    const top = sorted.slice(0, 3);
-    const restCount = sorted.slice(3).reduce((acc, [, n]) => acc + n, 0);
-    const items = top.map(([genre, count]) => ({
-      genre,
-      count,
-      pct: Math.round((count / total) * 100),
-    }));
-    if (restCount > 0) {
-      items.push({
-        genre: 'Sonstige',
-        count: restCount,
-        pct: Math.round((restCount / total) * 100),
-      });
-    }
-    return { items, total };
-  })();
-
   return (
     <div className="h-[100dvh] flex flex-col bg-cream overflow-hidden">
       {/* Header */}
@@ -434,42 +393,6 @@ export default function DJEventPage() {
 
         {/* Song list */}
         <div className="flex-1 overflow-y-auto p-3 sm:p-5 lg:p-8 pb-16">
-          {genreCounts && (
-            <div className="mb-4 sm:mb-5 bg-ivory rounded-2xl border border-champagne px-4 py-3">
-              <div className="flex items-center justify-between gap-3 mb-2">
-                <p className="text-xs uppercase tracking-widest text-muted">
-                  Genre-Verteilung
-                </p>
-                <p className="text-xs text-muted/70 tabular-nums">
-                  {genreCounts.total} {genreCounts.total === 1 ? 'Song' : 'Songs'}
-                </p>
-              </div>
-              <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm">
-                {genreCounts.items.map(({ genre, pct }) => (
-                  <span key={genre} className="inline-flex items-center gap-1.5">
-                    <span
-                      className="inline-block w-2.5 h-2.5 rounded-full shrink-0"
-                      style={{ backgroundColor: genreColor(genre, genreCounts.items) }}
-                      aria-hidden="true"
-                    />
-                    <span className="font-semibold text-ink">{genre}</span>
-                    <span className="text-muted tabular-nums">{pct}%</span>
-                  </span>
-                ))}
-              </div>
-              <div className="mt-2.5 flex h-1.5 w-full overflow-hidden rounded-full bg-champagne/40">
-                {genreCounts.items.map(({ genre, pct }) => (
-                  <div
-                    key={genre}
-                    style={{
-                      width: `${pct}%`,
-                      backgroundColor: genreColor(genre, genreCounts.items),
-                    }}
-                  />
-                ))}
-              </div>
-            </div>
-          )}
           {loading ? (
             <p className="text-center text-muted py-12">Lädt…</p>
           ) : unplayed.length === 0 && played.length === 0 ? (
@@ -517,13 +440,12 @@ function DJCard({
   onDelete: (id: number, title: string) => void;
   deleting: boolean;
 }) {
-  let suggestions: string[] = [];
-  try {
-    if (song.suggestions) suggestions = JSON.parse(song.suggestions);
-  } catch { /* ignore bad JSON */ }
-
-  const showGenre = song.genre && song.genre !== 'Unbekannt';
-  const aiPending = song.genre === null;
+  // Musikvorschläge: aktuell nicht angezeigt (DJ-Feedback: zu viel Ablenkung in der Liste).
+  // Backend erzeugt sie weiterhin (song.suggestions), Anzeige unten bewusst auskommentiert.
+  // let suggestions: string[] = [];
+  // try {
+  //   if (song.suggestions) suggestions = JSON.parse(song.suggestions);
+  // } catch { /* ignore bad JSON */ }
 
   return (
     <div className="bg-ivory rounded-2xl sm:rounded-3xl p-3 sm:p-4 flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-5 border border-champagne shadow-sm">
@@ -558,14 +480,6 @@ function DJCard({
         <div className="flex-1 min-w-0">
           <div className="flex items-start gap-2 flex-wrap">
             <p className="font-semibold text-ink text-base sm:text-lg leading-tight break-words flex-1 min-w-0">{song.title}</p>
-            {showGenre && (
-              <span className="shrink-0 px-2 py-0.5 bg-gold/15 text-gold text-xs font-semibold rounded-full leading-tight">
-                {song.genre}
-              </span>
-            )}
-            {aiPending && (
-              <span className="text-muted/40 text-xs shrink-0">…</span>
-            )}
           </div>
           <div className="flex items-center gap-2 mt-0.5 flex-wrap">
             <p className="text-muted text-sm break-words min-w-0">{song.artist}</p>
@@ -576,6 +490,7 @@ function DJCard({
               {song.vote_count}
             </span>
           </div>
+          {/* Musikvorschläge aktuell nicht angezeigt (DJ-Feedback), siehe Kommentar oben.
           {suggestions.length > 0 && (
             <div className="flex flex-wrap gap-1 mt-1.5">
               {suggestions.map((s, i) => (
@@ -584,7 +499,7 @@ function DJCard({
                 </span>
               ))}
             </div>
-          )}
+          )} */}
           <p className="text-ink/60 text-xs mt-1">
             {new Date(song.created_at).toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' })}
           </p>

@@ -3,7 +3,7 @@ import { createHash } from 'crypto';
 import { initDB, sql } from '@/app/lib/db';
 import { getFingerprint } from '@/app/lib/fingerprint';
 import { containsProfanity } from '@/app/lib/profanity';
-import { getGenreAndSuggestions } from '@/app/lib/ai';
+import { getSongSuggestions } from '@/app/lib/ai';
 import { getEffectivePlan, getPlanLimits } from '@/app/lib/plans';
 
 export async function GET(
@@ -21,7 +21,6 @@ export async function GET(
       s.artist,
       s.deezer_id,
       s.album_art_url,
-      s.genre,
       s.suggestions,
       s.created_at,
       s.played,
@@ -197,19 +196,19 @@ export async function POST(
     // Ignore
   }
 
-  // Fire-and-forget: enrich with AI genre + suggestions after response is sent
+  // Fire-and-forget: enrich with AI song suggestions after response is sent
   const titleForAI = title.trim();
   const artistForAI = artist.trim();
   ;(async () => {
     try {
-      const { genre, suggestions } = await getGenreAndSuggestions(titleForAI, artistForAI);
+      const suggestions = await getSongSuggestions(titleForAI, artistForAI);
       await sql`
         UPDATE songs
-        SET genre = ${genre}, suggestions = ${JSON.stringify(suggestions)}
+        SET suggestions = ${JSON.stringify(suggestions)}
         WHERE id = ${songId}
       `;
     } catch {
-      // ignore — song already saved, just without genre/suggestions
+      // ignore — song already saved, just without suggestions
     }
   })();
 

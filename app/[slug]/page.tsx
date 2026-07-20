@@ -19,7 +19,6 @@ interface Song {
   artist: string;
   deezer_id: string | null;
   album_art_url: string | null;
-  genre: string | null;
   is_mine: boolean;
   created_at: string;
   played: boolean;
@@ -379,11 +378,6 @@ function SongCard({
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-1.5 flex-wrap">
           <p className="font-medium text-ink text-base truncate">{song.title}</p>
-          {song.genre && song.genre !== 'Unbekannt' && (
-            <span className="shrink-0 px-2 py-0.5 bg-gold/10 text-gold text-xs font-medium rounded-full leading-tight">
-              {song.genre}
-            </span>
-          )}
         </div>
         <p className="text-muted text-sm truncate">{song.artist}</p>
         {song.is_mine && !song.played && (

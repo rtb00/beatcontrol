@@ -38,7 +38,6 @@ export async function initDB() {
       artist        TEXT NOT NULL,
       deezer_id     TEXT,
       album_art_url TEXT,
-      genre         TEXT,
       suggestions   TEXT,
       created_at    TIMESTAMPTZ DEFAULT NOW(),
       played        BOOLEAN DEFAULT FALSE,
@@ -65,20 +64,7 @@ export async function initDB() {
   `;
 
   // Column migrations for existing installs (idempotent)
-  const { rows: colRows } = await sql`
-    SELECT column_name
-    FROM information_schema.columns
-    WHERE table_name = 'songs'
-      AND column_name IN ('genre', 'suggestions')
-  `;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const existingCols = new Set(colRows.map((r: any) => r.column_name as string));
-  if (!existingCols.has('genre')) {
-    await sql`ALTER TABLE songs ADD COLUMN genre TEXT`;
-  }
-  if (!existingCols.has('suggestions')) {
-    await sql`ALTER TABLE songs ADD COLUMN suggestions TEXT`;
-  }
+  await sql`ALTER TABLE songs ADD COLUMN IF NOT EXISTS suggestions TEXT`;
 
   // Auth.js tables
   await sql`

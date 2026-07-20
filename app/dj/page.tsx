@@ -350,10 +350,6 @@ export default function DJDashboard() {
                 <span className="text-gold shrink-0">·</span>
                 <span>Die Wünsche erscheinen live auf deinem iPad, sortiert nach Beliebtheit.</span>
               </li>
-              <li className="flex gap-3">
-                <span className="text-gold shrink-0">·</span>
-                <span>Du behältst die volle Kontrolle und entscheidest, was gespielt wird.</span>
-              </li>
             </ul>
             <button
               onClick={dismissOnboarding}

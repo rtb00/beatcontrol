@@ -312,7 +312,6 @@ function PricingPageInner() {
               {[
                 'Unbegrenzte Events',
                 'Unbegrenzte Songwünsche',
-                'Live-Genre-Analyse',
                 'Gast-Karten als Download',
                 'Export der Musikwünsche zur Nachbereitung',
                 'Songs entfernen wenn sie nicht passen',

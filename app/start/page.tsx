@@ -61,14 +61,42 @@ export default function StartFunnel() {
     track('funnel_start');
   }, []);
 
+  // Browser-Zurück soll einen Funnel-Schritt zurückgehen (mit den bereits
+  // eingegebenen Daten), statt die Seite zu verlassen. Jeder Schritt vorwärts
+  // legt einen eigenen History-Eintrag an; popstate synchronisiert `step` zurück.
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    // Next.js' App Router legt eigene Navigationsdaten in history.state ab —
+    // die bestehenden Felder müssen erhalten bleiben, sonst greift beim
+    // Zurückgehen Next's Fallback auf einen harten Seiten-Reload statt eines
+    // weichen popstate.
+    window.history.replaceState({ ...window.history.state, step: 0 }, '');
+    function onPopState(e: PopStateEvent) {
+      const s = e.state && typeof e.state.step === 'number' ? e.state.step : 0;
+      setStep(s);
+    }
+    window.addEventListener('popstate', onPopState);
+    return () => window.removeEventListener('popstate', onPopState);
+  }, []);
+
   const ev = title.trim() || 'dein Event';
 
   function next() {
-    setStep((s) => s + 1);
+    setStep((s) => {
+      const ns = s + 1;
+      if (typeof window !== 'undefined') {
+        window.history.pushState({ ...window.history.state, step: ns }, '');
+      }
+      return ns;
+    });
     track('funnel_step', String(step + 1));
   }
   function back() {
-    setStep((s) => Math.max(0, s - 1));
+    if (typeof window !== 'undefined') {
+      window.history.back();
+    } else {
+      setStep((s) => Math.max(0, s - 1));
+    }
   }
 
   function togglePain(id: string) {
@@ -83,7 +111,7 @@ export default function StartFunnel() {
       /* localStorage kann blockiert sein, Funnel läuft trotzdem weiter */
     }
     track('funnel_complete', type ?? undefined);
-    router.push('/auth/signin?callbackUrl=/dj');
+    router.push('/auth/register');
   }
 
   const progress = step >= 1 && step <= QUESTION_STEPS ? (step / QUESTION_STEPS) * 100 : null;
@@ -253,7 +281,7 @@ export default function StartFunnel() {
                 />
                 <RevealRow
                   big="✓"
-                  title="Du behältst das letzte Wort"
+                  title="Gespielt wird trotzdem in deiner Software"
                   text="Du spielst in Rekordbox oder Serato wie immer. Passt ein Wunsch nicht, ist er mit einem Tipp weg."
                 />
               </div>
