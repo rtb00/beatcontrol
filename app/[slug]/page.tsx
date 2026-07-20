@@ -146,7 +146,7 @@ export default function GuestPage() {
       setQuery(''); setSearchResults([]); setShowDropdown(false);
       setManualMode(false); setManualTitle(''); setManualArtist('');
       setMessage(data.duplicate
-        ? { text: 'Song ist schon in der Liste — deine Stimme wurde gezählt! 👍', ok: true }
+        ? { text: 'Song ist schon in der Liste, deine Stimme wurde gezählt! 👍', ok: true }
         : { text: 'Song vorgeschlagen – du bist dabei! 🎵', ok: true }
       );
       // Polling picks up the new song on the next tick.
@@ -380,7 +380,7 @@ function SongCard({
         // eslint-disable-next-line @next/next/no-img-element
         <img src={song.album_art_url} alt={song.title} width={40} height={40} className="rounded-xl shrink-0 object-cover" />
       ) : rank !== null ? (
-        <span className="font-display text-magenta text-xl font-black w-10 text-center shrink-0">{rank}</span>
+        <span className="font-display text-neon-gold text-xl font-black w-10 text-center shrink-0">{rank}</span>
       ) : null}
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-1.5 flex-wrap">

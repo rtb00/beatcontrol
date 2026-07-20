@@ -319,7 +319,7 @@ export default function DJDashboard() {
             <div className="flex-1">
               <p className="font-semibold text-fg text-sm mb-1">Zahlung erfolgreich · willkommen bei {brandName} 🎉</p>
               <p className="text-xs text-fg-muted leading-relaxed">
-                Dein Konto ist freigeschaltet. Jetzt das erste Event anlegen — Gäste bekommen einen QR-Code, du siehst die Songs live auf dem iPad.
+                Dein Konto ist freigeschaltet. Jetzt das erste Event anlegen, Gäste bekommen einen QR-Code, du siehst die Songs live auf dem iPad.
               </p>
             </div>
             <button

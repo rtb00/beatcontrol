@@ -44,7 +44,7 @@ const COPY: Record<Audience, {
   hochzeit: {
     eyebrow: 'Für DJs · Hochzeit',
     heroSub:
-      'Deine Gäste schicken Musikwünsche vom Handy und voten für ihre Favoriten. Du siehst live, was wirklich zieht.',
+      'Deine Gäste schicken Musikwünsche vom Handy und voten für ihre Favoriten. Du siehst live, was der beste nächste Song ist.',
     painEyebrow: '22:14 Uhr, die Fläche ist voll',
     painH2: (
       <>
@@ -74,7 +74,7 @@ const COPY: Record<Audience, {
   geburtstag: {
     eyebrow: 'Für DJs · Geburtstag & Party',
     heroSub:
-      'Deine Gäste schicken Musikwünsche vom Handy und voten für ihre Favoriten. Du siehst live, was wirklich zieht.',
+      'Deine Gäste schicken Musikwünsche vom Handy und voten für ihre Favoriten. Du siehst live, was der beste nächste Song ist.',
     painEyebrow: '23:30 Uhr, die Stimmung wackelt',
     painH2: (
       <>
@@ -104,7 +104,7 @@ const COPY: Record<Audience, {
   firma: {
     eyebrow: 'Für DJs · Firmenfeier',
     heroSub:
-      'Deine Gäste schicken Musikwünsche vom Handy und voten für ihre Favoriten. Du siehst live, was wirklich zieht.',
+      'Deine Gäste schicken Musikwünsche vom Handy und voten für ihre Favoriten. Du siehst live, was der beste nächste Song ist.',
     painEyebrow: '21:00 Uhr, noch sitzen alle',
     painH2: (
       <>
@@ -266,7 +266,7 @@ export default function LandingPage() {
             >
               <span className="text-fg-muted hidden sm:inline">Für DJs ·</span>
               <span className="font-medium">{AUDIENCE_LABELS[audience]}</span>
-              <svg width="10" height="6" viewBox="0 0 10 6" fill="none" className={`transition-transform text-[#c9a961] ${audienceOpen ? 'rotate-180' : ''}`}>
+              <svg width="10" height="6" viewBox="0 0 10 6" fill="none" className={`transition-transform text-neon-gold ${audienceOpen ? 'rotate-180' : ''}`}>
                 <path d="M1 1l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             </button>
@@ -385,7 +385,7 @@ export default function LandingPage() {
                   {/* Gerankte Song-Cards */}
                   {mockSongs.map((s, i) => (
                     <div key={s.title} className="bg-panel-elevated rounded-lg p-1.5 flex items-center gap-1.5 border border-line shadow-sm">
-                      <span className="font-display italic text-[15px] text-neon-gold/70 leading-none w-3.5 text-center shrink-0 tabular-nums" aria-hidden="true">{i + 1}</span>
+                      <span className="font-display italic text-[15px] text-neon-gold leading-none w-3.5 text-center shrink-0 tabular-nums" aria-hidden="true">{i + 1}</span>
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img src={s.art} alt={s.title} className="w-6 h-6 rounded object-cover shrink-0 bg-line/70" />
                       <div className="flex-1 min-w-0">

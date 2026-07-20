@@ -528,7 +528,7 @@ export default function AccountPage() {
           </div>
           <p className="text-fg-muted text-sm mb-6">
             {isStudio
-              ? 'Wähle deine eigene URL — z. B. deinakademie.beatcontrol.io. Custom-Domain auf Wunsch (per Mail anfragen).'
+              ? 'Wähle deine eigene URL, z. B. deinakademie.beatcontrol.io. Custom-Domain auf Wunsch (per Mail anfragen).'
               : 'Studio-Tarif gibt deiner Akademie oder Agentur eine eigene Subdomain unter beatcontrol.io, komplettes Whitelabel-Branding und Sub-Accounts für deine DJs.'}
           </p>
 
