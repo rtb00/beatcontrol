@@ -71,7 +71,8 @@ export default function DJDashboard() {
   const [exportingSlug, setExportingSlug] = useState<string | null>(null);
 
   const [showOnboarding, setShowOnboarding] = useState(false);
-  const [funnelPrefill, setFunnelPrefill] = useState(false);
+  const [autoCreating, setAutoCreating] = useState(false);
+  const [funnelCreated, setFunnelCreated] = useState(false);
 
   const [paywall, setPaywall] = useState<{ open: boolean; type: PaywallLimit; current?: number; max?: number }>({
     open: false,
@@ -83,26 +84,64 @@ export default function DJDashboard() {
     loadMe();
     if (typeof window === 'undefined') return;
 
-    // Event aus dem Funnel (/start) vorbefüllen, falls vorhanden.
+    // Event aus dem Funnel (/start) direkt anlegen, keine zweite Bestätigung nötig —
+    // der Funnel selbst war schon die Bestätigung.
     const pending = localStorage.getItem(PENDING_EVENT_KEY);
     if (pending) {
+      localStorage.removeItem(PENDING_EVENT_KEY);
       try {
         const data = JSON.parse(pending) as { title?: string; date?: string };
-        if (data.title) setFormTitle(data.title);
-        if (data.date) setFormDate(data.date);
-        setShowForm(true);
-        setFunnelPrefill(true);
+        if (data.title && data.date) {
+          autoCreateFunnelEvent(data.title, data.date);
+        } else if (data.title || data.date) {
+          // Unvollständige Daten (sollte der Funnel eigentlich nie liefern) —
+          // Formular vorbefüllt zur manuellen Korrektur zeigen.
+          if (data.title) setFormTitle(data.title);
+          if (data.date) setFormDate(data.date);
+          setShowForm(true);
+        }
       } catch {
         /* defektes JSON ignorieren */
       }
-      localStorage.removeItem(PENDING_EVENT_KEY);
       return; // Onboarding-Overlay diesmal überspringen — der Funnel war das Onboarding.
     }
 
     if (!localStorage.getItem(ONBOARDING_KEY)) {
       setShowOnboarding(true);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  async function autoCreateFunnelEvent(title: string, date: string) {
+    setAutoCreating(true);
+    try {
+      const res = await fetch('/api/events', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title: title.trim(), event_date: date }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (res.status === 402 && data.error === 'plan_limit') {
+        setPaywall({ open: true, type: 'events', current: data.current, max: data.max });
+        return;
+      }
+      if (!res.ok) {
+        // Fallback: Formular vorbefüllt zur manuellen Korrektur zeigen, statt stillzuscheitern.
+        setFormTitle(title);
+        setFormDate(date);
+        setShowForm(true);
+        return;
+      }
+      setFunnelCreated(true);
+      loadEvents();
+    } catch {
+      setFormTitle(title);
+      setFormDate(date);
+      setShowForm(true);
+    } finally {
+      setAutoCreating(false);
+    }
+  }
 
   function dismissOnboarding() {
     localStorage.setItem(ONBOARDING_KEY, '1');
@@ -389,13 +428,24 @@ export default function DJDashboard() {
           </button>
         </div>
 
-        {/* Funnel-Prefill-Banner */}
-        {funnelPrefill && showForm && (
+        {/* Auto-Creation aus dem Funnel */}
+        {autoCreating && (
           <div className="mb-3 rounded-2xl bg-gold/10 border border-gold/40 px-5 py-3 animate-fade-in">
+            <p className="text-sm text-ink leading-snug">Dein Event wird angelegt …</p>
+          </div>
+        )}
+        {funnelCreated && (
+          <div className="mb-3 rounded-2xl bg-gold/10 border border-gold/40 px-5 py-3 flex items-center justify-between gap-3 animate-fade-in">
             <p className="text-sm text-ink leading-snug">
-              <span className="font-semibold">Dein Event aus dem Schnellstart ist fast fertig 🎉</span>{' '}
-              Prüf kurz Name und Datum — dann auf „Event erstellen", und der QR-Code steht.
+              <span className="font-semibold">Dein Event ist startklar 🎉</span>{' '}
+              QR-Code steht, deine Gäste können direkt loslegen.
             </p>
+            <button
+              onClick={() => setFunnelCreated(false)}
+              className="shrink-0 text-xs text-muted hover:text-ink px-3 py-1 rounded-full border border-champagne whitespace-nowrap"
+            >
+              Schließen
+            </button>
           </div>
         )}
 
@@ -418,7 +468,7 @@ export default function DJDashboard() {
                 type="date"
                 value={formDate}
                 onChange={(e) => setFormDate(e.target.value)}
-                className="w-full px-4 py-3 rounded-2xl border border-champagne bg-cream text-ink focus:outline-none focus:border-gold transition-colors"
+                className="block w-full min-w-0 max-w-full box-border px-4 py-3 rounded-2xl border border-champagne bg-cream text-ink focus:outline-none focus:border-gold transition-colors"
               />
             </div>
             {formError && (
