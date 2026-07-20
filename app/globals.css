@@ -36,12 +36,12 @@
   }
 
   .tone-calm {
-    --bg-panel: #17101f;
-    --bg-panel-elevated: #1e1626;
+    --bg-panel: #1c1428;
+    --bg-panel-elevated: #251a32;
     --accent-magenta: #c94f8f;
     --accent-gold: #d1a94f;
     --text-muted: #a89bb8;
-    --line: #2a2333;
+    --line: #392e4a;
   }
 }
 

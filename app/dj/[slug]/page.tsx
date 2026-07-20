@@ -602,7 +602,7 @@ function DJCard({
         {/* Decorative rank */}
         {rank !== null && (
           <span
-            className="font-display italic text-3xl sm:text-4xl text-neon-gold/70 leading-none tabular-nums shrink-0 w-7 sm:w-9 text-center"
+            className="font-display italic text-3xl sm:text-4xl text-neon-gold leading-none tabular-nums shrink-0 w-7 sm:w-9 text-center"
             aria-hidden="true"
           >
             {rank}
