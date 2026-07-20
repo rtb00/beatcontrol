@@ -6,6 +6,64 @@
   html {
     -webkit-tap-highlight-color: transparent;
   }
+
+  /*
+   * "Confetti Rave" design tokens (Version 3 redesign).
+   * Two tones share one palette: .tone-calm (set by <CalmScope>) overrides the
+   * accent/panel/text variables in place for Legal/Auth/Account surfaces —
+   * components read the variables, not the tone, so they never need to branch.
+   */
+  :root {
+    --bg-base: #06030c;
+    --bg-base-alt: #1c0b32;
+    --bg-panel: #150a26;
+    --bg-panel-elevated: #221033;
+
+    --accent-magenta: #ff3fa0;
+    --accent-magenta-soft: #ff3fa04d;
+    --accent-gold: #ffce54;
+    --accent-gold-soft: #ffce544d;
+
+    --text-primary: #f7f3fb;
+    --text-muted: #b9a9cc;
+
+    --line: #3a2a52;
+
+    --color-success: #34d399;
+    --color-success-bg: #34d3991a;
+    --color-danger: #fb7185;
+    --color-danger-bg: #fb71851a;
+  }
+
+  .tone-calm {
+    --bg-panel: #17101f;
+    --bg-panel-elevated: #1e1626;
+    --accent-magenta: #c94f8f;
+    --accent-gold: #d1a94f;
+    --text-muted: #a89bb8;
+    --line: #2a2333;
+  }
+}
+
+@layer utilities {
+  /* Neon glow shadows for the party tone — CalmScope pages should avoid these. */
+  .glow-magenta {
+    box-shadow: 0 0 24px 0 var(--accent-magenta-soft);
+  }
+  .glow-gold {
+    box-shadow: 0 0 24px 0 var(--accent-gold-soft);
+  }
+  .text-glow-gold {
+    text-shadow: 0 0 28px var(--accent-gold-soft);
+  }
+
+  .bg-rave-gradient {
+    background: radial-gradient(ellipse 1000px 700px at 50% 0%, var(--bg-base-alt), var(--bg-base) 70%);
+  }
+
+  /* Scattered/tilted card look — only used in tone="party". */
+  .tilt-l { transform: rotate(-2deg); }
+  .tilt-r { transform: rotate(2deg); }
 }
 
 @layer utilities {

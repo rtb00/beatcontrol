@@ -1,9 +1,11 @@
 import type { Metadata } from 'next';
-import { Playfair_Display, Inter } from 'next/font/google';
+import { Playfair_Display, Inter, Baloo_2, JetBrains_Mono } from 'next/font/google';
 import './globals.css';
 import { getCurrentTenant } from '@/app/lib/tenant';
 import { BrandingProvider } from '@/app/lib/branding-context';
 
+// Legacy "Hochzeits-Elegance" faces — kept until every page has migrated to the
+// Confetti Rave design system (see migration plan, Phase 3 cleanup).
 const playfair = Playfair_Display({
   subsets: ['latin'],
   variable: '--font-playfair',
@@ -14,6 +16,22 @@ const playfair = Playfair_Display({
 const inter = Inter({
   subsets: ['latin'],
   variable: '--font-inter',
+  display: 'swap',
+});
+
+// "Confetti Rave" design system (Version 3): bold rounded display face + mono
+// for eyebrows/labels. Body stays on Inter.
+const baloo = Baloo_2({
+  subsets: ['latin'],
+  variable: '--font-display',
+  weight: ['600', '700', '800'],
+  display: 'swap',
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ['latin'],
+  variable: '--font-mono',
+  weight: ['500', '600'],
   display: 'swap',
 });
 
@@ -54,7 +72,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const tenant = await getCurrentTenant();
 
   return (
-    <html lang="de" className={`${playfair.variable} ${inter.variable}`}>
+    <html lang="de" className={`${playfair.variable} ${inter.variable} ${baloo.variable} ${jetbrainsMono.variable}`}>
       <body className="bg-cream text-ink antialiased font-sans">
         <BrandingProvider value={tenant}>{children}</BrandingProvider>
       </body>
