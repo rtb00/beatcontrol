@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useBranding } from '@/app/lib/branding-context';
+import { Card, NavBar, buttonVariants } from '@/app/components/ui';
 
 const EVENT_PASS_PRICE = '19';
 
@@ -11,65 +12,54 @@ export default function BrautpaarLanding() {
   const isWhiteLabel = !!branding.subdomain;
 
   return (
-    <div className="min-h-screen bg-[#faf6f0] text-[#2a2520] font-sans">
+    <div className="min-h-screen bg-rave-gradient text-fg font-sans">
       {/* Navbar */}
-      <nav className="sticky top-0 z-40 bg-[#faf6f0]/90 backdrop-blur border-b border-[#e8d9b8]">
-        <div className="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-3">
-            {branding.brandingLogoUrl ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img src={branding.brandingLogoUrl} alt={brandName} className="h-8 w-auto object-contain" />
-            ) : (
-              <span className="font-serif text-xl font-bold tracking-tight">{brandName}</span>
-            )}
-          </Link>
-          <Link
-            href="/pricing#event-pass"
-            className="text-sm px-4 py-1.5 rounded-full bg-[#c9a961] text-white hover:bg-[#b8953a] transition-colors"
-          >
-            Event-Pass · €{EVENT_PASS_PRICE}
-          </Link>
-        </div>
-      </nav>
+      <NavBar>
+        <Link href="/" className="flex items-center gap-3">
+          {branding.brandingLogoUrl ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={branding.brandingLogoUrl} alt={brandName} className="h-8 w-auto object-contain" />
+          ) : (
+            <span className="font-display text-xl font-bold tracking-tight">{brandName}</span>
+          )}
+        </Link>
+        <Link href="/pricing#event-pass" className={buttonVariants({ variant: 'primary', size: 'sm' })}>
+          Event-Pass · €{EVENT_PASS_PRICE}
+        </Link>
+      </NavBar>
 
       {/* Hero */}
       <section className="max-w-4xl mx-auto px-4 pt-20 pb-12 md:pt-28 md:pb-16 text-center">
-        <p className="text-xs font-semibold uppercase tracking-widest text-[#c9a961] mb-5">
+        <p className="font-mono text-xs font-semibold uppercase tracking-widest text-neon-gold mb-5">
           Für Brautpaare
         </p>
-        <h1 className="font-serif text-5xl md:text-6xl font-bold leading-[1.05] mb-8">
+        <h1 className="font-display text-5xl md:text-6xl font-black uppercase leading-[1.05] mb-8 text-glow-gold">
           Die Tanzfläche bleibt voll.<br />
-          <span className="text-[#c9a961]">Weil eure Gäste mitreden.</span>
+          <span className="text-magenta">Weil eure Gäste mitreden.</span>
         </h1>
-        <p className="text-[#8a7a6e] text-lg leading-relaxed max-w-2xl mx-auto mb-10">
+        <p className="text-fg-muted text-lg leading-relaxed max-w-2xl mx-auto mb-10">
           Fast jede Hochzeit hat diesen einen Moment: Die Tanzfläche wird leer und keiner weiß warum. Mit BeatControl schlagen eure Gäste vom Handy ihre Songs vor und voten füreinander. Euer DJ sieht live, was gerade gefragt ist, und legt sicher nach.
         </p>
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
-          <Link
-            href="/pricing#event-pass"
-            className="px-8 py-4 rounded-full bg-[#c9a961] text-white font-semibold text-sm hover:bg-[#b8953a] transition-colors shadow-sm"
-          >
+          <Link href="/pricing#event-pass" className={buttonVariants({ variant: 'primary', size: 'lg', tilt: true })}>
             Event-Pass kaufen · €{EVENT_PASS_PRICE}
           </Link>
-          <Link
-            href="#wie"
-            className="px-8 py-4 rounded-full border border-[#2a2520]/20 text-sm font-medium hover:border-[#c9a961] transition-colors"
-          >
+          <Link href="#wie" className={buttonVariants({ variant: 'ghost', size: 'lg' })}>
             Wie es funktioniert
           </Link>
         </div>
-        <p className="text-xs text-[#8a7a6e] mt-5">
+        <p className="text-xs text-fg-muted mt-5">
           Einmalig · 30 Tage vor bis 1 Tag nach der Feier gültig · keine Abos
         </p>
       </section>
 
       {/* Pain Section */}
-      <section className="bg-[#f4ede0] py-20 border-y border-[#e8d9b8]">
+      <section className="bg-panel py-20 border-y border-line">
         <div className="max-w-4xl mx-auto px-4">
-          <p className="text-xs font-semibold uppercase tracking-widest text-[#c9a961] mb-6 text-center">
+          <p className="font-mono text-xs font-semibold uppercase tracking-widest text-neon-gold mb-6 text-center">
             Ihr kennt das von anderen Hochzeiten
           </p>
-          <h2 className="font-serif text-3xl md:text-4xl font-bold text-center mb-16 leading-tight">
+          <h2 className="font-display text-3xl md:text-4xl font-black uppercase text-center mb-16 leading-tight">
             Die Tanzfläche, die plötzlich leer ist.
           </h2>
           <div className="grid md:grid-cols-3 gap-10 text-sm">
@@ -89,7 +79,7 @@ export default function BrautpaarLanding() {
             ].map(({ t, d }) => (
               <div key={t}>
                 <p className="font-semibold text-base mb-2">{t}</p>
-                <p className="text-[#8a7a6e] leading-relaxed">{d}</p>
+                <p className="text-fg-muted leading-relaxed">{d}</p>
               </div>
             ))}
           </div>
@@ -98,10 +88,10 @@ export default function BrautpaarLanding() {
 
       {/* How it works */}
       <section id="wie" className="max-w-4xl mx-auto px-4 py-20">
-        <p className="text-xs font-semibold uppercase tracking-widest text-[#c9a961] mb-6 text-center">
+        <p className="font-mono text-xs font-semibold uppercase tracking-widest text-neon-gold mb-6 text-center">
           So funktioniert es
         </p>
-        <h2 className="font-serif text-3xl md:text-4xl font-bold text-center mb-16 leading-tight">
+        <h2 className="font-display text-3xl md:text-4xl font-black uppercase text-center mb-16 leading-tight">
           Drei Schritte, sechs Minuten Setup.
         </h2>
 
@@ -124,10 +114,10 @@ export default function BrautpaarLanding() {
             },
           ].map(({ num, t, d }) => (
             <div key={num} className="flex gap-6 items-start">
-              <span className="font-serif text-5xl font-bold text-[#c9a961] shrink-0 leading-none">{num}</span>
+              <span className="font-display text-5xl font-black text-neon-gold shrink-0 leading-none">{num}</span>
               <div>
-                <p className="font-serif text-xl font-semibold mb-2">{t}</p>
-                <p className="text-[#8a7a6e] leading-relaxed">{d}</p>
+                <p className="font-display text-xl font-semibold mb-2">{t}</p>
+                <p className="text-fg-muted leading-relaxed">{d}</p>
               </div>
             </div>
           ))}
@@ -135,15 +125,15 @@ export default function BrautpaarLanding() {
       </section>
 
       {/* Reference */}
-      <section className="bg-[#f4ede0] py-16 border-y border-[#e8d9b8]">
+      <section className="bg-panel py-16 border-y border-line">
         <div className="max-w-3xl mx-auto px-4 text-center">
-          <p className="text-xs font-semibold uppercase tracking-widest text-[#c9a961] mb-6">
+          <p className="font-mono text-xs font-semibold uppercase tracking-widest text-neon-gold mb-6">
             Aus der Pilot-Saison
           </p>
-          <blockquote className="font-serif text-2xl md:text-3xl leading-relaxed text-[#2a2520] mb-6">
+          <blockquote className="font-display text-2xl md:text-3xl leading-relaxed text-fg mb-6">
             &ldquo;Die Gäste haben den ganzen Abend gevotet. Ich wusste jederzeit, was als Nächstes zieht, statt zu raten.&rdquo;
           </blockquote>
-          <cite className="text-sm text-[#8a7a6e] not-italic block">
+          <cite className="text-sm text-fg-muted not-italic block">
             Hochzeits-DJ · erste Pilot-Hochzeit 2026
           </cite>
         </div>
@@ -151,7 +141,7 @@ export default function BrautpaarLanding() {
 
       {/* FAQ */}
       <section className="max-w-3xl mx-auto px-4 py-20">
-        <h2 className="font-serif text-3xl md:text-4xl font-bold text-center mb-12 leading-tight">
+        <h2 className="font-display text-3xl md:text-4xl font-black uppercase text-center mb-12 leading-tight">
           Häufige Fragen
         </h2>
         <div className="space-y-8">
@@ -179,34 +169,31 @@ export default function BrautpaarLanding() {
           ].map(({ q, a }) => (
             <div key={q}>
               <p className="font-semibold text-base mb-2">{q}</p>
-              <p className="text-[#8a7a6e] leading-relaxed">{a}</p>
+              <p className="text-fg-muted leading-relaxed">{a}</p>
             </div>
           ))}
         </div>
       </section>
 
       {/* CTA */}
-      <section className="bg-[#2a2520] text-[#faf6f0] py-20">
-        <div className="max-w-2xl mx-auto px-4 text-center">
-          <h2 className="font-serif text-3xl md:text-4xl font-bold leading-tight mb-6">
+      <section className="py-20">
+        <Card tone="party" tilt={1} elevated className="max-w-2xl mx-auto px-4 py-16 text-center">
+          <h2 className="font-display text-3xl md:text-4xl font-black uppercase leading-tight mb-6 text-glow-gold">
             Ihr plant alles. Plant auch die Tanzfläche.
           </h2>
-          <p className="text-[#a89786] text-lg leading-relaxed mb-10">
+          <p className="text-fg-muted text-lg leading-relaxed mb-10">
             Für €19 weiß euer DJ den ganzen Abend, was eure Leute hören wollen. Einmal zahlen, kein Abo. Und wenn ihr es am Ende nicht braucht, habt ihr nichts verloren.
           </p>
-          <Link
-            href="/pricing#event-pass"
-            className="inline-block px-10 py-4 rounded-full bg-[#c9a961] text-white font-semibold text-sm hover:bg-[#b8953a] transition-colors"
-          >
+          <Link href="/pricing#event-pass" className={buttonVariants({ variant: 'primary', size: 'lg' })}>
             Jetzt Event-Pass kaufen
           </Link>
-        </div>
+        </Card>
       </section>
 
       {/* Footer */}
-      <footer className="bg-[#1a1510] text-[#8a7a6e] py-10">
+      <footer className="bg-base text-fg-muted py-10 border-t border-line">
         <div className="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <span className="font-serif text-lg font-bold text-[#faf6f0]">{brandName}</span>
+          <span className="font-display text-lg font-bold text-fg">{brandName}</span>
           <p className="text-xs text-center">
             © 2026 {brandName} · Für Hochzeiten und die, die sie machen.
             {isWhiteLabel && (
@@ -217,9 +204,9 @@ export default function BrautpaarLanding() {
             )}
           </p>
           <nav className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs">
-            <Link href="/impressum" className="hover:text-[#c9a961] transition-colors">Impressum</Link>
-            <Link href="/datenschutz" className="hover:text-[#c9a961] transition-colors">Datenschutz</Link>
-            <Link href="/agb" className="hover:text-[#c9a961] transition-colors">AGB</Link>
+            <Link href="/impressum" className="hover:text-neon-gold transition-colors">Impressum</Link>
+            <Link href="/datenschutz" className="hover:text-neon-gold transition-colors">Datenschutz</Link>
+            <Link href="/agb" className="hover:text-neon-gold transition-colors">AGB</Link>
           </nav>
         </div>
       </footer>
