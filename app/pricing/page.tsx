@@ -3,6 +3,7 @@
 import { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { Card, Badge, NavBar, buttonVariants } from '@/app/components/ui';
 
 type Cycle = 'yearly' | 'monthly';
 type StripeTier = 'pro_monthly' | 'pro_yearly' | 'event_pass' | 'studio_monthly' | 'studio_yearly';
@@ -142,64 +143,56 @@ function PricingPageInner() {
   const isCurrentStudio = me?.plan === 'studio';
 
   return (
-    <div className="min-h-screen bg-[#faf6f0] text-[#2a2520] font-sans">
-      <nav className="sticky top-0 z-40 bg-[#faf6f0]/90 backdrop-blur border-b border-[#e8d9b8]">
-        <div className="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between">
-          <Link href="/" className="font-serif text-xl font-bold tracking-tight">
-            BeatControl
-          </Link>
-          <div className="flex items-center gap-3">
-            {me ? (
-              <Link
-                href="/dj"
-                className="text-sm px-4 py-1.5 rounded-full border border-[#c9a961] text-[#c9a961] hover:bg-[#c9a961] hover:text-white transition-colors"
-              >
-                Dashboard
-              </Link>
-            ) : (
-              <Link
-                href="/auth/signin?callbackUrl=/pricing"
-                className="text-sm px-4 py-1.5 rounded-full border border-[#c9a961] text-[#c9a961] hover:bg-[#c9a961] hover:text-white transition-colors"
-              >
-                DJ-Login
-              </Link>
-            )}
-          </div>
+    <div className="min-h-screen bg-rave-gradient text-fg font-sans">
+      <NavBar tone="party">
+        <Link href="/" className="font-display text-xl font-bold uppercase tracking-tight">
+          BeatControl
+        </Link>
+        <div className="flex items-center gap-3">
+          {me ? (
+            <Link href="/dj" className={buttonVariants({ variant: 'secondary', size: 'sm' })}>
+              Dashboard
+            </Link>
+          ) : (
+            <Link href="/auth/signin?callbackUrl=/pricing" className={buttonVariants({ variant: 'secondary', size: 'sm' })}>
+              DJ-Login
+            </Link>
+          )}
         </div>
-      </nav>
+      </NavBar>
 
       <section className="max-w-6xl mx-auto px-4 py-16 md:py-20">
-        <h1 className="font-serif text-4xl md:text-5xl font-bold text-center mb-3">
+        <h1 className="font-display text-4xl md:text-5xl font-bold uppercase text-center mb-3 text-glow-gold">
           Dein Netz unter der nächsten Entscheidung.
         </h1>
-        <p className="text-[#8a7a6e] text-center mb-6 max-w-2xl mx-auto">
+        <p className="text-fg-muted text-center mb-6 max-w-2xl mx-auto">
           Free zum Ausprobieren. Pro Hochzeit für Gelegenheits-Gigs. Pro-Abo für aktive DJs.
           Studio für Akademien und Eventagenturen.
         </p>
-        <p className="text-center text-xs text-[#c9a961] uppercase tracking-widest mb-12">
+        <p className="text-center text-xs font-mono text-magenta uppercase tracking-widest mb-12">
           Pilot-Saison 2026 · 30 Tage Geld-zurück auf Pro
         </p>
 
         {error && (
-          <div className="max-w-xl mx-auto mb-8 px-5 py-3 rounded-2xl bg-red-50 text-red-700 text-sm text-center">
+          <div className="max-w-xl mx-auto mb-8 px-5 py-3 rounded-2xl bg-danger-bg text-danger text-sm text-center border border-danger/40">
             {error}
           </div>
         )}
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {/* Free */}
-          <div className="bg-white rounded-2xl p-6 border border-[#e8d9b8] shadow-sm flex flex-col">
+          <Card tone="party" tilt={-2} className="flex flex-col">
             <div className="flex items-center justify-between mb-1">
-              <p className="font-semibold text-sm">Free</p>
+              <p className="font-semibold text-sm text-fg">Free</p>
               {me?.plan === 'free' && (
-                <span className="text-[10px] uppercase tracking-widest text-[#c9a961] font-semibold">
+                <Badge color="gold" className="!px-2 !py-0.5">
                   Aktuell
-                </span>
+                </Badge>
               )}
             </div>
-            <p className="font-serif text-4xl font-bold mb-1">€0</p>
-            <p className="text-xs text-[#8a7a6e] mb-6">für immer kostenlos</p>
-            <ul className="flex flex-col gap-3 text-sm text-[#2a2520] mb-8 flex-1">
+            <p className="font-display text-4xl font-bold mb-1 text-fg">€0</p>
+            <p className="text-xs text-fg-muted mb-6">für immer kostenlos</p>
+            <ul className="flex flex-col gap-3 text-sm text-fg mb-8 flex-1">
               {[
                 '1 aktives Event',
                 'Bis zu 30 Songwünsche',
@@ -207,7 +200,7 @@ function PricingPageInner() {
                 'BeatControl-Branding',
               ].map((f) => (
                 <li key={f} className="flex items-start gap-2.5">
-                  <span className="text-[#c9a961] text-base leading-none mt-px">·</span>
+                  <span className="text-neon-gold text-base leading-none mt-px">·</span>
                   <span>{f}</span>
                 </li>
               ))}
@@ -215,36 +208,36 @@ function PricingPageInner() {
             {me ? (
               <button
                 disabled
-                className="w-full py-2.5 rounded-full border border-[#2a2520]/10 text-sm font-medium text-[#8a7a6e] cursor-default"
+                className="w-full py-2.5 rounded-full border border-line text-sm font-medium text-fg-muted cursor-default"
               >
                 {me.plan === 'free' ? 'Dein aktueller Plan' : 'Kostenlos verfügbar'}
               </button>
             ) : (
               <Link
                 href="/auth/signin?callbackUrl=/dj"
-                className="w-full py-2.5 rounded-full border border-[#2a2520]/20 text-sm font-medium hover:border-[#c9a961] transition-colors text-center"
+                className={buttonVariants({ variant: 'secondary', size: 'md', className: 'w-full' })}
               >
                 Kostenlos anmelden
               </Link>
             )}
-          </div>
+          </Card>
 
           {/* Pro Hochzeit (Pay-per-Use) */}
-          <div id="event-pass" className="bg-white rounded-2xl p-6 border border-[#e8d9b8] shadow-sm flex flex-col">
+          <Card tone="party" tilt={2} id="event-pass" className="flex flex-col">
             <div className="flex items-center justify-between mb-1">
-              <p className="font-semibold text-sm">Pro Hochzeit</p>
+              <p className="font-semibold text-sm text-fg">Pro Hochzeit</p>
               {isCurrentEventPass && (
-                <span className="text-[10px] uppercase tracking-widest text-[#c9a961] font-semibold">
+                <Badge color="gold" className="!px-2 !py-0.5">
                   Aktuell
-                </span>
+                </Badge>
               )}
             </div>
             <div className="flex items-baseline gap-1 mb-1">
-              <p className="font-serif text-4xl font-bold">€{EVENT_PASS_PRICE}</p>
-              <p className="text-sm text-[#8a7a6e]">/Hochzeit</p>
+              <p className="font-display text-4xl font-bold text-fg">€{EVENT_PASS_PRICE}</p>
+              <p className="text-sm text-fg-muted">/Hochzeit</p>
             </div>
-            <p className="text-xs text-[#8a7a6e] mb-6">einmalig · die Kosten gibst du ans Brautpaar weiter</p>
-            <ul className="flex flex-col gap-3 text-sm text-[#2a2520] mb-8 flex-1">
+            <p className="text-xs text-fg-muted mb-6">einmalig · die Kosten gibst du ans Brautpaar weiter</p>
+            <ul className="flex flex-col gap-3 text-sm text-fg mb-8 flex-1">
               {[
                 '1 Hochzeit, rund um deinen Termin',
                 'Unbegrenzte Songwünsche',
@@ -254,7 +247,7 @@ function PricingPageInner() {
                 'Kein Abo, keine Bindung',
               ].map((f) => (
                 <li key={f} className="flex items-start gap-2.5">
-                  <span className="text-[#c9a961] text-base leading-none mt-px">·</span>
+                  <span className="text-neon-gold text-base leading-none mt-px">·</span>
                   <span>{f}</span>
                 </li>
               ))}
@@ -262,32 +255,32 @@ function PricingPageInner() {
             <button
               onClick={() => startCheckout('event_pass')}
               disabled={busy !== null || loadingMe}
-              className="w-full py-2.5 rounded-full border border-[#2a2520]/20 text-sm font-medium hover:border-[#c9a961] transition-colors disabled:opacity-60"
+              className={buttonVariants({ variant: 'secondary', size: 'md', className: 'w-full disabled:opacity-60' })}
             >
               {busy === 'event_pass' ? 'Lädt…' : 'Einmalig buchen'}
             </button>
-          </div>
+          </Card>
 
           {/* Pro */}
-          <div className="bg-[#2a2520] text-[#faf6f0] rounded-2xl p-6 shadow-lg flex flex-col relative">
-            <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-[#c9a961] text-white text-xs font-semibold px-4 py-1 rounded-full whitespace-nowrap">
+          <Card tone="party" tilt={-2} elevated className="flex flex-col relative glow-magenta">
+            <Badge color="magenta" className="absolute -top-3.5 left-1/2 -translate-x-1/2 whitespace-nowrap">
               Meist gewählt
-            </div>
+            </Badge>
             <div className="flex items-center justify-between mb-3">
-              <p className="font-semibold text-sm text-[#e8d9b8]">Pro</p>
+              <p className="font-semibold text-sm text-fg-muted">Pro</p>
               {isCurrentPro && (
-                <span className="text-[10px] uppercase tracking-widest text-[#c9a961] font-semibold">
+                <Badge color="gold" className="!px-2 !py-0.5">
                   Aktuell
-                </span>
+                </Badge>
               )}
             </div>
 
-            <div className="inline-flex self-start items-center bg-white/5 border border-white/10 rounded-full p-0.5 mb-4 text-[11px]">
+            <div className="inline-flex self-start items-center bg-base/40 border border-line rounded-full p-0.5 mb-4 text-[11px]">
               <button
                 type="button"
                 onClick={() => setCycle('yearly')}
                 className={`px-3 py-1 rounded-full font-semibold transition-colors ${
-                  cycle === 'yearly' ? 'bg-[#c9a961] text-white' : 'text-[#e8d9b8]/70 hover:text-[#e8d9b8]'
+                  cycle === 'yearly' ? 'font-display bg-neon-gold text-base' : 'font-display text-fg-muted hover:text-fg'
                 }`}
               >
                 Jährlich −17%
@@ -296,7 +289,7 @@ function PricingPageInner() {
                 type="button"
                 onClick={() => setCycle('monthly')}
                 className={`px-3 py-1 rounded-full font-semibold transition-colors ${
-                  cycle === 'monthly' ? 'bg-[#c9a961] text-white' : 'text-[#e8d9b8]/70 hover:text-[#e8d9b8]'
+                  cycle === 'monthly' ? 'font-display bg-neon-gold text-base' : 'font-display text-fg-muted hover:text-fg'
                 }`}
               >
                 Monatlich
@@ -304,11 +297,11 @@ function PricingPageInner() {
             </div>
 
             <div className="flex items-baseline gap-1 mb-1">
-              <p className="font-serif text-4xl font-bold">€{proPrice}</p>
-              <p className="text-sm text-[#8a7a6e]">/Monat</p>
+              <p className="font-display text-4xl font-bold text-fg">€{proPrice}</p>
+              <p className="text-sm text-fg-muted">/Monat</p>
             </div>
-            <p className="text-xs text-[#8a7a6e] mb-6">{proHint}</p>
-            <ul className="flex flex-col gap-3 text-sm text-[#e8d9b8] mb-6 flex-1">
+            <p className="text-xs text-fg-muted mb-6">{proHint}</p>
+            <ul className="flex flex-col gap-3 text-sm text-fg mb-6 flex-1">
               {[
                 'Unbegrenzte Events',
                 'Unbegrenzte Songwünsche',
@@ -318,19 +311,19 @@ function PricingPageInner() {
                 'Dein Branding mit Namen und Logo',
               ].map((f) => (
                 <li key={f} className="flex items-start gap-2.5">
-                  <span className="text-[#c9a961] text-base leading-none mt-px">·</span>
+                  <span className="text-neon-gold text-base leading-none mt-px">·</span>
                   <span>{f}</span>
                 </li>
               ))}
             </ul>
-            <p className="text-[11px] text-[#8a7a6e] mb-3 text-center">
+            <p className="text-[11px] text-fg-muted mb-3 text-center">
               {proFootnote}
             </p>
             {isCurrentPro ? (
               <button
                 onClick={openPortal}
                 disabled={busy !== null}
-                className="w-full py-2.5 rounded-full bg-[#c9a961] text-white text-sm font-semibold hover:bg-[#b8953a] transition-colors disabled:opacity-60"
+                className={buttonVariants({ variant: 'primary', size: 'md', className: 'w-full disabled:opacity-60' })}
               >
                 Abo verwalten
               </button>
@@ -338,32 +331,32 @@ function PricingPageInner() {
               <button
                 onClick={() => startCheckout(proTier)}
                 disabled={busy !== null || loadingMe}
-                className="w-full py-2.5 rounded-full bg-[#c9a961] text-white text-sm font-semibold hover:bg-[#b8953a] transition-colors disabled:opacity-60"
+                className={buttonVariants({ variant: 'primary', size: 'md', className: 'w-full disabled:opacity-60' })}
               >
                 {busy === proTier ? 'Lädt…' : 'Pro starten'}
               </button>
             )}
-          </div>
+          </Card>
 
           {/* Studio */}
-          <div className="bg-white rounded-2xl p-6 border-2 border-[#c9a961] shadow-md flex flex-col relative">
-            <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-[#2a2520] text-[#e8d9b8] text-xs font-semibold px-4 py-1 rounded-full whitespace-nowrap">
+          <Card tone="party" tilt={2} className="border-2 border-neon-gold flex flex-col relative">
+            <Badge color="neutral" className="absolute -top-3.5 left-1/2 -translate-x-1/2 whitespace-nowrap">
               Für Akademien
-            </div>
+            </Badge>
             <div className="flex items-center justify-between mb-3">
-              <p className="font-semibold text-sm">Studio</p>
+              <p className="font-semibold text-sm text-fg">Studio</p>
               {isCurrentStudio && (
-                <span className="text-[10px] uppercase tracking-widest text-[#c9a961] font-semibold">
+                <Badge color="gold" className="!px-2 !py-0.5">
                   Aktuell
-                </span>
+                </Badge>
               )}
             </div>
             <div className="flex items-baseline gap-1 mb-1">
-              <p className="font-serif text-4xl font-bold">€{studioPrice}</p>
-              <p className="text-sm text-[#8a7a6e]">/Monat</p>
+              <p className="font-display text-4xl font-bold text-fg">€{studioPrice}</p>
+              <p className="text-sm text-fg-muted">/Monat</p>
             </div>
-            <p className="text-xs text-[#8a7a6e] mb-6">{studioHint}</p>
-            <ul className="flex flex-col gap-3 text-sm text-[#2a2520] mb-8 flex-1">
+            <p className="text-xs text-fg-muted mb-6">{studioHint}</p>
+            <ul className="flex flex-col gap-3 text-sm text-fg mb-8 flex-1">
               {[
                 'Alles aus Pro',
                 'Sub-Accounts für deine DJs',
@@ -373,7 +366,7 @@ function PricingPageInner() {
                 'Persönliches Onboarding',
               ].map((f) => (
                 <li key={f} className="flex items-start gap-2.5">
-                  <span className="text-[#c9a961] text-base leading-none mt-px">·</span>
+                  <span className="text-neon-gold text-base leading-none mt-px">·</span>
                   <span>{f}</span>
                 </li>
               ))}
@@ -382,34 +375,34 @@ function PricingPageInner() {
               <button
                 onClick={openPortal}
                 disabled={busy !== null}
-                className="w-full py-2.5 rounded-full bg-[#2a2520] text-[#e8d9b8] text-sm font-semibold hover:bg-[#1a1510] transition-colors disabled:opacity-60"
+                className="w-full py-2.5 rounded-full bg-panel-elevated text-fg text-sm font-semibold border border-neon-gold hover:brightness-110 transition-all disabled:opacity-60"
               >
                 Abo verwalten
               </button>
             ) : (
               <a
                 href="mailto:nibor.bauer1+beatcontrol@gmail.com?subject=Studio-Anfrage%20BeatControl&body=Hallo%2C%0A%0Aich%20bin%20interessiert%20am%20Studio-Tier%20und%20m%C3%B6chte%20gerne%20ein%20pers%C3%B6nliches%20Onboarding-Gespr%C3%A4ch.%0A%0AMein%20Use-Case%3A%20%5BAkademie%20%2F%20Eventagentur%20%2F%20...%5D%0AAnzahl%20Sub-DJs%3A%20%5B...%5D%0A%0AViele%20Gr%C3%BC%C3%9Fe%0A%5BName%5D"
-                className="w-full py-2.5 rounded-full bg-[#2a2520] text-[#e8d9b8] text-sm font-semibold hover:bg-[#1a1510] transition-colors text-center inline-block"
+                className="w-full py-2.5 rounded-full bg-panel-elevated text-fg text-sm font-semibold border border-neon-gold hover:brightness-110 transition-all text-center inline-block"
               >
                 Studio anfragen
               </a>
             )}
-          </div>
+          </Card>
         </div>
 
-        <p className="text-xs text-[#8a7a6e] text-center mt-12 max-w-xl mx-auto">
+        <p className="text-xs text-fg-muted text-center mt-12 max-w-xl mx-auto">
           Alle Preise inkl. MwSt. Zahlung über Stripe. Du kannst jederzeit über das Kunden-Portal kündigen oder Rechnungen einsehen.
         </p>
       </section>
 
-      <footer className="bg-[#2a2520] text-[#8a7a6e] py-10 mt-10">
+      <footer className="bg-base text-fg-muted py-10 mt-10 border-t border-line">
         <div className="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <span className="font-serif text-lg font-bold text-[#faf6f0]">BeatControl</span>
+          <span className="font-display text-lg font-bold uppercase text-fg">BeatControl</span>
           <p className="text-xs text-center">© 2026 BeatControl · Für Hochzeits-DJs und Brautpaare.</p>
           <nav className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs">
-            <Link href="/impressum" className="hover:text-[#c9a961] transition-colors">Impressum</Link>
-            <Link href="/datenschutz" className="hover:text-[#c9a961] transition-colors">Datenschutz</Link>
-            <Link href="/agb" className="hover:text-[#c9a961] transition-colors">AGB</Link>
+            <Link href="/impressum" className="hover:text-neon-gold transition-colors">Impressum</Link>
+            <Link href="/datenschutz" className="hover:text-neon-gold transition-colors">Datenschutz</Link>
+            <Link href="/agb" className="hover:text-neon-gold transition-colors">AGB</Link>
           </nav>
         </div>
       </footer>

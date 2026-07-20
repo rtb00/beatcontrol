@@ -4,6 +4,7 @@ import { useState, useEffect, useRef, useCallback, type ReactNode } from 'react'
 import Link from 'next/link';
 import { QRCodeSVG } from 'qrcode.react';
 import { useBranding } from '@/app/lib/branding-context';
+import { Card, Badge, NavBar, buttonVariants } from '@/app/components/ui';
 
 type Cycle = 'yearly' | 'monthly';
 type Audience = 'hochzeit' | 'geburtstag' | 'firma';
@@ -221,93 +222,88 @@ export default function LandingPage() {
       : '30 Tage Geld-zurück-Garantie · monatlich kündbar';
 
   return (
-    <div className="min-h-screen bg-[#faf6f0] text-[#2a2520] font-sans">
+    <div className="min-h-screen bg-rave-gradient text-fg font-sans">
 
       {/* Navbar */}
-      <nav className="sticky top-0 z-40 bg-[#faf6f0]/90 backdrop-blur border-b border-[#e8d9b8]">
-        <div className="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between gap-3">
-          {branding.brandingLogoUrl ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img src={branding.brandingLogoUrl} alt={brandName} className="h-8 w-auto object-contain" />
-          ) : (
-            <span className="font-serif text-xl font-bold tracking-tight">{brandName}</span>
-          )}
+      <NavBar tone="party">
+        {branding.brandingLogoUrl ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={branding.brandingLogoUrl} alt={brandName} className="h-8 w-auto object-contain" />
+        ) : (
+          <span className="font-display text-xl font-bold tracking-tight uppercase">{brandName}</span>
+        )}
 
-          <div className="flex items-center gap-2 sm:gap-3">
-            {/* Event-Typ-Umschalter */}
-            <div className="relative">
-              <button
-                type="button"
-                onClick={() => setAudienceOpen((o) => !o)}
-                aria-haspopup="listbox"
-                aria-expanded={audienceOpen}
-                className="flex items-center gap-1.5 text-sm px-3 py-1.5 rounded-full border border-[#e8d9b8] text-[#2a2520] hover:border-[#c9a961] transition-colors"
-              >
-                <span className="text-[#8a7a6e] hidden sm:inline">Für DJs ·</span>
-                <span className="font-medium">{AUDIENCE_LABELS[audience]}</span>
-                <svg width="10" height="6" viewBox="0 0 10 6" fill="none" className={`transition-transform text-[#c9a961] ${audienceOpen ? 'rotate-180' : ''}`}>
-                  <path d="M1 1l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </button>
-              {audienceOpen && (
-                <ul
-                  role="listbox"
-                  className="absolute right-0 z-30 mt-2 w-52 bg-white border border-[#e8d9b8] rounded-xl shadow-lg overflow-hidden py-1"
-                >
-                  {(Object.keys(AUDIENCE_LABELS) as Audience[]).map((a) => (
-                    <li key={a} role="option" aria-selected={a === audience}>
-                      <button
-                        type="button"
-                        onClick={() => pickAudience(a)}
-                        className={`w-full text-left px-4 py-2 text-sm transition-colors ${
-                          a === audience ? 'bg-[#f4ede0] text-[#2a2520] font-semibold' : 'text-[#8a7a6e] hover:bg-[#faf6f0]'
-                        }`}
-                      >
-                        {AUDIENCE_LABELS[a]}
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
-
-            <Link
-              href="/auth/signin"
-              className="text-sm px-4 py-1.5 rounded-full border border-[#c9a961] text-[#c9a961] hover:bg-[#c9a961] hover:text-white transition-colors whitespace-nowrap"
+        <div className="flex items-center gap-2 sm:gap-3">
+          {/* Event-Typ-Umschalter */}
+          <div className="relative">
+            <button
+              type="button"
+              onClick={() => setAudienceOpen((o) => !o)}
+              aria-haspopup="listbox"
+              aria-expanded={audienceOpen}
+              className="flex items-center gap-1.5 text-sm px-3 py-1.5 rounded-full border border-line text-fg hover:border-neon-gold transition-colors"
             >
-              DJ-Login
-            </Link>
+              <span className="text-fg-muted hidden sm:inline">Für DJs ·</span>
+              <span className="font-medium">{AUDIENCE_LABELS[audience]}</span>
+              <svg width="10" height="6" viewBox="0 0 10 6" fill="none" className={`transition-transform text-[#c9a961] ${audienceOpen ? 'rotate-180' : ''}`}>
+                <path d="M1 1l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </button>
+            {audienceOpen && (
+              <ul
+                role="listbox"
+                className="absolute right-0 z-30 mt-2 w-52 bg-panel-elevated border border-line rounded-xl shadow-lg overflow-hidden py-1"
+              >
+                {(Object.keys(AUDIENCE_LABELS) as Audience[]).map((a) => (
+                  <li key={a} role="option" aria-selected={a === audience}>
+                    <button
+                      type="button"
+                      onClick={() => pickAudience(a)}
+                      className={`w-full text-left px-4 py-2 text-sm transition-colors ${
+                        a === audience ? 'bg-panel text-fg font-semibold' : 'text-fg-muted hover:bg-panel'
+                      }`}
+                    >
+                      {AUDIENCE_LABELS[a]}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
+
+          <Link href="/auth/signin" className={buttonVariants({ variant: 'ghost', size: 'sm', className: 'whitespace-nowrap' })}>
+            DJ-Login
+          </Link>
         </div>
-      </nav>
+      </NavBar>
 
       {/* Hero */}
       <section className="max-w-6xl mx-auto px-4 py-20 md:py-28">
         <div className="grid md:grid-cols-2 gap-16 items-center">
         <div>
-          <h1 className="font-serif text-5xl md:text-6xl font-bold leading-[1.1] mb-6">
+          <h1 className="font-display text-5xl md:text-6xl font-bold uppercase leading-[1.1] mb-6 text-glow-gold">
             Dein Gespür für die Tanzfläche.<br />Von den Gästen bestätigt
           </h1>
-          <p className="text-[#8a7a6e] text-lg leading-relaxed mb-8">
+          <p className="text-fg-muted text-lg leading-relaxed mb-8">
             {c.heroSub}
           </p>
           <div className="flex flex-col sm:flex-row gap-3">
             <Link
               href="/start"
               onClick={() => trackCta('free')}
-              className="px-7 py-3.5 rounded-full bg-[#c9a961] text-white font-semibold text-sm hover:bg-[#b8953a] transition-colors shadow-sm text-center"
+              className={buttonVariants({ variant: 'primary', size: 'lg', tilt: true })}
             >
               Kostenlos ausprobieren
             </Link>
           </div>
-          <p className="text-xs text-[#8a7a6e] mt-4 leading-relaxed">
+          <p className="text-xs text-fg-muted mt-4 leading-relaxed">
             Von DJs für DJs gebaut · läuft neben Rekordbox & Serato · kein Download, Voting dauert 10 Sekunden
           </p>
         </div>
 
         {/* iPad-Mockup, exakte Nachbildung des echten DJ-Live-Views (dj/[slug]) */}
         <div className="flex justify-center">
-          <div className="relative w-full max-w-[480px] aspect-[4/3] rounded-[1.9rem] bg-[#1d1a16] p-[11px] shadow-2xl ring-1 ring-black/20">
+          <div className="relative w-full max-w-[480px] aspect-[4/3] rounded-[1.9rem] bg-[#1d1a16] p-[11px] shadow-2xl ring-1 ring-black/20 glow-magenta rotate-1">
             {/* Front-Kamera im Bezel */}
             <div className="absolute top-[5px] left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-[#0a0907] ring-1 ring-white/10" />
             {/* Screen */}
@@ -377,16 +373,21 @@ export default function LandingPage() {
 
         {/* Social Proof, Live-Kennzahlen aus der DB, direkt in der Hero-Section. Blendet sich aus, solange die Zahlen zu klein sind. */}
         {proofCards.length >= 2 && (
-          <div className="mt-16 md:mt-20 pt-10 border-t border-[#e8d9b8]">
+          <div className="mt-16 md:mt-20 pt-10 border-t border-line">
             <div className={`grid gap-8 sm:gap-6 ${proofCards.length >= 4 ? 'grid-cols-2 lg:grid-cols-4' : proofCards.length === 3 ? 'grid-cols-1 sm:grid-cols-3' : 'grid-cols-2'}`}>
-              {proofCards.map((s) => (
-                <div key={s.label} className="text-center">
-                  <p className="font-serif text-4xl md:text-5xl font-bold text-[#2a2520] tabular-nums leading-none mb-2">
+              {proofCards.map((s, i) => (
+                <Card
+                  key={s.label}
+                  tone="party"
+                  tilt={i % 2 === 0 ? -2 : 2}
+                  className="text-center"
+                >
+                  <p className="font-display text-4xl md:text-5xl font-bold text-neon-gold tabular-nums leading-none mb-2 text-glow-gold">
                     {s.value.toLocaleString('de-DE')}
                   </p>
-                  <p className="text-sm font-semibold text-[#2a2520] leading-snug">{s.label}</p>
-                  <p className="text-xs text-[#8a7a6e] mt-1 leading-snug">{s.sub}</p>
-                </div>
+                  <p className="text-sm font-semibold text-fg leading-snug">{s.label}</p>
+                  <p className="text-xs text-fg-muted mt-1 leading-snug">{s.sub}</p>
+                </Card>
               ))}
             </div>
           </div>
@@ -394,23 +395,20 @@ export default function LandingPage() {
       </section>
 
       {/* Pilot-Saison Strip, ein Job: 2 Pilot-DJs gewinnen */}
-      <section className="bg-[#f4ede0] border-y border-[#e8d9b8] py-6">
+      <section className="bg-panel border-y border-line py-6">
         <div className="max-w-4xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
           <div>
-            <p className="text-[11px] font-semibold uppercase tracking-widest text-[#c9a961] mb-1">
+            <p className="text-[11px] font-mono font-semibold uppercase tracking-widest text-magenta mb-1">
               Pilot-Saison 2026
             </p>
-            <p className="font-serif text-xl md:text-2xl font-semibold text-[#2a2520]">
+            <p className="font-display text-xl md:text-2xl font-semibold text-fg">
               Wir suchen 2 DJs für diese Saison.
             </p>
-            <p className="text-xs text-[#8a7a6e] mt-1">
+            <p className="text-xs text-fg-muted mt-1">
               Pro gratis für die ganze Saison, dafür dein ehrliches Feedback nach der Hochzeit.
             </p>
           </div>
-          <Link
-            href="/pilot"
-            className="shrink-0 px-5 py-2.5 rounded-full border border-[#c9a961] text-[#c9a961] text-sm font-semibold hover:bg-[#c9a961] hover:text-white transition-colors whitespace-nowrap"
-          >
+          <Link href="/pilot" className={buttonVariants({ variant: 'secondary', size: 'sm', className: 'shrink-0 whitespace-nowrap' })}>
             Pilot werden
           </Link>
         </div>
@@ -418,29 +416,29 @@ export default function LandingPage() {
 
       {/* Pain section */}
       <section className="max-w-4xl mx-auto px-4 py-24">
-        <p className="text-xs font-semibold uppercase tracking-widest text-[#c9a961] mb-6 text-center">
+        <p className="text-xs font-mono font-semibold uppercase tracking-widest text-magenta mb-6 text-center">
           {c.painEyebrow}
         </p>
-        <h2 className="font-serif text-4xl font-bold text-center leading-tight mb-16">
+        <h2 className="font-display text-4xl font-bold uppercase text-center leading-tight mb-16">
           {c.painH2}
         </h2>
         <div className="grid md:grid-cols-3 gap-10">
-          {c.painCards.map(({ label, text }) => (
-            <div key={label} className="border-t-2 border-[#e8d9b8] pt-6">
-              <h3 className="font-semibold text-sm mb-3">{label}</h3>
-              <p className="text-sm text-[#8a7a6e] leading-relaxed">{text}</p>
-            </div>
+          {c.painCards.map(({ label, text }, i) => (
+            <Card key={label} tone="party" tilt={i % 2 === 0 ? -2 : 2}>
+              <h3 className="font-display font-bold uppercase text-sm mb-3 text-neon-gold">{label}</h3>
+              <p className="text-sm text-fg-muted leading-relaxed">{text}</p>
+            </Card>
           ))}
         </div>
       </section>
 
       {/* Transition */}
-      <section className="bg-[#2a2520] text-[#faf6f0] py-20 text-center">
+      <section className="bg-base text-fg py-20 text-center">
         <div className="max-w-2xl mx-auto px-4">
-          <h2 className="font-serif text-3xl md:text-4xl font-bold leading-tight mb-6">
+          <h2 className="font-display text-3xl md:text-4xl font-bold uppercase leading-tight mb-6 text-glow-gold">
             {c.transitionH2}
           </h2>
-          <p className="text-[#8a7a6e] text-lg leading-relaxed">
+          <p className="text-fg-muted text-lg leading-relaxed">
             {c.transitionBody}
           </p>
         </div>
@@ -448,7 +446,7 @@ export default function LandingPage() {
 
       {/* How it works */}
       <section className="max-w-4xl mx-auto px-4 py-24">
-        <h2 className="font-serif text-3xl font-bold text-center mb-16">In drei Schritten zum sicheren Song</h2>
+        <h2 className="font-display text-3xl font-bold uppercase text-center mb-16">In drei Schritten zum sicheren Song</h2>
         <div className="grid md:grid-cols-3 gap-12">
           {[
             {
@@ -468,28 +466,28 @@ export default function LandingPage() {
             },
           ].map(({ step, title, desc }) => (
             <div key={step}>
-              <p className="font-serif text-6xl font-bold text-[#e8d9b8] mb-5 leading-none">{step}</p>
-              <h3 className="font-semibold mb-3">{title}</h3>
-              <p className="text-sm text-[#8a7a6e] leading-relaxed">{desc}</p>
+              <p className="font-display text-6xl font-bold text-magenta/40 mb-5 leading-none">{step}</p>
+              <h3 className="font-display font-bold uppercase mb-3 text-fg">{title}</h3>
+              <p className="text-sm text-fg-muted leading-relaxed">{desc}</p>
             </div>
           ))}
         </div>
       </section>
 
       {/* Control objection */}
-      <section className="bg-[#f4ede0] border-y border-[#e8d9b8] py-20">
+      <section className="bg-panel border-y border-line py-20">
         <div className="max-w-4xl mx-auto px-4 grid md:grid-cols-2 gap-16 items-start">
           <div>
-            <p className="text-[#c9a961] text-xs font-semibold uppercase tracking-widest mb-4">
+            <p className="text-magenta text-xs font-mono font-semibold uppercase tracking-widest mb-4">
               Die häufigste Frage
             </p>
-            <h2 className="font-serif text-3xl font-bold leading-tight mb-6">
+            <h2 className="font-display text-3xl font-bold uppercase leading-tight mb-6">
               &ldquo;Übernehmen dann nicht die Gäste mein Set?&rdquo;
             </h2>
-            <p className="text-[#8a7a6e] leading-relaxed mb-4">
+            <p className="text-fg-muted leading-relaxed mb-4">
               Nein. BeatControl sagt dir, was die Leute wollen. Spielen tust immer noch du.
             </p>
-            <p className="text-[#8a7a6e] leading-relaxed">
+            <p className="text-fg-muted leading-relaxed">
               Passt ein Wunsch nicht in deinen Aufbau, ignorierst du ihn. Niemand kommt ans Pult, niemand sieht, wer was vorgeschlagen hat. Es ist kein Jukebox-Modus, bei dem die Gäste auf Play drücken. Es ist ein Spickzettel, den nur du liest.
             </p>
           </div>
@@ -513,10 +511,10 @@ export default function LandingPage() {
               },
             ].map(({ title, desc }) => (
               <div key={title} className="flex gap-4">
-                <div className="w-px bg-[#c9a961] self-stretch flex-shrink-0" />
+                <div className="w-px bg-neon-gold self-stretch flex-shrink-0" />
                 <div>
-                  <p className="font-semibold text-sm mb-1">{title}</p>
-                  <p className="text-sm text-[#8a7a6e] leading-relaxed">{desc}</p>
+                  <p className="font-semibold text-sm mb-1 text-fg">{title}</p>
+                  <p className="text-sm text-fg-muted leading-relaxed">{desc}</p>
                 </div>
               </div>
             ))}
@@ -526,40 +524,40 @@ export default function LandingPage() {
 
       {/* Von DJs für DJs, Herkunft statt erfundenem Testimonial */}
       <section className="max-w-3xl mx-auto px-4 py-24 text-center">
-        <p className="text-xs font-semibold uppercase tracking-widest text-[#c9a961] mb-6">
+        <p className="text-xs font-mono font-semibold uppercase tracking-widest text-magenta mb-6">
           Von DJs für DJs
         </p>
-        <div className="w-8 h-px bg-[#c9a961] mx-auto mb-8" />
-        <h2 className="font-serif text-2xl md:text-3xl leading-snug text-[#2a2520] mb-6">
+        <div className="w-8 h-px bg-neon-gold mx-auto mb-8" />
+        <h2 className="font-display text-2xl md:text-3xl font-bold uppercase leading-snug text-fg mb-6">
           Gebaut von einem, der selbst am Pult steht
         </h2>
-        <p className="text-[#8a7a6e] text-lg leading-relaxed max-w-2xl mx-auto">
+        <p className="text-fg-muted text-lg leading-relaxed max-w-2xl mx-auto">
           BeatControl entsteht nicht am Schreibtisch, sondern auf echten Hochzeiten. Jede Funktion kommt aus dem, was am Pult wirklich gebraucht wird, und wird mit DJs zusammen getestet. Was im Einsatz nicht hilft, fliegt wieder raus.
         </p>
-        <div className="w-8 h-px bg-[#c9a961] mx-auto mt-8" />
+        <div className="w-8 h-px bg-neon-gold mx-auto mt-8" />
       </section>
 
       {/* Pricing */}
-      <section ref={setupPricingObserver} className="bg-[#f4ede0] py-20" id="pricing">
+      <section ref={setupPricingObserver} className="bg-panel py-20" id="pricing">
         <div className="max-w-5xl mx-auto px-4">
-          <h2 className="font-serif text-3xl font-bold text-center mb-3">
+          <h2 className="font-display text-3xl font-bold uppercase text-center mb-3 text-glow-gold">
             Für jeden Gig der passende Tarif
           </h2>
-          <p className="text-[#8a7a6e] text-center mb-3 max-w-xl mx-auto">
-            Free zum Ausprobieren. Pro Hochzeit für Gelegenheits-Gigs. Pro-Abo für aktive DJs. <Link href="/pricing" className="text-[#c9a961] underline">Studio</Link> für Akademien.
+          <p className="text-fg-muted text-center mb-3 max-w-xl mx-auto">
+            Free zum Ausprobieren. Pro Hochzeit für Gelegenheits-Gigs. Pro-Abo für aktive DJs. <Link href="/pricing" className="text-neon-gold underline">Studio</Link> für Akademien.
           </p>
           <p className="text-center mb-12 max-w-xl mx-auto">
-            <Link href="/pricing" className="text-xs text-[#c9a961] hover:underline">Alle 4 Tarife im Detail vergleichen →</Link>
+            <Link href="/pricing" className="text-xs text-neon-gold hover:underline">Alle 4 Tarife im Detail vergleichen →</Link>
           </p>
 
           <div className="grid md:grid-cols-3 gap-6">
 
             {/* Free */}
-            <div className="bg-white rounded-2xl p-7 border border-[#e8d9b8] shadow-sm flex flex-col">
-              <p className="font-semibold text-sm mb-1">Free</p>
-              <p className="font-serif text-4xl font-bold mb-1">€0</p>
-              <p className="text-xs text-[#8a7a6e] mb-6">für immer kostenlos</p>
-              <ul className="flex flex-col gap-3 text-sm text-[#2a2520] mb-8 flex-1">
+            <Card tone="party" tilt={-2} className="flex flex-col">
+              <p className="font-semibold text-sm mb-1 text-fg">Free</p>
+              <p className="font-display text-4xl font-bold mb-1 text-fg">€0</p>
+              <p className="text-xs text-fg-muted mb-6">für immer kostenlos</p>
+              <ul className="flex flex-col gap-3 text-sm text-fg mb-8 flex-1">
                 {[
                   '1 aktives Event',
                   'Bis zu 30 Songwünsche',
@@ -567,7 +565,7 @@ export default function LandingPage() {
                   'BeatControl-Branding',
                 ].map((f) => (
                   <li key={f} className="flex items-start gap-2.5">
-                    <span className="text-[#c9a961] text-base leading-none mt-px">·</span>
+                    <span className="text-neon-gold text-base leading-none mt-px">·</span>
                     <span>{f}</span>
                   </li>
                 ))}
@@ -575,26 +573,26 @@ export default function LandingPage() {
               <Link
                 href="/start"
                 onClick={() => trackCta('free')}
-                className="w-full py-2.5 rounded-full border border-[#2a2520]/20 text-sm font-medium hover:border-[#c9a961] transition-colors text-center"
+                className={buttonVariants({ variant: 'secondary', size: 'md', className: 'w-full' })}
               >
                 Kostenlos ausprobieren
               </Link>
-            </div>
+            </Card>
 
             {/* Pro */}
-            <div className="bg-[#2a2520] text-[#faf6f0] rounded-2xl p-7 shadow-lg flex flex-col relative">
-              <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-[#c9a961] text-white text-xs font-semibold px-4 py-1 rounded-full whitespace-nowrap">
+            <Card tone="party" tilt={2} elevated className="flex flex-col relative glow-magenta">
+              <Badge color="magenta" className="absolute -top-3.5 left-1/2 -translate-x-1/2 whitespace-nowrap">
                 Für aktive DJs
-              </div>
-              <p className="font-semibold text-sm mb-3 text-[#e8d9b8]">Pro</p>
+              </Badge>
+              <p className="font-semibold text-sm mb-3 text-fg-muted">Pro</p>
 
               {/* Cycle toggle, inside the Pro card */}
-              <div className="inline-flex self-start items-center bg-white/5 border border-white/10 rounded-full p-0.5 mb-4 text-[11px]">
+              <div className="inline-flex self-start items-center bg-base/40 border border-line rounded-full p-0.5 mb-4 text-[11px]">
                 <button
                   type="button"
                   onClick={() => setCycle('yearly')}
                   className={`px-3 py-1 rounded-full font-semibold transition-colors ${
-                    cycle === 'yearly' ? 'bg-[#c9a961] text-white' : 'text-[#e8d9b8]/70 hover:text-[#e8d9b8]'
+                    cycle === 'yearly' ? 'font-display bg-neon-gold text-base' : 'font-display text-fg-muted hover:text-fg'
                   }`}
                 >
                   Jährlich −25%
@@ -603,7 +601,7 @@ export default function LandingPage() {
                   type="button"
                   onClick={() => setCycle('monthly')}
                   className={`px-3 py-1 rounded-full font-semibold transition-colors ${
-                    cycle === 'monthly' ? 'bg-[#c9a961] text-white' : 'text-[#e8d9b8]/70 hover:text-[#e8d9b8]'
+                    cycle === 'monthly' ? 'font-display bg-neon-gold text-base' : 'font-display text-fg-muted hover:text-fg'
                   }`}
                 >
                   Monatlich
@@ -611,11 +609,11 @@ export default function LandingPage() {
               </div>
 
               <div className="flex items-baseline gap-1 mb-1">
-                <p className="font-serif text-4xl font-bold">€{proPrice}</p>
-                <p className="text-sm text-[#8a7a6e]">/Monat</p>
+                <p className="font-display text-4xl font-bold text-fg">€{proPrice}</p>
+                <p className="text-sm text-fg-muted">/Monat</p>
               </div>
-              <p className="text-xs text-[#8a7a6e] mb-6">{proHint}</p>
-              <ul className="flex flex-col gap-3 text-sm text-[#e8d9b8] mb-6 flex-1">
+              <p className="text-xs text-fg-muted mb-6">{proHint}</p>
+              <ul className="flex flex-col gap-3 text-sm text-fg mb-6 flex-1">
                 {[
                   'Unbegrenzte Events',
                   'Unbegrenzte Songwünsche',
@@ -625,32 +623,32 @@ export default function LandingPage() {
                   'Dein Branding mit persönlichem Namen und Logo',
                 ].map((f) => (
                   <li key={f} className="flex items-start gap-2.5">
-                    <span className="text-[#c9a961] text-base leading-none mt-px">·</span>
+                    <span className="text-neon-gold text-base leading-none mt-px">·</span>
                     <span>{f}</span>
                   </li>
                 ))}
               </ul>
-              <p className="text-[11px] text-[#8a7a6e] mb-3 text-center">
+              <p className="text-[11px] text-fg-muted mb-3 text-center">
                 {proFootnote}
               </p>
               <Link
                 href={`/auth/signin?plan=${cycle === 'yearly' ? 'pro_yearly' : 'pro_monthly'}`}
                 onClick={() => trackCta(cycle === 'yearly' ? 'pro_yearly' : 'pro_monthly')}
-                className="w-full py-2.5 rounded-full bg-[#c9a961] text-white text-sm font-semibold hover:bg-[#b8953a] transition-colors text-center"
+                className={buttonVariants({ variant: 'primary', size: 'md', className: 'w-full' })}
               >
                 Pro starten
               </Link>
-            </div>
+            </Card>
 
             {/* Pro Hochzeit (Pay-per-Use) */}
-            <div className="bg-white rounded-2xl p-7 border border-[#e8d9b8] shadow-sm flex flex-col">
-              <p className="font-semibold text-sm mb-1">Pro Hochzeit</p>
+            <Card tone="party" tilt={-2} className="flex flex-col">
+              <p className="font-semibold text-sm mb-1 text-fg">Pro Hochzeit</p>
               <div className="flex items-baseline gap-1 mb-1">
-                <p className="font-serif text-4xl font-bold">€{EVENT_PASS_PRICE}</p>
-                <p className="text-sm text-[#8a7a6e]">/Hochzeit</p>
+                <p className="font-display text-4xl font-bold text-fg">€{EVENT_PASS_PRICE}</p>
+                <p className="text-sm text-fg-muted">/Hochzeit</p>
               </div>
-              <p className="text-xs text-[#8a7a6e] mb-6">einmalig</p>
-              <ul className="flex flex-col gap-3 text-sm text-[#2a2520] mb-8 flex-1">
+              <p className="text-xs text-fg-muted mb-6">einmalig</p>
+              <ul className="flex flex-col gap-3 text-sm text-fg mb-8 flex-1">
                 {[
                   '1 Hochzeit, rund um deinen Termin',
                   'Unbegrenzte Songwünsche',
@@ -660,7 +658,7 @@ export default function LandingPage() {
                   'Kein Abo, keine Bindung',
                 ].map((f) => (
                   <li key={f} className="flex items-start gap-2.5">
-                    <span className="text-[#c9a961] text-base leading-none mt-px">·</span>
+                    <span className="text-neon-gold text-base leading-none mt-px">·</span>
                     <span>{f}</span>
                   </li>
                 ))}
@@ -668,11 +666,11 @@ export default function LandingPage() {
               <Link
                 href="/auth/signin?plan=event_pass"
                 onClick={() => trackCta('event_pass')}
-                className="w-full py-2.5 rounded-full border border-[#2a2520]/20 text-sm font-medium hover:border-[#c9a961] transition-colors text-center"
+                className={buttonVariants({ variant: 'secondary', size: 'md', className: 'w-full' })}
               >
                 Einmalig buchen
               </Link>
-            </div>
+            </Card>
           </div>
 
         </div>
@@ -680,26 +678,26 @@ export default function LandingPage() {
 
       {/* Final CTA */}
       <section className="max-w-2xl mx-auto px-4 py-24 text-center">
-        <h2 className="font-serif text-3xl md:text-4xl font-bold mb-4">
+        <h2 className="font-display text-3xl md:text-4xl font-bold uppercase mb-4 text-glow-gold">
           Du bist in guter Gesellschaft
         </h2>
-        <p className="text-[#8a7a6e] text-lg mb-10 leading-relaxed">
+        <p className="text-fg-muted text-lg mb-10 leading-relaxed">
           {c.finalBody}
         </p>
         <Link
           href="/start"
           onClick={() => trackCta('pro')}
-          className="inline-block px-8 py-4 rounded-full bg-[#c9a961] text-white font-semibold hover:bg-[#b8953a] transition-colors shadow-sm text-sm"
+          className={buttonVariants({ variant: 'primary', size: 'lg', tilt: true })}
         >
           Jetzt kostenlos ausprobieren
         </Link>
-        <p className="text-xs text-[#8a7a6e] mt-4">Free für immer · keine Kreditkarte nötig.</p>
+        <p className="text-xs text-fg-muted mt-4">Free für immer · keine Kreditkarte nötig.</p>
       </section>
 
       {/* Footer */}
-      <footer className="bg-[#2a2520] text-[#8a7a6e] py-10">
+      <footer className="bg-base text-fg-muted py-10 border-t border-line">
         <div className="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <span className="font-serif text-lg font-bold text-[#faf6f0]">{brandName}</span>
+          <span className="font-display text-lg font-bold uppercase text-fg">{brandName}</span>
           <p className="text-xs text-center">
             © 2026 {brandName} · Für Hochzeits-DJs.
             {isWhiteLabel && (
@@ -710,16 +708,16 @@ export default function LandingPage() {
             )}
           </p>
           <nav className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs">
-            <Link href="/impressum" className="hover:text-[#c9a961] transition-colors">
+            <Link href="/impressum" className="hover:text-neon-gold transition-colors">
               Impressum
             </Link>
-            <Link href="/datenschutz" className="hover:text-[#c9a961] transition-colors">
+            <Link href="/datenschutz" className="hover:text-neon-gold transition-colors">
               Datenschutz
             </Link>
-            <Link href="/agb" className="hover:text-[#c9a961] transition-colors">
+            <Link href="/agb" className="hover:text-neon-gold transition-colors">
               AGB
             </Link>
-            <Link href="/auth/signin" className="hover:text-[#c9a961] transition-colors">
+            <Link href="/auth/signin" className="hover:text-neon-gold transition-colors">
               DJ-Login
             </Link>
           </nav>
