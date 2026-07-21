@@ -641,7 +641,7 @@ export default function LandingPage() {
       <section className="bg-panel border-y border-line py-20">
         <Reveal className="max-w-4xl mx-auto px-4">
           <p className="text-neon-gold text-xs font-mono font-semibold uppercase tracking-widest mb-4 text-center">
-            Die häufigsten Einwände
+            Die häufigsten Fragen
           </p>
           <h2 className="font-display text-3xl font-bold uppercase leading-tight mb-4 text-center">
             Kurz und ehrlich beantwortet

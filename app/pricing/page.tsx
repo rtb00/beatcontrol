@@ -41,24 +41,18 @@ const FEATURE_GROUPS: FeatureGroup[] = [
     rows: [
       { label: 'Aktive Events', free: '1', eventPass: '1 Hochzeit', pro: 'Unbegrenzt', team: 'Unbegrenzt' },
       { label: 'Songwünsche', free: 'Bis zu 30', eventPass: 'Unbegrenzt', pro: 'Unbegrenzt', team: 'Unbegrenzt' },
+      { label: 'Branding', free: 'BeatControl-Branding', eventPass: 'Dein Branding', pro: 'Dein Branding mit persönlichem Namen und Logo', team: 'Komplett (Whitelabel)' },
       { label: 'QR-Code für Gäste', free: true, eventPass: true, pro: true, team: true },
-      { label: 'Songs entfernen, wenn sie nicht passen', free: false, eventPass: true, pro: true, team: true },
       { label: 'Export der Musikwünsche zur Nachbereitung', free: false, eventPass: true, pro: true, team: true },
       { label: 'Gast-Karten als Download', free: false, eventPass: false, pro: true, team: true },
-    ],
-  },
-  {
-    title: 'Branding',
-    rows: [
-      { label: 'Branding', free: 'BeatControl-Branding', eventPass: 'Dein Branding', pro: 'Name & Logo', team: 'Komplett (Whitelabel)' },
-      { label: 'Eigene Subdomain', free: false, eventPass: false, pro: false, team: true },
-      { label: 'Custom-Domain möglich', free: false, eventPass: false, pro: false, team: true },
     ],
   },
   {
     title: 'Team',
     rows: [
       { label: 'Sub-Accounts für deine DJs', free: false, eventPass: false, pro: false, team: true },
+      { label: 'Eigene Subdomain', free: false, eventPass: false, pro: false, team: true },
+      { label: 'Custom-Domain möglich', free: false, eventPass: false, pro: false, team: true },
       { label: 'Persönliches Onboarding', free: false, eventPass: false, pro: false, team: true },
     ],
   },
