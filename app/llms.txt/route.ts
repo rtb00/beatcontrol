@@ -3,7 +3,7 @@
 // mit der Landingpage und /pricing übereinstimmen.
 const CONTENT = `# BeatControl
 
-> Musikwunsch- und Live-Voting-Web-App für Hochzeits-DJs in Deutschland. Gäste wünschen Songs per QR-Code und voten vom Handy, der DJ sieht live sortiert nach Stimmen, welcher Song als Nächstes zieht. Kein App-Download, läuft im Browser neben Rekordbox und Serato.
+> Musikwunsch- und Live-Voting-Web-App für Hochzeits-DJs in Deutschland. Gäste wünschen Songs per QR-Code und voten vom Handy, der DJ sieht live sortiert nach Stimmen, was die Gäste hören wollen. Kein App-Download, läuft im Browser neben Rekordbox und Serato.
 
 ## Was BeatControl macht
 

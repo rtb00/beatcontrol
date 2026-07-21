@@ -131,7 +131,7 @@ export default function BrautpaarLanding() {
             Aus der Pilot-Saison
           </p>
           <blockquote className="font-display text-2xl md:text-3xl leading-relaxed text-fg mb-6">
-            &ldquo;Die Gäste haben den ganzen Abend gevotet. Ich wusste jederzeit, was als Nächstes zieht, statt zu raten.&rdquo;
+            &ldquo;Die Gäste haben den ganzen Abend gevotet. Ich wusste jederzeit, was als Nächstes ankommt, statt zu raten.&rdquo;
           </blockquote>
           <cite className="text-sm text-fg-muted not-italic block">
             Hochzeits-DJ · erste Pilot-Hochzeit 2026

@@ -47,7 +47,7 @@ export async function generateMetadata(): Promise<Metadata> {
     : 'Musikwünsche & Live-Voting für Hochzeits-DJs | BeatControl';
   const description = isWhiteLabel
     ? `Eure Gäste schlagen Songs vor, ${brandName} sieht sie live. Die Versicherung gegen Party-Flop.`
-    : 'Gäste wünschen Songs per QR-Code und voten vom Handy. Der DJ sieht live, welcher Song als Nächstes zieht. Ohne App, läuft neben Rekordbox & Serato. Kostenlos starten.';
+    : 'Gäste wünschen Songs per QR-Code und voten vom Handy. Der DJ sieht live, welcher Song die Tanzfläche füllt. Ohne App, läuft neben Rekordbox & Serato. Kostenlos starten.';
 
   return {
     metadataBase: new URL('https://beatcontrol.io'),
@@ -105,7 +105,7 @@ const SITE_JSON_LD = {
       operatingSystem: 'Web',
       inLanguage: 'de-DE',
       description:
-        'Web-App für Hochzeits-DJs: Gäste wünschen Songs per QR-Code und voten vom Handy, der DJ sieht live sortiert nach Stimmen, welcher Song als Nächstes zieht. Ohne App-Download, läuft im Browser neben Rekordbox und Serato.',
+        'Web-App für Hochzeits-DJs: Gäste wünschen Songs per QR-Code und voten vom Handy, der DJ sieht live sortiert nach Stimmen, was die Gäste hören wollen. Ohne App-Download, läuft im Browser neben Rekordbox und Serato.',
       offers: {
         '@type': 'AggregateOffer',
         priceCurrency: 'EUR',

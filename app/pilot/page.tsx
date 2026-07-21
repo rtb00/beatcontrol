@@ -30,7 +30,7 @@ export default function PilotLanding() {
         <p className="text-fg-muted text-lg leading-relaxed mb-10">
           BeatControl ist neu, aber nicht Theorie. Es lief 2026 zum ersten Mal live auf einer echten Hochzeit neben dem Pult, und der DJ hat sich im Übergang darauf verlassen, welchen Song er als Nächstes nimmt. Bevor wir öffentlich gehen, wollen wir das auf zwei weiteren echten Hochzeiten sehen.
           <br /><br />
-          Du bist Hochzeits-DJ in DACH und hast diesen Sommer eine Hochzeit, bei der du im Übergang nicht mehr raten willst, was als Nächstes zieht? Komm an Bord.
+          Du bist Hochzeits-DJ in DACH und hast diesen Sommer eine Hochzeit, bei der du im Übergang nicht mehr raten willst, was als Nächstes ankommt? Komm an Bord.
         </p>
       </section>
 

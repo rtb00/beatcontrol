@@ -686,7 +686,7 @@ export default function LandingPage() {
             Kurz und ehrlich beantwortet
           </h2>
           <p className="text-fg-muted leading-relaxed mb-12 text-center max-w-xl mx-auto">
-            Ein Song, der wirklich zieht, füllt die Fläche. Volle Fläche heißt zufriedene Gäste, und zufriedene Gäste empfehlen dich weiter.
+            Ein Song, der wirklich ankommt, füllt die Fläche. Volle Fläche heißt zufriedene Gäste, und zufriedene Gäste empfehlen dich weiter.
           </p>
           <script
             type="application/ld+json"

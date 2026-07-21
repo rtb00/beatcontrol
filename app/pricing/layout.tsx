@@ -21,7 +21,7 @@ const PRICING_JSON_LD = {
   '@type': 'Product',
   name: 'BeatControl',
   description:
-    'Musikwunsch- und Live-Voting-Tool für Hochzeits-DJs: Gäste wünschen Songs per QR-Code, der DJ sieht live sortiert nach Stimmen, was als Nächstes zieht.',
+    'Musikwunsch- und Live-Voting-Tool für Hochzeits-DJs: Gäste wünschen Songs per QR-Code, der DJ sieht live sortiert nach Stimmen, was die Gäste hören wollen.',
   brand: { '@type': 'Brand', name: 'BeatControl' },
   offers: [
     {

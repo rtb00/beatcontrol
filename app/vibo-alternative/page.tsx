@@ -45,7 +45,7 @@ export default function ViboAlternative() {
           Der wichtigste Unterschied steht in keiner Tabelle: Vibo löst die <strong className="text-fg">Vorbereitung</strong>: Playlists, Timelines, Abstimmung mit dem Brautpaar vor der Hochzeit. BeatControl löst den <strong className="text-fg">Live-Moment</strong>: die Sekunde am Pult, in der du entscheidest, welcher Song als Nächstes läuft, und deine Gäste das gerade per Voting für dich bestätigt haben.
         </p>
         <p className="text-fg-muted text-lg leading-relaxed mb-12">
-          Anders gesagt: Deine Playlist baust du in Spotify oder Vibo. Was im Saal gerade wirklich zieht, zeigt dir BeatControl in Echtzeit. Das ist keine billigere Vibo-Kopie, das ist ein anderer Job. Trotzdem hier der faire Vergleich Punkt für Punkt.
+          Anders gesagt: Deine Playlist baust du in Spotify oder Vibo. Was im Saal gerade wirklich ankommt, zeigt dir BeatControl in Echtzeit. Das ist keine billigere Vibo-Kopie, das ist ein anderer Job. Trotzdem hier der faire Vergleich Punkt für Punkt.
         </p>
 
         <div className="overflow-x-auto rounded-3xl border border-line bg-panel shadow-lg shadow-black/30 mb-12">
