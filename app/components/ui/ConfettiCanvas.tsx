@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from 'react';
 
-const COLORS = ['#ff3fa0', '#ffce54', '#f7f3fb'];
+const COLORS = ['#22e0d0', '#ffce54', '#ff3547'];
 
 /**
  * Subtle drifting-particle backdrop — a nod to "confetti" without pulling in
@@ -41,15 +41,15 @@ export default function ConfettiCanvas({ className = '' }: { className?: string 
     }
 
     function init() {
-      const count = width < 640 ? 16 : 30;
+      const count = width < 640 ? 30 : 55;
       particles = Array.from({ length: count }, () => ({
         x: Math.random() * width,
         y: Math.random() * height,
         r: 2 + Math.random() * 3,
-        vy: 0.12 + Math.random() * 0.22,
-        vx: (Math.random() - 0.5) * 0.25,
+        vy: 0.3 + Math.random() * 0.45,
+        vx: (Math.random() - 0.5) * 0.45,
         rot: Math.random() * Math.PI,
-        vr: (Math.random() - 0.5) * 0.015,
+        vr: (Math.random() - 0.5) * 0.025,
         color: COLORS[Math.floor(Math.random() * COLORS.length)],
       }));
     }
@@ -68,7 +68,9 @@ export default function ConfettiCanvas({ className = '' }: { className?: string 
         ctx!.translate(p.x, p.y);
         ctx!.rotate(p.rot);
         ctx!.fillStyle = p.color;
-        ctx!.globalAlpha = 0.3;
+        ctx!.shadowColor = p.color;
+        ctx!.shadowBlur = 6;
+        ctx!.globalAlpha = 0.55;
         ctx!.fillRect(-p.r, -p.r * 0.4, p.r * 2, p.r * 0.8);
         ctx!.restore();
       }

@@ -9,7 +9,7 @@ export default function Input({
   void tone; // party/calm currently share the same input treatment via CSS variables
   return (
     <input
-      className={`w-full px-4 py-3 rounded-2xl border border-line bg-panel text-fg placeholder:text-fg-muted focus:outline-none focus:border-neon-gold transition-colors ${className}`.trim().replace(/\s+/g, ' ')}
+      className={`w-full px-4 py-3 rounded-2xl border border-line bg-panel text-fg placeholder:text-fg-muted focus:outline-none focus:border-turquoise transition-colors ${className}`.trim().replace(/\s+/g, ' ')}
       {...props}
     />
   );

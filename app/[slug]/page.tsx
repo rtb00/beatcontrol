@@ -390,7 +390,7 @@ function SongCard({
           <button
             onClick={() => onRetract(song)}
             disabled={retracting}
-            className="text-xs text-fg-muted/60 hover:text-danger transition-colors mt-0.5 disabled:opacity-40"
+            className="text-xs text-fg-muted/70 hover:text-danger transition-colors mt-0.5 disabled:opacity-40"
           >
             {retracting ? 'Wird zurückgenommen…' : 'Zurücknehmen'}
           </button>

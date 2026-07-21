@@ -90,7 +90,7 @@ export default function AboutPage() {
           <h2 className="font-display text-2xl font-bold uppercase mt-12 mb-4">Kontakt</h2>
 
           <p>
-            Direkter Draht für DJs, Brautpaare, Hochzeitsplaner und Akademien:
+            Direkter Draht für DJs, Brautpaare, Hochzeitsplaner und DJ-Kollektive:
             <br />
             <a href="mailto:nibor.bauer1+beatcontrol@gmail.com" className="text-turquoise underline">Mail schicken</a>
           </p>

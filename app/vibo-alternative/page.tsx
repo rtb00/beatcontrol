@@ -13,7 +13,7 @@ export default function ViboAlternative() {
     { feature: 'Nächster Song vom Publikum bestätigt', vibo: '✕', beatcontrol: '✓ live sortiert', winner: 'beatcontrol' },
     { feature: 'Pricing pro DJ/Monat',    vibo: '$179 (~€165)', beatcontrol: '€59,99 (Pro)', winner: 'beatcontrol' },
     { feature: 'Single-Event-Option',     vibo: '✕',           beatcontrol: '€19 einmalig', winner: 'beatcontrol' },
-    { feature: 'Whitelabel für Akademien', vibo: '✕',           beatcontrol: '€149 Team',    winner: 'beatcontrol' },
+    { feature: 'Whitelabel für DJ-Kollektive', vibo: '✕',           beatcontrol: '€149 Team',    winner: 'beatcontrol' },
     { feature: 'Hosting in EU',           vibo: 'Unklar (US)',   beatcontrol: 'EU (Vercel + Neon)', winner: 'beatcontrol' },
     { feature: 'Deutsche AGB / Support',  vibo: '✕',           beatcontrol: '✓',              winner: 'beatcontrol' },
     { feature: 'Native App nötig',        vibo: 'Ja',            beatcontrol: 'Nein, Web-App',  winner: 'beatcontrol' },
@@ -93,7 +93,7 @@ export default function ViboAlternative() {
             <strong className="text-fg">Du willst Event-Pass-Modell.</strong> Vibo zwingt dich ins Abo. BeatControl gibt deinen Brautpaaren die Option, für ihre Hochzeit einmalig €19 zu zahlen.
           </li>
           <li>
-            <strong className="text-fg">Du leitest eine DJ-Akademie.</strong> Whitelabel-Tier (€149/Mo) gibt es bei Vibo nicht. BeatControl Team macht dich zum Reseller: eigene Subdomain, eigenes Branding, Sub-Accounts.
+            <strong className="text-fg">Du leitest ein DJ-Kollektiv.</strong> Whitelabel-Tier (€149/Mo) gibt es bei Vibo nicht. BeatControl Team macht dich zum Reseller: eigene Subdomain, eigenes Branding, Sub-Accounts.
           </li>
           <li>
             <strong className="text-fg">Deine Brautpaare sollen keine App downloaden müssen.</strong> BeatControl ist Web-First. Gäste scannen QR, öffnen Browser, los geht's. Vibo zwingt zur Native-App-Installation.

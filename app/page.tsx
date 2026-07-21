@@ -415,22 +415,19 @@ export default function LandingPage() {
         {proofCards.length >= 2 && (
           <div className="mt-16 md:mt-20 pt-10 border-t border-line">
             <div className={`grid gap-8 sm:gap-6 ${proofCards.length >= 4 ? 'grid-cols-2 lg:grid-cols-4' : proofCards.length === 3 ? 'grid-cols-1 sm:grid-cols-3' : 'grid-cols-2'}`}>
-              {proofCards.map((s, i) => {
-                const accent = ['text-turquoise text-glow-turquoise', 'text-neon-gold text-glow-gold', 'text-turquoise'][i % 3];
-                return (
+              {proofCards.map((s) => (
                 <Card
                   key={s.label}
                   tone="party"
                   className="text-center"
                 >
-                  <p className={`font-display text-4xl md:text-5xl font-bold tabular-nums leading-none mb-2 ${accent}`}>
+                  <p className="font-display text-4xl md:text-5xl font-bold tabular-nums leading-none mb-2 text-fg">
                     {s.value.toLocaleString('de-DE')}
                   </p>
                   <p className="text-sm font-semibold text-fg leading-snug">{s.label}</p>
                   <p className="text-xs text-fg-muted mt-1 leading-snug">{s.sub}</p>
                 </Card>
-                );
-              })}
+              ))}
             </div>
           </div>
         )}
@@ -547,10 +544,10 @@ export default function LandingPage() {
             Für jeden Gig der passende Tarif
           </h2>
           <p className="text-fg-muted text-center mb-3 max-w-xl mx-auto">
-            Free zum Ausprobieren. Je Hochzeit für Gelegenheits-Gigs. Pro-Abo für aktive DJs. <Link href="/pricing" className="text-neon-gold underline">Team</Link> für Akademien.
+            Free zum Ausprobieren. Je Hochzeit für Gelegenheits-Gigs. Pro-Abo für aktive DJs. <Link href="/pricing" className="text-neon-gold underline">Team</Link> für Kollektive.
           </p>
           <p className="text-center mb-12 max-w-xl mx-auto">
-            <Link href="/pricing" className="text-xs text-neon-gold hover:underline">Alle 4 Tarife im Detail vergleichen →</Link>
+            <Link href="/pricing" className="text-xs text-turquoise hover:underline">Alle 4 Tarife im Detail vergleichen →</Link>
           </p>
 
           <div className="grid md:grid-cols-3 gap-6">
@@ -596,7 +593,7 @@ export default function LandingPage() {
                 <button
                   type="button"
                   onClick={() => setCycle('yearly')}
-                  className={`px-3 py-1 rounded-full font-semibold transition-colors ${
+                  className={`px-3 py-1.5 rounded-full font-semibold transition-colors ${
                     cycle === 'yearly' ? 'font-display bg-turquoise text-base' : 'font-display text-fg-muted hover:text-fg'
                   }`}
                 >
@@ -605,7 +602,7 @@ export default function LandingPage() {
                 <button
                   type="button"
                   onClick={() => setCycle('monthly')}
-                  className={`px-3 py-1 rounded-full font-semibold transition-colors ${
+                  className={`px-3 py-1.5 rounded-full font-semibold transition-colors ${
                     cycle === 'monthly' ? 'font-display bg-turquoise text-base' : 'font-display text-fg-muted hover:text-fg'
                   }`}
                 >
@@ -762,16 +759,16 @@ export default function LandingPage() {
             )}
           </p>
           <nav className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs">
-            <Link href="/impressum" className="hover:text-neon-gold transition-colors">
+            <Link href="/impressum" className="hover:text-turquoise transition-colors">
               Impressum
             </Link>
-            <Link href="/datenschutz" className="hover:text-neon-gold transition-colors">
+            <Link href="/datenschutz" className="hover:text-turquoise transition-colors">
               Datenschutz
             </Link>
-            <Link href="/agb" className="hover:text-neon-gold transition-colors">
+            <Link href="/agb" className="hover:text-turquoise transition-colors">
               AGB
             </Link>
-            <Link href="/auth/signin" className="hover:text-neon-gold transition-colors">
+            <Link href="/auth/signin" className="hover:text-turquoise transition-colors">
               DJ-Login
             </Link>
           </nav>

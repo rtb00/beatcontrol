@@ -167,7 +167,7 @@ function PricingPageInner() {
         </h1>
         <p className="text-fg-muted text-center mb-6 max-w-2xl mx-auto">
           Free zum Ausprobieren. Je Hochzeit für Gelegenheits-Gigs. Pro-Abo für aktive DJs.
-          Team für Akademien und Eventagenturen.
+          Team für DJ-Kollektive und Eventagenturen.
         </p>
         <p className="text-center text-xs font-mono text-turquoise uppercase tracking-widest mb-12">
           Pilot-Saison 2026 · 30 Tage Geld-zurück auf Pro
@@ -283,7 +283,7 @@ function PricingPageInner() {
               <button
                 type="button"
                 onClick={() => setCycle('yearly')}
-                className={`px-3 py-1 rounded-full font-semibold transition-colors ${
+                className={`px-3 py-1.5 rounded-full font-semibold transition-colors ${
                   cycle === 'yearly' ? 'font-display bg-turquoise text-base' : 'font-display text-fg-muted hover:text-fg'
                 }`}
               >
@@ -292,7 +292,7 @@ function PricingPageInner() {
               <button
                 type="button"
                 onClick={() => setCycle('monthly')}
-                className={`px-3 py-1 rounded-full font-semibold transition-colors ${
+                className={`px-3 py-1.5 rounded-full font-semibold transition-colors ${
                   cycle === 'monthly' ? 'font-display bg-turquoise text-base' : 'font-display text-fg-muted hover:text-fg'
                 }`}
               >
@@ -347,7 +347,7 @@ function PricingPageInner() {
           {/* Team */}
           <Card tone="party" className="border-2 border-neon-gold flex flex-col relative">
             <Badge color="neutral" className="absolute -top-3.5 left-1/2 -translate-x-1/2 whitespace-nowrap">
-              Für Akademien
+              Für Kollektive
             </Badge>
             <div className="flex items-center justify-between mb-3">
               <p className="font-semibold text-sm text-fg">Team</p>
@@ -389,7 +389,7 @@ function PricingPageInner() {
               </button>
             ) : (
               <a
-                href="mailto:nibor.bauer1+beatcontrol@gmail.com?subject=Team-Anfrage%20BeatControl&body=Hallo%2C%0A%0Aich%20bin%20interessiert%20am%20Team-Tier%20und%20m%C3%B6chte%20gerne%20ein%20pers%C3%B6nliches%20Onboarding-Gespr%C3%A4ch.%0A%0AMein%20Use-Case%3A%20%5BAkademie%20%2F%20Eventagentur%20%2F%20...%5D%0AAnzahl%20Sub-DJs%3A%20%5B...%5D%0A%0AViele%20Gr%C3%BC%C3%9Fe%0A%5BName%5D"
+                href="mailto:nibor.bauer1+beatcontrol@gmail.com?subject=Team-Anfrage%20BeatControl&body=Hallo%2C%0A%0Aich%20bin%20interessiert%20am%20Team-Tier%20und%20m%C3%B6chte%20gerne%20ein%20pers%C3%B6nliches%20Onboarding-Gespr%C3%A4ch.%0A%0AMein%20Use-Case%3A%20%5BDJ-Kollektiv%20%2F%20Eventagentur%20%2F%20...%5D%0AAnzahl%20Sub-DJs%3A%20%5B...%5D%0A%0AViele%20Gr%C3%BC%C3%9Fe%0A%5BName%5D"
                 className="w-full py-2.5 rounded-full bg-panel-elevated text-fg text-sm font-semibold border border-neon-gold hover:brightness-110 transition-all text-center inline-block"
               >
                 Team anfragen

@@ -529,7 +529,7 @@ export default function AccountPage() {
           <p className="text-fg-muted text-sm mb-6">
             {isStudio
               ? 'Wähle deine eigene URL, z. B. deinakademie.beatcontrol.io. Custom-Domain auf Wunsch (per Mail anfragen).'
-              : 'Team-Tarif gibt deiner Akademie oder Agentur eine eigene Subdomain unter beatcontrol.io, komplettes Whitelabel-Branding und Sub-Accounts für deine DJs.'}
+              : 'Team-Tarif gibt deinem Kollektiv oder deiner Agentur eine eigene Subdomain unter beatcontrol.io, komplettes Whitelabel-Branding und Sub-Accounts für deine DJs.'}
           </p>
 
           {isStudio ? (

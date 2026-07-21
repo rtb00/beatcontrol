@@ -407,7 +407,7 @@ export default function DJEventPage() {
                 }}
                 aria-label="Titel bearbeiten"
                 title="Titel bearbeiten"
-                className="shrink-0 h-7 w-7 flex items-center justify-center rounded-lg text-fg-muted hover:text-turquoise hover:bg-turquoise/10 transition-all active:scale-95"
+                className="shrink-0 h-9 w-9 sm:h-7 sm:w-7 flex items-center justify-center rounded-lg text-fg-muted hover:text-turquoise hover:bg-turquoise/10 transition-all active:scale-95"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-3.5 h-3.5" aria-hidden="true">
                   <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
@@ -514,7 +514,7 @@ export default function DJEventPage() {
             ) : (
               <div className="w-[204px] h-[204px] md:w-[212px] md:h-[212px] rounded-2xl md:rounded-3xl bg-panel border-2 border-line animate-pulse" />
             )}
-            <p className="text-fg-muted/60 text-xs text-center font-mono break-all leading-relaxed max-w-[260px] md:max-w-[200px] lg:max-w-[220px]">{guestUrl}</p>
+            <p className="text-fg-muted/70 text-xs text-center font-mono break-all leading-relaxed max-w-[260px] md:max-w-[200px] lg:max-w-[220px]">{guestUrl}</p>
             <button onClick={downloadGuestCard} disabled={downloading || !origin}
               tabIndex={sidebarOpen ? 0 : -1}
               className="flex items-center gap-2 px-4 py-2.5 md:py-2 min-h-[44px] md:min-h-0 rounded-2xl text-xs font-medium text-fg-muted border border-line hover:border-turquoise hover:text-turquoise transition-all active:scale-95 disabled:opacity-40">
