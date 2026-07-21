@@ -15,15 +15,18 @@ module.exports = {
 
         // "Confetti Rave" design system (Version 3). Named `neon-gold` (not `gold`)
         // to avoid colliding with the legacy champagne-gold above during migration.
-        base: { DEFAULT: 'var(--bg-base)', alt: 'var(--bg-base-alt)' },
+        // rgb(var(--x-rgb) / <alpha-value>) statt der Hex-Variablen, damit
+        // Tailwinds Opacity-Modifier (text-fg-muted/60 etc.) funktionieren —
+        // mit Hex-Vars werden solche Klassen still gar nicht generiert.
+        base: { DEFAULT: 'rgb(var(--bg-base-rgb) / <alpha-value>)', alt: 'var(--bg-base-alt)' },
         panel: { DEFAULT: 'var(--bg-panel)', elevated: 'var(--bg-panel-elevated)' },
-        red: { DEFAULT: 'var(--accent-red)', soft: 'var(--accent-red-soft)' },
-        'neon-gold': { DEFAULT: 'var(--accent-gold)', soft: 'var(--accent-gold-soft)' },
-        turquoise: { DEFAULT: 'var(--accent-turquoise)', soft: 'var(--accent-turquoise-soft)' },
-        fg: { DEFAULT: 'var(--text-primary)', muted: 'var(--text-muted)' },
-        line: 'var(--line)',
-        success: { DEFAULT: 'var(--color-success)', bg: 'var(--color-success-bg)' },
-        danger: { DEFAULT: 'var(--color-danger)', bg: 'var(--color-danger-bg)' },
+        red: { DEFAULT: 'rgb(var(--accent-red-rgb) / <alpha-value>)', soft: 'var(--accent-red-soft)' },
+        'neon-gold': { DEFAULT: 'rgb(var(--accent-gold-rgb) / <alpha-value>)', soft: 'var(--accent-gold-soft)' },
+        turquoise: { DEFAULT: 'rgb(var(--accent-turquoise-rgb) / <alpha-value>)', soft: 'var(--accent-turquoise-soft)' },
+        fg: { DEFAULT: 'rgb(var(--text-primary-rgb) / <alpha-value>)', muted: 'rgb(var(--text-muted-rgb) / <alpha-value>)' },
+        line: 'rgb(var(--line-rgb) / <alpha-value>)',
+        success: { DEFAULT: 'rgb(var(--color-success-rgb) / <alpha-value>)', bg: 'var(--color-success-bg)' },
+        danger: { DEFAULT: 'rgb(var(--color-danger-rgb) / <alpha-value>)', bg: 'var(--color-danger-bg)' },
       },
       fontFamily: {
         serif: ['var(--font-playfair)', 'Georgia', 'serif'],

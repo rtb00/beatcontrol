@@ -35,6 +35,21 @@
     --color-success-bg: #34d3991a;
     --color-danger: #fb7185;
     --color-danger-bg: #fb71851a;
+
+    /* RGB-Kanal-Tripel derselben Farben. Tailwind kann Opacity-Modifier
+       (z.B. text-fg-muted/60) NUR anwenden, wenn die Farbe als
+       rgb(var(--x) / <alpha-value>) definiert ist — mit Hex-Variablen wird
+       die Klasse still gar nicht generiert und das Element erbt vom Parent.
+       Bei Farbwert-Änderungen IMMER beide Formen synchron pflegen. */
+    --bg-base-rgb: 6 3 12;
+    --accent-red-rgb: 255 53 71;
+    --accent-gold-rgb: 255 206 84;
+    --accent-turquoise-rgb: 34 224 208;
+    --text-primary-rgb: 247 243 251;
+    --text-muted-rgb: 185 169 204;
+    --line-rgb: 58 42 82;
+    --color-success-rgb: 52 211 153;
+    --color-danger-rgb: 251 113 133;
   }
 
   .tone-calm {
@@ -45,6 +60,12 @@
     --accent-turquoise: #3f9c92;
     --text-muted: #a89bb8;
     --line: #392e4a;
+
+    --accent-red-rgb: 184 57 74;
+    --accent-gold-rgb: 209 169 79;
+    --accent-turquoise-rgb: 63 156 146;
+    --text-muted-rgb: 168 155 184;
+    --line-rgb: 57 46 74;
   }
 }
 
