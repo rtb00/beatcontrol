@@ -317,7 +317,7 @@ export default function AccountPage() {
                 </p>
               </div>
               <Link
-                href="/pricing?cycle=yearly"
+                href="/pricing?plan=pro_yearly"
                 className={buttonVariants({ tone: 'calm', variant: 'primary', size: 'sm', className: 'shrink-0 text-center' })}
               >
                 Auf Pro upgraden
@@ -506,7 +506,7 @@ export default function AccountPage() {
               )}
               {!me.limits.branding && (
                 <Link
-                  href="/pricing?cycle=yearly"
+                  href="/pricing?plan=pro_yearly"
                   className="text-sm text-turquoise hover:underline"
                 >
                   Auf Pro upgraden, um Branding zu nutzen →

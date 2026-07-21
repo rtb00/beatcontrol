@@ -461,7 +461,7 @@ export default function DJEventPage() {
             </p>
             <div className="flex items-center gap-2 shrink-0">
               <Link
-                href="/pricing?cycle=yearly"
+                href="/pricing?plan=pro_yearly"
                 className="px-4 py-2 rounded-xl bg-gradient-to-r from-red to-neon-gold text-white text-xs font-semibold hover:brightness-110 transition-all"
               >
                 Upgrade
@@ -485,7 +485,7 @@ export default function DJEventPage() {
               Sobald das Limit erreicht ist, können deine Gäste nichts mehr wünschen.
             </p>
             <Link
-              href="/pricing?cycle=yearly"
+              href="/pricing?plan=pro_yearly"
               className="shrink-0 px-3 py-1.5 rounded-lg border border-neon-gold text-neon-gold text-xs font-semibold hover:bg-neon-gold hover:text-base transition-colors"
             >
               Upgrade

@@ -465,18 +465,18 @@ export default function LandingPage() {
             {[
               {
                 step: '01',
-                title: 'QR-Code hinstellen',
-                desc: 'Event anlegen dauert zwei Minuten. QR-Code auf die Tische oder auf den Beamer. Ab da voten deine Gäste vom eigenen Handy. Keine App, kein Download, niemand kommt ans Pult.',
+                title: 'Event anlegen, QR-Code verteilen',
+                desc: 'In zwei Minuten angelegt. Den fertigen QR-Code legst du mit den vorbereiteten Gast-Karten auf die Tische oder zeigst ihn auf dem Beamer.',
               },
               {
                 step: '02',
-                title: 'Der Saal stimmt ab',
-                desc: 'Voten dauert 10 Sekunden, ganz ohne App. Jede Stimme schiebt einen Song nach oben, oben steht immer der Track, den gerade die meisten hören wollen. Keine Vermutung, sondern echte Stimmen aus dem Raum.',
+                title: 'Gäste wünschen und voten',
+                desc: 'Code scannen, Song wünschen, für Favoriten abstimmen. Dauert 10 Sekunden vom Handy, ohne App und ohne Account.',
               },
               {
                 step: '03',
-                title: 'Du greifst zu',
-                desc: 'Ein Blick aufs iPad im Übergang, Song in Rekordbox oder Serato laden, auflegen. Passt er gerade nicht? Weg damit - du behältst das letzte Wort.',
+                title: 'Du spielst den Favoriten',
+                desc: 'Der meistgewählte Song steht oben auf deinem Screen. Ein Blick im Übergang, in Rekordbox oder Serato laden. Passt er nicht? Weg damit - du behältst das letzte Wort.',
               },
             ].map(({ step, title, desc }, i) => (
               <Reveal key={step} delay={i * 120}>

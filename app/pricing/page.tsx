@@ -158,7 +158,13 @@ function PricingPageInner() {
     if (autoStarted) return;
     if (loadingMe) return;
     if (!planParam) return;
-    if (!me) return;
+    if (!me) {
+      // Nicht eingeloggt: direkt weiter zur Anmeldung mit Plan-Vorwahl,
+      // statt die Vergleichstabelle als Zwischenstopp zu zeigen.
+      setAutoStarted(true);
+      router.push(`/auth/signin?plan=${planParam}`);
+      return;
+    }
     const alreadyOnPlan =
       ((planParam === 'pro_yearly' || planParam === 'pro_monthly') && me.plan === 'pro') ||
       ((planParam === 'studio_yearly' || planParam === 'studio_monthly') && me.plan === 'studio');
@@ -187,6 +193,28 @@ function PricingPageInner() {
   const isCurrentPro = me?.plan === 'pro';
   const isCurrentEventPass = me?.plan === 'event_pass';
   const isCurrentStudio = me?.plan === 'studio';
+
+  // Mit ?plan= kommt der Nutzer von einem direkten Kauf-CTA: statt der
+  // Vergleichstabelle als verwirrendem Zwischenstopp sofort einen
+  // Lade-Zustand zeigen, bis Stripe (bzw. die Anmeldung) übernimmt.
+  // Nur bei Fehler oder bereits aktivem Plan fällt er auf die Tabelle zurück.
+  const alreadyOnPlan =
+    !!me &&
+    (((planParam === 'pro_yearly' || planParam === 'pro_monthly') && me.plan === 'pro') ||
+      ((planParam === 'studio_yearly' || planParam === 'studio_monthly') && me.plan === 'studio'));
+  const checkoutPending = !!planParam && !error && !alreadyOnPlan;
+
+  if (checkoutPending) {
+    return (
+      <div className="min-h-screen bg-rave-gradient text-fg font-sans flex flex-col items-center justify-center gap-5 px-4">
+        <span
+          className="h-10 w-10 rounded-full border-4 border-line border-t-turquoise animate-spin"
+          aria-hidden="true"
+        />
+        <p className="text-fg-muted text-center">Einen Moment, dein Checkout wird geöffnet …</p>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-rave-gradient text-fg font-sans">
