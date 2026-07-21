@@ -154,6 +154,45 @@ const PAIN_ICON_PATHS: ReactNode[] = [
   </>,
 ];
 
+// Eine Quelle für Accordion UND FAQPage-JSON-LD, damit Google-Richtlinie
+// "Schema muss sichtbarem Inhalt entsprechen" nie durch Drift verletzt wird.
+const FAQ_ITEMS = [
+  {
+    question: '„Übernehmen die Gäste mein Set?"',
+    answer: 'Nein. Du entscheidest. BeatControl zeigt dir nur, was die Leute wollen. Gespielt wird, was du auflegst, genau wie immer.',
+  },
+  {
+    question: '„Was, wenn ein Wunsch nicht passt?"',
+    answer: 'Mit einem Klick weg. Songs, die nicht in den Abend passen, entfernst du sofort. Kein Grund, keine Erklärung gegenüber dem Gast.',
+  },
+  {
+    question: '„Muss ich in neuer Software spielen?"',
+    answer: 'Nein, deine gewohnte. Du spielst weiter in Rekordbox, Serato oder deiner DJ-Software. BeatControl zeigt dir nur, was gewünscht wird.',
+  },
+  {
+    question: '„Sehen Gäste, wer was wollte?"',
+    answer: 'Alles anonym. Alle sehen die Wunschliste und die Stimmen, aber nie, wer vorgeschlagen hat. Kein sozialer Druck.',
+  },
+  {
+    question: '„Hängen dann alle nur am Handy?"',
+    answer: 'Voten dauert 10 Sekunden. Kein Scrollen, keine App, kein Account. Kurz antippen, Handy wieder weg, dann wird getanzt.',
+  },
+  {
+    question: '„Noch ein Gerät neben Licht & Software?"',
+    answer: 'Läuft im Browser, auf deinem Laptop. Ein Tab neben Rekordbox oder Serato. Kein Zusatzgerät, kein neues Kabel am Pult.',
+  },
+];
+
+const FAQ_JSON_LD = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: FAQ_ITEMS.map((item) => ({
+    '@type': 'Question',
+    name: item.question.replace(/[„"]/g, ''),
+    acceptedAnswer: { '@type': 'Answer', text: item.answer },
+  })),
+};
+
 function track(event_type: string, tier_clicked?: string) {
   fetch('/api/analytics', {
     method: 'POST',
@@ -649,34 +688,11 @@ export default function LandingPage() {
           <p className="text-fg-muted leading-relaxed mb-12 text-center max-w-xl mx-auto">
             Ein Song, der wirklich zieht, füllt die Fläche. Volle Fläche heißt zufriedene Gäste, und zufriedene Gäste empfehlen dich weiter.
           </p>
-          <Accordion
-            items={[
-              {
-                question: '„Übernehmen die Gäste mein Set?"',
-                answer: 'Nein. Du entscheidest. BeatControl zeigt dir nur, was die Leute wollen. Gespielt wird, was du auflegst, genau wie immer.',
-              },
-              {
-                question: '„Was, wenn ein Wunsch nicht passt?"',
-                answer: 'Mit einem Klick weg. Songs, die nicht in den Abend passen, entfernst du sofort. Kein Grund, keine Erklärung gegenüber dem Gast.',
-              },
-              {
-                question: '„Muss ich in neuer Software spielen?"',
-                answer: 'Nein, deine gewohnte. Du spielst weiter in Rekordbox, Serato oder deiner DJ-Software. BeatControl zeigt dir nur, was gewünscht wird.',
-              },
-              {
-                question: '„Sehen Gäste, wer was wollte?"',
-                answer: 'Alles anonym. Alle sehen die Wunschliste und die Stimmen, aber nie, wer vorgeschlagen hat. Kein sozialer Druck.',
-              },
-              {
-                question: '„Hängen dann alle nur am Handy?"',
-                answer: 'Voten dauert 10 Sekunden. Kein Scrollen, keine App, kein Account. Kurz antippen, Handy wieder weg, dann wird getanzt.',
-              },
-              {
-                question: '„Noch ein Gerät neben Licht & Software?"',
-                answer: 'Läuft im Browser, auf deinem Laptop. Ein Tab neben Rekordbox oder Serato. Kein Zusatzgerät, kein neues Kabel am Pult.',
-              },
-            ]}
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(FAQ_JSON_LD) }}
           />
+          <Accordion items={FAQ_ITEMS} />
         </Reveal>
       </section>
 
