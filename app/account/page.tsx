@@ -414,11 +414,11 @@ export default function AccountPage() {
             </div>
           )}
 
-          {/* Studio */}
+          {/* Team */}
           {isStudio && (
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
               <div>
-                <p className="font-semibold text-fg">Studio Plan</p>
+                <p className="font-semibold text-fg">Team Plan</p>
                 <p className="text-fg-muted text-sm mt-1">
                   Whitelabel, Sub-Accounts und Custom-Domain freigeschaltet.
                   {periodEnd && <> Verlängert sich am {periodEnd}.</>}
@@ -516,20 +516,20 @@ export default function AccountPage() {
           </form>
         </Card>
 
-        {/* Studio: Subdomain & Whitelabel */}
+        {/* Team: Subdomain & Whitelabel */}
         <Card tone="calm" className="p-6 sm:p-8">
           <div className="flex items-center justify-between gap-3 mb-1 flex-wrap">
-            <h2 className="font-display text-xl font-semibold text-fg">Studio: Eigene Subdomain</h2>
+            <h2 className="font-display text-xl font-semibold text-fg">Team: Eigene Subdomain</h2>
             {!isStudio && (
               <Badge color="gold" tone="calm">
-                Studio
+                Team
               </Badge>
             )}
           </div>
           <p className="text-fg-muted text-sm mb-6">
             {isStudio
               ? 'Wähle deine eigene URL, z. B. deinakademie.beatcontrol.io. Custom-Domain auf Wunsch (per Mail anfragen).'
-              : 'Studio-Tarif gibt deiner Akademie oder Agentur eine eigene Subdomain unter beatcontrol.io, komplettes Whitelabel-Branding und Sub-Accounts für deine DJs.'}
+              : 'Team-Tarif gibt deiner Akademie oder Agentur eine eigene Subdomain unter beatcontrol.io, komplettes Whitelabel-Branding und Sub-Accounts für deine DJs.'}
           </p>
 
           {isStudio ? (
@@ -575,10 +575,10 @@ export default function AccountPage() {
             </form>
           ) : (
             <Link
-              href="mailto:nibor.bauer1+beatcontrol@gmail.com?subject=Studio-Anfrage%20BeatControl"
+              href="mailto:nibor.bauer1+beatcontrol@gmail.com?subject=Team-Anfrage%20BeatControl"
               className={buttonVariants({ tone: 'calm', variant: 'primary', size: 'sm', className: 'inline-block' })}
             >
-              Studio anfragen
+              Team anfragen
             </Link>
           )}
         </Card>

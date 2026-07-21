@@ -64,7 +64,7 @@ export async function PATCH(req: NextRequest) {
       });
       if (effective !== 'studio') {
         return NextResponse.json(
-          { error: 'Subdomain ist nur im Studio-Tarif verfügbar.' },
+          { error: 'Subdomain ist nur im Team-Tarif verfügbar.' },
           { status: 402 }
         );
       }

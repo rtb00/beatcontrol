@@ -166,8 +166,8 @@ function PricingPageInner() {
           Dein Netz unter der nächsten Entscheidung.
         </h1>
         <p className="text-fg-muted text-center mb-6 max-w-2xl mx-auto">
-          Free zum Ausprobieren. Pro Hochzeit für Gelegenheits-Gigs. Pro-Abo für aktive DJs.
-          Studio für Akademien und Eventagenturen.
+          Free zum Ausprobieren. Je Hochzeit für Gelegenheits-Gigs. Pro-Abo für aktive DJs.
+          Team für Akademien und Eventagenturen.
         </p>
         <p className="text-center text-xs font-mono text-red uppercase tracking-widest mb-12">
           Pilot-Saison 2026 · 30 Tage Geld-zurück auf Pro
@@ -224,10 +224,10 @@ function PricingPageInner() {
             )}
           </Card>
 
-          {/* Pro Hochzeit (Pay-per-Use) */}
+          {/* Je Hochzeit (Pay-per-Use) */}
           <Card tone="party" id="event-pass" className="flex flex-col">
             <div className="flex items-center justify-between mb-1">
-              <p className="font-semibold text-sm text-fg">Pro Hochzeit</p>
+              <p className="font-semibold text-sm text-fg">Je Hochzeit</p>
               {isCurrentEventPass && (
                 <Badge color="gold" className="!px-2 !py-0.5">
                   Aktuell
@@ -344,13 +344,13 @@ function PricingPageInner() {
             )}
           </Card>
 
-          {/* Studio */}
+          {/* Team */}
           <Card tone="party" className="border-2 border-neon-gold flex flex-col relative">
             <Badge color="neutral" className="absolute -top-3.5 left-1/2 -translate-x-1/2 whitespace-nowrap">
               Für Akademien
             </Badge>
             <div className="flex items-center justify-between mb-3">
-              <p className="font-semibold text-sm text-fg">Studio</p>
+              <p className="font-semibold text-sm text-fg">Team</p>
               {isCurrentStudio && (
                 <Badge color="gold" className="!px-2 !py-0.5">
                   Aktuell
@@ -389,10 +389,10 @@ function PricingPageInner() {
               </button>
             ) : (
               <a
-                href="mailto:nibor.bauer1+beatcontrol@gmail.com?subject=Studio-Anfrage%20BeatControl&body=Hallo%2C%0A%0Aich%20bin%20interessiert%20am%20Studio-Tier%20und%20m%C3%B6chte%20gerne%20ein%20pers%C3%B6nliches%20Onboarding-Gespr%C3%A4ch.%0A%0AMein%20Use-Case%3A%20%5BAkademie%20%2F%20Eventagentur%20%2F%20...%5D%0AAnzahl%20Sub-DJs%3A%20%5B...%5D%0A%0AViele%20Gr%C3%BC%C3%9Fe%0A%5BName%5D"
+                href="mailto:nibor.bauer1+beatcontrol@gmail.com?subject=Team-Anfrage%20BeatControl&body=Hallo%2C%0A%0Aich%20bin%20interessiert%20am%20Team-Tier%20und%20m%C3%B6chte%20gerne%20ein%20pers%C3%B6nliches%20Onboarding-Gespr%C3%A4ch.%0A%0AMein%20Use-Case%3A%20%5BAkademie%20%2F%20Eventagentur%20%2F%20...%5D%0AAnzahl%20Sub-DJs%3A%20%5B...%5D%0A%0AViele%20Gr%C3%BC%C3%9Fe%0A%5BName%5D"
                 className="w-full py-2.5 rounded-full bg-panel-elevated text-fg text-sm font-semibold border border-neon-gold hover:brightness-110 transition-all text-center inline-block"
               >
-                Studio anfragen
+                Team anfragen
               </a>
             )}
           </Card>

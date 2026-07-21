@@ -547,7 +547,7 @@ export default function LandingPage() {
             Für jeden Gig der passende Tarif
           </h2>
           <p className="text-fg-muted text-center mb-3 max-w-xl mx-auto">
-            Free zum Ausprobieren. Pro Hochzeit für Gelegenheits-Gigs. Pro-Abo für aktive DJs. <Link href="/pricing" className="text-neon-gold underline">Studio</Link> für Akademien.
+            Free zum Ausprobieren. Je Hochzeit für Gelegenheits-Gigs. Pro-Abo für aktive DJs. <Link href="/pricing" className="text-neon-gold underline">Team</Link> für Akademien.
           </p>
           <p className="text-center mb-12 max-w-xl mx-auto">
             <Link href="/pricing" className="text-xs text-neon-gold hover:underline">Alle 4 Tarife im Detail vergleichen →</Link>
@@ -647,9 +647,9 @@ export default function LandingPage() {
               </Link>
             </Card>
 
-            {/* Pro Hochzeit (Pay-per-Use) */}
+            {/* Je Hochzeit (Pay-per-Use) */}
             <Card tone="party" className="flex flex-col">
-              <p className="font-semibold text-sm mb-1 text-fg">Pro Hochzeit</p>
+              <p className="font-semibold text-sm mb-1 text-fg">Je Hochzeit</p>
               <div className="flex items-baseline gap-1 mb-1">
                 <p className="font-display text-4xl font-bold text-fg">€{EVENT_PASS_PRICE}</p>
                 <p className="text-sm text-fg-muted">/Hochzeit</p>
