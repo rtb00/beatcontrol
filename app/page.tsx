@@ -69,7 +69,7 @@ const COPY: Record<Audience, {
     transitionBody:
       'Deine Gäste voten für die Songs, die sie hören wollen. Du liest den Raum wie immer, nur mit einem Sinn mehr. Ob du zugreifst, entscheidest du.',
     finalBody:
-      'DJs setzen BeatControl längst auf echten Hochzeiten ein und sehen mit einem Blick, welcher Song die Leute hält. Starte kostenlos und sei bei deiner nächsten Hochzeit dabei.',
+      'Kein Risiko: Free-Tarif für immer kostenlos, keine Kreditkarte nötig. In zwei Minuten ist dein erstes Event startklar.',
   },
   geburtstag: {
     eyebrow: 'Für DJs · Geburtstag & Party',
@@ -99,7 +99,7 @@ const COPY: Record<Audience, {
     transitionBody:
       'Deine Gäste voten für die Songs, die sie hören wollen. Du liest den Raum wie immer, nur mit einem Sinn mehr. Ob du zugreifst, entscheidest du.',
     finalBody:
-      'DJs setzen BeatControl längst auf echten Partys ein und sehen mit einem Blick, welcher Song die Leute hält. Starte kostenlos und sei bei deinem nächsten Gig dabei.',
+      'Kein Risiko: Free-Tarif für immer kostenlos, keine Kreditkarte nötig. In zwei Minuten ist dein erstes Event startklar.',
   },
   firma: {
     eyebrow: 'Für DJs · Firmenfeier',
@@ -129,7 +129,7 @@ const COPY: Record<Audience, {
     transitionBody:
       'Deine Gäste voten für die Songs, die sie hören wollen. Ohne Briefing, ohne Wunschliste weißt du auf einen Blick, was diese fremde Crowd trägt. Ob du zugreifst, entscheidest du.',
     finalBody:
-      'DJs setzen BeatControl längst auf echten Firmenfeiern ein und sehen mit einem Blick, welcher Song die Leute hält. Starte kostenlos und sei bei deinem nächsten Gig dabei.',
+      'Kein Risiko: Free-Tarif für immer kostenlos, keine Kreditkarte nötig. In zwei Minuten ist dein erstes Event startklar.',
   },
 };
 
