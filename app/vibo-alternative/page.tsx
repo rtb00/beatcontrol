@@ -61,10 +61,10 @@ export default function ViboAlternative() {
               {rows.map((r) => (
                 <tr key={r.feature}>
                   <td className="px-4 py-3 font-medium">{r.feature}</td>
-                  <td className={`px-4 py-3 ${r.winner === 'vibo' ? 'text-neon-gold font-semibold' : 'text-fg-muted'}`}>
+                  <td className={`px-4 py-3 ${r.winner === 'vibo' ? 'text-red font-semibold' : 'text-fg-muted'}`}>
                     {r.vibo}
                   </td>
-                  <td className={`px-4 py-3 ${r.winner === 'beatcontrol' ? 'text-neon-gold font-semibold' : 'text-fg-muted'}`}>
+                  <td className={`px-4 py-3 ${r.winner === 'beatcontrol' ? 'text-red font-semibold' : 'text-fg-muted'}`}>
                     {r.beatcontrol}
                   </td>
                 </tr>
@@ -130,9 +130,9 @@ export default function ViboAlternative() {
           <span className="font-display text-lg font-bold text-fg">{brandName}</span>
           <p className="text-xs text-center">© 2026 {brandName}</p>
           <nav className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs">
-            <Link href="/about" className="hover:text-neon-gold transition-colors">Über uns</Link>
-            <Link href="/impressum" className="hover:text-neon-gold transition-colors">Impressum</Link>
-            <Link href="/datenschutz" className="hover:text-neon-gold transition-colors">Datenschutz</Link>
+            <Link href="/about" className="hover:text-red transition-colors">Über uns</Link>
+            <Link href="/impressum" className="hover:text-red transition-colors">Impressum</Link>
+            <Link href="/datenschutz" className="hover:text-red transition-colors">Datenschutz</Link>
           </nav>
         </div>
       </footer>

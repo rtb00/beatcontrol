@@ -64,13 +64,13 @@ function qrPanelClass(open: boolean): string {
   const state = open
     ? 'max-h-[640px] md:max-h-none w-full md:w-56 lg:w-72 xl:w-80 opacity-100 border-b md:border-b-0'
     : 'max-h-0 md:max-h-none w-full md:w-0 opacity-0 border-b-0';
-  return `shrink-0 overflow-hidden transition-all duration-300 ease-in-out border-neon-gold/30 ${state}`;
+  return `shrink-0 overflow-hidden transition-all duration-300 ease-in-out border-red/30 ${state}`;
 }
 
 function toggleButtonClass(played: boolean, toggling: boolean): string {
   const stateClass = played
-    ? 'bg-panel text-fg-muted border border-line hover:border-neon-gold hover:text-neon-gold'
-    : 'bg-gradient-to-r from-magenta to-neon-gold text-white hover:brightness-110';
+    ? 'bg-panel text-fg-muted border border-line hover:border-red hover:text-red'
+    : 'bg-gradient-to-r from-red to-neon-gold text-white hover:brightness-110';
   return `flex-1 sm:flex-none px-4 min-h-[44px] sm:min-h-0 sm:py-2.5 rounded-2xl font-display font-bold text-sm transition-all active:scale-95 inline-flex items-center justify-center gap-1.5 ${stateClass} ${
     toggling ? 'opacity-50 cursor-wait' : ''
   }`;
@@ -335,7 +335,7 @@ export default function DJEventPage() {
             href="/dj"
             aria-label="Zurück zur Übersicht"
             title="Zurück zur Übersicht"
-            className="shrink-0 h-11 w-11 sm:h-9 sm:w-9 flex items-center justify-center rounded-xl text-fg-muted border border-line hover:border-neon-gold hover:text-neon-gold transition-all active:scale-95"
+            className="shrink-0 h-11 w-11 sm:h-9 sm:w-9 flex items-center justify-center rounded-xl text-fg-muted border border-line hover:border-red hover:text-red transition-all active:scale-95"
           >
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4" aria-hidden="true">
               <path fillRule="evenodd" d="M7.793 2.232a.75.75 0 01-.025 1.06L3.622 7.25h10.003a5.375 5.375 0 010 10.75H10.75a.75.75 0 010-1.5h2.875a3.875 3.875 0 000-7.75H3.622l4.146 3.957a.75.75 0 01-1.036 1.085l-5.5-5.25a.75.75 0 010-1.085l5.5-5.25a.75.75 0 011.06.025z" clipRule="evenodd" />
@@ -348,8 +348,8 @@ export default function DJEventPage() {
             title={sidebarOpen ? 'QR-Code ausblenden' : 'QR-Code anzeigen'}
             className={`shrink-0 h-11 w-11 sm:h-9 sm:w-9 flex items-center justify-center rounded-xl border transition-all active:scale-95 ${
               sidebarOpen
-                ? 'border-neon-gold text-neon-gold bg-neon-gold/10'
-                : 'border-line text-fg-muted/70 hover:border-neon-gold hover:text-neon-gold'
+                ? 'border-red text-red bg-red/10'
+                : 'border-line text-fg-muted/70 hover:border-red hover:text-red'
             }`}
           >
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4" aria-hidden="true">
@@ -373,14 +373,14 @@ export default function DJEventPage() {
                   if (e.key === 'Escape') setEditingTitle(false);
                 }}
                 autoFocus
-                className="min-w-0 flex-1 px-2.5 py-1 rounded-lg border border-line bg-base text-fg text-sm sm:text-base focus:outline-none focus:border-neon-gold transition-colors"
+                className="min-w-0 flex-1 px-2.5 py-1 rounded-lg border border-line bg-base text-fg text-sm sm:text-base focus:outline-none focus:border-red transition-colors"
               />
               <button
                 onClick={saveTitle}
                 disabled={savingTitle}
                 aria-label="Titel speichern"
                 title="Speichern"
-                className="shrink-0 h-8 w-8 flex items-center justify-center rounded-lg bg-gradient-to-r from-magenta to-neon-gold text-white hover:brightness-110 active:scale-95 disabled:opacity-50 transition-all"
+                className="shrink-0 h-8 w-8 flex items-center justify-center rounded-lg bg-gradient-to-r from-red to-neon-gold text-white hover:brightness-110 active:scale-95 disabled:opacity-50 transition-all"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4" aria-hidden="true">
                   <path fillRule="evenodd" d="M16.704 5.29a1 1 0 010 1.42l-7.5 7.5a1 1 0 01-1.42 0l-3.5-3.5a1 1 0 111.42-1.42l2.79 2.79 6.79-6.79a1 1 0 011.42 0z" clipRule="evenodd" />
@@ -390,7 +390,7 @@ export default function DJEventPage() {
                 onClick={() => setEditingTitle(false)}
                 aria-label="Abbrechen"
                 title="Abbrechen"
-                className="shrink-0 h-8 w-8 flex items-center justify-center rounded-lg text-fg-muted border border-line hover:border-neon-gold hover:text-neon-gold transition-all active:scale-95"
+                className="shrink-0 h-8 w-8 flex items-center justify-center rounded-lg text-fg-muted border border-line hover:border-red hover:text-red transition-all active:scale-95"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-3.5 h-3.5" aria-hidden="true">
                   <path d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z" />
@@ -407,7 +407,7 @@ export default function DJEventPage() {
                 }}
                 aria-label="Titel bearbeiten"
                 title="Titel bearbeiten"
-                className="shrink-0 h-7 w-7 flex items-center justify-center rounded-lg text-fg-muted hover:text-neon-gold hover:bg-neon-gold/10 transition-all active:scale-95"
+                className="shrink-0 h-7 w-7 flex items-center justify-center rounded-lg text-fg-muted hover:text-red hover:bg-red/10 transition-all active:scale-95"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-3.5 h-3.5" aria-hidden="true">
                   <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
@@ -422,7 +422,7 @@ export default function DJEventPage() {
             disabled={exporting}
             aria-label={me?.limits.export ? 'Wunschliste als CSV exportieren' : 'CSV-Export (Pro)'}
             title={me?.limits.export ? 'CSV exportieren' : 'CSV-Export ist Pro-Feature'}
-            className="inline-flex items-center gap-1 h-8 px-2.5 rounded-xl text-xs font-semibold bg-panel text-fg-muted border border-line hover:border-neon-gold hover:text-neon-gold transition-all active:scale-95 disabled:opacity-50 shrink-0"
+            className="inline-flex items-center gap-1 h-8 px-2.5 rounded-xl text-xs font-semibold bg-panel text-fg-muted border border-line hover:border-red hover:text-red transition-all active:scale-95 disabled:opacity-50 shrink-0"
           >
             {exporting ? (
               <span>…</span>
@@ -442,7 +442,7 @@ export default function DJEventPage() {
               {me.plan === 'pro' ? 'Pro' : me.plan === 'event_pass' ? 'Event-Pass' : 'Free'}
             </span>
           )}
-          <span className="w-2 h-2 rounded-full bg-neon-gold glow-gold animate-pulse" title="Live" />
+          <span className="w-2 h-2 rounded-full bg-turquoise glow-turquoise animate-pulse" title="Live" />
         </div>
       </div>
 
@@ -453,7 +453,7 @@ export default function DJEventPage() {
       />
 
       {songLimitHit && (
-        <div className="shrink-0 bg-neon-gold/10 border-b border-neon-gold/40 px-4 py-3">
+        <div className="shrink-0 bg-red/10 border-b border-red/40 px-4 py-3">
           <div className="max-w-5xl mx-auto flex flex-col sm:flex-row items-start sm:items-center gap-3">
             <p className="text-sm text-fg leading-snug flex-1">
               <span className="font-semibold">Song-Limit erreicht.</span>{' '}
@@ -462,14 +462,14 @@ export default function DJEventPage() {
             <div className="flex items-center gap-2 shrink-0">
               <Link
                 href="/pricing?cycle=yearly"
-                className="px-4 py-2 rounded-xl bg-gradient-to-r from-magenta to-neon-gold text-white text-xs font-semibold hover:brightness-110 transition-all"
+                className="px-4 py-2 rounded-xl bg-gradient-to-r from-red to-neon-gold text-white text-xs font-semibold hover:brightness-110 transition-all"
               >
                 Upgrade
               </Link>
               <button
                 onClick={handleDeactivate}
                 disabled={deactivating}
-                className="px-4 py-2 rounded-xl border border-line text-xs font-semibold text-fg hover:border-neon-gold transition-colors disabled:opacity-50"
+                className="px-4 py-2 rounded-xl border border-line text-xs font-semibold text-fg hover:border-red transition-colors disabled:opacity-50"
               >
                 {deactivating ? '…' : 'Event deaktivieren'}
               </button>
@@ -503,12 +503,12 @@ export default function DJEventPage() {
         >
           <div className="w-full md:w-56 lg:w-72 xl:w-80 md:h-full flex flex-col items-center justify-center gap-3 md:gap-5 px-5 py-4 md:p-6 lg:p-8">
             <div className="text-center">
-              <p className="text-neon-gold text-lg md:text-xl mb-0.5 md:mb-1">♪</p>
+              <p className="text-red text-lg md:text-xl mb-0.5 md:mb-1">♪</p>
               <h2 className="font-display text-xl md:text-2xl font-black uppercase tracking-wide text-fg leading-tight">Musikwünsche</h2>
               <p className="text-fg-muted text-xs md:text-sm mt-0.5 md:mt-1">Scanne mich!</p>
             </div>
             {origin ? (
-              <div className="bg-white rounded-2xl md:rounded-3xl p-3 md:p-4 border-2 border-neon-gold/40 glow-gold">
+              <div className="bg-white rounded-2xl md:rounded-3xl p-3 md:p-4 border-2 border-red/40 glow-red">
                 <QRCodeSVG value={guestUrl} size={180} fgColor="#150a26" bgColor="#ffffff" level="M" />
               </div>
             ) : (
@@ -517,7 +517,7 @@ export default function DJEventPage() {
             <p className="text-fg-muted/60 text-xs text-center font-mono break-all leading-relaxed max-w-[260px] md:max-w-[200px] lg:max-w-[220px]">{guestUrl}</p>
             <button onClick={downloadGuestCard} disabled={downloading || !origin}
               tabIndex={sidebarOpen ? 0 : -1}
-              className="flex items-center gap-2 px-4 py-2.5 md:py-2 min-h-[44px] md:min-h-0 rounded-2xl text-xs font-medium text-fg-muted border border-line hover:border-neon-gold hover:text-neon-gold transition-all active:scale-95 disabled:opacity-40">
+              className="flex items-center gap-2 px-4 py-2.5 md:py-2 min-h-[44px] md:min-h-0 rounded-2xl text-xs font-medium text-fg-muted border border-line hover:border-red hover:text-red transition-all active:scale-95 disabled:opacity-40">
               {downloading ? <span>Generiere…</span> : (
                 <>
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-3.5 h-3.5">
@@ -537,7 +537,7 @@ export default function DJEventPage() {
             sidebarOpen ? 'w-px opacity-100' : 'w-0 opacity-0'
           }`}
         >
-          <div className="w-px bg-neon-gold/30" />
+          <div className="w-px bg-red/30" />
         </div>
 
         {/* Song list */}
@@ -602,7 +602,7 @@ function DJCard({
         {/* Decorative rank */}
         {rank !== null && (
           <span
-            className="font-display italic text-3xl sm:text-4xl text-neon-gold leading-none tabular-nums shrink-0 w-7 sm:w-9 text-center"
+            className="font-display italic text-3xl sm:text-4xl text-red leading-none tabular-nums shrink-0 w-7 sm:w-9 text-center"
             aria-hidden="true"
           >
             {rank}

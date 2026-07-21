@@ -19,10 +19,12 @@
     --bg-panel: #150a26;
     --bg-panel-elevated: #221033;
 
-    --accent-magenta: #ff3fa0;
-    --accent-magenta-soft: #ff3fa04d;
+    --accent-red: #ff3547;
+    --accent-red-soft: #ff35474d;
     --accent-gold: #ffce54;
     --accent-gold-soft: #ffce544d;
+    --accent-turquoise: #22e0d0;
+    --accent-turquoise-soft: #22e0d04d;
 
     --text-primary: #f7f3fb;
     --text-muted: #b9a9cc;
@@ -38,8 +40,9 @@
   .tone-calm {
     --bg-panel: #1c1428;
     --bg-panel-elevated: #251a32;
-    --accent-magenta: #c94f8f;
+    --accent-red: #b8394a;
     --accent-gold: #d1a94f;
+    --accent-turquoise: #3f9c92;
     --text-muted: #a89bb8;
     --line: #392e4a;
   }
@@ -47,14 +50,23 @@
 
 @layer utilities {
   /* Neon glow shadows for the party tone — CalmScope pages should avoid these. */
-  .glow-magenta {
-    box-shadow: 0 0 24px 0 var(--accent-magenta-soft);
+  .glow-red {
+    box-shadow: 0 0 24px 0 var(--accent-red-soft);
   }
   .glow-gold {
     box-shadow: 0 0 24px 0 var(--accent-gold-soft);
   }
+  .glow-turquoise {
+    box-shadow: 0 0 24px 0 var(--accent-turquoise-soft);
+  }
   .text-glow-gold {
     text-shadow: 0 0 28px var(--accent-gold-soft);
+  }
+  .text-glow-red {
+    text-shadow: 0 0 28px var(--accent-red-soft);
+  }
+  .text-glow-turquoise {
+    text-shadow: 0 0 28px var(--accent-turquoise-soft);
   }
 
   .bg-rave-gradient {

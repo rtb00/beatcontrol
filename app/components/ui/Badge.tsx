@@ -1,10 +1,10 @@
 import type { ReactNode } from 'react';
 import type { Tone } from './Button';
 
-export type BadgeColor = 'magenta' | 'gold' | 'success' | 'danger' | 'neutral';
+export type BadgeColor = 'red' | 'gold' | 'success' | 'danger' | 'neutral';
 
 const COLORS: Record<BadgeColor, string> = {
-  magenta: 'bg-magenta/15 text-magenta border-magenta/40',
+  red: 'bg-red/15 text-red border-red/40',
   gold: 'bg-neon-gold/15 text-neon-gold border-neon-gold/40',
   success: 'bg-success-bg text-success border-success/40',
   danger: 'bg-danger-bg text-danger border-danger/40',

@@ -284,7 +284,7 @@ export default function DJDashboard() {
       <div className="px-4 pt-4 max-w-2xl mx-auto flex items-center justify-end">
         <Link
           href="/account"
-          className="inline-flex items-center gap-2 text-sm text-fg-muted border border-line rounded-2xl px-3 py-1.5 hover:border-neon-gold hover:text-neon-gold transition-colors"
+          className="inline-flex items-center gap-2 text-sm text-fg-muted border border-line rounded-2xl px-3 py-1.5 hover:border-red hover:text-red transition-colors"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -303,8 +303,8 @@ export default function DJDashboard() {
 
       {/* Header */}
       <div className="text-center pt-6 pb-6 px-4">
-        <p className="text-neon-gold text-3xl mb-1">♪</p>
-        <h1 className="font-display text-4xl font-black uppercase tracking-wide text-fg text-glow-gold">DJ-Dashboard</h1>
+        <p className="text-turquoise text-3xl mb-1">♪</p>
+        <h1 className="font-display text-4xl font-black uppercase tracking-wide text-fg text-glow-turquoise">DJ-Dashboard</h1>
         {me && (
           <p className="text-fg-muted mt-1 text-xs font-mono uppercase tracking-widest">
             {me.plan === 'studio' ? 'Studio' : me.plan === 'pro' ? 'Pro' : me.plan === 'event_pass' ? 'Event-Pass' : 'Free'}
@@ -315,7 +315,7 @@ export default function DJDashboard() {
       {/* Checkout-Success Banner */}
       {checkoutBanner === 'success' && (
         <div className="max-w-2xl mx-auto px-4 mb-4">
-          <div className="rounded-2xl bg-neon-gold/10 border border-neon-gold/40 px-5 py-4 flex flex-col sm:flex-row sm:items-center gap-3">
+          <div className="rounded-2xl bg-turquoise/10 border border-turquoise/40 px-5 py-4 flex flex-col sm:flex-row sm:items-center gap-3">
             <div className="flex-1">
               <p className="font-semibold text-fg text-sm mb-1">Zahlung erfolgreich · willkommen bei {brandName} 🎉</p>
               <p className="text-xs text-fg-muted leading-relaxed">
@@ -368,26 +368,26 @@ export default function DJDashboard() {
 
       {showOnboarding && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-md animate-fade-in">
-          <div className="bg-panel-elevated rounded-3xl border border-line glow-magenta shadow-xl max-w-lg w-full p-8 sm:p-10 animate-fade-up">
-            <p className="text-neon-gold text-2xl text-center mb-2">♪</p>
+          <div className="bg-panel-elevated rounded-3xl border border-line glow-red shadow-xl max-w-lg w-full p-8 sm:p-10 animate-fade-up">
+            <p className="text-red text-2xl text-center mb-2">♪</p>
             <h2 className="font-display text-3xl font-black uppercase tracking-wide text-fg text-center mb-6">
               Willkommen bei {brandName}
             </h2>
             <ul className="space-y-4 text-fg/90 text-sm sm:text-base leading-relaxed mb-8">
               <li className="flex gap-3">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5 shrink-0 text-neon-gold" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5 shrink-0 text-red" aria-hidden="true">
                   <path fillRule="evenodd" d="M16.704 5.29a1 1 0 010 1.42l-7.5 7.5a1 1 0 01-1.42 0l-3.5-3.5a1 1 0 111.42-1.42l2.79 2.79 6.79-6.79a1 1 0 011.42 0z" clipRule="evenodd" />
                 </svg>
                 <span>Du legst ein Event an und bekommst einen QR-Code für deine Gäste.</span>
               </li>
               <li className="flex gap-3">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5 shrink-0 text-neon-gold" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5 shrink-0 text-red" aria-hidden="true">
                   <path fillRule="evenodd" d="M16.704 5.29a1 1 0 010 1.42l-7.5 7.5a1 1 0 01-1.42 0l-3.5-3.5a1 1 0 111.42-1.42l2.79 2.79 6.79-6.79a1 1 0 011.42 0z" clipRule="evenodd" />
                 </svg>
                 <span>Gäste scannen den Code und tragen ihre Songwünsche ein.</span>
               </li>
               <li className="flex gap-3">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5 shrink-0 text-neon-gold" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5 shrink-0 text-red" aria-hidden="true">
                   <path fillRule="evenodd" d="M16.704 5.29a1 1 0 010 1.42l-7.5 7.5a1 1 0 01-1.42 0l-3.5-3.5a1 1 0 111.42-1.42l2.79 2.79 6.79-6.79a1 1 0 011.42 0z" clipRule="evenodd" />
                 </svg>
                 <span>Die Wünsche erscheinen live auf deinem iPad, sortiert nach Beliebtheit.</span>
@@ -414,7 +414,7 @@ export default function DJDashboard() {
           {me && me.plan === 'free' && (
             <Link
               href="/pricing"
-              className="hidden sm:inline-block px-4 py-2 text-sm text-neon-gold border border-neon-gold rounded-2xl hover:bg-neon-gold hover:text-base transition-all"
+              className="hidden sm:inline-block px-4 py-2 text-sm text-red border border-red rounded-2xl hover:bg-red hover:text-white transition-all"
             >
               Upgrade
             </Link>
@@ -437,7 +437,7 @@ export default function DJDashboard() {
           </div>
         )}
         {funnelCreated && (
-          <div className="mb-3 rounded-2xl bg-neon-gold/10 border border-neon-gold/40 px-5 py-3 flex items-center justify-between gap-3 animate-fade-in">
+          <div className="mb-3 rounded-2xl bg-turquoise/10 border border-turquoise/40 px-5 py-3 flex items-center justify-between gap-3 animate-fade-in">
             <p className="text-sm text-fg leading-snug">
               <span className="font-semibold">Dein Event ist startklar 🎉</span>{' '}
               QR-Code steht, deine Gäste können direkt loslegen.
@@ -496,7 +496,7 @@ export default function DJDashboard() {
               >
                 <div className="flex items-center justify-between gap-3">
                   <Link href={`/dj/${event.slug}`} className="min-w-0 flex-1 group">
-                    <h2 className="font-display text-xl font-bold text-fg break-words group-hover:text-neon-gold transition-colors">
+                    <h2 className="font-display text-xl font-bold text-fg break-words group-hover:text-red transition-colors">
                       {event.title}
                     </h2>
                   </Link>
@@ -505,7 +505,7 @@ export default function DJDashboard() {
                     disabled={exportingSlug === event.slug}
                     aria-label={me?.limits.export ? 'Wunschliste als CSV exportieren' : 'CSV-Export (Pro)'}
                     title={me?.limits.export ? 'CSV exportieren' : 'CSV-Export ist Pro-Feature'}
-                    className="shrink-0 h-8 w-8 flex items-center justify-center rounded-xl text-fg-muted border border-line hover:border-neon-gold hover:text-neon-gold transition-all active:scale-95 disabled:opacity-50"
+                    className="shrink-0 h-8 w-8 flex items-center justify-center rounded-xl text-fg-muted border border-line hover:border-red hover:text-red transition-all active:scale-95 disabled:opacity-50"
                   >
                     {exportingSlug === event.slug ? (
                       <span className="text-xs">…</span>

@@ -12,13 +12,13 @@ const SIZES: Record<ButtonSize, string> = {
 
 const VARIANTS: Record<Tone, Record<ButtonVariant, string>> = {
   party: {
-    primary: 'bg-gradient-to-r from-magenta to-neon-gold text-white glow-magenta hover:brightness-110',
+    primary: 'bg-gradient-to-r from-red to-neon-gold text-white glow-red hover:brightness-110',
     secondary: 'bg-panel-elevated text-fg border border-line hover:border-neon-gold',
     ghost: 'bg-transparent text-fg border border-line hover:bg-panel',
     danger: 'bg-danger text-white hover:brightness-110',
   },
   calm: {
-    primary: 'bg-neon-gold text-base hover:brightness-110',
+    primary: 'bg-red text-white hover:brightness-110',
     secondary: 'bg-panel-elevated text-fg border border-line hover:border-neon-gold',
     ghost: 'bg-transparent text-fg border border-line hover:bg-panel',
     danger: 'bg-danger text-white hover:brightness-110',

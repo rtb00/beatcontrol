@@ -35,7 +35,7 @@ export default function BrautpaarLanding() {
         </p>
         <h1 className="font-display text-5xl md:text-6xl font-black uppercase leading-[1.05] mb-8 text-glow-gold">
           Die Tanzfläche bleibt voll.<br />
-          <span className="text-magenta">Weil eure Gäste mitreden.</span>
+          <span className="text-red">Weil eure Gäste mitreden.</span>
         </h1>
         <p className="text-fg-muted text-lg leading-relaxed max-w-2xl mx-auto mb-10">
           Fast jede Hochzeit hat diesen einen Moment: Die Tanzfläche wird leer und keiner weiß warum. Mit BeatControl schlagen eure Gäste vom Handy ihre Songs vor und voten füreinander. Euer DJ sieht live, was gerade gefragt ist, und legt sicher nach.
@@ -204,9 +204,9 @@ export default function BrautpaarLanding() {
             )}
           </p>
           <nav className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs">
-            <Link href="/impressum" className="hover:text-neon-gold transition-colors">Impressum</Link>
-            <Link href="/datenschutz" className="hover:text-neon-gold transition-colors">Datenschutz</Link>
-            <Link href="/agb" className="hover:text-neon-gold transition-colors">AGB</Link>
+            <Link href="/impressum" className="hover:text-red transition-colors">Impressum</Link>
+            <Link href="/datenschutz" className="hover:text-red transition-colors">Datenschutz</Link>
+            <Link href="/agb" className="hover:text-red transition-colors">AGB</Link>
           </nav>
         </div>
       </footer>

@@ -17,8 +17,9 @@ module.exports = {
         // to avoid colliding with the legacy champagne-gold above during migration.
         base: { DEFAULT: 'var(--bg-base)', alt: 'var(--bg-base-alt)' },
         panel: { DEFAULT: 'var(--bg-panel)', elevated: 'var(--bg-panel-elevated)' },
-        magenta: { DEFAULT: 'var(--accent-magenta)', soft: 'var(--accent-magenta-soft)' },
+        red: { DEFAULT: 'var(--accent-red)', soft: 'var(--accent-red-soft)' },
         'neon-gold': { DEFAULT: 'var(--accent-gold)', soft: 'var(--accent-gold-soft)' },
+        turquoise: { DEFAULT: 'var(--accent-turquoise)', soft: 'var(--accent-turquoise-soft)' },
         fg: { DEFAULT: 'var(--text-primary)', muted: 'var(--text-muted)' },
         line: 'var(--line)',
         success: { DEFAULT: 'var(--color-success)', bg: 'var(--color-success-bg)' },

@@ -27,7 +27,7 @@ export default function PilotLanding() {
           Pilot-Saison Mai–Juli 2026
         </p>
         <h1 className="font-display text-5xl md:text-6xl font-black uppercase leading-[1.05] mb-8 text-glow-gold">
-          Wir suchen <span className="text-magenta">2 Hochzeits-DJs</span>,<br />
+          Wir suchen <span className="text-red">2 Hochzeits-DJs</span>,<br />
           die das Ding ehrlich testen.
         </h1>
         <p className="text-fg-muted text-lg leading-relaxed mb-10">
@@ -98,7 +98,7 @@ export default function PilotLanding() {
               <h2 className="font-display text-3xl font-black uppercase mb-4">Danke, wir melden uns.</h2>
               <p className="text-fg-muted leading-relaxed">
                 Wir antworten innerhalb von 48 Stunden, meistens schneller. Wenn du nichts hörst, kannst du uns auch direkt eine{' '}
-                <a href="mailto:nibor.bauer1+beatcontrol@gmail.com" className="text-neon-gold underline">Mail schicken</a>.
+                <a href="mailto:nibor.bauer1+beatcontrol@gmail.com" className="text-red underline">Mail schicken</a>.
               </p>
             </div>
           ) : (
@@ -147,7 +147,7 @@ export default function PilotLanding() {
                     id="note"
                     name="note"
                     rows={3}
-                    className="w-full px-4 py-3 rounded-2xl border border-line bg-panel text-fg placeholder:text-fg-muted focus:outline-none focus:border-neon-gold transition-colors resize-none"
+                    className="w-full px-4 py-3 rounded-2xl border border-line bg-panel text-fg placeholder:text-fg-muted focus:outline-none focus:border-red transition-colors resize-none"
                     placeholder="Wie viele Hochzeiten machst du pro Saison? Was begeistert dich an dem Beruf?"
                   />
                 </div>
@@ -156,7 +156,7 @@ export default function PilotLanding() {
                 </Button>
                 <p className="text-xs text-fg-muted text-center mt-3">
                   Wir öffnen damit deinen Mail-Client. Alternativ kannst du uns direkt eine{' '}
-                  <a href="mailto:nibor.bauer1+beatcontrol@gmail.com" className="text-neon-gold underline">Mail schicken</a>.
+                  <a href="mailto:nibor.bauer1+beatcontrol@gmail.com" className="text-red underline">Mail schicken</a>.
                 </p>
               </form>
             </>
@@ -169,9 +169,9 @@ export default function PilotLanding() {
           <span className="font-display text-lg font-bold text-fg">{brandName}</span>
           <p className="text-xs text-center">© 2026 {brandName} · Für Hochzeiten und die, die sie machen.</p>
           <nav className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs">
-            <Link href="/impressum" className="hover:text-neon-gold transition-colors">Impressum</Link>
-            <Link href="/datenschutz" className="hover:text-neon-gold transition-colors">Datenschutz</Link>
-            <Link href="/agb" className="hover:text-neon-gold transition-colors">AGB</Link>
+            <Link href="/impressum" className="hover:text-red transition-colors">Impressum</Link>
+            <Link href="/datenschutz" className="hover:text-red transition-colors">Datenschutz</Link>
+            <Link href="/agb" className="hover:text-red transition-colors">AGB</Link>
           </nav>
         </div>
       </footer>
