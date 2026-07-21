@@ -231,7 +231,7 @@ function PricingPageInner() {
               <tr className="bg-panel-elevated">
                 <th className="bg-panel-elevated w-[220px] min-w-[220px]" />
                 <th className="px-5 py-6 text-left align-bottom border-l border-line">
-                  <div className="flex items-center gap-2 mb-3">
+                  <div className="flex items-center justify-center gap-2 mb-3">
                     <span className="font-display font-bold text-lg text-fg">Free</span>
                     {me?.plan === 'free' && (
                       <Badge color="gold" className="!px-2 !py-0.5">Aktuell</Badge>
@@ -254,7 +254,7 @@ function PricingPageInner() {
                   )}
                 </th>
                 <th className="px-5 py-6 text-left align-bottom border-l border-line">
-                  <div className="flex items-center gap-2 mb-3">
+                  <div className="flex items-center justify-center gap-2 mb-3">
                     <span className="font-display font-bold text-lg text-fg">Je Hochzeit</span>
                     {isCurrentEventPass && (
                       <Badge color="gold" className="!px-2 !py-0.5">Aktuell</Badge>
@@ -269,7 +269,7 @@ function PricingPageInner() {
                   </button>
                 </th>
                 <th className="px-5 py-6 text-left align-bottom border-l border-turquoise/40 bg-turquoise/5">
-                  <div className="flex items-center gap-2 mb-3">
+                  <div className="flex items-center justify-center gap-2 mb-3">
                     <span className="font-display font-bold text-lg text-fg">Pro</span>
                     {isCurrentPro && (
                       <Badge color="gold" className="!px-2 !py-0.5">Aktuell</Badge>
@@ -294,7 +294,7 @@ function PricingPageInner() {
                   )}
                 </th>
                 <th className="px-5 py-6 text-left align-bottom border-l border-neon-gold/40">
-                  <div className="flex items-center gap-2 mb-3">
+                  <div className="flex items-center justify-center gap-2 mb-3">
                     <span className="font-display font-bold text-lg text-fg">Team</span>
                     {isCurrentStudio && (
                       <Badge color="gold" className="!px-2 !py-0.5">Aktuell</Badge>
