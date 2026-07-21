@@ -506,7 +506,7 @@ export default function LandingPage() {
             },
           ].map(({ step, title, desc }, i) => (
             <Reveal key={step} delay={i * 120}>
-              <p className="font-display text-6xl font-bold text-neon-gold/30 mb-5 leading-none">{step}</p>
+              <p className="font-display text-6xl font-bold text-fg mb-5 leading-none">{step}</p>
               <h3 className="font-display font-bold uppercase mb-3 text-fg">{title}</h3>
               <p className="text-sm text-fg-muted leading-relaxed">{desc}</p>
             </Reveal>

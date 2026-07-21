@@ -65,6 +65,15 @@ const files = execSync("git ls-files 'app/**/*.tsx'", { cwd: process.cwd() })
 // contrast — matched separately so it never counts as a violation.
 const pattern = /(?<!placeholder:)text-(fg-muted|fg|neon-gold|turquoise|red|danger|success)\/(\d{1,3})\b/g;
 
+// Begründete Einzel-Ausnahmen (Datei + Klasse). Nur für Elemente, die
+// funktional Placeholder sind, aber technisch kein placeholder:-Prefix
+// tragen können.
+const IGNORE = new Set([
+  // Overlay-Placeholder des date-Inputs im Funnel — bewusst identisch zum
+  // placeholder:text-fg-muted/60 des Namensfelds gedämpft.
+  'app/start/page.tsx:text-fg-muted/60',
+]);
+
 const findings = [];
 for (const file of files) {
   if (!existsSync(file)) continue;
@@ -75,6 +84,7 @@ for (const file of files) {
     pattern.lastIndex = 0;
     while ((m = pattern.exec(line))) {
       const [, tokenName, alphaStr] = m;
+      if (IGNORE.has(`${file}:text-${tokenName}/${alphaStr}`)) continue;
       const alpha = parseInt(alphaStr, 10) / 100;
       const fgHex = TOKENS[tokenName];
       if (!fgHex) continue;
