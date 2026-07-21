@@ -527,8 +527,8 @@ export default function LandingPage() {
                 {[
                   '1 aktives Event',
                   'Bis zu 30 Songwünsche',
-                  'QR-Code für Gäste',
                   'BeatControl-Branding',
+                  'QR-Code für Gäste',
                 ].map((f) => (
                   <li key={f} className="flex items-start gap-2.5">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4 shrink-0 text-turquoise mt-0.5" aria-hidden="true">
@@ -585,10 +585,9 @@ export default function LandingPage() {
                 {[
                   'Unbegrenzte Events',
                   'Unbegrenzte Songwünsche',
+                  'Dein Branding mit persönlichem Namen und Logo',
                   'Gast-Karten als Download',
                   'Export der Musikwünsche zur Nachbereitung',
-                  'Songs entfernen wenn sie nicht passen',
-                  'Dein Branding mit persönlichem Namen und Logo',
                 ].map((f) => (
                   <li key={f} className="flex items-start gap-2.5">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4 shrink-0 text-turquoise mt-0.5" aria-hidden="true">
@@ -622,7 +621,6 @@ export default function LandingPage() {
                 {[
                   '1 Hochzeit, rund um deinen Termin',
                   'Unbegrenzte Songwünsche',
-                  'Songs entfernen wenn sie nicht passen',
                   'Dein Branding inklusive',
                   'Export der Musikwünsche zur Nachbereitung',
                   'Kein Abo, keine Bindung',

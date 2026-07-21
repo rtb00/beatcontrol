@@ -57,9 +57,11 @@ export default async function SignInPage({
   const errorMsg =
     searchParams?.error === 'CredentialsSignin'
       ? 'Email oder Passwort falsch.'
-      : searchParams?.error
-        ? 'Anmeldung fehlgeschlagen.'
-        : null;
+      : searchParams?.error === 'OAuthAccountNotLinked'
+        ? 'Diese Email ist bereits mit Passwort registriert. Melde dich mit Email und Passwort an.'
+        : searchParams?.error
+          ? 'Anmeldung fehlgeschlagen.'
+          : null;
 
   const planLabel: Record<Plan, string> = {
     pro_yearly: 'Pro · jährlich',

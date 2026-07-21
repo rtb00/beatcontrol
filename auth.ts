@@ -100,7 +100,12 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   ...authConfig,
   adapter,
   providers: [
-    Google,
+    // allowDangerousEmailAccountLinking: Google liefert ausschließlich
+    // verifizierte E-Mails, daher ist das automatische Verknüpfen mit einem
+    // bestehenden Passwort-Account gleicher E-Mail hier sicher. Ohne dies
+    // scheitert der Google-Login für jeden, der sich zuerst per E-Mail
+    // registriert hat (OAuthAccountNotLinked -> "Anmeldung fehlgeschlagen").
+    Google({ allowDangerousEmailAccountLinking: true }),
     ...(process.env.AUTH_APPLE_ID ? [Apple] : []),
     Credentials({
       name: 'credentials',
