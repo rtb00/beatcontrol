@@ -4,7 +4,7 @@ import { useState, useEffect, useRef, useCallback, type ReactNode } from 'react'
 import Link from 'next/link';
 import { QRCodeSVG } from 'qrcode.react';
 import { useBranding } from '@/app/lib/branding-context';
-import { Card, Badge, NavBar, Reveal, ConfettiCanvas, Accordion, buttonVariants } from '@/app/components/ui';
+import { Card, Badge, NavBar, Reveal, Accordion, buttonVariants } from '@/app/components/ui';
 
 type Cycle = 'yearly' | 'monthly';
 type Audience = 'hochzeit' | 'geburtstag' | 'firma';
@@ -54,7 +54,7 @@ const COPY: Record<Audience, {
     painCards: [
       {
         label: 'Der Moment kippt schnell',
-        text: 'Drei Songs könnten passen. Welcher hält die Leute, welcher leert die Fläche? Im Zweifel greifst du zu dem, der nicht wirklich passt, aber von dem du weißt, dass er schon irgendwie läuft.',
+        text: 'Drei Songs könnten passen. Welcher hält die Leute, welcher leert die Fläche? Im Zweifel spielst du den sicheren Song, den du schon hundertmal aufgelegt hast, statt den, der gerade eigentlich besser passen würde.',
       },
       {
         label: 'Ein Wunsch ist noch keine Mehrheit',
@@ -300,7 +300,6 @@ export default function LandingPage() {
 
       {/* Hero */}
       <section className="relative overflow-hidden max-w-6xl mx-auto px-4 py-20 md:py-28">
-        <ConfettiCanvas className="absolute inset-0 z-0" />
         <div className="relative z-10 grid md:grid-cols-2 gap-16 items-center">
         <div>
           <h1 className="font-display font-bold uppercase leading-[1.05] mb-4 text-4xl sm:text-5xl md:text-6xl">
@@ -340,7 +339,7 @@ export default function LandingPage() {
           <div className="relative w-full max-w-[480px]">
             {/* Ambient Glow hinter dem Geraet, nicht auf der Kante selbst (sonst wirkt der Rand verwaschen) */}
             <div className="absolute -inset-8 bg-turquoise/25 blur-3xl rounded-full" aria-hidden="true" />
-            <div className="relative aspect-[4/3] rounded-[1.2rem] bg-black p-1 shadow-[0_40px_80px_-20px_rgba(0,0,0,0.85)] ring-1 ring-white/10 rotate-1">
+            <div className="relative aspect-[4/3] rounded-[1.2rem] bg-black p-1 shadow-[0_40px_80px_-20px_rgba(0,0,0,0.85)] ring-1 ring-white/10">
               {/* Screen */}
               <div className="relative h-full w-full overflow-hidden rounded-[0.85rem] bg-panel flex flex-col ring-1 ring-black/60">
                 {/* Notch */}
@@ -465,10 +464,12 @@ export default function LandingPage() {
         <div className="grid md:grid-cols-3 gap-10">
           {c.painCards.map(({ label, text }, i) => (
             <Card key={label} tone="party">
-              <svg viewBox="0 0 24 24" fill="none" className="w-7 h-7 mb-4 text-turquoise" aria-hidden="true">
-                {PAIN_ICON_PATHS[i]}
-              </svg>
-              <h3 className="font-display font-bold uppercase text-sm mb-3 text-turquoise">{label}</h3>
+              <div className="flex items-center gap-3 mb-3">
+                <svg viewBox="0 0 24 24" fill="none" className="w-6 h-6 shrink-0 text-turquoise" aria-hidden="true">
+                  {PAIN_ICON_PATHS[i]}
+                </svg>
+                <h3 className="font-display font-bold uppercase text-sm text-fg">{label}</h3>
+              </div>
               <p className="text-sm text-fg-muted leading-relaxed">{text}</p>
             </Card>
           ))}
@@ -524,7 +525,7 @@ export default function LandingPage() {
       <section className="max-w-3xl mx-auto px-4 py-24 text-center">
         <Reveal>
         <p className="text-xs font-mono font-semibold uppercase tracking-widest text-neon-gold mb-6">
-          Von DJs für DJs
+          Herkunft
         </p>
         <div className="w-8 h-px bg-neon-gold mx-auto mb-8" />
         <h2 className="font-display text-2xl md:text-3xl font-bold uppercase leading-snug text-fg mb-6">
@@ -597,7 +598,7 @@ export default function LandingPage() {
                     cycle === 'yearly' ? 'font-display bg-turquoise text-base' : 'font-display text-fg-muted hover:text-fg'
                   }`}
                 >
-                  Jährlich −25%
+                  Jährlich −17%
                 </button>
                 <button
                   type="button"

@@ -10,4 +10,3 @@ export { default as CalmScope } from './CalmScope';
 export { default as Reveal } from './Reveal';
 export { default as Accordion } from './Accordion';
 export type { AccordionItem } from './Accordion';
-export { default as ConfettiCanvas } from './ConfettiCanvas';
