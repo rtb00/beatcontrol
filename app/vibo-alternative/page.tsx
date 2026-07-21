@@ -19,7 +19,7 @@ export default function ViboAlternative() {
     { feature: 'Native App nötig',        vibo: 'Ja',            beatcontrol: 'Nein, Web-App',  winner: 'beatcontrol' },
     { feature: 'Spotify-Direkt-Sync',     vibo: 'Ja, native',    beatcontrol: 'Über Deezer-Match', winner: 'vibo' },
     { feature: 'Timeline-Templates',      vibo: '100+',          beatcontrol: 'Roadmap Q4 2026', winner: 'vibo' },
-    { feature: 'Track Record',            vibo: '6+ Jahre, 4-5k DJs', beatcontrol: 'Pilot-Saison 2026', winner: 'vibo' },
+    { feature: 'Track Record',            vibo: '6+ Jahre, 4-5k DJs', beatcontrol: 'Seit 2026', winner: 'vibo' },
     { feature: 'DSGVO-Hash für Gäste-IPs', vibo: 'Unklar',       beatcontrol: 'SHA-256 + Event-Salt', winner: 'beatcontrol' },
   ];
 

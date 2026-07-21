@@ -97,7 +97,7 @@ export default function OGImage() {
           }}
         >
           <span>beatcontrol.io</span>
-          <span>Pilot-Saison 2026</span>
+          <span>Für Hochzeits-DJs</span>
         </div>
       </div>
     ),

@@ -183,10 +183,6 @@ function PricingPageInner() {
     }
   }
 
-  const proFootnote =
-    cycle === 'yearly'
-      ? '30 Tage Geld-zurück-Garantie'
-      : '30 Tage Geld-zurück-Garantie · monatlich kündbar';
   const proTier: StripeTier = cycle === 'yearly' ? 'pro_yearly' : 'pro_monthly';
   const isCurrentPro = me?.plan === 'pro';
   const isCurrentEventPass = me?.plan === 'event_pass';
@@ -220,7 +216,7 @@ function PricingPageInner() {
           Team für DJ-Kollektive und Eventagenturen.
         </p>
         <p className="text-center text-xs font-mono text-turquoise uppercase tracking-widest mb-12">
-          Pilot-Saison 2026 · 30 Tage Geld-zurück auf Pro
+          30 Tage Geld-zurück auf Pro
         </p>
 
         {error && (
@@ -244,7 +240,7 @@ function PricingPageInner() {
                   {me ? (
                     <button
                       disabled
-                      className="w-full py-2 rounded-full border border-line text-xs font-medium text-fg-muted cursor-default"
+                      className={buttonVariants({ variant: 'secondary', size: 'sm', className: 'w-full' })}
                     >
                       {me.plan === 'free' ? 'Dein aktueller Plan' : 'Kostenlos verfügbar'}
                     </button>
@@ -296,28 +292,26 @@ function PricingPageInner() {
                       {busy === proTier ? 'Lädt…' : 'Pro starten'}
                     </button>
                   )}
-                  <p className="text-[10px] text-fg-muted mt-2 text-center">{proFootnote}</p>
                 </th>
                 <th className="px-5 py-6 text-left align-bottom border-l border-neon-gold/40">
-                  <div className="flex items-center gap-2 mb-1">
+                  <div className="flex items-center gap-2 mb-3">
                     <span className="font-display font-bold text-lg text-fg">Team</span>
                     {isCurrentStudio && (
                       <Badge color="gold" className="!px-2 !py-0.5">Aktuell</Badge>
                     )}
                   </div>
-                  <p className="text-[10px] font-mono uppercase tracking-widest text-neon-gold mb-3">Für Kollektive</p>
                   {isCurrentStudio ? (
                     <button
                       onClick={openPortal}
                       disabled={busy !== null}
-                      className="w-full py-2 rounded-full bg-panel-elevated text-fg text-xs font-semibold border border-neon-gold hover:brightness-110 transition-all disabled:opacity-60"
+                      className={buttonVariants({ variant: 'secondary', size: 'sm', className: 'w-full disabled:opacity-60' })}
                     >
                       Abo verwalten
                     </button>
                   ) : (
                     <a
                       href="mailto:nibor.bauer1+beatcontrol@gmail.com?subject=Team-Anfrage%20BeatControl&body=Hallo%2C%0A%0Aich%20bin%20interessiert%20am%20Team-Tier%20und%20m%C3%B6chte%20gerne%20ein%20pers%C3%B6nliches%20Onboarding-Gespr%C3%A4ch.%0A%0AMein%20Use-Case%3A%20%5BDJ-Kollektiv%20%2F%20Eventagentur%20%2F%20...%5D%0AAnzahl%20Sub-DJs%3A%20%5B...%5D%0A%0AViele%20Gr%C3%BC%C3%9Fe%0A%5BName%5D"
-                      className="w-full py-2 rounded-full bg-panel-elevated text-fg text-xs font-semibold border border-neon-gold hover:brightness-110 transition-all text-center inline-block"
+                      className={buttonVariants({ variant: 'secondary', size: 'sm', className: 'w-full' })}
                     >
                       Team anfragen
                     </a>

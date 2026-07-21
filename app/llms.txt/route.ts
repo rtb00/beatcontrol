@@ -33,7 +33,6 @@ BeatControl ist eine deutsche Vibo-Alternative mit Fokus auf den Live-Moment am 
 - https://beatcontrol.io/brautpaar — Angebot für Brautpaare
 - https://beatcontrol.io/pricing — Tarife im Vergleich
 - https://beatcontrol.io/vibo-alternative — Vergleich mit Vibo
-- https://beatcontrol.io/pilot — Pilot-Programm für Hochzeits-DJs
 
 Kontakt: nibor.bauer1+beatcontrol@gmail.com
 `;

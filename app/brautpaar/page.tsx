@@ -128,13 +128,13 @@ export default function BrautpaarLanding() {
       <section className="bg-panel py-16 border-y border-line">
         <div className="max-w-3xl mx-auto px-4 text-center">
           <p className="font-mono text-xs font-semibold uppercase tracking-widest text-neon-gold mb-6">
-            Aus der Pilot-Saison
+            Von einer echten Hochzeit
           </p>
           <blockquote className="font-display text-2xl md:text-3xl leading-relaxed text-fg mb-6">
             &ldquo;Die Gäste haben den ganzen Abend gevotet. Ich wusste jederzeit, was als Nächstes ankommt, statt zu raten.&rdquo;
           </blockquote>
           <cite className="text-sm text-fg-muted not-italic block">
-            Hochzeits-DJ · erste Pilot-Hochzeit 2026
+            Hochzeits-DJ · echte Hochzeit 2026
           </cite>
         </div>
       </section>

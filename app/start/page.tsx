@@ -350,7 +350,7 @@ export default function StartFunnel() {
                 Event kostenlos sichern
               </Button>
               <p className="text-xs text-fg-muted mt-4">
-                Pilot-Saison 2026, gerade kostenlos. Anmeldung in 20 Sekunden.
+                Kostenlos, keine Kreditkarte. Anmeldung in 20 Sekunden.
               </p>
             </div>
           )}
