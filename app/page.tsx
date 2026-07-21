@@ -518,11 +518,11 @@ export default function LandingPage() {
       <section className="max-w-3xl mx-auto px-4 py-24 text-center">
         <Reveal>
         <p className="text-xs font-mono font-semibold uppercase tracking-widest text-neon-gold mb-6">
-          Für dich gemacht
+          Für dich gebaut
         </p>
         <div className="w-8 h-px bg-neon-gold mx-auto mb-8" />
         <h2 className="font-display text-2xl md:text-3xl font-bold uppercase leading-snug text-fg mb-6">
-          Gebaut von DJs für DJs
+          Von DJs für DJs
         </h2>
         <p className="text-fg-muted text-lg leading-relaxed max-w-2xl mx-auto">
           BeatControl entsteht nicht am Schreibtisch, sondern auf echten Hochzeiten. Jede Funktion kommt aus dem, was am Pult wirklich gebraucht wird. Wenn du Ideen oder Feedback hast, melde dich gerne bei uns.
