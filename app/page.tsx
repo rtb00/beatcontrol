@@ -53,21 +53,21 @@ const COPY: Record<Audience, {
     ),
     painCards: [
       {
-        label: 'Der Moment kippt schnell',
-        text: 'Drei Songs könnten passen. Welcher hält die Leute, welcher leert die Fläche? Im Zweifel spielst du den sicheren Song, den du schon hundertmal aufgelegt hast, statt den, der gerade eigentlich besser passen würde.',
-      },
-      {
         label: 'Ein Wunsch ist noch keine Mehrheit',
         text: 'Jemand wünscht sich einen Song, den du kaum kennst. Will den der eine Gast, oder die halbe Feier? Einem einzelnen Zettel hörst du das nicht an, und im Zweifel legst du ihn lieber nicht auf.',
       },
       {
         label: 'Ein falscher Song reicht',
-        text: 'Ein Griff daneben und zwanzig Leute setzen sich. Sind sie erstmal weg, bekommst du sie an dem Abend kaum zurück. An die volle Stunde davor erinnert sich am nächsten Tag keiner. An die fünf Minuten leere Fläche schon.',
+        text: 'Ein Griff daneben und zwanzig Leute setzen sich. Sind sie erstmal weg, bekommst du sie an dem Abend kaum zurück. An die volle Stunde davor erinnert sich am nächsten Tag keiner - an die leere Tanzfläche schon.',
+      },
+      {
+        label: 'Der Moment kippt schnell',
+        text: 'Drei Songs könnten passen. Welcher hält die Leute, welcher leert die Fläche? Im Zweifel spielst du den sicheren Song, den du schon hundertmal aufgelegt hast, statt den, der gerade eigentlich besser passen würde.',
       },
     ],
     transitionH2: 'Der Floor redet. Jetzt kannst du ihm zuhören',
     transitionBody:
-      'Deine Gäste voten für die Songs, die sie hören wollen, und der Favorit steht oben in deiner Liste. Du liest den Raum wie immer, nur mit einem Sinn mehr. Ob du zugreifst, entscheidest du.',
+      'Deine Gäste voten für die Songs, die sie hören wollen. Du liest den Raum wie immer, nur mit einem Sinn mehr. Ob du zugreifst, entscheidest du.',
     finalBody:
       'DJs setzen BeatControl längst auf echten Hochzeiten ein und sehen mit einem Blick, welcher Song die Leute hält. Starte kostenlos und sei bei deiner nächsten Hochzeit dabei.',
   },
@@ -97,7 +97,7 @@ const COPY: Record<Audience, {
     ],
     transitionH2: 'Der Raum redet. Jetzt kannst du ihm zuhören',
     transitionBody:
-      'Deine Gäste voten für die Songs, die sie hören wollen, und der Favorit steht oben in deiner Liste. Du liest den Raum wie immer, nur mit einem Sinn mehr. Ob du zugreifst, entscheidest du.',
+      'Deine Gäste voten für die Songs, die sie hören wollen. Du liest den Raum wie immer, nur mit einem Sinn mehr. Ob du zugreifst, entscheidest du.',
     finalBody:
       'DJs setzen BeatControl längst auf echten Partys ein und sehen mit einem Blick, welcher Song die Leute hält. Starte kostenlos und sei bei deinem nächsten Gig dabei.',
   },
@@ -127,7 +127,7 @@ const COPY: Record<Audience, {
     ],
     transitionH2: 'Der Saal redet. Jetzt kannst du ihm zuhören',
     transitionBody:
-      'Deine Gäste voten für die Songs, die sie hören wollen, und der Favorit steht oben in deiner Liste. Ohne Briefing, ohne Wunschliste weißt du auf einen Blick, was diese fremde Crowd trägt. Ob du zugreifst, entscheidest du.',
+      'Deine Gäste voten für die Songs, die sie hören wollen. Ohne Briefing, ohne Wunschliste weißt du auf einen Blick, was diese fremde Crowd trägt. Ob du zugreifst, entscheidest du.',
     finalBody:
       'DJs setzen BeatControl längst auf echten Firmenfeiern ein und sehen mit einem Blick, welcher Song die Leute hält. Starte kostenlos und sei bei deinem nächsten Gig dabei.',
   },
@@ -479,7 +479,7 @@ export default function LandingPage() {
       <section className="max-w-3xl mx-auto px-4 py-24 text-center">
         <Reveal>
         <p className="text-xs font-mono font-semibold uppercase tracking-widest text-neon-gold mb-6">
-          Herkunft
+          Für dich gemacht
         </p>
         <div className="w-8 h-px bg-neon-gold mx-auto mb-8" />
         <h2 className="font-display text-2xl md:text-3xl font-bold uppercase leading-snug text-fg mb-6">
@@ -499,7 +499,7 @@ export default function LandingPage() {
             Für jeden Gig der passende Tarif
           </h2>
           <p className="text-fg-muted text-center mb-3 max-w-xl mx-auto">
-            Free zum Ausprobieren. Je Hochzeit für Gelegenheits-Gigs. Pro-Abo für aktive DJs. <Link href="/pricing" className="text-neon-gold underline">Team</Link> für Kollektive.
+            Free zum Ausprobieren. Je Hochzeit für Gelegenheits-Gigs. Pro-Abo für aktive DJs.
           </p>
           <p className="text-center mb-12 max-w-xl mx-auto">
             <Link href="/pricing" className="text-xs text-turquoise hover:underline">Alle 4 Tarife im Detail vergleichen →</Link>
