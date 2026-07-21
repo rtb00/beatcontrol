@@ -246,11 +246,6 @@ export default function LandingPage() {
         )}
 
         <div className="flex items-center gap-2 sm:gap-3">
-          <span className="flex items-center gap-1.5 text-sm px-3 py-1.5 rounded-full border border-line text-fg">
-            <span className="text-fg-muted hidden sm:inline">Für DJs ·</span>
-            <span className="font-medium">{AUDIENCE_LABELS[audience]}</span>
-          </span>
-
           <Link href="/auth/signin" className={buttonVariants({ variant: 'ghost', size: 'sm', className: 'whitespace-nowrap' })}>
             DJ-Login
           </Link>
