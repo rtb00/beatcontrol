@@ -168,16 +168,13 @@ export default function LandingPage() {
   const isWhiteLabel = !!branding.subdomain;
 
   const [cycle, setCycle] = useState<Cycle>('yearly');
-  const [audience, setAudience] = useState<Audience>('hochzeit');
-  const [audienceOpen, setAudienceOpen] = useState(false);
+  const audience: Audience = 'hochzeit';
   const pricingTracked = useRef(false);
   const c = COPY[audience];
 
   // Mock-Daten für die iPad-Vorschau des echten DJ-Live-Views
-  const mockEventTitle =
-    audience === 'hochzeit' ? 'Hochzeit Müller' : audience === 'geburtstag' ? 'Sandras 40er' : 'Sommerfest GmbH';
-  const mockSlug =
-    audience === 'hochzeit' ? 'hochzeit-mueller' : audience === 'geburtstag' ? 'sandras-40er' : 'sommerfest-gmbh';
+  const mockEventTitle = 'Hochzeit Müller';
+  const mockSlug = 'hochzeit-mueller';
   const mockSongs = [
     { title: "Can't Stop the Feeling", artist: 'Justin Timberlake', votes: 12, art: 'https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/68/19/43/68194388-efa7-3afe-8a15-a4c3eebef1f6/886445915211.jpg/200x200bb.jpg' },
     { title: 'Shut Up and Dance', artist: 'Walk the Moon', votes: 9, art: 'https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/bf/b6/76/bfb67621-b78d-3924-6d29-4f367697a674/886445045758.jpg/200x200bb.jpg' },
@@ -200,19 +197,13 @@ export default function LandingPage() {
     ? ([
         { value: stats.events, min: 1, label: 'Veranstaltungen begleitet', sub: 'Hochzeiten, Partys & Firmenfeiern' },
         { value: stats.songRequests, min: 10, label: 'Songwünsche aus dem Publikum', sub: 'jeder einzelne direkt aus dem Raum' },
-        { value: stats.minutes, min: 10, label: 'Minuten gespielter Songs', sub: 'live auf der Tanzfläche' },
+        { value: stats.minutes, min: 10, label: 'Minuten gespielte Wunschsongs', sub: 'live auf der Tanzfläche' },
       ] as const).filter((s) => s.value >= s.min)
     : [];
 
   useEffect(() => {
     track('page_view');
   }, []);
-
-  function pickAudience(next: Audience) {
-    setAudience(next);
-    setAudienceOpen(false);
-    track('audience_switch', next);
-  }
 
   const setupPricingObserver = useCallback((el: HTMLElement | null) => {
     if (!el) return;
@@ -255,42 +246,10 @@ export default function LandingPage() {
         )}
 
         <div className="flex items-center gap-2 sm:gap-3">
-          {/* Event-Typ-Umschalter */}
-          <div className="relative">
-            <button
-              type="button"
-              onClick={() => setAudienceOpen((o) => !o)}
-              aria-haspopup="listbox"
-              aria-expanded={audienceOpen}
-              className="flex items-center gap-1.5 text-sm px-3 py-1.5 rounded-full border border-line text-fg hover:border-turquoise transition-colors"
-            >
-              <span className="text-fg-muted hidden sm:inline">Für DJs ·</span>
-              <span className="font-medium">{AUDIENCE_LABELS[audience]}</span>
-              <svg width="10" height="6" viewBox="0 0 10 6" fill="none" className={`transition-transform text-turquoise ${audienceOpen ? 'rotate-180' : ''}`}>
-                <path d="M1 1l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </button>
-            {audienceOpen && (
-              <ul
-                role="listbox"
-                className="absolute right-0 z-30 mt-2 w-52 bg-panel-elevated border border-line rounded-xl shadow-lg overflow-hidden py-1"
-              >
-                {(Object.keys(AUDIENCE_LABELS) as Audience[]).map((a) => (
-                  <li key={a} role="option" aria-selected={a === audience}>
-                    <button
-                      type="button"
-                      onClick={() => pickAudience(a)}
-                      className={`w-full text-left px-4 py-2 text-sm transition-colors ${
-                        a === audience ? 'bg-panel text-fg font-semibold' : 'text-fg-muted hover:bg-panel'
-                      }`}
-                    >
-                      {AUDIENCE_LABELS[a]}
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
+          <span className="flex items-center gap-1.5 text-sm px-3 py-1.5 rounded-full border border-line text-fg">
+            <span className="text-fg-muted hidden sm:inline">Für DJs ·</span>
+            <span className="font-medium">{AUDIENCE_LABELS[audience]}</span>
+          </span>
 
           <Link href="/auth/signin" className={buttonVariants({ variant: 'ghost', size: 'sm', className: 'whitespace-nowrap' })}>
             DJ-Login
@@ -303,8 +262,8 @@ export default function LandingPage() {
         <div className="relative z-10 grid md:grid-cols-2 gap-16 items-center">
         <div>
           <h1 className="font-display font-bold uppercase leading-[1.05] mb-4 text-4xl sm:text-5xl md:text-6xl">
-            <span className="block text-fg">Dein Gespür für die <span className="text-glow-gold">Tanzfläche</span>.</span>
-            <span className="block text-fg mt-1 text-xl sm:text-2xl md:text-3xl">Von den Gästen <span className="text-glow-gold">bestätigt</span>.</span>
+            <span className="block text-fg">Dein Gespür für die <span className="text-glow-gold">Tanzfläche</span></span>
+            <span className="block text-fg mt-1 text-xl sm:text-2xl md:text-3xl">Von den Gästen <span className="text-glow-gold">bestätigt</span></span>
           </h1>
           <p className="text-fg-muted text-lg leading-relaxed mb-8">
             {c.heroSub}
@@ -730,7 +689,7 @@ export default function LandingPage() {
       <section className="max-w-2xl mx-auto px-4 py-24 text-center">
         <Reveal>
         <h2 className="font-display text-3xl md:text-4xl font-bold uppercase mb-4 text-glow-gold">
-          Du bist in guter Gesellschaft
+          Mach es dir einfach, den richtigen Song zu finden, und feier mit einer vollen Tanzfläche
         </h2>
         <p className="text-fg-muted text-lg mb-10 leading-relaxed">
           {c.finalBody}

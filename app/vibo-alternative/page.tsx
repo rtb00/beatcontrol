@@ -75,7 +75,7 @@ export default function ViboAlternative() {
 
         <h2 className="font-display text-2xl font-bold uppercase mb-4">Wann Vibo besser ist</h2>
         <p className="text-fg-muted leading-relaxed mb-6">
-          Wenn du primär US-/UK-Hochzeiten machst, Spotify als Library-Lock-In willst und 100+ Timeline-Templates ein zentrales Feature ist, dann ist Vibo die etabliertere Wahl. Auch wenn du mit einem 6-Jahre-Track-Record arbeiten möchtest, hat Vibo dort den Vorteil.
+          Wenn du primär US-/UK-Hochzeiten machst, deine Musikbibliothek fest an Spotify binden willst und 100+ Timeline-Templates ein zentrales Feature ist, dann ist Vibo die etabliertere Wahl. Auch wenn du mit einem 6-Jahre-Track-Record arbeiten möchtest, hat Vibo dort den Vorteil.
         </p>
 
         <h2 className="font-display text-2xl font-bold uppercase mb-4 mt-12">Wann BeatControl die bessere Wahl ist</h2>
@@ -93,7 +93,7 @@ export default function ViboAlternative() {
             <strong className="text-fg">Du willst Event-Pass-Modell.</strong> Vibo zwingt dich ins Abo. BeatControl gibt deinen Brautpaaren die Option, für ihre Hochzeit einmalig €19 zu zahlen.
           </li>
           <li>
-            <strong className="text-fg">Du leitest ein DJ-Kollektiv.</strong> Whitelabel-Tier (€149/Mo) gibt es bei Vibo nicht. BeatControl Team macht dich zum Reseller: eigene Subdomain, eigenes Branding, Sub-Accounts.
+            <strong className="text-fg">Du leitest ein DJ-Kollektiv.</strong> Whitelabel-Tier (€149/Mo) gibt es bei Vibo nicht. BeatControl Team gibt dir dein eigenes gebrandetes Portal für dein DJ-Kollektiv, mit eigenen Zugängen für jeden deiner DJs.
           </li>
           <li>
             <strong className="text-fg">Deine Brautpaare sollen keine App downloaden müssen.</strong> BeatControl ist Web-First. Gäste scannen QR, öffnen Browser, los geht's. Vibo zwingt zur Native-App-Installation.
@@ -104,12 +104,12 @@ export default function ViboAlternative() {
         <p className="text-fg-muted leading-relaxed mb-6">
           BeatControl ist neu, 2026 live gegangen. Bislang eine echte Hochzeit im Echtbetrieb, auf der ein DJ sich live darauf verlassen hat. Vibo hat tausende Nutzer und Jahre Track Record. Wenn dir eine lange Referenzliste wichtiger ist als der Live-Vorteil, ist Vibo die sicherere Wahl.
           <br /><br />
-          Aber: wir sind nicht VC-finanziert mit Burn-Rate-Risiko. Solo-Founder, profitable Lifestyle-Ambition. In 12 Monaten existiert BeatControl, weil ich rechne, nicht weil ich Investor-Druck habe.
+          Aber: Ich bin nicht von Investoren abhängig, die schnelles Wachstum verlangen. Ich betreibe BeatControl allein und will damit dauerhaft Geld verdienen, nicht schnell wachsen um jeden Preis. In 12 Monaten existiert BeatControl, weil ich rechne, nicht weil ich Investor-Druck habe.
         </p>
 
         <Card elevated className="mt-16 text-center p-8">
           <h3 className="font-display text-2xl md:text-3xl font-bold uppercase mb-4 text-glow-gold">
-            Kostenlos testen, dann entscheiden.
+            Kostenlos testen, dann entscheiden
           </h3>
           <p className="text-fg-muted mb-8 leading-relaxed">
             BeatControl Pro ist 30 Tage Geld-zurück-Garantie. Wenn du Vibo vorziehst, kein Schaden.
@@ -130,7 +130,6 @@ export default function ViboAlternative() {
           <span className="font-display text-lg font-bold text-fg">{brandName}</span>
           <p className="text-xs text-center">© 2026 {brandName}</p>
           <nav className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs">
-            <Link href="/about" className="hover:text-turquoise transition-colors">Über uns</Link>
             <Link href="/impressum" className="hover:text-turquoise transition-colors">Impressum</Link>
             <Link href="/datenschutz" className="hover:text-turquoise transition-colors">Datenschutz</Link>
           </nav>

@@ -270,7 +270,7 @@ export default function AccountPage() {
                 disabled
                 className="w-full px-4 py-3 rounded-2xl border border-line bg-base text-fg-muted cursor-not-allowed"
               />
-              <p className="text-xs text-fg-muted/70 mt-1.5 px-1">
+              <p className="text-xs text-fg-muted/85 mt-1.5 px-1">
                 Die E-Mail kann derzeit nicht geändert werden. Schreib uns, falls nötig.
               </p>
             </div>
@@ -548,7 +548,7 @@ export default function AccountPage() {
                   />
                   <span className="text-fg-muted text-sm whitespace-nowrap">.beatcontrol.io</span>
                 </div>
-                <p className="text-xs text-fg-muted/70 mt-1.5 px-1">
+                <p className="text-xs text-fg-muted/85 mt-1.5 px-1">
                   3–30 Zeichen, nur a–z, 0–9 und Bindestrich. Wird live, sobald der DNS aktiv ist.
                 </p>
               </div>

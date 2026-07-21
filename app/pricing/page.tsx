@@ -163,7 +163,7 @@ function PricingPageInner() {
 
       <section className="max-w-6xl mx-auto px-4 py-16 md:py-20">
         <h1 className="font-display text-4xl md:text-5xl font-bold uppercase text-center mb-3 text-glow-gold">
-          Dein Netz unter der nächsten Entscheidung.
+          Für jeden Gig der passende Tarif
         </h1>
         <p className="text-fg-muted text-center mb-6 max-w-2xl mx-auto">
           Free zum Ausprobieren. Je Hochzeit für Gelegenheits-Gigs. Pro-Abo für aktive DJs.
@@ -267,9 +267,6 @@ function PricingPageInner() {
 
           {/* Pro */}
           <Card tone="party" elevated className="flex flex-col relative glow-turquoise">
-            <Badge color="turquoise" className="absolute -top-3.5 left-1/2 -translate-x-1/2 whitespace-nowrap">
-              Meist gewählt
-            </Badge>
             <div className="flex items-center justify-between mb-3">
               <p className="font-semibold text-sm text-fg-muted">Pro</p>
               {isCurrentPro && (

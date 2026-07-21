@@ -40,7 +40,6 @@ const BASELINE_PATH = resolve(__dirname, '.text-baseline.json');
 const TARGET_FILES = [
   'app/page.tsx',
   'app/pricing/page.tsx',
-  'app/about/page.tsx',
   'app/vibo-alternative/page.tsx',
   'app/brautpaar/page.tsx',
   'app/pilot/page.tsx',

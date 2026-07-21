@@ -324,7 +324,7 @@ export default function StartFunnel() {
                 Dein Event ist angelegt
               </p>
               <h1 className="font-display text-3xl md:text-4xl font-black uppercase leading-tight mb-4 text-glow-turquoise">
-                „{title.trim() || 'Dein Event'}" wartet auf dich.
+                „{title.trim() || 'Dein Event'}" wartet auf dich
               </h1>
               <p className="text-fg-muted text-lg leading-relaxed mb-8 max-w-md mx-auto">
                 QR-Code, Live-Voting und dein DJ-Screen sind eingerichtet. Sichere dir dein Event kostenlos, dann liegt es startklar in deinem Dashboard.

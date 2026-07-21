@@ -349,7 +349,7 @@ export default function DJEventPage() {
             className={`shrink-0 h-11 w-11 sm:h-9 sm:w-9 flex items-center justify-center rounded-xl border transition-all active:scale-95 ${
               sidebarOpen
                 ? 'border-turquoise text-turquoise bg-turquoise/10'
-                : 'border-line text-fg-muted/70 hover:border-turquoise hover:text-turquoise'
+                : 'border-line text-fg-muted/85 hover:border-turquoise hover:text-turquoise'
             }`}
           >
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4" aria-hidden="true">
@@ -438,7 +438,7 @@ export default function DJEventPage() {
             )}
           </button>
           {me && (
-            <span className="hidden sm:inline-block text-[10px] font-mono uppercase tracking-widest text-fg-muted/70 border border-line rounded-full px-2 py-0.5">
+            <span className="hidden sm:inline-block text-[10px] font-mono uppercase tracking-widest text-fg-muted/85 border border-line rounded-full px-2 py-0.5">
               {me.plan === 'pro' ? 'Pro' : me.plan === 'event_pass' ? 'Event-Pass' : 'Free'}
             </span>
           )}
@@ -514,7 +514,7 @@ export default function DJEventPage() {
             ) : (
               <div className="w-[204px] h-[204px] md:w-[212px] md:h-[212px] rounded-2xl md:rounded-3xl bg-panel border-2 border-line animate-pulse" />
             )}
-            <p className="text-fg-muted/70 text-xs text-center font-mono break-all leading-relaxed max-w-[260px] md:max-w-[200px] lg:max-w-[220px]">{guestUrl}</p>
+            <p className="text-fg-muted/85 text-xs text-center font-mono break-all leading-relaxed max-w-[260px] md:max-w-[200px] lg:max-w-[220px]">{guestUrl}</p>
             <button onClick={downloadGuestCard} disabled={downloading || !origin}
               tabIndex={sidebarOpen ? 0 : -1}
               className="flex items-center gap-2 px-4 py-2.5 md:py-2 min-h-[44px] md:min-h-0 rounded-2xl text-xs font-medium text-fg-muted border border-line hover:border-turquoise hover:text-turquoise transition-all active:scale-95 disabled:opacity-40">

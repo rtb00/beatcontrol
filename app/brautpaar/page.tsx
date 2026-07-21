@@ -34,8 +34,8 @@ export default function BrautpaarLanding() {
           Für Brautpaare
         </p>
         <h1 className="font-display text-5xl md:text-6xl font-black uppercase leading-[1.05] mb-8 text-glow-gold">
-          Die Tanzfläche bleibt voll.<br />
-          <span className="text-turquoise">Weil eure Gäste mitreden.</span>
+          Die Tanzfläche bleibt voll,<br />
+          <span className="text-turquoise">weil eure Gäste mitreden</span>
         </h1>
         <p className="text-fg-muted text-lg leading-relaxed max-w-2xl mx-auto mb-10">
           Fast jede Hochzeit hat diesen einen Moment: Die Tanzfläche wird leer und keiner weiß warum. Mit BeatControl schlagen eure Gäste vom Handy ihre Songs vor und voten füreinander. Euer DJ sieht live, was gerade gefragt ist, und legt sicher nach.
@@ -60,7 +60,7 @@ export default function BrautpaarLanding() {
             Ihr kennt das von anderen Hochzeiten
           </p>
           <h2 className="font-display text-3xl md:text-4xl font-black uppercase text-center mb-16 leading-tight">
-            Die Tanzfläche, die plötzlich leer ist.
+            Die Tanzfläche, die plötzlich leer ist
           </h2>
           <div className="grid md:grid-cols-3 gap-10 text-sm">
             {[
@@ -92,7 +92,7 @@ export default function BrautpaarLanding() {
           So funktioniert es
         </p>
         <h2 className="font-display text-3xl md:text-4xl font-black uppercase text-center mb-16 leading-tight">
-          Drei Schritte, sechs Minuten Setup.
+          Drei Schritte, sechs Minuten Setup
         </h2>
 
         <div className="space-y-8">
@@ -179,7 +179,7 @@ export default function BrautpaarLanding() {
       <section className="py-20">
         <Card tone="party" elevated className="max-w-2xl mx-auto px-4 py-16 text-center">
           <h2 className="font-display text-3xl md:text-4xl font-black uppercase leading-tight mb-6 text-glow-gold">
-            Ihr plant alles. Plant auch die Tanzfläche.
+            Ihr plant alles, plant auch die Tanzfläche
           </h2>
           <p className="text-fg-muted text-lg leading-relaxed mb-10">
             Für €19 weiß euer DJ den ganzen Abend, was eure Leute hören wollen. Einmal zahlen, kein Abo. Und wenn ihr es am Ende nicht braucht, habt ihr nichts verloren.

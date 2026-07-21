@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useBranding } from '@/app/lib/branding-context';
-import { Button, Input, NavBar, buttonVariants } from '@/app/components/ui';
+import { Button, Input, NavBar } from '@/app/components/ui';
 
 export default function PilotLanding() {
   const branding = useBranding();
@@ -17,9 +17,6 @@ export default function PilotLanding() {
         <Link href="/" className="font-display text-xl font-bold tracking-tight">
           {brandName}
         </Link>
-        <Link href="/about" className={buttonVariants({ variant: 'ghost', size: 'sm' })}>
-          Über BeatControl
-        </Link>
       </NavBar>
 
       <section className="max-w-3xl mx-auto px-4 pt-20 pb-12 md:pt-28 md:pb-16">
@@ -28,7 +25,7 @@ export default function PilotLanding() {
         </p>
         <h1 className="font-display text-5xl md:text-6xl font-black uppercase leading-[1.05] mb-8 text-glow-gold">
           Wir suchen <span className="text-turquoise">2 Hochzeits-DJs</span>,<br />
-          die das Ding ehrlich testen.
+          die das Ding ehrlich testen
         </h1>
         <p className="text-fg-muted text-lg leading-relaxed mb-10">
           BeatControl ist neu, aber nicht Theorie. Es lief 2026 zum ersten Mal live auf einer echten Hochzeit neben dem Pult, und der DJ hat sich im Übergang darauf verlassen, welchen Song er als Nächstes nimmt. Bevor wir öffentlich gehen, wollen wir das auf zwei weiteren echten Hochzeiten sehen.
@@ -57,7 +54,7 @@ export default function PilotLanding() {
                 d: 'Während deiner Hochzeit ist Robin per WhatsApp/Telefon erreichbar. Wenn was schiefgeht, ist sofort jemand da.',
               },
               {
-                t: 'Co-Branded Visibility',
+                t: 'Sichtbarkeit für dich',
                 d: 'Du bekommst eine Reference-Card auf der BeatControl-Landing-Page. Aftermovie-Snippet inklusive Credit für dich.',
               },
             ].map(({ t, d }) => (
@@ -95,7 +92,7 @@ export default function PilotLanding() {
           {submitted ? (
             <div className="text-center">
               <p className="text-neon-gold text-4xl mb-4">♪</p>
-              <h2 className="font-display text-3xl font-black uppercase mb-4">Danke, wir melden uns.</h2>
+              <h2 className="font-display text-3xl font-black uppercase mb-4">Danke, wir melden uns</h2>
               <p className="text-fg-muted leading-relaxed">
                 Wir antworten innerhalb von 48 Stunden, meistens schneller. Wenn du nichts hörst, kannst du uns auch direkt eine{' '}
                 <a href="mailto:nibor.bauer1+beatcontrol@gmail.com" className="text-turquoise underline">Mail schicken</a>.
