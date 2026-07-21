@@ -162,6 +162,10 @@ const FAQ_ITEMS = [
     answer: 'Nein. Du entscheidest. BeatControl zeigt dir nur, was die Leute wollen. Gespielt wird, was du auflegst, genau wie immer.',
   },
   {
+    question: '„Hängen dann alle nur am Handy?"',
+    answer: 'Voten dauert 10 Sekunden. Kein Scrollen, keine App, kein Account. Kurz antippen, Handy wieder weg, dann wird getanzt.',
+  },
+  {
     question: '„Was, wenn ein Wunsch nicht passt?"',
     answer: 'Mit einem Klick weg. Songs, die nicht in den Abend passen, entfernst du sofort. Kein Grund, keine Erklärung gegenüber dem Gast.',
   },
@@ -172,10 +176,6 @@ const FAQ_ITEMS = [
   {
     question: '„Sehen Gäste, wer was wollte?"',
     answer: 'Alles anonym. Alle sehen die Wunschliste und die Stimmen, aber nie, wer vorgeschlagen hat. Kein sozialer Druck.',
-  },
-  {
-    question: '„Hängen dann alle nur am Handy?"',
-    answer: 'Voten dauert 10 Sekunden. Kein Scrollen, keine App, kein Account. Kurz antippen, Handy wieder weg, dann wird getanzt.',
   },
   {
     question: '„Noch ein Gerät neben Licht & Software?"',
@@ -425,26 +425,6 @@ export default function LandingPage() {
         )}
       </section>
 
-      {/* Pilot-Saison Strip, ein Job: 2 Pilot-DJs gewinnen */}
-      <section className="bg-panel border-y border-line py-6">
-        <div className="max-w-4xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
-          <div>
-            <p className="text-[11px] font-mono font-semibold uppercase tracking-widest text-neon-gold mb-1">
-              Pilot-Saison 2026
-            </p>
-            <p className="font-display text-xl md:text-2xl font-semibold text-fg">
-              Wir suchen 2 DJs für diese Saison.
-            </p>
-            <p className="text-xs text-fg-muted mt-1">
-              Pro gratis für die ganze Saison, dafür dein ehrliches Feedback nach der Hochzeit.
-            </p>
-          </div>
-          <Link href="/pilot" className={buttonVariants({ variant: 'secondary', size: 'sm', className: 'shrink-0 whitespace-nowrap' })}>
-            Pilot werden
-          </Link>
-        </div>
-      </section>
-
       {/* Pain section */}
       <section className="max-w-4xl mx-auto px-4 py-24">
         <Reveal>
@@ -470,47 +450,42 @@ export default function LandingPage() {
         </Reveal>
       </section>
 
-      {/* Transition */}
-      <section className="bg-base text-fg py-20 text-center">
-        <Reveal className="max-w-2xl mx-auto px-4">
-          <h2 className="font-display text-3xl md:text-4xl font-bold uppercase leading-tight mb-6 text-glow-gold">
-            {c.transitionH2}
-          </h2>
-          <p className="text-fg-muted text-lg leading-relaxed">
-            {c.transitionBody}
-          </p>
-        </Reveal>
-      </section>
-
-      {/* How it works */}
-      <section className="max-w-4xl mx-auto px-4 py-24">
-        <Reveal>
-        <h2 className="font-display text-3xl font-bold uppercase text-center mb-16">In drei Schritten zum sicheren Song</h2>
-        </Reveal>
-        <div className="grid md:grid-cols-3 gap-12">
-          {[
-            {
-              step: '01',
-              title: 'QR-Code hinstellen',
-              desc: 'Event anlegen dauert zwei Minuten. QR-Code auf die Tische oder auf den Beamer. Ab da voten deine Gäste vom eigenen Handy. Keine App, kein Download, niemand kommt ans Pult.',
-            },
-            {
-              step: '02',
-              title: 'Der Saal stimmt ab',
-              desc: 'Voten dauert 10 Sekunden, ganz ohne App. Jede Stimme schiebt einen Song nach oben, oben steht immer der Track, den gerade die meisten hören wollen. Keine Vermutung, sondern echte Stimmen aus dem Raum.',
-            },
-            {
-              step: '03',
-              title: 'Du greifst zu',
-              desc: 'Ein Blick aufs iPad im Übergang, Song in Rekordbox oder Serato laden, auflegen. Passt er gerade nicht? Weg damit, ohne ein Wort. Du behältst das letzte Wort wie immer.',
-            },
-          ].map(({ step, title, desc }, i) => (
-            <Reveal key={step} delay={i * 120}>
-              <p className="font-display text-6xl font-bold text-fg mb-5 leading-none">{step}</p>
-              <h3 className="font-display font-bold uppercase mb-3 text-fg">{title}</h3>
-              <p className="text-sm text-fg-muted leading-relaxed">{desc}</p>
-            </Reveal>
-          ))}
+      {/* Transition + die drei Schritte in einer Section */}
+      <section className="bg-base text-fg py-20">
+        <div className="max-w-4xl mx-auto px-4">
+          <Reveal className="max-w-2xl mx-auto text-center">
+            <h2 className="font-display text-3xl md:text-4xl font-bold uppercase leading-tight mb-6 text-glow-gold">
+              {c.transitionH2}
+            </h2>
+            <p className="text-fg-muted text-lg leading-relaxed">
+              {c.transitionBody}
+            </p>
+          </Reveal>
+          <div className="grid md:grid-cols-3 gap-12 mt-16">
+            {[
+              {
+                step: '01',
+                title: 'QR-Code hinstellen',
+                desc: 'Event anlegen dauert zwei Minuten. QR-Code auf die Tische oder auf den Beamer. Ab da voten deine Gäste vom eigenen Handy. Keine App, kein Download, niemand kommt ans Pult.',
+              },
+              {
+                step: '02',
+                title: 'Der Saal stimmt ab',
+                desc: 'Voten dauert 10 Sekunden, ganz ohne App. Jede Stimme schiebt einen Song nach oben, oben steht immer der Track, den gerade die meisten hören wollen. Keine Vermutung, sondern echte Stimmen aus dem Raum.',
+              },
+              {
+                step: '03',
+                title: 'Du greifst zu',
+                desc: 'Ein Blick aufs iPad im Übergang, Song in Rekordbox oder Serato laden, auflegen. Passt er gerade nicht? Weg damit - du behältst das letzte Wort.',
+              },
+            ].map(({ step, title, desc }, i) => (
+              <Reveal key={step} delay={i * 120}>
+                <p className="font-display text-6xl font-bold text-fg mb-5 leading-none">{step}</p>
+                <h3 className="font-display font-bold uppercase mb-3 text-fg">{title}</h3>
+                <p className="text-sm text-fg-muted leading-relaxed">{desc}</p>
+              </Reveal>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -670,6 +645,26 @@ export default function LandingPage() {
             </Card>
           </div>
 
+        </div>
+      </section>
+
+      {/* Pilot-Saison Strip, ein Job: 2 Pilot-DJs gewinnen */}
+      <section className="bg-panel border-y border-line py-6">
+        <div className="max-w-4xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
+          <div>
+            <p className="text-[11px] font-mono font-semibold uppercase tracking-widest text-neon-gold mb-1">
+              Pilot-Saison 2026
+            </p>
+            <p className="font-display text-xl md:text-2xl font-semibold text-fg">
+              Wir suchen 2 DJs für diese Saison.
+            </p>
+            <p className="text-xs text-fg-muted mt-1">
+              Pro gratis für die ganze Saison, dafür dein ehrliches Feedback nach der Hochzeit.
+            </p>
+          </div>
+          <Link href="/pilot" className={buttonVariants({ variant: 'secondary', size: 'sm', className: 'shrink-0 whitespace-nowrap' })}>
+            Pilot werden
+          </Link>
         </div>
       </section>
 
