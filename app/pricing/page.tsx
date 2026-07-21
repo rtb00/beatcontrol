@@ -261,7 +261,7 @@ function PricingPageInner() {
           <table className="w-full min-w-[760px] text-sm border-collapse">
             <thead>
               <tr className="bg-panel-elevated">
-                <th className="sticky left-0 z-10 bg-panel-elevated w-[260px]" />
+                <th className="bg-panel-elevated w-[220px] min-w-[220px]" />
                 <th className="px-5 py-6 text-left align-bottom border-l border-line">
                   <div className="flex items-center gap-2 mb-1">
                     <span className="font-semibold text-fg">Free</span>
@@ -373,13 +373,13 @@ function PricingPageInner() {
             <tbody>
               {FEATURE_GROUPS.flatMap((group) => [
                 <tr key={`${group.title}-heading`}>
-                  <td colSpan={5} className="sticky left-0 bg-panel px-5 pt-6 pb-2 text-[11px] font-mono uppercase tracking-widest text-fg-muted">
+                  <td colSpan={5} className="bg-panel px-5 pt-6 pb-2 text-[11px] font-mono uppercase tracking-widest text-fg-muted">
                     {group.title}
                   </td>
                 </tr>,
                 ...group.rows.map((row) => (
                   <tr key={row.label} className="border-t border-line">
-                    <td className="sticky left-0 z-10 bg-panel px-5 py-3 text-fg-muted whitespace-nowrap">{row.label}</td>
+                    <td className="bg-panel px-5 py-3 text-fg-muted whitespace-nowrap min-w-[220px]">{row.label}</td>
                     <td className="px-5 py-3 border-l border-line text-center"><FeatureCell value={row.free} /></td>
                     <td className="px-5 py-3 border-l border-line text-center"><FeatureCell value={row.eventPass} /></td>
                     <td className="px-5 py-3 border-l border-turquoise/40 bg-turquoise/5 text-center"><FeatureCell value={row.pro} /></td>
