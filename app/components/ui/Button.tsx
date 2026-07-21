@@ -18,7 +18,7 @@ const VARIANTS: Record<Tone, Record<ButtonVariant, string>> = {
     danger: 'bg-danger text-white hover:brightness-110',
   },
   calm: {
-    primary: 'bg-red text-white hover:brightness-110',
+    primary: 'bg-turquoise text-base hover:brightness-110',
     secondary: 'bg-panel-elevated text-fg border border-line hover:border-neon-gold',
     ghost: 'bg-transparent text-fg border border-line hover:bg-panel',
     danger: 'bg-danger text-white hover:brightness-110',
@@ -37,25 +37,21 @@ export function buttonVariants({
   variant = 'primary',
   tone = 'party',
   size = 'md',
-  tilt = false,
   className = '',
 }: {
   variant?: ButtonVariant;
   tone?: Tone;
   size?: ButtonSize;
-  tilt?: boolean;
   className?: string;
 } = {}): string {
   const shape = tone === 'party'
     ? 'rounded-full font-display font-bold uppercase tracking-wide'
     : 'rounded-xl font-sans font-semibold';
-  const tiltClass = tone === 'party' && tilt ? '-rotate-1 hover:rotate-0' : '';
   return cx(
     'inline-flex items-center justify-center gap-2 transition-all active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed',
     shape,
     SIZES[size],
     VARIANTS[tone][variant],
-    tiltClass,
     className
   );
 }
@@ -64,14 +60,12 @@ export default function Button({
   variant = 'primary',
   tone = 'party',
   size = 'md',
-  tilt = false,
   className = '',
   ...props
 }: ButtonHTMLAttributes<HTMLButtonElement> & {
   variant?: ButtonVariant;
   tone?: Tone;
   size?: ButtonSize;
-  tilt?: boolean;
 }) {
-  return <button className={buttonVariants({ variant, tone, size, tilt, className })} {...props} />;
+  return <button className={buttonVariants({ variant, tone, size, className })} {...props} />;
 }

@@ -13,7 +13,7 @@ export default function NotFound() {
         Zurück zur Startseite, dann findest du, was du suchst.
       </p>
       <div className="flex flex-col sm:flex-row gap-3">
-        <Link href="/" className={buttonVariants({ variant: 'primary', size: 'lg', tilt: true })}>
+        <Link href="/" className={buttonVariants({ variant: 'primary', size: 'lg' })}>
           Zur Startseite
         </Link>
         <Link href="/pricing" className={buttonVariants({ variant: 'secondary', size: 'lg' })}>

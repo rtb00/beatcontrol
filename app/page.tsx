@@ -262,11 +262,11 @@ export default function LandingPage() {
               onClick={() => setAudienceOpen((o) => !o)}
               aria-haspopup="listbox"
               aria-expanded={audienceOpen}
-              className="flex items-center gap-1.5 text-sm px-3 py-1.5 rounded-full border border-line text-fg hover:border-red transition-colors"
+              className="flex items-center gap-1.5 text-sm px-3 py-1.5 rounded-full border border-line text-fg hover:border-turquoise transition-colors"
             >
               <span className="text-fg-muted hidden sm:inline">Für DJs ·</span>
               <span className="font-medium">{AUDIENCE_LABELS[audience]}</span>
-              <svg width="10" height="6" viewBox="0 0 10 6" fill="none" className={`transition-transform text-red ${audienceOpen ? 'rotate-180' : ''}`}>
+              <svg width="10" height="6" viewBox="0 0 10 6" fill="none" className={`transition-transform text-turquoise ${audienceOpen ? 'rotate-180' : ''}`}>
                 <path d="M1 1l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             </button>
@@ -326,7 +326,7 @@ export default function LandingPage() {
               'kein Download, Voting dauert 10 Sekunden',
             ].map((item) => (
               <li key={item} className="flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4 shrink-0 text-red" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4 shrink-0 text-turquoise" aria-hidden="true">
                   <path fillRule="evenodd" d="M16.704 5.29a1 1 0 010 1.42l-7.5 7.5a1 1 0 01-1.42 0l-3.5-3.5a1 1 0 111.42-1.42l2.79 2.79 6.79-6.79a1 1 0 011.42 0z" clipRule="evenodd" />
                 </svg>
                 {item}
@@ -339,7 +339,7 @@ export default function LandingPage() {
         <div className="flex justify-center">
           <div className="relative w-full max-w-[480px]">
             {/* Ambient Glow hinter dem Geraet, nicht auf der Kante selbst (sonst wirkt der Rand verwaschen) */}
-            <div className="absolute -inset-8 bg-red/25 blur-3xl rounded-full" aria-hidden="true" />
+            <div className="absolute -inset-8 bg-turquoise/25 blur-3xl rounded-full" aria-hidden="true" />
             <div className="relative aspect-[4/3] rounded-[1.2rem] bg-black p-1 shadow-[0_40px_80px_-20px_rgba(0,0,0,0.85)] ring-1 ring-white/10 rotate-1">
               {/* Screen */}
               <div className="relative h-full w-full overflow-hidden rounded-[0.85rem] bg-panel flex flex-col ring-1 ring-black/60">
@@ -369,8 +369,8 @@ export default function LandingPage() {
               <div className="flex-1 flex overflow-hidden">
 
                 {/* QR-Sidebar */}
-                <div className="w-[31%] shrink-0 border-r border-red/30 flex flex-col items-center justify-center gap-1 px-2 py-2">
-                  <p className="text-red text-[9px] leading-none">♪</p>
+                <div className="w-[31%] shrink-0 border-r border-turquoise/30 flex flex-col items-center justify-center gap-1 px-2 py-2">
+                  <p className="text-turquoise text-[9px] leading-none">♪</p>
                   <p className="font-display text-[10px] font-semibold text-fg leading-tight text-center">Musikwünsche</p>
                   <p className="text-fg-muted text-[6px] -mt-0.5 mb-0.5">Scanne mich!</p>
                   <div className="bg-white rounded-md p-1 border border-line shadow-[0_2px_8px_rgba(255,53,71,0.18)]">
@@ -385,7 +385,7 @@ export default function LandingPage() {
                   {/* Gerankte Song-Cards */}
                   {mockSongs.map((s, i) => (
                     <div key={s.title} className="bg-panel-elevated rounded-lg p-1.5 flex items-center gap-1.5 border border-line shadow-sm">
-                      <span className="font-display italic text-[15px] text-red leading-none w-3.5 text-center shrink-0 tabular-nums" aria-hidden="true">{i + 1}</span>
+                      <span className="font-display italic text-[15px] text-turquoise leading-none w-3.5 text-center shrink-0 tabular-nums" aria-hidden="true">{i + 1}</span>
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img src={s.art} alt={s.title} className="w-6 h-6 rounded object-cover shrink-0 bg-line/70" />
                       <div className="flex-1 min-w-0">
@@ -394,7 +394,7 @@ export default function LandingPage() {
                         </div>
                         <div className="flex items-center gap-1 mt-px">
                           <p className="text-fg-muted text-[6px] truncate min-w-0">{s.artist}</p>
-                          <span className="inline-flex items-center gap-0.5 shrink-0 px-1 rounded-full bg-red/10 border border-red/25 text-red text-[5px] font-semibold tabular-nums leading-none">
+                          <span className="inline-flex items-center gap-0.5 shrink-0 px-1 rounded-full bg-neon-gold/10 border border-neon-gold/25 text-neon-gold text-[5px] font-semibold tabular-nums leading-none">
                             <svg viewBox="0 0 20 20" fill="currentColor" className="w-1.5 h-1.5"><path d="M9.653 16.915l-.005-.003-.019-.01a20.759 20.759 0 01-1.162-.682 22.045 22.045 0 01-2.582-1.9C4.045 12.733 2 10.352 2 7.5a4.5 4.5 0 018-2.828A4.5 4.5 0 0118 7.5c0 2.852-2.044 5.233-3.885 6.82a22.049 22.049 0 01-3.744 2.582l-.019.01-.005.003h-.002a.739.739 0 01-.69.001l-.002-.001z" /></svg>
                             {s.votes}
                           </span>
@@ -416,7 +416,7 @@ export default function LandingPage() {
           <div className="mt-16 md:mt-20 pt-10 border-t border-line">
             <div className={`grid gap-8 sm:gap-6 ${proofCards.length >= 4 ? 'grid-cols-2 lg:grid-cols-4' : proofCards.length === 3 ? 'grid-cols-1 sm:grid-cols-3' : 'grid-cols-2'}`}>
               {proofCards.map((s, i) => {
-                const accent = ['text-red text-glow-red', 'text-turquoise', 'text-neon-gold text-glow-gold'][i % 3];
+                const accent = ['text-turquoise text-glow-turquoise', 'text-neon-gold text-glow-gold', 'text-turquoise'][i % 3];
                 return (
                 <Card
                   key={s.label}
@@ -468,10 +468,10 @@ export default function LandingPage() {
         <div className="grid md:grid-cols-3 gap-10">
           {c.painCards.map(({ label, text }, i) => (
             <Card key={label} tone="party">
-              <svg viewBox="0 0 24 24" fill="none" className="w-7 h-7 mb-4 text-red" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" className="w-7 h-7 mb-4 text-turquoise" aria-hidden="true">
                 {PAIN_ICON_PATHS[i]}
               </svg>
-              <h3 className="font-display font-bold uppercase text-sm mb-3 text-red">{label}</h3>
+              <h3 className="font-display font-bold uppercase text-sm mb-3 text-turquoise">{label}</h3>
               <p className="text-sm text-fg-muted leading-relaxed">{text}</p>
             </Card>
           ))}
@@ -568,7 +568,7 @@ export default function LandingPage() {
                   'BeatControl-Branding',
                 ].map((f) => (
                   <li key={f} className="flex items-start gap-2.5">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4 shrink-0 text-red mt-0.5" aria-hidden="true">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4 shrink-0 text-turquoise mt-0.5" aria-hidden="true">
                       <path fillRule="evenodd" d="M16.704 5.29a1 1 0 010 1.42l-7.5 7.5a1 1 0 01-1.42 0l-3.5-3.5a1 1 0 111.42-1.42l2.79 2.79 6.79-6.79a1 1 0 011.42 0z" clipRule="evenodd" />
                     </svg>
                     <span>{f}</span>
@@ -585,8 +585,8 @@ export default function LandingPage() {
             </Card>
 
             {/* Pro */}
-            <Card tone="party" elevated className="flex flex-col relative glow-red">
-              <Badge color="red" className="absolute -top-3.5 left-1/2 -translate-x-1/2 whitespace-nowrap">
+            <Card tone="party" elevated className="flex flex-col relative glow-turquoise">
+              <Badge color="turquoise" className="absolute -top-3.5 left-1/2 -translate-x-1/2 whitespace-nowrap">
                 Für aktive DJs
               </Badge>
               <p className="font-semibold text-sm mb-3 text-fg-muted">Pro</p>
@@ -597,7 +597,7 @@ export default function LandingPage() {
                   type="button"
                   onClick={() => setCycle('yearly')}
                   className={`px-3 py-1 rounded-full font-semibold transition-colors ${
-                    cycle === 'yearly' ? 'font-display bg-red text-white' : 'font-display text-fg-muted hover:text-fg'
+                    cycle === 'yearly' ? 'font-display bg-turquoise text-base' : 'font-display text-fg-muted hover:text-fg'
                   }`}
                 >
                   Jährlich −25%
@@ -606,7 +606,7 @@ export default function LandingPage() {
                   type="button"
                   onClick={() => setCycle('monthly')}
                   className={`px-3 py-1 rounded-full font-semibold transition-colors ${
-                    cycle === 'monthly' ? 'font-display bg-red text-white' : 'font-display text-fg-muted hover:text-fg'
+                    cycle === 'monthly' ? 'font-display bg-turquoise text-base' : 'font-display text-fg-muted hover:text-fg'
                   }`}
                 >
                   Monatlich
@@ -628,7 +628,7 @@ export default function LandingPage() {
                   'Dein Branding mit persönlichem Namen und Logo',
                 ].map((f) => (
                   <li key={f} className="flex items-start gap-2.5">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4 shrink-0 text-red mt-0.5" aria-hidden="true">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4 shrink-0 text-turquoise mt-0.5" aria-hidden="true">
                       <path fillRule="evenodd" d="M16.704 5.29a1 1 0 010 1.42l-7.5 7.5a1 1 0 01-1.42 0l-3.5-3.5a1 1 0 111.42-1.42l2.79 2.79 6.79-6.79a1 1 0 011.42 0z" clipRule="evenodd" />
                     </svg>
                     <span>{f}</span>
@@ -665,7 +665,7 @@ export default function LandingPage() {
                   'Kein Abo, keine Bindung',
                 ].map((f) => (
                   <li key={f} className="flex items-start gap-2.5">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4 shrink-0 text-red mt-0.5" aria-hidden="true">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4 shrink-0 text-turquoise mt-0.5" aria-hidden="true">
                       <path fillRule="evenodd" d="M16.704 5.29a1 1 0 010 1.42l-7.5 7.5a1 1 0 01-1.42 0l-3.5-3.5a1 1 0 111.42-1.42l2.79 2.79 6.79-6.79a1 1 0 011.42 0z" clipRule="evenodd" />
                     </svg>
                     <span>{f}</span>
@@ -740,7 +740,7 @@ export default function LandingPage() {
         <Link
           href="/start"
           onClick={() => trackCta('pro')}
-          className={buttonVariants({ variant: 'primary', size: 'lg', tilt: true })}
+          className={buttonVariants({ variant: 'primary', size: 'lg' })}
         >
           Jetzt kostenlos ausprobieren
         </Link>

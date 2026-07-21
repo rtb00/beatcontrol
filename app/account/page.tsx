@@ -231,7 +231,7 @@ export default function AccountPage() {
 
       <main className="max-w-3xl mx-auto px-4 py-10 pb-20 space-y-8">
         <header>
-          <p className="text-red text-xs font-semibold uppercase tracking-widest mb-2">Konto</p>
+          <p className="text-turquoise text-xs font-semibold uppercase tracking-widest mb-2">Konto</p>
           <h1 className="font-display text-4xl font-bold text-fg">Einstellungen</h1>
         </header>
 
@@ -282,7 +282,7 @@ export default function AccountPage() {
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Dein Name"
                 maxLength={100}
-                className="w-full px-4 py-3 rounded-2xl border border-line bg-base text-fg placeholder:text-fg-muted/50 focus:outline-none focus:border-red transition-colors"
+                className="w-full px-4 py-3 rounded-2xl border border-line bg-base text-fg placeholder:text-fg-muted/50 focus:outline-none focus:border-turquoise transition-colors"
               />
             </div>
             <div className="flex items-center gap-3">
@@ -462,7 +462,7 @@ export default function AccountPage() {
                 placeholder="z.B. DJ Marcus"
                 maxLength={80}
                 disabled={!me.limits.branding}
-                className="w-full px-4 py-3 rounded-2xl border border-line bg-base text-fg placeholder:text-fg-muted/50 focus:outline-none focus:border-red transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full px-4 py-3 rounded-2xl border border-line bg-base text-fg placeholder:text-fg-muted/50 focus:outline-none focus:border-turquoise transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               />
             </div>
             <div>
@@ -474,7 +474,7 @@ export default function AccountPage() {
                 placeholder="https://…"
                 maxLength={500}
                 disabled={!me.limits.branding}
-                className="w-full px-4 py-3 rounded-2xl border border-line bg-base text-fg placeholder:text-fg-muted/50 focus:outline-none focus:border-red transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full px-4 py-3 rounded-2xl border border-line bg-base text-fg placeholder:text-fg-muted/50 focus:outline-none focus:border-turquoise transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               />
               {brandingLogoUrl && /^https?:\/\//i.test(brandingLogoUrl) && (
                 <div className="mt-3 flex items-center gap-3">
@@ -507,7 +507,7 @@ export default function AccountPage() {
               {!me.limits.branding && (
                 <Link
                   href="/pricing?cycle=yearly"
-                  className="text-sm text-red hover:underline"
+                  className="text-sm text-turquoise hover:underline"
                 >
                   Auf Pro upgraden, um Branding zu nutzen →
                 </Link>
@@ -544,7 +544,7 @@ export default function AccountPage() {
                     placeholder="deinakademie"
                     maxLength={30}
                     pattern="[a-z0-9-]+"
-                    className="flex-1 px-4 py-3 rounded-2xl border border-line bg-base text-fg placeholder:text-fg-muted/50 focus:outline-none focus:border-red transition-colors font-mono text-sm"
+                    className="flex-1 px-4 py-3 rounded-2xl border border-line bg-base text-fg placeholder:text-fg-muted/50 focus:outline-none focus:border-turquoise transition-colors font-mono text-sm"
                   />
                   <span className="text-fg-muted text-sm whitespace-nowrap">.beatcontrol.io</span>
                 </div>

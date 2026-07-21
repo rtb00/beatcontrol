@@ -124,18 +124,18 @@ export default function StartFunnel() {
         <div className="max-w-2xl mx-auto px-4 h-14 flex items-center justify-between">
           <Link href="/" className="font-display text-xl font-bold uppercase tracking-tight text-glow-gold">BeatControl</Link>
           {step > 0 ? (
-            <button onClick={back} className="text-sm text-fg-muted hover:text-red transition-colors">
+            <button onClick={back} className="text-sm text-fg-muted hover:text-turquoise transition-colors">
               ← Zurück
             </button>
           ) : (
-            <Link href="/" className="text-sm text-fg-muted hover:text-red transition-colors">
+            <Link href="/" className="text-sm text-fg-muted hover:text-turquoise transition-colors">
               Abbrechen
             </Link>
           )}
         </div>
         {progress !== null && (
           <div className="h-1 w-full bg-line/50">
-            <div className="h-full bg-gradient-to-r from-red to-neon-gold transition-all duration-500 ease-out" style={{ width: `${progress}%` }} />
+            <div className="h-full bg-gradient-to-r from-turquoise to-neon-gold transition-all duration-500 ease-out" style={{ width: `${progress}%` }} />
           </div>
         )}
       </header>
@@ -146,8 +146,8 @@ export default function StartFunnel() {
           {/* Step 0, Namens-Erfassung (Commitment-Anker statt reiner Intro) */}
           {step === 0 && (
             <div className="m-auto w-full max-w-md text-center animate-fade-up">
-              <p className="text-red text-3xl mb-4">♪</p>
-              <h1 className="font-display text-4xl md:text-5xl font-black uppercase leading-tight mb-4 text-glow-red">
+              <p className="text-turquoise text-3xl mb-4">♪</p>
+              <h1 className="font-display text-4xl md:text-5xl font-black uppercase leading-tight mb-4 text-glow-turquoise">
                 Wie heißt deine nächste Feier?
               </h1>
               <p className="text-fg-muted text-lg leading-relaxed mb-8">
@@ -160,7 +160,7 @@ export default function StartFunnel() {
                 onKeyDown={(e) => { if (e.key === 'Enter' && title.trim()) next(); }}
                 autoFocus
                 placeholder="z. B. Hochzeit Müller"
-                className="w-full px-5 py-4 rounded-2xl border border-line bg-panel text-fg text-center placeholder:text-fg-muted/60 focus:outline-none focus:border-red transition-colors mb-4"
+                className="w-full px-5 py-4 rounded-2xl border border-line bg-panel text-fg text-center placeholder:text-fg-muted/60 focus:outline-none focus:border-turquoise transition-colors mb-4"
               />
               <Button
                 onClick={next}
@@ -168,7 +168,6 @@ export default function StartFunnel() {
                 variant="primary"
                 tone="party"
                 size="lg"
-                tilt
                 className="w-full"
               >
                 Los geht&apos;s
@@ -188,7 +187,7 @@ export default function StartFunnel() {
                     selected={type === t.id}
                     onClick={() => { setType(t.id); setTimeout(next, 180); }}
                   >
-                    <FunnelIcon name={t.icon} className="w-6 h-6 mr-3 shrink-0 text-red" />
+                    <FunnelIcon name={t.icon} className="w-6 h-6 mr-3 shrink-0 text-turquoise" />
                     <span className="min-w-0">
                       <span className="block font-display font-bold">{t.label}</span>
                       <span className="block text-sm text-fg-muted">{t.sub}</span>
@@ -210,19 +209,19 @@ export default function StartFunnel() {
               <div className="flex flex-col gap-3 mb-3">
                 {PAINS.map((p) => (
                   <SelectCard key={p.id} selected={pains.includes(p.id)} onClick={() => togglePain(p.id)} multi>
-                    <FunnelIcon name={p.icon} className="w-5 h-5 mr-3 shrink-0 text-red" />
+                    <FunnelIcon name={p.icon} className="w-5 h-5 mr-3 shrink-0 text-turquoise" />
                     <span className="min-w-0">{p.label}</span>
                   </SelectCard>
                 ))}
               </div>
               <div className="relative mb-8">
-                <FunnelIcon name="pencil" className="w-5 h-5 text-red absolute left-5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                <FunnelIcon name="pencil" className="w-5 h-5 text-turquoise absolute left-5 top-1/2 -translate-y-1/2 pointer-events-none" />
                 <input
                   type="text"
                   value={painsOther}
                   onChange={(e) => setPainsOther(e.target.value)}
                   placeholder="Sonstiges …"
-                  className="w-full pl-12 pr-5 py-4 rounded-2xl border border-line bg-panel text-fg placeholder:text-fg-muted/60 focus:outline-none focus:border-red transition-colors"
+                  className="w-full pl-12 pr-5 py-4 rounded-2xl border border-line bg-panel text-fg placeholder:text-fg-muted/60 focus:outline-none focus:border-turquoise transition-colors"
                 />
               </div>
               <StepFooter onNext={next} disabled={false} label={pains.length || painsOther.trim() ? 'Weiter' : 'Kenne ich alles nicht, weiter'} />
@@ -240,23 +239,23 @@ export default function StartFunnel() {
                     selected={method === m.id}
                     onClick={() => { setMethod(m.id); setMethodOther(''); }}
                   >
-                    <FunnelIcon name={m.icon} className="w-5 h-5 mr-3 shrink-0 text-red" />
+                    <FunnelIcon name={m.icon} className="w-5 h-5 mr-3 shrink-0 text-turquoise" />
                     <span className="min-w-0">{m.label}</span>
                   </SelectCard>
                 ))}
               </div>
               <div className="relative mb-6">
-                <FunnelIcon name="pencil" className="w-5 h-5 text-red absolute left-5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                <FunnelIcon name="pencil" className="w-5 h-5 text-turquoise absolute left-5 top-1/2 -translate-y-1/2 pointer-events-none" />
                 <input
                   type="text"
                   value={methodOther}
                   onChange={(e) => { setMethodOther(e.target.value); if (e.target.value) setMethod(null); }}
                   placeholder="Sonstiges …"
-                  className="w-full pl-12 pr-5 py-4 rounded-2xl border border-line bg-panel text-fg placeholder:text-fg-muted/60 focus:outline-none focus:border-red transition-colors"
+                  className="w-full pl-12 pr-5 py-4 rounded-2xl border border-line bg-panel text-fg placeholder:text-fg-muted/60 focus:outline-none focus:border-turquoise transition-colors"
                 />
               </div>
               {method && (
-                <Card tone="party" className="mb-8 animate-fade-in border-red/40">
+                <Card tone="party" className="mb-8 animate-fade-in border-turquoise/40">
                   <p className="text-sm leading-relaxed text-fg">
                     {METHODS.find((m) => m.id === method)?.jab}
                   </p>
@@ -308,7 +307,7 @@ export default function StartFunnel() {
                   type="date"
                   value={date}
                   onChange={(e) => setDate(e.target.value)}
-                  className="w-full px-4 py-3.5 rounded-2xl border border-line bg-panel text-fg focus:outline-none focus:border-red transition-colors"
+                  className="w-full px-4 py-3.5 rounded-2xl border border-line bg-panel text-fg focus:outline-none focus:border-turquoise transition-colors"
                 />
               </div>
               <StepFooter onNext={next} disabled={!date} label="Mein Event ist startklar →" />
@@ -347,7 +346,7 @@ export default function StartFunnel() {
                 </ul>
               </Card>
 
-              <Button onClick={finish} variant="primary" tone="party" size="lg" tilt>
+              <Button onClick={finish} variant="primary" tone="party" size="lg">
                 Event kostenlos sichern
               </Button>
               <p className="text-xs text-fg-muted mt-4">
@@ -387,15 +386,15 @@ function SelectCard({
       onClick={onClick}
       className={`w-full flex items-center text-left px-5 py-4 rounded-2xl border transition-all active:scale-[0.99] ${
         selected
-          ? 'border-red bg-red/10 ring-1 ring-red glow-red'
-          : 'border-line bg-panel hover:border-red/60'
+          ? 'border-turquoise bg-turquoise/10 ring-1 ring-turquoise glow-turquoise'
+          : 'border-line bg-panel hover:border-turquoise/60'
       }`}
     >
       <span className="flex-1 flex items-center min-w-0">{children}</span>
       <span
         className={`shrink-0 ml-3 w-5 h-5 flex items-center justify-center border transition-colors ${
           multi ? 'rounded-md' : 'rounded-full'
-        } ${selected ? 'bg-red border-red text-white' : 'border-line text-transparent'}`}
+        } ${selected ? 'bg-turquoise border-turquoise text-base' : 'border-line text-transparent'}`}
       >
         <svg viewBox="0 0 20 20" fill="currentColor" className="w-3 h-3">
           <path fillRule="evenodd" d="M16.704 5.29a1 1 0 010 1.42l-7.5 7.5a1 1 0 01-1.42 0l-3.5-3.5a1 1 0 011.42-1.42l2.79 2.79 6.79-6.79a1 1 0 011.42 0z" clipRule="evenodd" />

@@ -35,13 +35,13 @@ export default function BrautpaarLanding() {
         </p>
         <h1 className="font-display text-5xl md:text-6xl font-black uppercase leading-[1.05] mb-8 text-glow-gold">
           Die Tanzfläche bleibt voll.<br />
-          <span className="text-red">Weil eure Gäste mitreden.</span>
+          <span className="text-turquoise">Weil eure Gäste mitreden.</span>
         </h1>
         <p className="text-fg-muted text-lg leading-relaxed max-w-2xl mx-auto mb-10">
           Fast jede Hochzeit hat diesen einen Moment: Die Tanzfläche wird leer und keiner weiß warum. Mit BeatControl schlagen eure Gäste vom Handy ihre Songs vor und voten füreinander. Euer DJ sieht live, was gerade gefragt ist, und legt sicher nach.
         </p>
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
-          <Link href="/pricing#event-pass" className={buttonVariants({ variant: 'primary', size: 'lg', tilt: true })}>
+          <Link href="/pricing#event-pass" className={buttonVariants({ variant: 'primary', size: 'lg' })}>
             Event-Pass kaufen · €{EVENT_PASS_PRICE}
           </Link>
           <Link href="#wie" className={buttonVariants({ variant: 'ghost', size: 'lg' })}>
@@ -204,9 +204,9 @@ export default function BrautpaarLanding() {
             )}
           </p>
           <nav className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs">
-            <Link href="/impressum" className="hover:text-red transition-colors">Impressum</Link>
-            <Link href="/datenschutz" className="hover:text-red transition-colors">Datenschutz</Link>
-            <Link href="/agb" className="hover:text-red transition-colors">AGB</Link>
+            <Link href="/impressum" className="hover:text-turquoise transition-colors">Impressum</Link>
+            <Link href="/datenschutz" className="hover:text-turquoise transition-colors">Datenschutz</Link>
+            <Link href="/agb" className="hover:text-turquoise transition-colors">AGB</Link>
           </nav>
         </div>
       </footer>

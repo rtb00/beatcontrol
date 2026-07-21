@@ -255,7 +255,7 @@ export default function GuestPage() {
             <div className="space-y-3">
               <div className="flex items-center justify-between mb-1">
                 <span className="font-mono text-fg-muted text-xs uppercase tracking-widest">Manuell eingeben</span>
-                <button type="button" onClick={() => { setManualMode(false); setManualTitle(''); setManualArtist(''); }} className="text-red text-sm hover:underline">
+                <button type="button" onClick={() => { setManualMode(false); setManualTitle(''); setManualArtist(''); }} className="text-turquoise text-sm hover:underline">
                   ← Suche
                 </button>
               </div>
@@ -267,7 +267,6 @@ export default function GuestPage() {
                 type="button"
                 tone="party"
                 size="lg"
-                tilt
                 disabled={submitting || !manualTitle.trim() || !manualArtist.trim()}
                 onClick={() => submitSong({ title: manualTitle.trim(), artist: manualArtist.trim() })}
                 className="w-full"
@@ -306,7 +305,7 @@ export default function GuestPage() {
                   <div className="border-t border-line px-4 py-2">
                     <button type="button" onMouseDown={(e) => e.preventDefault()}
                       onClick={() => { setShowDropdown(false); setManualMode(true); }}
-                      className="text-fg-muted text-xs hover:text-red transition-colors">
+                      className="text-fg-muted text-xs hover:text-turquoise transition-colors">
                       Song nicht gefunden? Manuell eingeben →
                     </button>
                   </div>
@@ -314,7 +313,7 @@ export default function GuestPage() {
               )}
               {!showDropdown && query.length >= 2 && !searching && (
                 <div className="mt-2 text-center">
-                  <button type="button" onClick={() => setManualMode(true)} className="text-fg-muted text-sm hover:text-red transition-colors">
+                  <button type="button" onClick={() => setManualMode(true)} className="text-fg-muted text-sm hover:text-turquoise transition-colors">
                     Song nicht gefunden? Manuell eingeben →
                   </button>
                 </div>
@@ -380,7 +379,7 @@ function SongCard({
         // eslint-disable-next-line @next/next/no-img-element
         <img src={song.album_art_url} alt={song.title} width={40} height={40} className="rounded-xl shrink-0 object-cover" />
       ) : rank !== null ? (
-        <span className="font-display text-red text-xl font-black w-10 text-center shrink-0">{rank}</span>
+        <span className="font-display text-turquoise text-xl font-black w-10 text-center shrink-0">{rank}</span>
       ) : null}
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-1.5 flex-wrap">
@@ -404,7 +403,7 @@ function SongCard({
         className={`
           flex items-center gap-1.5 px-4 py-2.5 rounded-xl font-semibold text-base min-w-[4.5rem]
           justify-center transition-all active:scale-90 shrink-0
-          ${song.has_voted ? 'bg-red text-white glow-red' : 'bg-panel text-fg-muted border border-line hover:border-red hover:text-red'}
+          ${song.has_voted ? 'bg-turquoise text-base glow-turquoise' : 'bg-panel text-fg-muted border border-line hover:border-turquoise hover:text-turquoise'}
           ${voting ? 'opacity-50 cursor-wait' : ''}
           ${song.played ? 'pointer-events-none' : ''}
         `}

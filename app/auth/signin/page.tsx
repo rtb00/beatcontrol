@@ -71,15 +71,15 @@ export default async function SignInPage({
   return (
     <CalmScope className="min-h-screen bg-base flex flex-col items-center justify-center px-4 py-10">
       <div className="w-full max-w-sm">
-        <p className="text-center text-red text-3xl mb-3">♪</p>
+        <p className="text-center text-turquoise text-3xl mb-3">♪</p>
         <h1 className="font-display text-3xl font-bold text-fg text-center mb-1">
           BeatControl
         </h1>
         <p className="text-fg-muted text-sm text-center mb-10">DJ-Bereich</p>
 
         {plan && (
-          <div className="mb-6 rounded-2xl border border-red/40 bg-red/10 px-4 py-3 text-center">
-            <p className="text-[10px] uppercase tracking-widest text-red font-semibold mb-1">
+          <div className="mb-6 rounded-2xl border border-turquoise/40 bg-turquoise/10 px-4 py-3 text-center">
+            <p className="text-[10px] uppercase tracking-widest text-turquoise font-semibold mb-1">
               Ausgewählter Plan
             </p>
             <p className="text-sm text-fg font-semibold">{planLabel[plan]}</p>
@@ -107,7 +107,7 @@ export default async function SignInPage({
                 type="email"
                 autoComplete="email"
                 required
-                className="w-full px-4 py-3 rounded-2xl border border-line bg-panel text-fg placeholder:text-fg-muted focus:outline-none focus:border-red transition-colors"
+                className="w-full px-4 py-3 rounded-2xl border border-line bg-panel text-fg placeholder:text-fg-muted focus:outline-none focus:border-turquoise transition-colors"
               />
             </div>
             <div>
@@ -121,7 +121,7 @@ export default async function SignInPage({
                 autoComplete="current-password"
                 required
                 minLength={8}
-                className="w-full px-4 py-3 rounded-2xl border border-line bg-panel text-fg placeholder:text-fg-muted focus:outline-none focus:border-red transition-colors"
+                className="w-full px-4 py-3 rounded-2xl border border-line bg-panel text-fg placeholder:text-fg-muted focus:outline-none focus:border-turquoise transition-colors"
               />
             </div>
             <Button type="submit" tone="calm" variant="primary" className="w-full">
@@ -149,11 +149,11 @@ export default async function SignInPage({
 
           <p className="text-[11px] text-fg-muted leading-relaxed text-center">
             Mit der Anmeldung stimmst du unseren{' '}
-            <Link href="/agb" className="text-red hover:underline">
+            <Link href="/agb" className="text-turquoise hover:underline">
               AGB
             </Link>{' '}
             zu und nimmst die{' '}
-            <Link href="/datenschutz" className="text-red hover:underline">
+            <Link href="/datenschutz" className="text-turquoise hover:underline">
               Datenschutzerklärung
             </Link>{' '}
             zur Kenntnis.
@@ -176,7 +176,7 @@ export default async function SignInPage({
 
         <p className="text-center text-sm text-fg mt-6">
           Noch kein Account?{' '}
-          <Link href={registerHref} className="text-red hover:underline font-medium">
+          <Link href={registerHref} className="text-turquoise hover:underline font-medium">
             Registrieren
           </Link>
         </p>

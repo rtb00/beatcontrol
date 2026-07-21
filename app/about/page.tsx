@@ -68,11 +68,11 @@ export default function AboutPage() {
 
           <p>
             Aktuell suche ich zwei weitere Hochzeits-DJs für Pilot-Slots Mai–Juli 2026. Kostenlose Pro-Lizenz im Tausch gegen ehrliches Feedback und Aftermovie-Schnipsel. Wenn das du sein könntest:{' '}
-            <Link href="/auth/signin?callbackUrl=/dj" className="text-red underline">
+            <Link href="/auth/signin?callbackUrl=/dj" className="text-turquoise underline">
               hier anmelden
             </Link>{' '}
             oder mir direkt eine{' '}
-            <a href="mailto:nibor.bauer1+beatcontrol@gmail.com" className="text-red underline">
+            <a href="mailto:nibor.bauer1+beatcontrol@gmail.com" className="text-turquoise underline">
               Mail schicken
             </a>
             .
@@ -92,12 +92,12 @@ export default function AboutPage() {
           <p>
             Direkter Draht für DJs, Brautpaare, Hochzeitsplaner und Akademien:
             <br />
-            <a href="mailto:nibor.bauer1+beatcontrol@gmail.com" className="text-red underline">Mail schicken</a>
+            <a href="mailto:nibor.bauer1+beatcontrol@gmail.com" className="text-turquoise underline">Mail schicken</a>
           </p>
 
           <p className="text-sm text-fg-muted mt-8">
             BeatControl ist eine Marke von Robin Bauer. Sitz und Rechtsdetails siehe{' '}
-            <Link href="/impressum" className="text-red underline">Impressum</Link>.
+            <Link href="/impressum" className="text-turquoise underline">Impressum</Link>.
           </p>
         </div>
       </article>
@@ -115,9 +115,9 @@ export default function AboutPage() {
             )}
           </p>
           <nav className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs">
-            <Link href="/impressum" className="hover:text-red transition-colors">Impressum</Link>
-            <Link href="/datenschutz" className="hover:text-red transition-colors">Datenschutz</Link>
-            <Link href="/agb" className="hover:text-red transition-colors">AGB</Link>
+            <Link href="/impressum" className="hover:text-turquoise transition-colors">Impressum</Link>
+            <Link href="/datenschutz" className="hover:text-turquoise transition-colors">Datenschutz</Link>
+            <Link href="/agb" className="hover:text-turquoise transition-colors">AGB</Link>
           </nav>
         </div>
       </footer>

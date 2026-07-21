@@ -93,15 +93,15 @@ function RegisterPageInner() {
   return (
     <CalmScope className="min-h-screen bg-base flex flex-col items-center justify-center px-4 py-10">
       <div className="w-full max-w-sm">
-        <p className="text-center text-red text-3xl mb-3">♪</p>
+        <p className="text-center text-turquoise text-3xl mb-3">♪</p>
         <h1 className="font-display text-3xl font-bold text-fg text-center mb-1">
           BeatControl
         </h1>
         <p className="text-fg-muted text-sm text-center mb-10">DJ-Account erstellen</p>
 
         {plan && (
-          <div className="mb-6 rounded-2xl border border-red/40 bg-red/10 px-4 py-3 text-center">
-            <p className="text-[10px] uppercase tracking-widest text-red font-semibold mb-1">
+          <div className="mb-6 rounded-2xl border border-turquoise/40 bg-turquoise/10 px-4 py-3 text-center">
+            <p className="text-[10px] uppercase tracking-widest text-turquoise font-semibold mb-1">
               Ausgewählter Plan
             </p>
             <p className="text-sm text-fg font-semibold">{PLAN_LABEL[plan]}</p>
@@ -153,7 +153,7 @@ function RegisterPageInner() {
                 autoComplete="name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full px-4 py-3 rounded-2xl border border-line bg-panel text-fg placeholder:text-fg-muted focus:outline-none focus:border-red transition-colors"
+                className="w-full px-4 py-3 rounded-2xl border border-line bg-panel text-fg placeholder:text-fg-muted focus:outline-none focus:border-turquoise transition-colors"
               />
             </div>
             <div>
@@ -168,7 +168,7 @@ function RegisterPageInner() {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-3 rounded-2xl border border-line bg-panel text-fg placeholder:text-fg-muted focus:outline-none focus:border-red transition-colors"
+                className="w-full px-4 py-3 rounded-2xl border border-line bg-panel text-fg placeholder:text-fg-muted focus:outline-none focus:border-turquoise transition-colors"
               />
             </div>
             <div>
@@ -184,7 +184,7 @@ function RegisterPageInner() {
                 minLength={8}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-3 rounded-2xl border border-line bg-panel text-fg placeholder:text-fg-muted focus:outline-none focus:border-red transition-colors"
+                className="w-full px-4 py-3 rounded-2xl border border-line bg-panel text-fg placeholder:text-fg-muted focus:outline-none focus:border-turquoise transition-colors"
               />
               <p className="text-xs text-fg-muted mt-1">Mindestens 8 Zeichen</p>
             </div>
@@ -201,7 +201,7 @@ function RegisterPageInner() {
                 minLength={8}
                 value={confirm}
                 onChange={(e) => setConfirm(e.target.value)}
-                className="w-full px-4 py-3 rounded-2xl border border-line bg-panel text-fg placeholder:text-fg-muted focus:outline-none focus:border-red transition-colors"
+                className="w-full px-4 py-3 rounded-2xl border border-line bg-panel text-fg placeholder:text-fg-muted focus:outline-none focus:border-turquoise transition-colors"
               />
             </div>
             <div className="space-y-2.5 pt-1">
@@ -210,11 +210,11 @@ function RegisterPageInner() {
                   type="checkbox"
                   checked={acceptedAgb}
                   onChange={(e) => setAcceptedAgb(e.target.checked)}
-                  className="mt-0.5 h-4 w-4 rounded border-red text-red focus:ring-red flex-shrink-0"
+                  className="mt-0.5 h-4 w-4 rounded border-turquoise text-turquoise focus:ring-turquoise flex-shrink-0"
                 />
                 <span>
                   Ich stimme den{' '}
-                  <Link href="/agb" target="_blank" className="text-red hover:underline font-medium">
+                  <Link href="/agb" target="_blank" className="text-turquoise hover:underline font-medium">
                     AGB
                   </Link>{' '}
                   zu.
@@ -225,11 +225,11 @@ function RegisterPageInner() {
                   type="checkbox"
                   checked={acceptedPrivacy}
                   onChange={(e) => setAcceptedPrivacy(e.target.checked)}
-                  className="mt-0.5 h-4 w-4 rounded border-red text-red focus:ring-red flex-shrink-0"
+                  className="mt-0.5 h-4 w-4 rounded border-turquoise text-turquoise focus:ring-turquoise flex-shrink-0"
                 />
                 <span>
                   Ich habe die{' '}
-                  <Link href="/datenschutz" target="_blank" className="text-red hover:underline font-medium">
+                  <Link href="/datenschutz" target="_blank" className="text-turquoise hover:underline font-medium">
                     Datenschutzerklärung
                   </Link>{' '}
                   gelesen.
@@ -251,7 +251,7 @@ function RegisterPageInner() {
 
         <p className="text-center text-sm text-fg mt-6">
           Schon registriert?{' '}
-          <Link href={signinHref} className="text-red hover:underline font-medium">
+          <Link href={signinHref} className="text-turquoise hover:underline font-medium">
             Anmelden
           </Link>
         </p>

@@ -38,7 +38,7 @@ export default function Modal({
     >
       <div
         className={`w-full max-w-md rounded-3xl border border-line bg-panel-elevated p-8 shadow-2xl animate-fade-up ${
-          tone === 'party' ? 'glow-red' : ''
+          tone === 'party' ? 'glow-turquoise' : ''
         }`}
         onClick={(e) => e.stopPropagation()}
         role="dialog"

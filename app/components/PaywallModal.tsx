@@ -69,7 +69,7 @@ export default function PaywallModal({ isOpen, onClose, limitType, current, max 
       <p className="text-fg-muted leading-relaxed mb-8">{description}</p>
 
       <div className="flex flex-col sm:flex-row gap-3">
-        <Link href="/pricing?cycle=yearly" className={buttonVariants({ variant: 'primary', size: 'md', tilt: true, className: 'flex-1' })}>
+        <Link href="/pricing?cycle=yearly" className={buttonVariants({ variant: 'primary', size: 'md', className: 'flex-1' })}>
           Pro starten
         </Link>
         <Link href="/pricing#event-pass" className={buttonVariants({ variant: 'secondary', size: 'md', className: 'flex-1' })}>

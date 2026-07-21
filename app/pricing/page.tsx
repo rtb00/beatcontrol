@@ -169,7 +169,7 @@ function PricingPageInner() {
           Free zum Ausprobieren. Je Hochzeit für Gelegenheits-Gigs. Pro-Abo für aktive DJs.
           Team für Akademien und Eventagenturen.
         </p>
-        <p className="text-center text-xs font-mono text-red uppercase tracking-widest mb-12">
+        <p className="text-center text-xs font-mono text-turquoise uppercase tracking-widest mb-12">
           Pilot-Saison 2026 · 30 Tage Geld-zurück auf Pro
         </p>
 
@@ -200,7 +200,7 @@ function PricingPageInner() {
                 'BeatControl-Branding',
               ].map((f) => (
                 <li key={f} className="flex items-start gap-2.5">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4 shrink-0 text-red mt-0.5" aria-hidden="true">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4 shrink-0 text-turquoise mt-0.5" aria-hidden="true">
                     <path fillRule="evenodd" d="M16.704 5.29a1 1 0 010 1.42l-7.5 7.5a1 1 0 01-1.42 0l-3.5-3.5a1 1 0 111.42-1.42l2.79 2.79 6.79-6.79a1 1 0 011.42 0z" clipRule="evenodd" />
                   </svg>
                   <span>{f}</span>
@@ -249,7 +249,7 @@ function PricingPageInner() {
                 'Kein Abo, keine Bindung',
               ].map((f) => (
                 <li key={f} className="flex items-start gap-2.5">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4 shrink-0 text-red mt-0.5" aria-hidden="true">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4 shrink-0 text-turquoise mt-0.5" aria-hidden="true">
                     <path fillRule="evenodd" d="M16.704 5.29a1 1 0 010 1.42l-7.5 7.5a1 1 0 01-1.42 0l-3.5-3.5a1 1 0 111.42-1.42l2.79 2.79 6.79-6.79a1 1 0 011.42 0z" clipRule="evenodd" />
                   </svg>
                   <span>{f}</span>
@@ -266,8 +266,8 @@ function PricingPageInner() {
           </Card>
 
           {/* Pro */}
-          <Card tone="party" elevated className="flex flex-col relative glow-red">
-            <Badge color="red" className="absolute -top-3.5 left-1/2 -translate-x-1/2 whitespace-nowrap">
+          <Card tone="party" elevated className="flex flex-col relative glow-turquoise">
+            <Badge color="turquoise" className="absolute -top-3.5 left-1/2 -translate-x-1/2 whitespace-nowrap">
               Meist gewählt
             </Badge>
             <div className="flex items-center justify-between mb-3">
@@ -284,7 +284,7 @@ function PricingPageInner() {
                 type="button"
                 onClick={() => setCycle('yearly')}
                 className={`px-3 py-1 rounded-full font-semibold transition-colors ${
-                  cycle === 'yearly' ? 'font-display bg-red text-white' : 'font-display text-fg-muted hover:text-fg'
+                  cycle === 'yearly' ? 'font-display bg-turquoise text-base' : 'font-display text-fg-muted hover:text-fg'
                 }`}
               >
                 Jährlich −17%
@@ -293,7 +293,7 @@ function PricingPageInner() {
                 type="button"
                 onClick={() => setCycle('monthly')}
                 className={`px-3 py-1 rounded-full font-semibold transition-colors ${
-                  cycle === 'monthly' ? 'font-display bg-red text-white' : 'font-display text-fg-muted hover:text-fg'
+                  cycle === 'monthly' ? 'font-display bg-turquoise text-base' : 'font-display text-fg-muted hover:text-fg'
                 }`}
               >
                 Monatlich
@@ -315,7 +315,7 @@ function PricingPageInner() {
                 'Dein Branding mit Namen und Logo',
               ].map((f) => (
                 <li key={f} className="flex items-start gap-2.5">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4 shrink-0 text-red mt-0.5" aria-hidden="true">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4 shrink-0 text-turquoise mt-0.5" aria-hidden="true">
                     <path fillRule="evenodd" d="M16.704 5.29a1 1 0 010 1.42l-7.5 7.5a1 1 0 01-1.42 0l-3.5-3.5a1 1 0 111.42-1.42l2.79 2.79 6.79-6.79a1 1 0 011.42 0z" clipRule="evenodd" />
                   </svg>
                   <span>{f}</span>
@@ -408,9 +408,9 @@ function PricingPageInner() {
           <span className="font-display text-lg font-bold uppercase text-fg">BeatControl</span>
           <p className="text-xs text-center">© 2026 BeatControl · Für Hochzeits-DJs und Brautpaare.</p>
           <nav className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs">
-            <Link href="/impressum" className="hover:text-red transition-colors">Impressum</Link>
-            <Link href="/datenschutz" className="hover:text-red transition-colors">Datenschutz</Link>
-            <Link href="/agb" className="hover:text-red transition-colors">AGB</Link>
+            <Link href="/impressum" className="hover:text-turquoise transition-colors">Impressum</Link>
+            <Link href="/datenschutz" className="hover:text-turquoise transition-colors">Datenschutz</Link>
+            <Link href="/agb" className="hover:text-turquoise transition-colors">AGB</Link>
           </nav>
         </div>
       </footer>
