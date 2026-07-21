@@ -133,13 +133,27 @@ export default function StartFunnel() {
                 placeholder="z. B. Hochzeit Müller"
                 className="w-full px-5 py-4 rounded-2xl border border-line bg-panel text-fg text-center placeholder:text-fg-muted/60 focus:outline-none focus:border-turquoise transition-colors mb-3"
               />
-              <input
-                type="date"
-                value={date}
-                onChange={(e) => setDate(e.target.value)}
-                aria-label="Datum der Feier"
-                className="w-full px-5 py-4 rounded-2xl border border-line bg-panel text-fg text-center focus:outline-none focus:border-turquoise transition-colors mb-4"
-              />
+              {/* Nativer date-Input: appearance-none + min-w-0 verhindert den
+                  WebKit-Overflow des internen Kalender-Widgets auf Mobile;
+                  das Overlay ersetzt den fehlenden Placeholder, solange kein
+                  Datum gewählt ist (pointer-events-none lässt Taps durch). */}
+              <div className="relative mb-4">
+                <input
+                  type="date"
+                  value={date}
+                  onChange={(e) => setDate(e.target.value)}
+                  aria-label="Datum der Feier"
+                  className="block w-full min-w-0 appearance-none px-5 py-4 rounded-2xl border border-line bg-panel text-fg text-center focus:outline-none focus:border-turquoise transition-colors [&::-webkit-date-and-time-value]:text-center"
+                />
+                {!date && (
+                  <span
+                    aria-hidden="true"
+                    className="pointer-events-none absolute inset-0.5 rounded-2xl bg-panel flex items-center justify-center text-fg-muted/60"
+                  >
+                    Datum eintragen
+                  </span>
+                )}
+              </div>
               <Button
                 onClick={create}
                 disabled={!canSubmit}
