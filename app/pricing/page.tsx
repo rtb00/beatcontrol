@@ -8,14 +8,6 @@ import { Badge, NavBar, buttonVariants } from '@/app/components/ui';
 type Cycle = 'yearly' | 'monthly';
 type StripeTier = 'pro_monthly' | 'pro_yearly' | 'event_pass' | 'studio_monthly' | 'studio_yearly';
 
-const PRO_PRICE_YEARLY_PER_MONTH = '49,99';
-const PRO_PRICE_YEARLY_TOTAL = '599,88';
-const PRO_PRICE_MONTHLY = '59,99';
-const EVENT_PASS_PRICE = '19';
-const STUDIO_PRICE_MONTHLY = '149';
-const STUDIO_PRICE_YEARLY_PER_MONTH = '124';
-const STUDIO_PRICE_YEARLY_TOTAL = '1.488';
-
 interface Me {
   plan: 'free' | 'pro' | 'event_pass' | 'studio';
   rawPlan: string;
@@ -35,16 +27,25 @@ interface FeatureGroup {
   rows: FeatureRow[];
 }
 
+// Zeilen so einheitlich wie möglich als reine Haken; nur die zwei Mengen-Zeilen
+// oben tragen Zahlen-Werte. Details (z.B. was Branding umfasst) stehen im
+// Zeilen-Label, nicht in den Zellen.
 const FEATURE_GROUPS: FeatureGroup[] = [
   {
     title: 'Events & Songwünsche',
     rows: [
       { label: 'Aktive Events', free: '1', eventPass: '1 Hochzeit', pro: 'Unbegrenzt', team: 'Unbegrenzt' },
       { label: 'Songwünsche', free: 'Bis zu 30', eventPass: 'Unbegrenzt', pro: 'Unbegrenzt', team: 'Unbegrenzt' },
-      { label: 'Branding', free: 'BeatControl-Branding', eventPass: 'Dein Branding', pro: 'Dein Branding mit persönlichem Namen und Logo', team: 'Komplett (Whitelabel)' },
       { label: 'QR-Code für Gäste', free: true, eventPass: true, pro: true, team: true },
       { label: 'Export der Musikwünsche zur Nachbereitung', free: false, eventPass: true, pro: true, team: true },
-      { label: 'Gast-Karten als Download', free: false, eventPass: false, pro: true, team: true },
+      { label: 'Gast-Karten als Download', free: false, eventPass: true, pro: true, team: true },
+    ],
+  },
+  {
+    title: 'Branding',
+    rows: [
+      { label: 'Eigenes Branding mit Logo und DJ-Namen', free: false, eventPass: true, pro: true, team: true },
+      { label: 'Komplett dein Branding (Whitelabel)', free: false, eventPass: false, pro: false, team: true },
     ],
   },
   {
@@ -59,7 +60,9 @@ const FEATURE_GROUPS: FeatureGroup[] = [
   {
     title: 'Konditionen',
     rows: [
-      { label: 'Bindung', free: 'Kein Abo', eventPass: 'Einmalig, keine Bindung', pro: 'Monatlich kündbar', team: 'Monatlich kündbar' },
+      { label: 'Für immer kostenlos', free: true, eventPass: false, pro: false, team: false },
+      { label: 'Einmalzahlung, kein Abo', free: false, eventPass: true, pro: false, team: false },
+      { label: 'Monatlich kündbar', free: false, eventPass: false, pro: true, team: true },
     ],
   },
 ];
@@ -103,7 +106,10 @@ function PricingPageInner() {
           ? 'monthly'
           : 'yearly';
 
-  const [cycle, setCycle] = useState<Cycle>(initialCycle);
+  // Der Jährlich/Monatlich-Umschalter wurde bewusst entfernt (Tabelle zeigt
+  // keine Preise mehr) — cycle bestimmt nur noch, welches Stripe-Produkt der
+  // Pro-CTA startet, gesteuert über den ?cycle=-URL-Parameter.
+  const [cycle] = useState<Cycle>(initialCycle);
   const [me, setMe] = useState<Me | null>(null);
   const [loadingMe, setLoadingMe] = useState(true);
   const [busy, setBusy] = useState<StripeTier | null>(null);
@@ -177,22 +183,11 @@ function PricingPageInner() {
     }
   }
 
-  const proPrice = cycle === 'yearly' ? PRO_PRICE_YEARLY_PER_MONTH : PRO_PRICE_MONTHLY;
-  const proHint =
-    cycle === 'yearly'
-      ? `jährlich abgerechnet (€${PRO_PRICE_YEARLY_TOTAL}/Jahr)`
-      : 'monatlich kündbar';
   const proFootnote =
     cycle === 'yearly'
       ? '30 Tage Geld-zurück-Garantie'
       : '30 Tage Geld-zurück-Garantie · monatlich kündbar';
   const proTier: StripeTier = cycle === 'yearly' ? 'pro_yearly' : 'pro_monthly';
-  const studioPrice = cycle === 'yearly' ? STUDIO_PRICE_YEARLY_PER_MONTH : STUDIO_PRICE_MONTHLY;
-  const studioHint =
-    cycle === 'yearly'
-      ? `jährlich abgerechnet (€${STUDIO_PRICE_YEARLY_TOTAL}/Jahr)`
-      : 'monatlich kündbar';
-  const studioTier: StripeTier = cycle === 'yearly' ? 'studio_yearly' : 'studio_monthly';
   const isCurrentPro = me?.plan === 'pro';
   const isCurrentEventPass = me?.plan === 'event_pass';
   const isCurrentStudio = me?.plan === 'studio';
@@ -234,43 +229,18 @@ function PricingPageInner() {
           </div>
         )}
 
-        <div className="mb-8 flex justify-center">
-          <div className="inline-flex items-center bg-base/40 border border-line rounded-full p-0.5 text-[11px]">
-            <button
-              type="button"
-              onClick={() => setCycle('yearly')}
-              className={`px-4 py-1.5 rounded-full font-semibold transition-colors ${
-                cycle === 'yearly' ? 'font-display bg-turquoise text-base' : 'font-display text-fg-muted hover:text-fg'
-              }`}
-            >
-              Jährlich −17%
-            </button>
-            <button
-              type="button"
-              onClick={() => setCycle('monthly')}
-              className={`px-4 py-1.5 rounded-full font-semibold transition-colors ${
-                cycle === 'monthly' ? 'font-display bg-turquoise text-base' : 'font-display text-fg-muted hover:text-fg'
-              }`}
-            >
-              Monatlich
-            </button>
-          </div>
-        </div>
-
         <div className="overflow-x-auto rounded-3xl border border-line shadow-lg shadow-black/30">
           <table className="w-full min-w-[760px] text-sm border-collapse">
             <thead>
               <tr className="bg-panel-elevated">
                 <th className="bg-panel-elevated w-[220px] min-w-[220px]" />
                 <th className="px-5 py-6 text-left align-bottom border-l border-line">
-                  <div className="flex items-center gap-2 mb-1">
-                    <span className="font-semibold text-fg">Free</span>
+                  <div className="flex items-center gap-2 mb-3">
+                    <span className="font-display font-bold text-lg text-fg">Free</span>
                     {me?.plan === 'free' && (
                       <Badge color="gold" className="!px-2 !py-0.5">Aktuell</Badge>
                     )}
                   </div>
-                  <p className="font-display text-3xl font-bold text-fg mb-1">€0</p>
-                  <p className="text-xs text-fg-muted mb-4">für immer kostenlos</p>
                   {me ? (
                     <button
                       disabled
@@ -288,17 +258,12 @@ function PricingPageInner() {
                   )}
                 </th>
                 <th className="px-5 py-6 text-left align-bottom border-l border-line">
-                  <div className="flex items-center gap-2 mb-1">
-                    <span className="font-semibold text-fg">Je Hochzeit</span>
+                  <div className="flex items-center gap-2 mb-3">
+                    <span className="font-display font-bold text-lg text-fg">Je Hochzeit</span>
                     {isCurrentEventPass && (
                       <Badge color="gold" className="!px-2 !py-0.5">Aktuell</Badge>
                     )}
                   </div>
-                  <div className="flex items-baseline gap-1 mb-1">
-                    <p className="font-display text-3xl font-bold text-fg">€{EVENT_PASS_PRICE}</p>
-                    <p className="text-xs text-fg-muted">/Hochzeit</p>
-                  </div>
-                  <p className="text-xs text-fg-muted mb-4">einmalig · Kosten gehen ans Brautpaar</p>
                   <button
                     onClick={() => startCheckout('event_pass')}
                     disabled={busy !== null || loadingMe}
@@ -308,17 +273,12 @@ function PricingPageInner() {
                   </button>
                 </th>
                 <th className="px-5 py-6 text-left align-bottom border-l border-turquoise/40 bg-turquoise/5">
-                  <div className="flex items-center gap-2 mb-1">
-                    <span className="font-semibold text-fg">Pro</span>
+                  <div className="flex items-center gap-2 mb-3">
+                    <span className="font-display font-bold text-lg text-fg">Pro</span>
                     {isCurrentPro && (
                       <Badge color="gold" className="!px-2 !py-0.5">Aktuell</Badge>
                     )}
                   </div>
-                  <div className="flex items-baseline gap-1 mb-1">
-                    <p className="font-display text-3xl font-bold text-fg">€{proPrice}</p>
-                    <p className="text-xs text-fg-muted">/Monat</p>
-                  </div>
-                  <p className="text-xs text-fg-muted mb-4">{proHint}</p>
                   {isCurrentPro ? (
                     <button
                       onClick={openPortal}
@@ -340,17 +300,12 @@ function PricingPageInner() {
                 </th>
                 <th className="px-5 py-6 text-left align-bottom border-l border-neon-gold/40">
                   <div className="flex items-center gap-2 mb-1">
-                    <span className="font-semibold text-fg">Team</span>
+                    <span className="font-display font-bold text-lg text-fg">Team</span>
                     {isCurrentStudio && (
                       <Badge color="gold" className="!px-2 !py-0.5">Aktuell</Badge>
                     )}
                   </div>
-                  <p className="text-[10px] font-mono uppercase tracking-widest text-neon-gold mb-1">Für Kollektive</p>
-                  <div className="flex items-baseline gap-1 mb-1">
-                    <p className="font-display text-3xl font-bold text-fg">€{studioPrice}</p>
-                    <p className="text-xs text-fg-muted">/Monat</p>
-                  </div>
-                  <p className="text-xs text-fg-muted mb-4">{studioHint}</p>
+                  <p className="text-[10px] font-mono uppercase tracking-widest text-neon-gold mb-3">Für Kollektive</p>
                   {isCurrentStudio ? (
                     <button
                       onClick={openPortal}

@@ -518,14 +518,14 @@ export default function LandingPage() {
       <section className="max-w-3xl mx-auto px-4 py-24 text-center">
         <Reveal>
         <p className="text-xs font-mono font-semibold uppercase tracking-widest text-neon-gold mb-6">
-          Für dich gebaut
+          Für dich von uns
         </p>
         <div className="w-8 h-px bg-neon-gold mx-auto mb-8" />
         <h2 className="font-display text-2xl md:text-3xl font-bold uppercase leading-snug text-fg mb-6">
           Von DJs für DJs
         </h2>
         <p className="text-fg-muted text-lg leading-relaxed max-w-2xl mx-auto">
-          BeatControl entsteht nicht am Schreibtisch, sondern auf echten Hochzeiten. Jede Funktion kommt aus dem, was am Pult wirklich gebraucht wird. Wenn du Ideen oder Feedback hast, melde dich gerne bei uns.
+          Ich stehe selbst am Pult und kenne den Moment, in dem der Song ausläuft und du dich entscheiden musst. Ich habe BeatControl genau auf diesen Moment ausgerichtet und nutze es selbst bei meinen Gigs. Fehlt dir etwas? Lass es mich gerne wissen, zusammen bauen wir das perfekte Tool.
         </p>
         <div className="w-8 h-px bg-neon-gold mx-auto mt-8" />
         </Reveal>
@@ -541,7 +541,7 @@ export default function LandingPage() {
             Free zum Ausprobieren. Je Hochzeit für Gelegenheits-Gigs. Pro-Abo für aktive DJs.
           </p>
           <p className="text-center mb-12 max-w-xl mx-auto">
-            <Link href="/pricing" className="text-xs text-turquoise hover:underline">Alle 4 Tarife im Detail vergleichen →</Link>
+            <Link href="/pricing" className="text-xs text-turquoise hover:underline">Alle Tarife im Detail vergleichen →</Link>
           </p>
 
           <div className="grid md:grid-cols-3 gap-6">
