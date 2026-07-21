@@ -517,9 +517,6 @@ export default function LandingPage() {
       {/* Von DJs für DJs, Herkunft statt erfundenem Testimonial */}
       <section className="max-w-3xl mx-auto px-4 py-24 text-center">
         <Reveal>
-        <p className="text-xs font-mono font-semibold uppercase tracking-widest text-neon-gold mb-6">
-          Für dich von uns
-        </p>
         <div className="w-8 h-px bg-neon-gold mx-auto mb-8" />
         <h2 className="font-display text-2xl md:text-3xl font-bold uppercase leading-snug text-fg mb-6">
           Von DJs für DJs
