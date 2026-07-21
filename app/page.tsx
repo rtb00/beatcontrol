@@ -683,8 +683,8 @@ export default function LandingPage() {
       {/* Final CTA */}
       <section className="max-w-2xl mx-auto px-4 py-24 text-center">
         <Reveal>
-        <h2 className="font-display text-3xl md:text-4xl font-bold uppercase mb-4 text-glow-gold">
-          Mach es dir einfach, den richtigen Song zu finden, und feier mit einer vollen Tanzfläche
+        <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-bold uppercase mb-4 text-glow-gold">
+          Deine nächste Hochzeit verdient eine volle Tanzfläche
         </h2>
         <p className="text-fg-muted text-lg mb-10 leading-relaxed">
           {c.finalBody}
