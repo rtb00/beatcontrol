@@ -72,6 +72,12 @@ export async function POST(req: NextRequest) {
     customer_update: { address: 'auto', name: 'auto' },
     billing_address_collection: 'required',
     allow_promotion_codes: true,
+    // Bei 0-€-Checkouts (100%-Promo-Code, z.B. Pilot-Testzugänge) keine
+    // Kartendaten verlangen. Nach Ablauf des Coupons scheitert die nächste
+    // Abrechnung mangels Zahlungsmethode und das Abo läuft aus, statt den
+    // Tester unerwartet zu belasten. Bei bezahlten Checkouts verlangt Stripe
+    // weiterhin normal die Zahlungsmethode.
+    payment_method_collection: 'if_required',
     success_url: `${origin}/dj?checkout=success`,
     cancel_url: `${origin}/pricing`,
     client_reference_id: userId,
