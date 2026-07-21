@@ -61,8 +61,8 @@ const COPY: Record<Audience, {
         text: 'Jemand wünscht sich einen Song, den du kaum kennst. Will den der eine Gast, oder die halbe Feier? Einem einzelnen Zettel hörst du das nicht an, und im Zweifel legst du ihn lieber nicht auf.',
       },
       {
-        label: 'Einer reicht',
-        text: 'Ein Griff daneben und zwanzig Leute setzen sich. An die volle Stunde davor erinnert sich am nächsten Tag keiner. An die fünf Minuten leere Fläche schon.',
+        label: 'Ein falscher Song reicht',
+        text: 'Ein Griff daneben und zwanzig Leute setzen sich. Sind sie erstmal weg, bekommst du sie an dem Abend kaum zurück. An die volle Stunde davor erinnert sich am nächsten Tag keiner. An die fünf Minuten leere Fläche schon.',
       },
     ],
     transitionH2: 'Der Floor redet. Jetzt kannst du ihm zuhören',
