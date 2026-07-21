@@ -58,7 +58,7 @@ const COPY: Record<Audience, {
       },
       {
         label: 'Ein falscher Song reicht',
-        text: 'Ein Griff daneben und zwanzig Leute setzen sich. Sind sie erstmal weg, bekommst du sie an dem Abend kaum zurück. An die volle Stunde davor erinnert sich am nächsten Tag keiner - an die leere Tanzfläche schon.',
+        text: 'Ein Griff daneben und zwanzig Leute setzen sich. Sind sie erstmal weg, bekommst du sie an dem Abend kaum zurück. An die volle Stunde davor erinnert sich am nächsten Tag keiner - an die schlechte Musik schon.',
       },
       {
         label: 'Der Moment kippt schnell',
@@ -486,7 +486,7 @@ export default function LandingPage() {
           Gebaut von DJs für DJs
         </h2>
         <p className="text-fg-muted text-lg leading-relaxed max-w-2xl mx-auto">
-          BeatControl entsteht nicht am Schreibtisch, sondern auf echten Hochzeiten. Jede Funktion kommt aus dem, was am Pult wirklich gebraucht wird, und wird mit DJs zusammen getestet. Was im Einsatz nicht hilft, fliegt wieder raus.
+          BeatControl entsteht nicht am Schreibtisch, sondern auf echten Hochzeiten. Jede Funktion kommt aus dem, was am Pult wirklich gebraucht wird. Wenn du Ideen oder Feedback hast, melde dich gerne bei uns.
         </p>
         <div className="w-8 h-px bg-neon-gold mx-auto mt-8" />
         </Reveal>

@@ -3,7 +3,7 @@
 import { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { Card, Badge, NavBar, buttonVariants } from '@/app/components/ui';
+import { Badge, NavBar, buttonVariants } from '@/app/components/ui';
 
 type Cycle = 'yearly' | 'monthly';
 type StripeTier = 'pro_monthly' | 'pro_yearly' | 'event_pass' | 'studio_monthly' | 'studio_yearly';
@@ -20,6 +20,67 @@ interface Me {
   plan: 'free' | 'pro' | 'event_pass' | 'studio';
   rawPlan: string;
   email: string;
+}
+
+type Cell = string | boolean;
+interface FeatureRow {
+  label: string;
+  free: Cell;
+  eventPass: Cell;
+  pro: Cell;
+  team: Cell;
+}
+interface FeatureGroup {
+  title: string;
+  rows: FeatureRow[];
+}
+
+const FEATURE_GROUPS: FeatureGroup[] = [
+  {
+    title: 'Events & Songwünsche',
+    rows: [
+      { label: 'Aktive Events', free: '1', eventPass: '1 Hochzeit', pro: 'Unbegrenzt', team: 'Unbegrenzt' },
+      { label: 'Songwünsche', free: 'Bis zu 30', eventPass: 'Unbegrenzt', pro: 'Unbegrenzt', team: 'Unbegrenzt' },
+      { label: 'QR-Code für Gäste', free: true, eventPass: true, pro: true, team: true },
+      { label: 'Songs entfernen, wenn sie nicht passen', free: false, eventPass: true, pro: true, team: true },
+      { label: 'Export der Musikwünsche zur Nachbereitung', free: false, eventPass: true, pro: true, team: true },
+      { label: 'Gast-Karten als Download', free: false, eventPass: false, pro: true, team: true },
+    ],
+  },
+  {
+    title: 'Branding',
+    rows: [
+      { label: 'Branding', free: 'BeatControl-Branding', eventPass: 'Dein Branding', pro: 'Name & Logo', team: 'Komplett (Whitelabel)' },
+      { label: 'Eigene Subdomain', free: false, eventPass: false, pro: false, team: true },
+      { label: 'Custom-Domain möglich', free: false, eventPass: false, pro: false, team: true },
+    ],
+  },
+  {
+    title: 'Team',
+    rows: [
+      { label: 'Sub-Accounts für deine DJs', free: false, eventPass: false, pro: false, team: true },
+      { label: 'Persönliches Onboarding', free: false, eventPass: false, pro: false, team: true },
+    ],
+  },
+  {
+    title: 'Konditionen',
+    rows: [
+      { label: 'Bindung', free: 'Kein Abo', eventPass: 'Einmalig, keine Bindung', pro: 'Monatlich kündbar', team: 'Monatlich kündbar' },
+    ],
+  },
+];
+
+function FeatureCell({ value }: { value: Cell }) {
+  if (typeof value === 'boolean') {
+    return value ? (
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5 mx-auto text-turquoise" aria-hidden="true">
+        <path fillRule="evenodd" d="M16.704 5.29a1 1 0 010 1.42l-7.5 7.5a1 1 0 01-1.42 0l-3.5-3.5a1 1 0 111.42-1.42l2.79 2.79 6.79-6.79a1 1 0 011.42 0z" clipRule="evenodd" />
+      </svg>
+    ) : (
+      <span className="text-fg-muted/40" aria-hidden="true">–</span>
+    );
+  }
+  return <span className="text-fg">{value}</span>;
 }
 
 function parsePlan(raw: string | null): StripeTier | null {
@@ -179,220 +240,161 @@ function PricingPageInner() {
           </div>
         )}
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {/* Free */}
-          <Card tone="party" className="flex flex-col">
-            <div className="flex items-center justify-between mb-1">
-              <p className="font-semibold text-sm text-fg">Free</p>
-              {me?.plan === 'free' && (
-                <Badge color="gold" className="!px-2 !py-0.5">
-                  Aktuell
-                </Badge>
-              )}
-            </div>
-            <p className="font-display text-4xl font-bold mb-1 text-fg">€0</p>
-            <p className="text-xs text-fg-muted mb-6">für immer kostenlos</p>
-            <ul className="flex flex-col gap-3 text-sm text-fg mb-8 flex-1">
-              {[
-                '1 aktives Event',
-                'Bis zu 30 Songwünsche',
-                'QR-Code für Gäste',
-                'BeatControl-Branding',
-              ].map((f) => (
-                <li key={f} className="flex items-start gap-2.5">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4 shrink-0 text-turquoise mt-0.5" aria-hidden="true">
-                    <path fillRule="evenodd" d="M16.704 5.29a1 1 0 010 1.42l-7.5 7.5a1 1 0 01-1.42 0l-3.5-3.5a1 1 0 111.42-1.42l2.79 2.79 6.79-6.79a1 1 0 011.42 0z" clipRule="evenodd" />
-                  </svg>
-                  <span>{f}</span>
-                </li>
-              ))}
-            </ul>
-            {me ? (
-              <button
-                disabled
-                className="w-full py-2.5 rounded-full border border-line text-sm font-medium text-fg-muted cursor-default"
-              >
-                {me.plan === 'free' ? 'Dein aktueller Plan' : 'Kostenlos verfügbar'}
-              </button>
-            ) : (
-              <Link
-                href="/auth/signin?callbackUrl=/dj"
-                className={buttonVariants({ variant: 'secondary', size: 'md', className: 'w-full' })}
-              >
-                Kostenlos anmelden
-              </Link>
-            )}
-          </Card>
-
-          {/* Je Hochzeit (Pay-per-Use) */}
-          <Card tone="party" id="event-pass" className="flex flex-col">
-            <div className="flex items-center justify-between mb-1">
-              <p className="font-semibold text-sm text-fg">Je Hochzeit</p>
-              {isCurrentEventPass && (
-                <Badge color="gold" className="!px-2 !py-0.5">
-                  Aktuell
-                </Badge>
-              )}
-            </div>
-            <div className="flex items-baseline gap-1 mb-1">
-              <p className="font-display text-4xl font-bold text-fg">€{EVENT_PASS_PRICE}</p>
-              <p className="text-sm text-fg-muted">/Hochzeit</p>
-            </div>
-            <p className="text-xs text-fg-muted mb-6">einmalig · die Kosten gibst du ans Brautpaar weiter</p>
-            <ul className="flex flex-col gap-3 text-sm text-fg mb-8 flex-1">
-              {[
-                '1 Hochzeit, rund um deinen Termin',
-                'Unbegrenzte Songwünsche',
-                'Songs entfernen wenn sie nicht passen',
-                'Dein Branding inklusive',
-                'Export der Musikwünsche zur Nachbereitung',
-                'Kein Abo, keine Bindung',
-              ].map((f) => (
-                <li key={f} className="flex items-start gap-2.5">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4 shrink-0 text-turquoise mt-0.5" aria-hidden="true">
-                    <path fillRule="evenodd" d="M16.704 5.29a1 1 0 010 1.42l-7.5 7.5a1 1 0 01-1.42 0l-3.5-3.5a1 1 0 111.42-1.42l2.79 2.79 6.79-6.79a1 1 0 011.42 0z" clipRule="evenodd" />
-                  </svg>
-                  <span>{f}</span>
-                </li>
-              ))}
-            </ul>
+        <div className="mb-8 flex justify-center">
+          <div className="inline-flex items-center bg-base/40 border border-line rounded-full p-0.5 text-[11px]">
             <button
-              onClick={() => startCheckout('event_pass')}
-              disabled={busy !== null || loadingMe}
-              className={buttonVariants({ variant: 'secondary', size: 'md', className: 'w-full disabled:opacity-60' })}
+              type="button"
+              onClick={() => setCycle('yearly')}
+              className={`px-4 py-1.5 rounded-full font-semibold transition-colors ${
+                cycle === 'yearly' ? 'font-display bg-turquoise text-base' : 'font-display text-fg-muted hover:text-fg'
+              }`}
             >
-              {busy === 'event_pass' ? 'Lädt…' : 'Einmalig buchen'}
+              Jährlich −17%
             </button>
-          </Card>
+            <button
+              type="button"
+              onClick={() => setCycle('monthly')}
+              className={`px-4 py-1.5 rounded-full font-semibold transition-colors ${
+                cycle === 'monthly' ? 'font-display bg-turquoise text-base' : 'font-display text-fg-muted hover:text-fg'
+              }`}
+            >
+              Monatlich
+            </button>
+          </div>
+        </div>
 
-          {/* Pro */}
-          <Card tone="party" elevated className="flex flex-col relative glow-turquoise">
-            <div className="flex items-center justify-between mb-3">
-              <p className="font-semibold text-sm text-fg-muted">Pro</p>
-              {isCurrentPro && (
-                <Badge color="gold" className="!px-2 !py-0.5">
-                  Aktuell
-                </Badge>
-              )}
-            </div>
-
-            <div className="inline-flex self-start items-center bg-base/40 border border-line rounded-full p-0.5 mb-4 text-[11px]">
-              <button
-                type="button"
-                onClick={() => setCycle('yearly')}
-                className={`px-3 py-1.5 rounded-full font-semibold transition-colors ${
-                  cycle === 'yearly' ? 'font-display bg-turquoise text-base' : 'font-display text-fg-muted hover:text-fg'
-                }`}
-              >
-                Jährlich −17%
-              </button>
-              <button
-                type="button"
-                onClick={() => setCycle('monthly')}
-                className={`px-3 py-1.5 rounded-full font-semibold transition-colors ${
-                  cycle === 'monthly' ? 'font-display bg-turquoise text-base' : 'font-display text-fg-muted hover:text-fg'
-                }`}
-              >
-                Monatlich
-              </button>
-            </div>
-
-            <div className="flex items-baseline gap-1 mb-1">
-              <p className="font-display text-4xl font-bold text-fg">€{proPrice}</p>
-              <p className="text-sm text-fg-muted">/Monat</p>
-            </div>
-            <p className="text-xs text-fg-muted mb-6">{proHint}</p>
-            <ul className="flex flex-col gap-3 text-sm text-fg mb-6 flex-1">
-              {[
-                'Unbegrenzte Events',
-                'Unbegrenzte Songwünsche',
-                'Gast-Karten als Download',
-                'Export der Musikwünsche zur Nachbereitung',
-                'Songs entfernen wenn sie nicht passen',
-                'Dein Branding mit Namen und Logo',
-              ].map((f) => (
-                <li key={f} className="flex items-start gap-2.5">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4 shrink-0 text-turquoise mt-0.5" aria-hidden="true">
-                    <path fillRule="evenodd" d="M16.704 5.29a1 1 0 010 1.42l-7.5 7.5a1 1 0 01-1.42 0l-3.5-3.5a1 1 0 111.42-1.42l2.79 2.79 6.79-6.79a1 1 0 011.42 0z" clipRule="evenodd" />
-                  </svg>
-                  <span>{f}</span>
-                </li>
-              ))}
-            </ul>
-            <p className="text-[11px] text-fg-muted mb-3 text-center">
-              {proFootnote}
-            </p>
-            {isCurrentPro ? (
-              <button
-                onClick={openPortal}
-                disabled={busy !== null}
-                className={buttonVariants({ variant: 'primary', size: 'md', className: 'w-full disabled:opacity-60' })}
-              >
-                Abo verwalten
-              </button>
-            ) : (
-              <button
-                onClick={() => startCheckout(proTier)}
-                disabled={busy !== null || loadingMe}
-                className={buttonVariants({ variant: 'primary', size: 'md', className: 'w-full disabled:opacity-60' })}
-              >
-                {busy === proTier ? 'Lädt…' : 'Pro starten'}
-              </button>
-            )}
-          </Card>
-
-          {/* Team */}
-          <Card tone="party" className="border-2 border-neon-gold flex flex-col relative">
-            <Badge color="neutral" className="absolute -top-3.5 left-1/2 -translate-x-1/2 whitespace-nowrap">
-              Für Kollektive
-            </Badge>
-            <div className="flex items-center justify-between mb-3">
-              <p className="font-semibold text-sm text-fg">Team</p>
-              {isCurrentStudio && (
-                <Badge color="gold" className="!px-2 !py-0.5">
-                  Aktuell
-                </Badge>
-              )}
-            </div>
-            <div className="flex items-baseline gap-1 mb-1">
-              <p className="font-display text-4xl font-bold text-fg">€{studioPrice}</p>
-              <p className="text-sm text-fg-muted">/Monat</p>
-            </div>
-            <p className="text-xs text-fg-muted mb-6">{studioHint}</p>
-            <ul className="flex flex-col gap-3 text-sm text-fg mb-8 flex-1">
-              {[
-                'Alles aus Pro',
-                'Sub-Accounts für deine DJs',
-                'Eigene Subdomain (kunde.beatcontrol.io)',
-                'Custom-Domain möglich',
-                'Komplett dein Branding (Whitelabel)',
-                'Persönliches Onboarding',
-              ].map((f) => (
-                <li key={f} className="flex items-start gap-2.5">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4 shrink-0 text-neon-gold mt-0.5" aria-hidden="true">
-                    <path fillRule="evenodd" d="M16.704 5.29a1 1 0 010 1.42l-7.5 7.5a1 1 0 01-1.42 0l-3.5-3.5a1 1 0 111.42-1.42l2.79 2.79 6.79-6.79a1 1 0 011.42 0z" clipRule="evenodd" />
-                  </svg>
-                  <span>{f}</span>
-                </li>
-              ))}
-            </ul>
-            {isCurrentStudio ? (
-              <button
-                onClick={openPortal}
-                disabled={busy !== null}
-                className="w-full py-2.5 rounded-full bg-panel-elevated text-fg text-sm font-semibold border border-neon-gold hover:brightness-110 transition-all disabled:opacity-60"
-              >
-                Abo verwalten
-              </button>
-            ) : (
-              <a
-                href="mailto:nibor.bauer1+beatcontrol@gmail.com?subject=Team-Anfrage%20BeatControl&body=Hallo%2C%0A%0Aich%20bin%20interessiert%20am%20Team-Tier%20und%20m%C3%B6chte%20gerne%20ein%20pers%C3%B6nliches%20Onboarding-Gespr%C3%A4ch.%0A%0AMein%20Use-Case%3A%20%5BDJ-Kollektiv%20%2F%20Eventagentur%20%2F%20...%5D%0AAnzahl%20Sub-DJs%3A%20%5B...%5D%0A%0AViele%20Gr%C3%BC%C3%9Fe%0A%5BName%5D"
-                className="w-full py-2.5 rounded-full bg-panel-elevated text-fg text-sm font-semibold border border-neon-gold hover:brightness-110 transition-all text-center inline-block"
-              >
-                Team anfragen
-              </a>
-            )}
-          </Card>
+        <div className="overflow-x-auto rounded-3xl border border-line shadow-lg shadow-black/30">
+          <table className="w-full min-w-[760px] text-sm border-collapse">
+            <thead>
+              <tr className="bg-panel-elevated">
+                <th className="sticky left-0 z-10 bg-panel-elevated w-[260px]" />
+                <th className="px-5 py-6 text-left align-bottom border-l border-line">
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="font-semibold text-fg">Free</span>
+                    {me?.plan === 'free' && (
+                      <Badge color="gold" className="!px-2 !py-0.5">Aktuell</Badge>
+                    )}
+                  </div>
+                  <p className="font-display text-3xl font-bold text-fg mb-1">€0</p>
+                  <p className="text-xs text-fg-muted mb-4">für immer kostenlos</p>
+                  {me ? (
+                    <button
+                      disabled
+                      className="w-full py-2 rounded-full border border-line text-xs font-medium text-fg-muted cursor-default"
+                    >
+                      {me.plan === 'free' ? 'Dein aktueller Plan' : 'Kostenlos verfügbar'}
+                    </button>
+                  ) : (
+                    <Link
+                      href="/auth/signin?callbackUrl=/dj"
+                      className={buttonVariants({ variant: 'secondary', size: 'sm', className: 'w-full' })}
+                    >
+                      Kostenlos anmelden
+                    </Link>
+                  )}
+                </th>
+                <th className="px-5 py-6 text-left align-bottom border-l border-line">
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="font-semibold text-fg">Je Hochzeit</span>
+                    {isCurrentEventPass && (
+                      <Badge color="gold" className="!px-2 !py-0.5">Aktuell</Badge>
+                    )}
+                  </div>
+                  <div className="flex items-baseline gap-1 mb-1">
+                    <p className="font-display text-3xl font-bold text-fg">€{EVENT_PASS_PRICE}</p>
+                    <p className="text-xs text-fg-muted">/Hochzeit</p>
+                  </div>
+                  <p className="text-xs text-fg-muted mb-4">einmalig · Kosten gehen ans Brautpaar</p>
+                  <button
+                    onClick={() => startCheckout('event_pass')}
+                    disabled={busy !== null || loadingMe}
+                    className={buttonVariants({ variant: 'secondary', size: 'sm', className: 'w-full disabled:opacity-60' })}
+                  >
+                    {busy === 'event_pass' ? 'Lädt…' : 'Einmalig buchen'}
+                  </button>
+                </th>
+                <th className="px-5 py-6 text-left align-bottom border-l border-turquoise/40 bg-turquoise/5">
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="font-semibold text-fg">Pro</span>
+                    {isCurrentPro && (
+                      <Badge color="gold" className="!px-2 !py-0.5">Aktuell</Badge>
+                    )}
+                  </div>
+                  <div className="flex items-baseline gap-1 mb-1">
+                    <p className="font-display text-3xl font-bold text-fg">€{proPrice}</p>
+                    <p className="text-xs text-fg-muted">/Monat</p>
+                  </div>
+                  <p className="text-xs text-fg-muted mb-4">{proHint}</p>
+                  {isCurrentPro ? (
+                    <button
+                      onClick={openPortal}
+                      disabled={busy !== null}
+                      className={buttonVariants({ variant: 'primary', size: 'sm', className: 'w-full disabled:opacity-60' })}
+                    >
+                      Abo verwalten
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => startCheckout(proTier)}
+                      disabled={busy !== null || loadingMe}
+                      className={buttonVariants({ variant: 'primary', size: 'sm', className: 'w-full disabled:opacity-60' })}
+                    >
+                      {busy === proTier ? 'Lädt…' : 'Pro starten'}
+                    </button>
+                  )}
+                  <p className="text-[10px] text-fg-muted mt-2 text-center">{proFootnote}</p>
+                </th>
+                <th className="px-5 py-6 text-left align-bottom border-l border-neon-gold/40">
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="font-semibold text-fg">Team</span>
+                    {isCurrentStudio && (
+                      <Badge color="gold" className="!px-2 !py-0.5">Aktuell</Badge>
+                    )}
+                  </div>
+                  <p className="text-[10px] font-mono uppercase tracking-widest text-neon-gold mb-1">Für Kollektive</p>
+                  <div className="flex items-baseline gap-1 mb-1">
+                    <p className="font-display text-3xl font-bold text-fg">€{studioPrice}</p>
+                    <p className="text-xs text-fg-muted">/Monat</p>
+                  </div>
+                  <p className="text-xs text-fg-muted mb-4">{studioHint}</p>
+                  {isCurrentStudio ? (
+                    <button
+                      onClick={openPortal}
+                      disabled={busy !== null}
+                      className="w-full py-2 rounded-full bg-panel-elevated text-fg text-xs font-semibold border border-neon-gold hover:brightness-110 transition-all disabled:opacity-60"
+                    >
+                      Abo verwalten
+                    </button>
+                  ) : (
+                    <a
+                      href="mailto:nibor.bauer1+beatcontrol@gmail.com?subject=Team-Anfrage%20BeatControl&body=Hallo%2C%0A%0Aich%20bin%20interessiert%20am%20Team-Tier%20und%20m%C3%B6chte%20gerne%20ein%20pers%C3%B6nliches%20Onboarding-Gespr%C3%A4ch.%0A%0AMein%20Use-Case%3A%20%5BDJ-Kollektiv%20%2F%20Eventagentur%20%2F%20...%5D%0AAnzahl%20Sub-DJs%3A%20%5B...%5D%0A%0AViele%20Gr%C3%BC%C3%9Fe%0A%5BName%5D"
+                      className="w-full py-2 rounded-full bg-panel-elevated text-fg text-xs font-semibold border border-neon-gold hover:brightness-110 transition-all text-center inline-block"
+                    >
+                      Team anfragen
+                    </a>
+                  )}
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {FEATURE_GROUPS.flatMap((group) => [
+                <tr key={`${group.title}-heading`}>
+                  <td colSpan={5} className="sticky left-0 bg-panel px-5 pt-6 pb-2 text-[11px] font-mono uppercase tracking-widest text-fg-muted">
+                    {group.title}
+                  </td>
+                </tr>,
+                ...group.rows.map((row) => (
+                  <tr key={row.label} className="border-t border-line">
+                    <td className="sticky left-0 z-10 bg-panel px-5 py-3 text-fg-muted whitespace-nowrap">{row.label}</td>
+                    <td className="px-5 py-3 border-l border-line text-center"><FeatureCell value={row.free} /></td>
+                    <td className="px-5 py-3 border-l border-line text-center"><FeatureCell value={row.eventPass} /></td>
+                    <td className="px-5 py-3 border-l border-turquoise/40 bg-turquoise/5 text-center"><FeatureCell value={row.pro} /></td>
+                    <td className="px-5 py-3 border-l border-neon-gold/40 text-center"><FeatureCell value={row.team} /></td>
+                  </tr>
+                )),
+              ])}
+            </tbody>
+          </table>
         </div>
 
         <p className="text-xs text-fg-muted text-center mt-12 max-w-xl mx-auto">
