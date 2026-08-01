@@ -586,7 +586,7 @@ export default function LandingPage() {
                   'Unbegrenzte Events',
                   'Unbegrenzte Songwünsche',
                   'Dein Branding mit persönlichem Namen und Logo',
-                  'Gast-Karten als Download',
+                  'Gastkarten mit QR-Code zum Download',
                   'Export der Musikwünsche zur Nachbereitung',
                 ].map((f) => (
                   <li key={f} className="flex items-start gap-2.5">
