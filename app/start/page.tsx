@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Button, Card } from '@/app/components/ui';
@@ -39,6 +39,19 @@ export default function StartFunnel() {
   const [step, setStep] = useState(0);
   const [title, setTitle] = useState('');
   const [date, setDate] = useState('');
+  const dateRef = useRef<HTMLInputElement>(null);
+
+  // Desktop-Browser öffnen den Kalender nur über das (per appearance-none
+  // entfernte) Icon — ein Klick irgendwo ins Feld fokussiert sonst nur stumm
+  // ein Segment. showPicker() öffnet den Kalender direkt; wo es fehlt
+  // (ältere Safari), bleibt die Tastatureingabe über den Fokus nutzbar.
+  function openDatePicker() {
+    try {
+      dateRef.current?.showPicker?.();
+    } catch {
+      /* showPicker verlangt eine User-Geste, sonst NotAllowedError */
+    }
+  }
 
   useEffect(() => {
     track('funnel_start');
@@ -136,19 +149,22 @@ export default function StartFunnel() {
               {/* Nativer date-Input: appearance-none + min-w-0 verhindert den
                   WebKit-Overflow des internen Kalender-Widgets auf Mobile;
                   das Overlay ersetzt den fehlenden Placeholder, solange kein
-                  Datum gewählt ist (pointer-events-none lässt Taps durch). */}
+                  Datum gewählt ist (pointer-events-none lässt Taps durch,
+                  peer-focus blendet es aus, damit der Fokus sichtbar bleibt). */}
               <div className="relative mb-4">
                 <input
+                  ref={dateRef}
                   type="date"
                   value={date}
                   onChange={(e) => setDate(e.target.value)}
+                  onClick={openDatePicker}
                   aria-label="Datum der Feier"
-                  className="block w-full min-w-0 appearance-none px-5 py-4 rounded-2xl border border-line bg-panel text-fg text-center focus:outline-none focus:border-turquoise transition-colors [&::-webkit-date-and-time-value]:text-center"
+                  className="peer block w-full min-w-0 appearance-none px-5 py-4 rounded-2xl border border-line bg-panel text-fg text-center focus:outline-none focus:border-turquoise transition-colors [&::-webkit-date-and-time-value]:text-center"
                 />
                 {!date && (
                   <span
                     aria-hidden="true"
-                    className="pointer-events-none absolute inset-0.5 rounded-2xl bg-panel flex items-center justify-center text-fg-muted/60"
+                    className="pointer-events-none absolute inset-0.5 rounded-2xl bg-panel flex items-center justify-center text-fg-muted/60 peer-focus:hidden"
                   >
                     Datum eintragen
                   </span>
