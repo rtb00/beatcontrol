@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { Button, Card } from '@/app/components/ui';
 
 // ── Funnel, radikal auf 2 Screens reduziert (Cognitive-Walkthrough-Redesign):
-// 1) Name + Datum, 2) sichtbare Event-Vorschau mit Verlust-Hinweis + Sichern-CTA.
+// 1) Name + Datum, 2) sichtbare Event-Vorschau mit DJ-Zugang-CTA.
 // Die früheren Zwischenfragen (Event-Typ, Pains, Methode, Erklär-Screen) dienten
 // nur der Marktforschung, nicht dem Nutzerziel — das Dashboard liest ohnehin nur
 // title + date aus. Payload-Form bleibt kompatibel (alte Felder auf null/leer).
@@ -184,7 +184,7 @@ export default function StartFunnel() {
             </div>
           )}
 
-          {/* Screen 2: Event-Vorschau + Sichern (Verlust-Hinweis statt Feature-Liste) */}
+          {/* Screen 2: Event-Vorschau + DJ-Zugang-CTA (Belohnungs-Framing statt Verlust-Hinweis) */}
           {step === 1 && (
             <div className="m-auto w-full max-w-md text-center animate-fade-up">
               <p className="text-[11px] font-mono font-semibold uppercase tracking-widest text-turquoise mb-4">
@@ -211,15 +211,12 @@ export default function StartFunnel() {
               </Card>
 
               <p className="text-fg-muted leading-relaxed mb-8">
-                Noch ist dein Event nicht gespeichert. Wenn du die Seite jetzt schließt, geht es verloren. Sichere es kostenlos, dann liegt es dauerhaft in deinem Dashboard.
+                Leg dir einen kostenlosen DJ-Zugang an, um das Event zu speichern und am Tag des Gigs direkt loszulegen.
               </p>
 
               <Button onClick={finish} variant="primary" tone="party" size="lg" className="w-full">
-                Event kostenlos sichern
+                Kostenlosen DJ-Zugang anlegen
               </Button>
-              <p className="text-xs text-fg-muted mt-4">
-                Anmeldung in 20 Sekunden. Keine Kreditkarte.
-              </p>
             </div>
           )}
         </div>

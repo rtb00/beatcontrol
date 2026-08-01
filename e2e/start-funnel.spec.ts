@@ -58,9 +58,9 @@ test.describe('/start Funnel', () => {
     await expect(page.getByRole('heading', { name: TITLE })).toBeVisible();
     await expect(page.getByText(DATE_FORMATTED)).toBeVisible();
     await expect(page.getByText('Startklar', { exact: true })).toBeVisible();
-    await expect(page.getByText('Noch ist dein Event nicht gespeichert.', { exact: false })).toBeVisible();
+    await expect(page.getByText('Leg dir einen kostenlosen DJ-Zugang an', { exact: false })).toBeVisible();
 
-    await page.getByRole('button', { name: 'Event kostenlos sichern' }).click();
+    await page.getByRole('button', { name: 'Kostenlosen DJ-Zugang anlegen' }).click();
     await page.waitForURL('**/auth/register');
 
     // Das Event muss als Pending-Payload für das Dashboard hinterlegt sein.
