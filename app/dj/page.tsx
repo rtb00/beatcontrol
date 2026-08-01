@@ -30,8 +30,10 @@ interface Me {
   limits: { maxEvents: number | null; maxSongs: number | null; export: boolean };
 }
 
+// relative: Anker für den Stretched-Link des Titels, der die ganze Kachel
+// klickbar macht. Export- und Aktiv-Buttons liegen per z-10 darüber.
 function eventCardClass(active: boolean): string {
-  return `transition-opacity ${active ? '' : 'opacity-60'}`;
+  return `relative transition-opacity ${active ? '' : 'opacity-60'}`;
 }
 
 function statusBadgeColor(active: boolean): BadgeColor {
@@ -495,7 +497,10 @@ export default function DJDashboard() {
                 className={eventCardClass(event.active)}
               >
                 <div className="flex items-center justify-between gap-3">
-                  <Link href={`/dj/${event.slug}`} className="min-w-0 flex-1 group">
+                  <Link
+                    href={`/dj/${event.slug}`}
+                    className="min-w-0 flex-1 group after:absolute after:inset-0 after:content-['']"
+                  >
                     <h2 className="font-display text-xl font-bold text-fg break-words group-hover:text-turquoise transition-colors">
                       {event.title}
                     </h2>
@@ -505,7 +510,7 @@ export default function DJDashboard() {
                     disabled={exportingSlug === event.slug}
                     aria-label={me?.limits.export ? 'Wunschliste als CSV exportieren' : 'CSV-Export (Pro)'}
                     title={me?.limits.export ? 'CSV exportieren' : 'CSV-Export ist Pro-Feature'}
-                    className="shrink-0 h-8 w-8 flex items-center justify-center rounded-xl text-fg-muted border border-line hover:border-turquoise hover:text-turquoise transition-all active:scale-95 disabled:opacity-50"
+                    className="relative z-10 shrink-0 h-8 w-8 flex items-center justify-center rounded-xl text-fg-muted border border-line hover:border-turquoise hover:text-turquoise transition-all active:scale-95 disabled:opacity-50"
                   >
                     {exportingSlug === event.slug ? (
                       <span className="text-xs">…</span>
@@ -518,7 +523,7 @@ export default function DJDashboard() {
                   </button>
                 </div>
                 <div className="flex items-center gap-2.5 mt-2.5 flex-wrap">
-                  <button onClick={() => handleToggleActive(event)} className="active:scale-95 transition-transform">
+                  <button onClick={() => handleToggleActive(event)} className="relative z-10 active:scale-95 transition-transform">
                     <Badge color={statusBadgeColor(event.active)} tone="party">
                       {event.active ? 'AKTIV' : 'INAKTIV'}
                     </Badge>
