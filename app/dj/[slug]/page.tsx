@@ -229,7 +229,10 @@ export default function DJEventPage() {
       const qrImg = new Image();
       await new Promise<void>((resolve) => { qrImg.onload = () => resolve(); qrImg.src = qrDataUrl; });
 
-      const W = 900, H = 1220;
+      // DIN-Proportion 1:√2 (wie A6/A5), damit die Karte druckfreundlich ist.
+      // Layout durchgehend zentriert, Schritte einzeilig, Regeln als eine
+      // charmante Zeile statt technischer Bullet-Liste.
+      const W = 900, H = 1273;
       const canvas = document.createElement('canvas');
       canvas.width = W; canvas.height = H;
       const ctx = canvas.getContext('2d')!;
@@ -243,66 +246,67 @@ export default function DJEventPage() {
       ctx.lineWidth = 0.5;
       rrect(ctx, 22, 22, W - 44, H - 44, 8); ctx.stroke();
 
-      ctx.fillStyle = GOLD; ctx.font = '24px "Playfair Display", Georgia, serif';
-      ctx.textAlign = 'center'; ctx.fillText('♪', W / 2, 65);
+      ctx.textAlign = 'center';
+      ctx.fillStyle = GOLD; ctx.font = '26px "Playfair Display", Georgia, serif';
+      ctx.fillText('♪', W / 2, 78);
 
-      ctx.fillStyle = INK; ctx.font = '600 50px "Playfair Display", Georgia, serif';
-      ctx.fillText('Musikwünsche', W / 2, 118);
+      ctx.fillStyle = INK; ctx.font = '600 52px "Playfair Display", Georgia, serif';
+      ctx.fillText('Musikwünsche', W / 2, 136);
 
-      ctx.fillStyle = GOLD; ctx.font = 'italic 24px "Playfair Display", Georgia, serif';
-      ctx.fillText(fitText(ctx, event?.title ?? slug, 760), W / 2, 153);
+      ctx.fillStyle = GOLD; ctx.font = 'italic 26px "Playfair Display", Georgia, serif';
+      ctx.fillText(fitText(ctx, event?.title ?? slug, 760), W / 2, 176);
 
-      ctx.fillStyle = MUTED; ctx.font = '17px "Inter", system-ui, sans-serif';
-      ctx.fillText('Wünsch dir deinen Lieblingssong!', W / 2, 186);
+      ctx.fillStyle = MUTED; ctx.font = '18px "Inter", system-ui, sans-serif';
+      ctx.fillText('Heute bestimmst du mit, was läuft', W / 2, 212);
 
       ctx.strokeStyle = GOLD; ctx.lineWidth = 1;
-      ctx.beginPath(); ctx.moveTo(W / 2 - 90, 208); ctx.lineTo(W / 2 + 90, 208); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(W / 2 - 90, 240); ctx.lineTo(W / 2 + 90, 240); ctx.stroke();
 
-      const qrBoxX = (W - 380) / 2, qrBoxY = 220;
+      const qrBoxX = (W - 380) / 2, qrBoxY = 266;
       ctx.fillStyle = WHITE; rrect(ctx, qrBoxX, qrBoxY, 380, 380, 18); ctx.fill();
       ctx.strokeStyle = CHAMPAGNE; ctx.lineWidth = 2;
       rrect(ctx, qrBoxX, qrBoxY, 380, 380, 18); ctx.stroke();
       ctx.drawImage(qrImg, qrBoxX + 20, qrBoxY + 20, 340, 340);
 
-      ctx.fillStyle = MUTED; ctx.font = '13px monospace'; ctx.textAlign = 'center';
-      ctx.fillText(guestUrl, W / 2, 628);
+      ctx.fillStyle = MUTED; ctx.font = '14px monospace';
+      ctx.fillText(guestUrl, W / 2, 678);
 
       ctx.strokeStyle = GOLD; ctx.lineWidth = 1;
-      ctx.beginPath(); ctx.moveTo(W / 2 - 110, 654); ctx.lineTo(W / 2 + 110, 654); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(W / 2 - 90, 708); ctx.lineTo(W / 2 + 90, 708); ctx.stroke();
 
-      ctx.fillStyle = INK; ctx.font = '600 20px "Inter", system-ui, sans-serif';
-      ctx.textAlign = 'left'; ctx.fillText("So funktioniert's:", 55, 684);
+      ctx.fillStyle = INK; ctx.font = '600 23px "Inter", system-ui, sans-serif';
+      ctx.fillText("So funktioniert's", W / 2, 758);
 
       const steps = [
-        { num: '1', title: 'Song suchen', lines: ['Tippe den Songtitel oder Interpreten ein.', 'Wähle aus den Vorschlägen oder gib manuell ein.'] },
-        { num: '2', title: 'Abstimmen', lines: ['Siehst du einen Song, den du auch hören willst?', 'Tippe auf das Herz ♥ um deine Stimme abzugeben.'] },
-        { num: '3', title: 'Tanzen!', lines: ['Die beliebtesten Songs werden zuerst gespielt.', 'Je mehr Stimmen, desto höher die Chance!'] },
+        { num: '1', title: 'Code scannen', desc: 'Einfach die Handykamera draufhalten. Ohne App, ohne Anmeldung.' },
+        { num: '2', title: 'Song wünschen', desc: 'Tipp deinen Lieblingssong ein und gib anderen Wünschen ein Herz.' },
+        { num: '3', title: 'Abtanzen', desc: 'Was die meisten Herzen sammelt, hat die besten Chancen beim DJ.' },
       ];
 
-      let stepY = 720;
+      let stepY = 806;
       for (const step of steps) {
-        ctx.fillStyle = GOLD; ctx.beginPath(); ctx.arc(70, stepY + 10, 14, 0, Math.PI * 2); ctx.fill();
-        ctx.fillStyle = WHITE; ctx.font = '700 13px "Inter", system-ui, sans-serif';
-        ctx.textAlign = 'center'; ctx.fillText(step.num, 70, stepY + 15);
-        ctx.fillStyle = INK; ctx.font = '600 17px "Inter", system-ui, sans-serif';
-        ctx.textAlign = 'left'; ctx.fillText(step.title, 96, stepY + 15);
-        ctx.fillStyle = MUTED; ctx.font = '14px "Inter", system-ui, sans-serif';
-        ctx.fillText(step.lines[0], 96, stepY + 35); ctx.fillText(step.lines[1], 96, stepY + 53);
-        stepY += 83;
+        // Nummern-Kreis + Titel als gemeinsam zentrierte Zeile: Breite messen,
+        // damit der Block optisch mittig sitzt.
+        ctx.font = '600 20px "Inter", system-ui, sans-serif';
+        const titleW = ctx.measureText(step.title).width;
+        const x0 = (W - (32 + 12 + titleW)) / 2;
+        ctx.fillStyle = GOLD; ctx.beginPath(); ctx.arc(x0 + 16, stepY - 7, 16, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = WHITE; ctx.font = '700 15px "Inter", system-ui, sans-serif';
+        ctx.textAlign = 'center'; ctx.fillText(step.num, x0 + 16, stepY - 1);
+        ctx.fillStyle = INK; ctx.font = '600 20px "Inter", system-ui, sans-serif';
+        ctx.textAlign = 'left'; ctx.fillText(step.title, x0 + 44, stepY);
+        ctx.fillStyle = MUTED; ctx.font = '15px "Inter", system-ui, sans-serif';
+        ctx.textAlign = 'center'; ctx.fillText(step.desc, W / 2, stepY + 32);
+        stepY += 92;
       }
 
-      const gwY = stepY + 8;
-      ctx.fillStyle = GOLD; ctx.font = '600 17px "Inter", system-ui, sans-serif';
-      ctx.textAlign = 'left'; ctx.fillText('Gut zu wissen:', 55, gwY);
-      const bullets = ['Max. 3 Songs vorschlagen', 'Abstimmen so oft du willst', 'Kein Account nötig', 'Liste aktualisiert sich automatisch'];
-      ctx.fillStyle = MUTED; ctx.font = '14px "Inter", system-ui, sans-serif';
-      bullets.forEach((b, i) => ctx.fillText(`• ${b}`, 55, gwY + 28 + i * 24));
+      ctx.fillStyle = GOLD; ctx.font = 'italic 23px "Playfair Display", Georgia, serif';
+      ctx.fillText('Du hast drei Wünsche frei und unbegrenzt Herzen zu vergeben.', W / 2, stepY + 14);
 
-      const footerLineY = gwY + 28 + bullets.length * 24 + 28;
       ctx.strokeStyle = GOLD; ctx.lineWidth = 1;
-      ctx.beginPath(); ctx.moveTo(W / 2 - 160, footerLineY); ctx.lineTo(W / 2 + 160, footerLineY); ctx.stroke();
-      ctx.fillStyle = GOLD; ctx.font = 'italic 21px "Playfair Display", Georgia, serif';
-      ctx.textAlign = 'center'; ctx.fillText('♪ Viel Spaß beim Feiern! ♪', W / 2, footerLineY + 38);
+      ctx.beginPath(); ctx.moveTo(W / 2 - 160, stepY + 72); ctx.lineTo(W / 2 + 160, stepY + 72); ctx.stroke();
+      ctx.fillStyle = INK; ctx.font = 'italic 22px "Playfair Display", Georgia, serif';
+      ctx.fillText('♪ Viel Spaß beim Feiern! ♪', W / 2, stepY + 118);
 
       const a = document.createElement('a');
       a.download = `gaestekarte-${slug}.png`;
