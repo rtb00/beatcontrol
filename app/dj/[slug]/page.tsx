@@ -280,10 +280,10 @@ export default function DJEventPage() {
       const steps = [
         { num: '1', title: 'Code scannen', desc: 'Einfach die Handykamera draufhalten. Ohne App, ohne Anmeldung.' },
         { num: '2', title: 'Song wünschen', desc: 'Tipp deinen Lieblingssong ein und gib anderen Wünschen ein Herz.' },
-        { num: '3', title: 'Abtanzen', desc: 'Was die meisten Herzen sammelt, hat die besten Chancen beim DJ.' },
+        { num: '3', title: 'Tanzen', desc: 'Was die meisten Herzen sammelt, hat die besten Chancen beim DJ.' },
       ];
 
-      let stepY = 806;
+      let stepY = 830;
       for (const step of steps) {
         // Nummern-Kreis + Titel als gemeinsam zentrierte Zeile: Breite messen,
         // damit der Block optisch mittig sitzt.
@@ -297,16 +297,13 @@ export default function DJEventPage() {
         ctx.textAlign = 'left'; ctx.fillText(step.title, x0 + 44, stepY);
         ctx.fillStyle = MUTED; ctx.font = '15px "Inter", system-ui, sans-serif';
         ctx.textAlign = 'center'; ctx.fillText(step.desc, W / 2, stepY + 32);
-        stepY += 92;
+        stepY += 100;
       }
 
-      ctx.fillStyle = GOLD; ctx.font = 'italic 23px "Playfair Display", Georgia, serif';
-      ctx.fillText('Du hast drei Wünsche frei und unbegrenzt Herzen zu vergeben.', W / 2, stepY + 14);
-
       ctx.strokeStyle = GOLD; ctx.lineWidth = 1;
-      ctx.beginPath(); ctx.moveTo(W / 2 - 160, stepY + 72); ctx.lineTo(W / 2 + 160, stepY + 72); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(W / 2 - 160, stepY + 30); ctx.lineTo(W / 2 + 160, stepY + 30); ctx.stroke();
       ctx.fillStyle = INK; ctx.font = 'italic 22px "Playfair Display", Georgia, serif';
-      ctx.fillText('♪ Viel Spaß beim Feiern! ♪', W / 2, stepY + 118);
+      ctx.fillText('♪ Viel Spaß beim Feiern! ♪', W / 2, stepY + 76);
 
       const a = document.createElement('a');
       a.download = `gaestekarte-${slug}.png`;
