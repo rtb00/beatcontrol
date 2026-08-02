@@ -487,7 +487,7 @@ export default function LandingPage() {
               {
                 step: '03',
                 title: 'Du spielst den Favoriten',
-                desc: 'Der meistgewählte Song steht oben auf deinem Screen. Wenn du den nächsten Song raussuchst, siehst du auf einen Blick, was der Raum will. Ob du ihn in Rekordbox oder Serato lädst, entscheidest du.',
+                desc: 'Der meistgewählte Song steht oben auf deinem Screen. Wenn du den nächsten Song raussuchst, siehst du auf einen Blick, was der Raum will. Was du wirklich spielst, entscheidest nur du.',
               },
             ].map(({ step, title, desc }, i) => (
               <Reveal key={step} delay={i * 120}>
