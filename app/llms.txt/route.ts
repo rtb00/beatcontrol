@@ -19,7 +19,7 @@ Hochzeits-DJs, Party- und Firmenfeier-DJs im deutschsprachigen Raum sowie Brautp
 ## Preise (https://beatcontrol.io/pricing)
 
 - Free: 0 €, für immer kostenlos, 1 aktives Event, bis zu 30 Songwünsche
-- Je Hochzeit: 19 € einmalig, kein Abo, unbegrenzte Songwünsche, eigenes Branding
+- Je Event: 19 € einmalig, kein Abo, unbegrenzte Songwünsche, eigenes Branding
 - Pro: 249 €/Jahr (monatlich 29 €), unbegrenzte Events, 30 Tage Geld-zurück-Garantie
 - Team: 124 €/Monat bei jährlicher Abrechnung (monatlich 149 €), Whitelabel für DJ-Kollektive
 

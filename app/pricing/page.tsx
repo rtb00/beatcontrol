@@ -34,7 +34,7 @@ const FEATURE_GROUPS: FeatureGroup[] = [
   {
     title: 'Events & Songwünsche',
     rows: [
-      { label: 'Aktive Events', free: '1', eventPass: '1 Hochzeit', pro: 'Unbegrenzt', team: 'Unbegrenzt' },
+      { label: 'Aktive Events', free: '1', eventPass: '1 Event', pro: 'Unbegrenzt', team: 'Unbegrenzt' },
       { label: 'Songwünsche', free: 'Bis zu 30', eventPass: 'Unbegrenzt', pro: 'Unbegrenzt', team: 'Unbegrenzt' },
       { label: 'QR-Code für Gäste', free: true, eventPass: true, pro: true, team: true },
       { label: 'Export der Musikwünsche zur Nachbereitung', free: false, eventPass: true, pro: true, team: true },
@@ -241,7 +241,7 @@ function PricingPageInner() {
           Für jeden Gig der passende Tarif
         </h1>
         <p className="text-fg-muted text-center mb-6 max-w-2xl mx-auto">
-          Free zum Ausprobieren. Je Hochzeit für Gelegenheits-Gigs. Pro-Abo für aktive DJs.
+          Free zum Ausprobieren. Je Event für Gelegenheits-Gigs. Pro-Abo für aktive DJs.
           Team für DJ-Kollektive und Eventagenturen.
         </p>
         <p className="text-center text-xs font-mono text-turquoise uppercase tracking-widest mb-12">
@@ -284,7 +284,7 @@ function PricingPageInner() {
                 </th>
                 <th className="px-5 py-6 text-left align-bottom border-l border-line">
                   <div className="flex items-center justify-center gap-2 mb-3">
-                    <span className="font-display font-bold text-lg text-fg">Je Hochzeit</span>
+                    <span className="font-display font-bold text-lg text-fg">Je Event</span>
                     {isCurrentEventPass && (
                       <Badge color="gold" className="!px-2 !py-0.5">Aktuell</Badge>
                     )}
@@ -377,7 +377,7 @@ function PricingPageInner() {
             disabled={busy !== null || loadingMe}
             className="text-turquoise hover:underline disabled:opacity-60"
           >
-            {busy === 'credit_pack_5' ? 'Lädt…' : 'Hol dir 5 Hochzeiten für €69 im Paket.'}
+            {busy === 'credit_pack_5' ? 'Lädt…' : 'Hol dir 5 Events für €69 im Paket.'}
           </button>{' '}
           Dein Guthaben verfällt nicht.
         </p>

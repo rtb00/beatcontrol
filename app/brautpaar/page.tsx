@@ -24,7 +24,7 @@ export default function BrautpaarLanding() {
           )}
         </Link>
         <Link href="/pricing#event-pass" className={buttonVariants({ variant: 'primary', size: 'sm' })}>
-          Event-Pass · €{EVENT_PASS_PRICE}
+          Je Event · €{EVENT_PASS_PRICE}
         </Link>
       </NavBar>
 
@@ -42,7 +42,7 @@ export default function BrautpaarLanding() {
         </p>
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <Link href="/pricing#event-pass" className={buttonVariants({ variant: 'primary', size: 'lg' })}>
-            Event-Pass kaufen · €{EVENT_PASS_PRICE}
+            Je Event kaufen · €{EVENT_PASS_PRICE}
           </Link>
           <Link href="#wie" className={buttonVariants({ variant: 'ghost', size: 'lg' })}>
             Wie es funktioniert
@@ -164,7 +164,7 @@ export default function BrautpaarLanding() {
             },
             {
               q: 'Können wir das vorab testen?',
-              a: 'Ja. Ihr könnt jederzeit ein Test-Event anlegen, ein paar Beispiel-Songs eingeben und sehen wie es aussieht. Der Event-Pass startet erst, wenn ihr eure echte Hochzeit aktiviert.',
+              a: 'Ja. Ihr könnt jederzeit ein Test-Event anlegen, ein paar Beispiel-Songs eingeben und sehen wie es aussieht. Bezahlt wird erst, wenn ihr eure echte Hochzeit aktiviert.',
             },
           ].map(({ q, a }) => (
             <div key={q}>
@@ -185,7 +185,7 @@ export default function BrautpaarLanding() {
             Für €19 weiß euer DJ den ganzen Abend, was eure Leute hören wollen. Einmal zahlen, kein Abo. Und wenn ihr es am Ende nicht braucht, habt ihr nichts verloren.
           </p>
           <Link href="/pricing#event-pass" className={buttonVariants({ variant: 'primary', size: 'lg' })}>
-            Jetzt Event-Pass kaufen
+            Jetzt für eure Feier kaufen
           </Link>
         </Card>
       </section>

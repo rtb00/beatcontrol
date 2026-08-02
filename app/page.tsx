@@ -161,7 +161,7 @@ const PAIN_ICON_PATHS: ReactNode[] = [
 const FAQ_ITEMS = [
   {
     question: '„Übernehmen die Gäste mein Set?"',
-    answer: 'Nein. Du entscheidest. BeatControl zeigt dir nur, was die Leute wollen. Gespielt wird, was du auflegst, genau wie immer.',
+    answer: 'Nein. Du entscheidest. BeatControl zeigt dir nur, was die Leute wollen. Jeder Gast hat maximal drei Wünsche, Herzen vergeben ist unbegrenzt. So bleibt die Liste übersichtlich und gespielt wird, was du auflegst, genau wie immer.',
   },
   {
     question: '„Hängen dann alle nur am Handy?"',
@@ -482,7 +482,7 @@ export default function LandingPage() {
               {
                 step: '02',
                 title: 'Gäste wünschen und voten',
-                desc: 'Code scannen, Song wünschen, für Favoriten abstimmen. Dauert 10 Sekunden vom Handy, ohne App und ohne Account.',
+                desc: 'Code scannen, Song wünschen, für Favoriten abstimmen. Dauert 10 Sekunden vom Handy, ohne App und ohne Account. Jeder Gast hat drei Wünsche und unbegrenzt Herzen: die Mehrheit entscheidet, niemand flutet dir die Liste.',
               },
               {
                 step: '03',
@@ -521,7 +521,7 @@ export default function LandingPage() {
             Für jeden Gig der passende Tarif
           </h2>
           <p className="text-fg-muted text-center mb-4 max-w-xl mx-auto">
-            Free zum Ausprobieren. Je Hochzeit für Gelegenheits-Gigs. Pro-Abo für aktive DJs.
+            Free zum Ausprobieren. Je Event für Gelegenheits-Gigs. Pro-Abo für aktive DJs.
           </p>
           {/* Einnahme-Rechnung als Pill vor den Preisen: ankert die €30, bevor
               die erste Preiszahl gelesen wird (das Minus ist ein Rechenzeichen,
@@ -642,10 +642,10 @@ export default function LandingPage() {
               </Link>
             </Card>
 
-            {/* Je Hochzeit (Pay-per-Use) */}
+            {/* Je Event (Pay-per-Use) */}
             <Card tone="party" className="pt-8 flex flex-col">
               <div className="flex items-center justify-between h-6 mb-3">
-                <p className="font-semibold text-sm text-fg">Je Hochzeit</p>
+                <p className="font-semibold text-sm text-fg">Je Event</p>
                 <div className="inline-flex items-center bg-base/40 border border-line rounded-full p-0.5 text-[10px]">
                   <button
                     type="button"
@@ -671,14 +671,14 @@ export default function LandingPage() {
                 <p className="font-display text-4xl font-bold text-fg">
                   €{packSize === 'five' ? CREDIT_PACK_PER_EVENT : EVENT_PASS_PRICE}
                 </p>
-                <p className="text-sm text-fg-muted">/Hochzeit</p>
+                <p className="text-sm text-fg-muted">/Event</p>
               </div>
               <p className="text-xs text-fg-muted mb-6 min-h-[2rem]">
-                {packSize === 'five' ? `einmalig, €${CREDIT_PACK_TOTAL} für 5 Hochzeiten` : 'einmalig'}
+                {packSize === 'five' ? `einmalig, €${CREDIT_PACK_TOTAL} für 5 Events` : 'einmalig'}
               </p>
               <ul className="flex flex-col gap-3 text-sm text-fg mb-8 flex-1">
                 {[
-                  packSize === 'five' ? '5 Hochzeiten, Guthaben verfällt nicht' : '1 Hochzeit, rund um deinen Termin',
+                  packSize === 'five' ? '5 Events, Guthaben verfällt nicht' : '1 Event, rund um deinen Termin',
                   'Unbegrenzte Songwünsche',
                   'Dein Branding inklusive',
                   'Export der Musikwünsche zur Nachbereitung',

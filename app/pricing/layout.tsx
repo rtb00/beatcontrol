@@ -2,14 +2,14 @@ import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
 
 export const metadata: Metadata = {
-  title: 'Preise: Free, Je Hochzeit, Pro & Team | BeatControl',
+  title: 'Preise: Free, Je Event, Pro & Team | BeatControl',
   description:
-    'BeatControl-Tarife für Hochzeits-DJs im Vergleich: Free zum Ausprobieren, Je Hochzeit für 19 € einmalig, Pro-Abo für aktive DJs, Team für DJ-Kollektive. 30 Tage Geld-zurück auf Pro.',
+    'BeatControl-Tarife für Hochzeits-DJs im Vergleich: Free zum Ausprobieren, Je Event für 19 € einmalig, Pro-Abo für aktive DJs, Team für DJ-Kollektive. 30 Tage Geld-zurück auf Pro.',
   alternates: { canonical: '/pricing' },
   openGraph: {
-    title: 'Preise: Free, Je Hochzeit, Pro & Team | BeatControl',
+    title: 'Preise: Free, Je Event, Pro & Team | BeatControl',
     description:
-      'Alle BeatControl-Tarife im Vergleich: Free, Je Hochzeit (19 € einmalig), Pro und Team für DJ-Kollektive.',
+      'Alle BeatControl-Tarife im Vergleich: Free, Je Event (19 € einmalig), Pro und Team für DJ-Kollektive.',
     url: 'https://beatcontrol.io/pricing',
   },
 };
@@ -33,10 +33,10 @@ const PRICING_JSON_LD = {
     },
     {
       '@type': 'Offer',
-      name: 'Je Hochzeit',
+      name: 'Je Event',
       price: '19',
       priceCurrency: 'EUR',
-      description: 'Einmalig je Hochzeit, unbegrenzte Songwünsche, eigenes Branding, kein Abo.',
+      description: 'Einmalig je Event, unbegrenzte Songwünsche, eigenes Branding, kein Abo.',
     },
     {
       '@type': 'Offer',

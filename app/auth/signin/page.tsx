@@ -66,8 +66,8 @@ export default async function SignInPage({
   const planLabel: Record<Plan, string> = {
     pro_yearly: 'Pro · jährlich',
     pro_monthly: 'Pro · monatlich',
-    event_pass: 'Je Hochzeit',
-    credit_pack_5: '5er-Pack · 5 Hochzeiten',
+    event_pass: 'Je Event',
+    credit_pack_5: '5er-Pack · 5 Events',
   };
   const registerHref = plan ? `/auth/register?plan=${plan}` : '/auth/register';
 

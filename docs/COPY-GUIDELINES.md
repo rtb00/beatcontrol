@@ -25,7 +25,7 @@ Marketing-Seiten, App-UI, Metadata, JSON-LD, llms.txt). Stand: Juli 2026.
 | Unbelegter Social Proof („DJs nutzen längst…", „Meist gewählt", „Du bist in guter Gesellschaft") | Nicht belegbar (Stand Juli 2026: 1 externer Nutzer), zerstört Vertrauen | Ehrliche Claims: Pilot-Status benennen, Risiko-Reversal („Free für immer, keine Kreditkarte") |
 | Startup-/Tech-Jargon („VC-finanziert", „Burn-Rate", „Bootstrapped", „Library-Lock-In", „Reseller", „Sub-Accounts" ohne Erklärung) | Zielgruppe ist der 40-jährige Nachbarschafts-DJ, nicht Tech-Szene | Klartext („Ich finanziere BeatControl selbst", „eigene Zugänge für jeden deiner DJs") |
 | „Akademie(n)" als Zielgruppe | Klingt nach Ausbildungsstätte | „DJ-Kollektive", „Eventagenturen" |
-| Alte Tarifnamen „Studio", „Pro Hochzeit", „Event-Pass" (sichtbar) | Umbenannt | „Team", „Je Hochzeit" (interne Enums `studio`/`event_pass` bleiben) |
+| Alte Tarifnamen „Studio", „Pro Hochzeit", „Event-Pass", „Je Hochzeit" (sichtbar) | Umbenannt | „Team", „Je Event" (interne Enums `studio`/`event_pass` bleiben) |
 | „Einwände" für die FAQ-Sektion | Negativ gerahmt | „Die häufigsten Fragen" |
 | Englische Marketing-Begriffe („Co-Branded Visibility") | Bruch mit dem deutschen, einfachen Ton | Deutsche Entsprechung |
 | meta keywords im HTML | Seit 2009 wirkungslos, signalisiert veraltetes SEO | Weglassen |

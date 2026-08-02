@@ -24,11 +24,11 @@ export default function PilotLanding() {
           Pilot-Saison Mai–Juli 2026
         </p>
         <h1 className="font-display text-5xl md:text-6xl font-black uppercase leading-[1.05] mb-8 text-glow-gold">
-          Wir suchen <span className="text-turquoise">2 Hochzeits-DJs</span>,<br />
+          Bewirb dich als einer von <span className="text-turquoise">2 Pilot-DJs</span>,<br />
           die das Ding ehrlich testen
         </h1>
         <p className="text-fg-muted text-lg leading-relaxed mb-10">
-          BeatControl ist neu, aber nicht Theorie. Es lief 2026 zum ersten Mal live auf einer echten Hochzeit neben dem Pult, und der DJ hat sich im Übergang darauf verlassen, welchen Song er als Nächstes nimmt. Bevor wir öffentlich gehen, wollen wir das auf zwei weiteren echten Hochzeiten sehen.
+          BeatControl ist neu, aber nicht Theorie. Es lief 2026 zum ersten Mal live auf einer echten Hochzeit neben dem Pult, und der DJ hat sich im Übergang darauf verlassen, welchen Song er als Nächstes nimmt. Bevor BeatControl öffentlich geht, soll sich das auf zwei weiteren echten Hochzeiten beweisen.
           <br /><br />
           Du bist Hochzeits-DJ in DACH und hast diesen Sommer eine Hochzeit, bei der du im Übergang nicht mehr raten willst, was als Nächstes ankommt? Komm an Bord.
         </p>
@@ -69,7 +69,7 @@ export default function PilotLanding() {
 
       <section className="max-w-3xl mx-auto px-4 py-16">
         <h2 className="font-display text-2xl md:text-3xl font-black uppercase mb-10 text-center">
-          Was wir von dir brauchen
+          Das bringst du mit
         </h2>
         <ol className="space-y-6 text-fg">
           {[
@@ -92,10 +92,10 @@ export default function PilotLanding() {
           {submitted ? (
             <div className="text-center">
               <p className="text-neon-gold text-4xl mb-4">♪</p>
-              <h2 className="font-display text-3xl font-black uppercase mb-4">Danke, wir melden uns</h2>
+              <h2 className="font-display text-3xl font-black uppercase mb-4">Danke, deine Bewerbung ist da</h2>
               <p className="text-fg-muted leading-relaxed">
-                Wir antworten innerhalb von 48 Stunden, meistens schneller. Wenn du nichts hörst, kannst du uns auch direkt eine{' '}
-                <a href="mailto:nibor.bauer1+beatcontrol@gmail.com" className="text-turquoise underline">Mail schicken</a>.
+                Antwort innerhalb von 48 Stunden, meistens schneller. Wenn du nichts hörst, schick einfach direkt eine{' '}
+                <a href="mailto:nibor.bauer1+beatcontrol@gmail.com" className="text-turquoise underline">Mail</a>.
               </p>
             </div>
           ) : (
@@ -104,7 +104,7 @@ export default function PilotLanding() {
                 Klingt nach dir?
               </h2>
               <p className="text-fg-muted leading-relaxed mb-10 text-center">
-                Schreib uns kurz. Wir melden uns in 48 Stunden. Wer früher schreibt, hat bessere Karten (nur 2 Plätze).
+                Schreib kurz, Antwort kommt innerhalb von 48 Stunden. Wer früher schreibt, hat bessere Karten (nur 2 Plätze).
               </p>
               <form
                 onSubmit={(e) => {
@@ -138,7 +138,7 @@ export default function PilotLanding() {
                 ))}
                 <div>
                   <label htmlFor="note" className="block text-xs text-fg-muted mb-1.5">
-                    Erzähl uns kurz über dich (optional)
+                    Erzähl kurz von dir (optional)
                   </label>
                   <textarea
                     id="note"
@@ -152,8 +152,8 @@ export default function PilotLanding() {
                   Bewerbung senden
                 </Button>
                 <p className="text-xs text-fg-muted text-center mt-3">
-                  Wir öffnen damit deinen Mail-Client. Alternativ kannst du uns direkt eine{' '}
-                  <a href="mailto:nibor.bauer1+beatcontrol@gmail.com" className="text-turquoise underline">Mail schicken</a>.
+                  Der Button öffnet deinen Mail-Client. Alternativ schick direkt eine{' '}
+                  <a href="mailto:nibor.bauer1+beatcontrol@gmail.com" className="text-turquoise underline">Mail</a>.
                 </p>
               </form>
             </>
