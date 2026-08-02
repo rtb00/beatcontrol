@@ -526,7 +526,7 @@ export default function LandingPage() {
           <div className="grid md:grid-cols-3 gap-6">
 
             {/* Free */}
-            <Card tone="party" className="flex flex-col">
+            <Card tone="party" className="pt-8 flex flex-col">
               {/* Einheitliches Karten-Skelett: Namenszeile (h-6), Preiszeile,
                   Hinweis (min-h für 2 Zeilen) — hält Preis und Plan über alle
                   drei Karten auf gleicher Höhe. */}
@@ -562,7 +562,7 @@ export default function LandingPage() {
             </Card>
 
             {/* Pro */}
-            <Card tone="party" elevated className="flex flex-col relative glow-turquoise">
+            <Card tone="party" elevated className="pt-8 flex flex-col relative glow-turquoise">
               {/* Gradient-Rahmen (rot zu gold) mit solidem dunklem Kern statt
                   halbtransparentem Türkis-Badge */}
               <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full p-px bg-gradient-to-r from-red to-neon-gold">
@@ -630,7 +630,7 @@ export default function LandingPage() {
             </Card>
 
             {/* Je Hochzeit (Pay-per-Use) */}
-            <Card tone="party" className="flex flex-col">
+            <Card tone="party" className="pt-8 flex flex-col">
               <div className="flex items-center justify-between h-6 mb-3">
                 <p className="font-semibold text-sm text-fg">Je Hochzeit</p>
                 <div className="inline-flex items-center bg-base/40 border border-line rounded-full p-0.5 text-[10px]">
