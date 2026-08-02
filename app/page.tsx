@@ -592,7 +592,7 @@ export default function LandingPage() {
                     type="button"
                     onClick={() => setCycle('yearly')}
                     className={`px-2.5 py-0.5 rounded-full font-semibold transition-colors ${
-                      cycle === 'yearly' ? 'font-display bg-turquoise text-base' : 'font-display text-fg-muted hover:text-fg'
+                      cycle === 'yearly' ? 'font-display bg-turquoise text-[color:var(--bg-base)]' : 'font-display text-fg-muted hover:text-fg'
                     }`}
                   >
                     Jährlich −28%
@@ -601,7 +601,7 @@ export default function LandingPage() {
                     type="button"
                     onClick={() => setCycle('monthly')}
                     className={`px-2.5 py-0.5 rounded-full font-semibold transition-colors ${
-                      cycle === 'monthly' ? 'font-display bg-turquoise text-base' : 'font-display text-fg-muted hover:text-fg'
+                      cycle === 'monthly' ? 'font-display bg-turquoise text-[color:var(--bg-base)]' : 'font-display text-fg-muted hover:text-fg'
                     }`}
                   >
                     Monatlich
@@ -651,7 +651,7 @@ export default function LandingPage() {
                     type="button"
                     onClick={() => setPackSize('one')}
                     className={`px-2.5 py-0.5 rounded-full font-semibold whitespace-nowrap transition-colors ${
-                      packSize === 'one' ? 'font-display bg-turquoise text-base' : 'font-display text-fg-muted hover:text-fg'
+                      packSize === 'one' ? 'font-display bg-turquoise text-[color:var(--bg-base)]' : 'font-display text-fg-muted hover:text-fg'
                     }`}
                   >
                     Einzeln
@@ -660,7 +660,7 @@ export default function LandingPage() {
                     type="button"
                     onClick={() => setPackSize('five')}
                     className={`px-2.5 py-0.5 rounded-full font-semibold whitespace-nowrap transition-colors ${
-                      packSize === 'five' ? 'font-display bg-turquoise text-base' : 'font-display text-fg-muted hover:text-fg'
+                      packSize === 'five' ? 'font-display bg-turquoise text-[color:var(--bg-base)]' : 'font-display text-fg-muted hover:text-fg'
                     }`}
                   >
                     5er-Pack −27%
