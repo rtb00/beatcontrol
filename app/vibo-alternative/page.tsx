@@ -114,7 +114,7 @@ export default function ViboAlternative() {
           <p className="text-fg-muted mb-8 leading-relaxed">
             BeatControl Pro ist 30 Tage Geld-zurück-Garantie. Wenn du Vibo vorziehst, kein Schaden.
           </p>
-          <Link href="/auth/signin?callbackUrl=/dj" className={buttonVariants({ variant: 'primary', size: 'lg' })}>
+          <Link href="/auth/register" className={buttonVariants({ variant: 'primary', size: 'lg' })}>
             BeatControl kostenlos starten
           </Link>
         </Card>

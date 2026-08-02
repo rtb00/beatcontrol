@@ -128,7 +128,7 @@ function PricingPageInner() {
   async function startCheckout(tier: StripeTier) {
     setError(null);
     if (!me) {
-      router.push(`/auth/signin?plan=${tier}`);
+      router.push(`/auth/register?plan=${tier}`);
       return;
     }
     setBusy(tier);
@@ -163,7 +163,7 @@ function PricingPageInner() {
       // Nicht eingeloggt: direkt weiter zur Anmeldung mit Plan-Vorwahl,
       // statt die Vergleichstabelle als Zwischenstopp zu zeigen.
       setAutoStarted(true);
-      router.push(`/auth/signin?plan=${planParam}`);
+      router.push(`/auth/register?plan=${planParam}`);
       return;
     }
     const alreadyOnPlan =
@@ -275,7 +275,7 @@ function PricingPageInner() {
                     </button>
                   ) : (
                     <Link
-                      href="/auth/signin?callbackUrl=/dj"
+                      href="/auth/register"
                       className={buttonVariants({ variant: 'secondary', size: 'sm', className: 'w-full' })}
                     >
                       Kostenlos anmelden

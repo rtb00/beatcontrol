@@ -634,7 +634,7 @@ export default function LandingPage() {
                 {proFootnote}
               </p>
               <Link
-                href={`/auth/signin?plan=${cycle === 'yearly' ? 'pro_yearly' : 'pro_monthly'}`}
+                href={`/auth/register?plan=${cycle === 'yearly' ? 'pro_yearly' : 'pro_monthly'}`}
                 onClick={() => trackCta(cycle === 'yearly' ? 'pro_yearly' : 'pro_monthly')}
                 className={buttonVariants({ variant: 'primary', size: 'md', className: 'w-full' })}
               >
@@ -693,7 +693,7 @@ export default function LandingPage() {
                 ))}
               </ul>
               <Link
-                href={`/auth/signin?plan=${packSize === 'five' ? 'credit_pack_5' : 'event_pass'}`}
+                href={`/auth/register?plan=${packSize === 'five' ? 'credit_pack_5' : 'event_pass'}`}
                 onClick={() => trackCta(packSize === 'five' ? 'credit_pack_5' : 'event_pass')}
                 className={buttonVariants({ variant: 'secondary', size: 'md', className: 'w-full' })}
               >
