@@ -161,7 +161,7 @@ const PAIN_ICON_PATHS: ReactNode[] = [
 const FAQ_ITEMS = [
   {
     question: '„Übernehmen die Gäste mein Set?"',
-    answer: 'Nein. Du entscheidest. BeatControl zeigt dir nur, was die Leute wollen. Jeder Gast hat maximal drei Wünsche, Herzen vergeben ist unbegrenzt. So bleibt die Liste übersichtlich und gespielt wird, was du auflegst, genau wie immer.',
+    answer: 'Nein. Du entscheidest. BeatControl zeigt dir nur, was die Leute wollen. Jeder Gast hat maximal drei Wünsche, Likes vergeben ist unbegrenzt. So bleibt die Liste übersichtlich und gespielt wird, was du auflegst, genau wie immer.',
   },
   {
     question: '„Hängen dann alle nur am Handy?"',
@@ -482,7 +482,7 @@ export default function LandingPage() {
               {
                 step: '02',
                 title: 'Gäste wünschen und voten',
-                desc: 'Code scannen, Song wünschen, für Favoriten abstimmen. Dauert 10 Sekunden vom Handy, ohne App und ohne Account. Jeder Gast hat drei Wünsche und unbegrenzt Herzen: die Mehrheit entscheidet, niemand flutet dir die Liste.',
+                desc: 'Code scannen, Song wünschen, für Favoriten abstimmen. Dauert 10 Sekunden vom Handy, ohne App und ohne Account. Jeder Gast hat drei Wünsche und unbegrenzt Likes.',
               },
               {
                 step: '03',
