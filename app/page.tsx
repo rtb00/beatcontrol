@@ -4,7 +4,7 @@ import { useState, useEffect, useRef, useCallback, type ReactNode } from 'react'
 import Link from 'next/link';
 import { QRCodeSVG } from 'qrcode.react';
 import { useBranding } from '@/app/lib/branding-context';
-import { Card, Badge, NavBar, Reveal, Accordion, buttonVariants } from '@/app/components/ui';
+import { Card, NavBar, Reveal, Accordion, buttonVariants } from '@/app/components/ui';
 
 type Cycle = 'yearly' | 'monthly';
 type Audience = 'hochzeit' | 'geburtstag' | 'firma';
@@ -21,6 +21,8 @@ const PRO_PRICE_YEARLY_TOTAL = '249';
 const PRO_PRICE_YEARLY_PER_MONTH = '20,75';
 const PRO_PRICE_MONTHLY = '29';
 const EVENT_PASS_PRICE = '19';
+const CREDIT_PACK_TOTAL = '69';
+const CREDIT_PACK_PER_EVENT = '13,80';
 
 const AUDIENCE_LABELS: Record<Audience, string> = {
   hochzeit: 'Hochzeit',
@@ -207,6 +209,9 @@ export default function LandingPage() {
   const isWhiteLabel = !!branding.subdomain;
 
   const [cycle, setCycle] = useState<Cycle>('yearly');
+  // Je-Hochzeit-Karte: Umschalter zwischen Einzelkauf und 5er-Pack,
+  // analog zum Jährlich/Monatlich-Toggle der Pro-Karte.
+  const [packSize, setPackSize] = useState<'one' | 'five'>('one');
   const audience: Audience = 'hochzeit';
   const pricingTracked = useRef(false);
   const c = COPY[audience];
@@ -558,9 +563,13 @@ export default function LandingPage() {
 
             {/* Pro */}
             <Card tone="party" elevated className="flex flex-col relative glow-turquoise">
-              <Badge color="turquoise" className="absolute -top-3.5 left-1/2 -translate-x-1/2 whitespace-nowrap">
-                Für aktive DJs
-              </Badge>
+              {/* Gradient-Rahmen (rot zu gold) mit solidem dunklem Kern statt
+                  halbtransparentem Türkis-Badge */}
+              <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full p-px bg-gradient-to-r from-red to-neon-gold">
+                <span className="block rounded-full bg-base px-3 py-1 font-display text-xs font-bold uppercase tracking-wide text-neon-gold">
+                  Für aktive DJs
+                </span>
+              </span>
               {/* Name und kompakter Zyklus-Toggle in einer Zeile, damit die
                   Preiszeile auf gleicher Höhe wie bei den Nachbarkarten bleibt */}
               <div className="flex items-center justify-between h-6 mb-3">
@@ -622,17 +631,41 @@ export default function LandingPage() {
 
             {/* Je Hochzeit (Pay-per-Use) */}
             <Card tone="party" className="flex flex-col">
-              <div className="flex items-center h-6 mb-3">
+              <div className="flex items-center justify-between h-6 mb-3">
                 <p className="font-semibold text-sm text-fg">Je Hochzeit</p>
+                <div className="inline-flex items-center bg-base/40 border border-line rounded-full p-0.5 text-[10px]">
+                  <button
+                    type="button"
+                    onClick={() => setPackSize('one')}
+                    className={`px-2.5 py-0.5 rounded-full font-semibold whitespace-nowrap transition-colors ${
+                      packSize === 'one' ? 'font-display bg-turquoise text-base' : 'font-display text-fg-muted hover:text-fg'
+                    }`}
+                  >
+                    Einzeln
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setPackSize('five')}
+                    className={`px-2.5 py-0.5 rounded-full font-semibold whitespace-nowrap transition-colors ${
+                      packSize === 'five' ? 'font-display bg-turquoise text-base' : 'font-display text-fg-muted hover:text-fg'
+                    }`}
+                  >
+                    5er-Pack −27%
+                  </button>
+                </div>
               </div>
               <div className="flex items-baseline gap-1 mb-1">
-                <p className="font-display text-4xl font-bold text-fg">€{EVENT_PASS_PRICE}</p>
+                <p className="font-display text-4xl font-bold text-fg">
+                  €{packSize === 'five' ? CREDIT_PACK_PER_EVENT : EVENT_PASS_PRICE}
+                </p>
                 <p className="text-sm text-fg-muted">/Hochzeit</p>
               </div>
-              <p className="text-xs text-fg-muted mb-6 min-h-[2rem]">einmalig</p>
+              <p className="text-xs text-fg-muted mb-6 min-h-[2rem]">
+                {packSize === 'five' ? `einmalig, €${CREDIT_PACK_TOTAL} für 5 Hochzeiten` : 'einmalig'}
+              </p>
               <ul className="flex flex-col gap-3 text-sm text-fg mb-8 flex-1">
                 {[
-                  '1 Hochzeit, rund um deinen Termin',
+                  packSize === 'five' ? '5 Hochzeiten, Guthaben verfällt nicht' : '1 Hochzeit, rund um deinen Termin',
                   'Unbegrenzte Songwünsche',
                   'Dein Branding inklusive',
                   'Export der Musikwünsche zur Nachbereitung',
@@ -647,22 +680,12 @@ export default function LandingPage() {
                 ))}
               </ul>
               <Link
-                href="/auth/signin?plan=event_pass"
-                onClick={() => trackCta('event_pass')}
+                href={`/auth/signin?plan=${packSize === 'five' ? 'credit_pack_5' : 'event_pass'}`}
+                onClick={() => trackCta(packSize === 'five' ? 'credit_pack_5' : 'event_pass')}
                 className={buttonVariants({ variant: 'secondary', size: 'md', className: 'w-full' })}
               >
                 Einmalig buchen
               </Link>
-              <p className="text-[11px] text-fg-muted mt-3 text-center">
-                Öfter unterwegs?{' '}
-                <Link
-                  href="/auth/signin?plan=credit_pack_5"
-                  onClick={() => trackCta('credit_pack_5')}
-                  className="text-turquoise hover:underline"
-                >
-                  5 Hochzeiten für €69
-                </Link>
-              </p>
             </Card>
           </div>
 
