@@ -298,8 +298,11 @@ export default function LandingPage() {
         </div>
       </NavBar>
 
-      {/* Hero */}
-      <section className="relative overflow-hidden max-w-6xl mx-auto px-4 py-20 md:py-28">
+      {/* Hero. Clipping liegt auf der viewportbreiten Section (overflow-x-clip),
+          nicht auf dem max-w-Container: so läuft der Ambient-Glow hinter dem
+          iPad auf Desktop frei aus, ohne auf Mobile horizontalen Scroll zu erzeugen. */}
+      <section className="relative overflow-x-clip">
+        <div className="relative max-w-6xl mx-auto px-4 py-20 md:py-28">
         <div className="relative z-10 grid md:grid-cols-2 gap-16 items-center">
         <div>
           <h1 className="font-display font-bold uppercase leading-[1.05] mb-4 text-4xl sm:text-5xl md:text-6xl">
@@ -430,6 +433,7 @@ export default function LandingPage() {
             </div>
           </div>
         )}
+        </div>
       </section>
 
       {/* Pain section */}
@@ -516,9 +520,18 @@ export default function LandingPage() {
           <h2 className="font-display text-3xl font-bold uppercase text-center mb-3 text-glow-gold">
             Für jeden Gig der passende Tarif
           </h2>
-          <p className="text-fg-muted text-center mb-3 max-w-xl mx-auto">
+          <p className="text-fg-muted text-center mb-4 max-w-xl mx-auto">
             Free zum Ausprobieren. Je Hochzeit für Gelegenheits-Gigs. Pro-Abo für aktive DJs.
           </p>
+          {/* Einnahme-Rechnung als Pill vor den Preisen: ankert die €30, bevor
+              die erste Preiszahl gelesen wird (das Minus ist ein Rechenzeichen,
+              kein Gedankenstrich) */}
+          <div className="flex justify-center mb-4 px-2">
+            <p className="inline-block rounded-2xl border border-neon-gold/40 bg-neon-gold/5 px-5 py-3 text-sm text-fg text-center">
+              €49 vom Brautpaar für das Live-Voting − €19 für BeatControl ={' '}
+              <span className="text-neon-gold font-semibold">€30 bleiben bei dir</span>. Pro Hochzeit.
+            </p>
+          </div>
           <p className="text-center mb-12 max-w-xl mx-auto">
             <Link href="/pricing" className="text-xs text-turquoise hover:underline">Alle Tarife im Detail vergleichen →</Link>
           </p>
@@ -687,17 +700,6 @@ export default function LandingPage() {
                 Einmalig buchen
               </Link>
             </Card>
-          </div>
-
-          {/* Profit-Center-Rechnung: dreht die Wahrnehmung von Kosten zu Einnahme */}
-          <div className="mt-10 max-w-2xl mx-auto text-center">
-            <p className="font-display text-xl font-semibold uppercase text-fg mb-2">
-              Rechne BeatControl als Einnahme, nicht als Ausgabe
-            </p>
-            <p className="text-sm text-fg-muted">
-              Biete das Live-Voting deinem Brautpaar als Extra für €49 an.
-              Dich kostet die Hochzeit €19, der Rest bleibt bei dir.
-            </p>
           </div>
 
         </div>
