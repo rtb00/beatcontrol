@@ -477,7 +477,7 @@ export default function LandingPage() {
               {
                 step: '01',
                 title: 'Event anlegen, QR-Code verteilen',
-                desc: 'In zwei Minuten angelegt. Den fertigen QR-Code legst du mit den vorbereiteten Gast-Karten auf die Tische oder zeigst ihn auf dem Beamer.',
+                desc: 'In zwei Minuten angelegt. Dein QR-Code sitzt fertig auf den Gast-Karten zum Ausdrucken: einfach auf die Tische legen oder den Code auf dem Beamer zeigen.',
               },
               {
                 step: '02',
