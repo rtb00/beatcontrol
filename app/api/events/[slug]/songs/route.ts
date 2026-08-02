@@ -86,7 +86,7 @@ export async function POST(
   }
 
   const { rows: eventRows } = await sql`
-    SELECT id, dj_id FROM events WHERE slug = ${params.slug}
+    SELECT id, dj_id, credit_redeemed FROM events WHERE slug = ${params.slug}
   `;
   if (eventRows.length === 0) {
     return NextResponse.json({ error: 'event not found' }, { status: 404 });
@@ -94,12 +94,14 @@ export async function POST(
   const eventId = eventRows[0].id;
   const djId = eventRows[0].dj_id as string;
 
-  // Plan-Check: DJ-Besitzer laden, Songs zählen, gegen Limit prüfen
+  // Plan-Check: DJ-Besitzer laden, Songs zählen, gegen Limit prüfen.
+  // Per Guthaben freigeschaltete Events haben wie der Event-Pass kein Song-Limit.
+  const creditRedeemed = eventRows[0].credit_redeemed === true;
   const { rows: ownerRows } = await sql`
     SELECT plan, plan_status, current_period_end
     FROM users WHERE id = ${djId}
   `;
-  if (ownerRows.length > 0) {
+  if (ownerRows.length > 0 && !creditRedeemed) {
     const owner = ownerRows[0];
     const plan = getEffectivePlan({
       plan: owner.plan,

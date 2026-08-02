@@ -4,10 +4,10 @@ import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import { CalmScope, Card, Button } from '@/app/components/ui';
 
-type Plan = 'pro_yearly' | 'pro_monthly' | 'event_pass';
+type Plan = 'pro_yearly' | 'pro_monthly' | 'event_pass' | 'credit_pack_5';
 
 function parsePlan(raw: string | undefined): Plan | null {
-  if (raw === 'pro_yearly' || raw === 'pro_monthly' || raw === 'event_pass') return raw;
+  if (raw === 'pro_yearly' || raw === 'pro_monthly' || raw === 'event_pass' || raw === 'credit_pack_5') return raw;
   return null;
 }
 
@@ -66,7 +66,8 @@ export default async function SignInPage({
   const planLabel: Record<Plan, string> = {
     pro_yearly: 'Pro · jährlich',
     pro_monthly: 'Pro · monatlich',
-    event_pass: 'Event-Pass',
+    event_pass: 'Je Hochzeit',
+    credit_pack_5: '5er-Pack · 5 Hochzeiten',
   };
   const registerHref = plan ? `/auth/register?plan=${plan}` : '/auth/register';
 

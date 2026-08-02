@@ -23,8 +23,12 @@ export const STRIPE_PRICE_IDS = {
   pro_monthly: process.env.STRIPE_PRICE_PRO_MONTHLY ?? '',
   pro_yearly: process.env.STRIPE_PRICE_PRO_YEARLY ?? '',
   event_pass: process.env.STRIPE_PRICE_EVENT_PASS ?? '',
+  credit_pack_5: process.env.STRIPE_PRICE_CREDIT_PACK_5 ?? '',
   studio_monthly: process.env.STRIPE_PRICE_STUDIO_MONTHLY ?? '',
   studio_yearly: process.env.STRIPE_PRICE_STUDIO_YEARLY ?? '',
 } as const;
+
+// Wie viele Event-Guthaben ein 5er-Pack enthält.
+export const CREDIT_PACK_SIZE = 5;
 
 export type StripeTier = keyof typeof STRIPE_PRICE_IDS;

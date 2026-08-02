@@ -172,6 +172,11 @@ export async function initDB() {
   await sql`ALTER TABLE users ADD COLUMN IF NOT EXISTS branding_name TEXT`;
   await sql`ALTER TABLE users ADD COLUMN IF NOT EXISTS branding_logo_url TEXT`;
 
+  // Credit-Packs: gekauftes Event-Guthaben am Nutzer, Einlösung markiert das
+  // einzelne Event dauerhaft als freigeschaltet (verhält sich wie Event-Pass).
+  await sql`ALTER TABLE users ADD COLUMN IF NOT EXISTS event_credits INT NOT NULL DEFAULT 0`;
+  await sql`ALTER TABLE events ADD COLUMN IF NOT EXISTS credit_redeemed BOOLEAN NOT NULL DEFAULT FALSE`;
+
   // Studio-Tier: Subdomain für Whitelabel-Routing (kundenname.beatcontrol.io)
   await sql`ALTER TABLE users ADD COLUMN IF NOT EXISTS subdomain TEXT`;
   await sql`CREATE UNIQUE INDEX IF NOT EXISTS idx_users_subdomain ON users(LOWER(subdomain)) WHERE subdomain IS NOT NULL`;

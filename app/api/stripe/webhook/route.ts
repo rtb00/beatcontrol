@@ -74,6 +74,19 @@ async function handleCheckoutCompleted(stripe: Stripe, sessionObj: Stripe.Checko
   const userId = sessionObj.metadata?.user_id ?? sessionObj.client_reference_id;
   if (!userId) return;
 
+  // Credit-Pack: schreibt nur Guthaben gut, ändert den Plan nicht.
+  if (sessionObj.metadata?.tier === 'credit_pack_5') {
+    const packCustomerId =
+      typeof sessionObj.customer === 'string' ? sessionObj.customer : sessionObj.customer?.id ?? null;
+    await sql`
+      UPDATE users
+      SET event_credits = event_credits + 5,
+          stripe_customer_id = COALESCE(stripe_customer_id, ${packCustomerId})
+      WHERE id = ${userId}
+    `;
+    return;
+  }
+
   const eventDateRaw = sessionObj.metadata?.event_date;
   const periodEnd = computeEventPassPeriodEnd(eventDateRaw);
 

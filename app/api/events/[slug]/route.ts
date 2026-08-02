@@ -11,7 +11,7 @@ export async function GET(
 
   const { rows } = await sql`
     SELECT
-      e.id, e.slug, e.title, e.active, e.event_date, e.created_at,
+      e.id, e.slug, e.title, e.active, e.event_date, e.created_at, e.credit_redeemed,
       u.plan AS owner_plan,
       u.plan_status AS owner_plan_status,
       u.current_period_end AS owner_current_period_end,
@@ -39,7 +39,8 @@ export async function GET(
       plan_status: row.owner_plan_status,
       current_period_end: row.owner_current_period_end,
     });
-    if (getPlanLimits(plan).branding) {
+    // Per Guthaben freigeschaltete Events tragen wie Event-Pass-Events das DJ-Branding.
+    if (getPlanLimits(plan).branding || row.credit_redeemed === true) {
       brandingName = row.owner_branding_name ?? null;
       brandingLogoUrl = row.owner_branding_logo_url ?? null;
     }

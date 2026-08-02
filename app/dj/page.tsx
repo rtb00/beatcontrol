@@ -27,6 +27,7 @@ interface Me {
   planStatus: string | null;
   currentPeriodEnd: string | null;
   cancelAtPeriodEnd: boolean | null;
+  eventCredits: number;
   limits: { maxEvents: number | null; maxSongs: number | null; export: boolean };
 }
 
@@ -309,7 +310,8 @@ export default function DJDashboard() {
         <h1 className="font-display text-4xl font-black uppercase tracking-wide text-fg text-glow-turquoise">DJ-Dashboard</h1>
         {me && (
           <p className="text-fg-muted mt-1 text-xs font-mono uppercase tracking-widest">
-            {me.plan === 'studio' ? 'Team' : me.plan === 'pro' ? 'Pro' : me.plan === 'event_pass' ? 'Event-Pass' : 'Free'}
+            {me.plan === 'studio' ? 'Team' : me.plan === 'pro' ? 'Pro' : me.plan === 'event_pass' ? 'Je Hochzeit' : 'Free'}
+            {me.eventCredits > 0 && ` · Guthaben: ${me.eventCredits} ${me.eventCredits === 1 ? 'Hochzeit' : 'Hochzeiten'}`}
           </p>
         )}
       </div>

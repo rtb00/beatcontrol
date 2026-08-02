@@ -13,7 +13,8 @@ export async function GET() {
 
   const { rows } = await sql`
     SELECT id, name, email, plan, plan_status, current_period_end,
-           cancel_at_period_end, branding_name, branding_logo_url, subdomain
+           cancel_at_period_end, branding_name, branding_logo_url, subdomain,
+           event_credits
     FROM users
     WHERE id = ${session.user.id}
   `;
@@ -41,6 +42,7 @@ export async function GET() {
     brandingName: user.branding_name,
     brandingLogoUrl: user.branding_logo_url,
     subdomain: user.subdomain,
+    eventCredits: user.event_credits ?? 0,
     limits: {
       maxEvents: Number.isFinite(limits.maxEvents) ? limits.maxEvents : null,
       maxSongs: Number.isFinite(limits.maxSongs) ? limits.maxSongs : null,

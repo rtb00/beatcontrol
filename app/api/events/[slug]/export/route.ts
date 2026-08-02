@@ -23,7 +23,7 @@ export async function GET(
 
   const { rows: ownerRows } = await sql`
     SELECT u.id, u.plan, u.plan_status, u.current_period_end,
-           e.id AS event_id, e.title AS event_title
+           e.id AS event_id, e.title AS event_title, e.credit_redeemed
     FROM users u
     JOIN events e ON e.dj_id = u.id::text
     WHERE u.id = ${session.user.id}
@@ -40,7 +40,8 @@ export async function GET(
     current_period_end: owner.current_period_end,
   });
   const limits = getPlanLimits(plan);
-  if (!limits.export) {
+  // Per Guthaben freigeschaltete Events dürfen wie Event-Pass-Events exportieren.
+  if (!limits.export && owner.credit_redeemed !== true) {
     return NextResponse.json({ error: 'plan_limit', limit: 'export' }, { status: 402 });
   }
 

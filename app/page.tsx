@@ -18,6 +18,7 @@ type Stats = {
 };
 
 const PRO_PRICE_YEARLY_TOTAL = '249';
+const PRO_PRICE_YEARLY_PER_MONTH = '20,75';
 const PRO_PRICE_MONTHLY = '29';
 const EVENT_PASS_PRICE = '19';
 
@@ -261,10 +262,12 @@ export default function LandingPage() {
     track('cta_click', tier);
   }
 
-  const proPrice = cycle === 'yearly' ? PRO_PRICE_YEARLY_TOTAL : PRO_PRICE_MONTHLY;
+  // Beide Zyklen zeigen den Monatspreis, damit der Vergleich direkt ist;
+  // die Jahressumme steht dezent im Hinweis darunter.
+  const proPrice = cycle === 'yearly' ? PRO_PRICE_YEARLY_PER_MONTH : PRO_PRICE_MONTHLY;
   const proHint =
     cycle === 'yearly'
-      ? 'ein Preis für die ganze Saison, ab 14 Hochzeiten günstiger als einzeln'
+      ? `jährlich abgerechnet, €${PRO_PRICE_YEARLY_TOTAL} im Jahr`
       : 'monatlich kündbar';
   const proFootnote =
     cycle === 'yearly'
@@ -519,9 +522,16 @@ export default function LandingPage() {
 
             {/* Free */}
             <Card tone="party" className="flex flex-col">
-              <p className="font-semibold text-sm mb-1 text-fg">Free</p>
-              <p className="font-display text-4xl font-bold mb-1 text-fg">€0</p>
-              <p className="text-xs text-fg-muted mb-6">für immer kostenlos</p>
+              {/* Einheitliches Karten-Skelett: Namenszeile (h-6), Preiszeile,
+                  Hinweis (min-h für 2 Zeilen) — hält Preis und Plan über alle
+                  drei Karten auf gleicher Höhe. */}
+              <div className="flex items-center h-6 mb-3">
+                <p className="font-semibold text-sm text-fg">Free</p>
+              </div>
+              <div className="flex items-baseline gap-1 mb-1">
+                <p className="font-display text-4xl font-bold text-fg">€0</p>
+              </div>
+              <p className="text-xs text-fg-muted mb-6 min-h-[2rem]">für immer kostenlos</p>
               <ul className="flex flex-col gap-3 text-sm text-fg mb-8 flex-1">
                 {[
                   '1 aktives Event',
@@ -551,35 +561,37 @@ export default function LandingPage() {
               <Badge color="turquoise" className="absolute -top-3.5 left-1/2 -translate-x-1/2 whitespace-nowrap">
                 Für aktive DJs
               </Badge>
-              <p className="font-semibold text-sm mb-3 text-fg-muted">Pro</p>
-
-              {/* Cycle toggle, inside the Pro card */}
-              <div className="inline-flex self-start items-center bg-base/40 border border-line rounded-full p-0.5 mb-4 text-[11px]">
-                <button
-                  type="button"
-                  onClick={() => setCycle('yearly')}
-                  className={`px-3 py-1.5 rounded-full font-semibold transition-colors ${
-                    cycle === 'yearly' ? 'font-display bg-turquoise text-base' : 'font-display text-fg-muted hover:text-fg'
-                  }`}
-                >
-                  Jährlich −28%
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setCycle('monthly')}
-                  className={`px-3 py-1.5 rounded-full font-semibold transition-colors ${
-                    cycle === 'monthly' ? 'font-display bg-turquoise text-base' : 'font-display text-fg-muted hover:text-fg'
-                  }`}
-                >
-                  Monatlich
-                </button>
+              {/* Name und kompakter Zyklus-Toggle in einer Zeile, damit die
+                  Preiszeile auf gleicher Höhe wie bei den Nachbarkarten bleibt */}
+              <div className="flex items-center justify-between h-6 mb-3">
+                <p className="font-semibold text-sm text-fg">Pro</p>
+                <div className="inline-flex items-center bg-base/40 border border-line rounded-full p-0.5 text-[10px]">
+                  <button
+                    type="button"
+                    onClick={() => setCycle('yearly')}
+                    className={`px-2.5 py-0.5 rounded-full font-semibold transition-colors ${
+                      cycle === 'yearly' ? 'font-display bg-turquoise text-base' : 'font-display text-fg-muted hover:text-fg'
+                    }`}
+                  >
+                    Jährlich −28%
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setCycle('monthly')}
+                    className={`px-2.5 py-0.5 rounded-full font-semibold transition-colors ${
+                      cycle === 'monthly' ? 'font-display bg-turquoise text-base' : 'font-display text-fg-muted hover:text-fg'
+                    }`}
+                  >
+                    Monatlich
+                  </button>
+                </div>
               </div>
 
               <div className="flex items-baseline gap-1 mb-1">
                 <p className="font-display text-4xl font-bold text-fg">€{proPrice}</p>
-                <p className="text-sm text-fg-muted">{cycle === 'yearly' ? '/Jahr' : '/Monat'}</p>
+                <p className="text-sm text-fg-muted">/Monat</p>
               </div>
-              <p className="text-xs text-fg-muted mb-6">{proHint}</p>
+              <p className="text-xs text-fg-muted mb-6 min-h-[2rem]">{proHint}</p>
               <ul className="flex flex-col gap-3 text-sm text-fg mb-6 flex-1">
                 {[
                   'Unbegrenzte Events',
@@ -610,12 +622,14 @@ export default function LandingPage() {
 
             {/* Je Hochzeit (Pay-per-Use) */}
             <Card tone="party" className="flex flex-col">
-              <p className="font-semibold text-sm mb-1 text-fg">Je Hochzeit</p>
+              <div className="flex items-center h-6 mb-3">
+                <p className="font-semibold text-sm text-fg">Je Hochzeit</p>
+              </div>
               <div className="flex items-baseline gap-1 mb-1">
                 <p className="font-display text-4xl font-bold text-fg">€{EVENT_PASS_PRICE}</p>
                 <p className="text-sm text-fg-muted">/Hochzeit</p>
               </div>
-              <p className="text-xs text-fg-muted mb-6">einmalig</p>
+              <p className="text-xs text-fg-muted mb-6 min-h-[2rem]">einmalig</p>
               <ul className="flex flex-col gap-3 text-sm text-fg mb-8 flex-1">
                 {[
                   '1 Hochzeit, rund um deinen Termin',
@@ -639,6 +653,16 @@ export default function LandingPage() {
               >
                 Einmalig buchen
               </Link>
+              <p className="text-[11px] text-fg-muted mt-3 text-center">
+                Öfter unterwegs?{' '}
+                <Link
+                  href="/auth/signin?plan=credit_pack_5"
+                  onClick={() => trackCta('credit_pack_5')}
+                  className="text-turquoise hover:underline"
+                >
+                  5 Hochzeiten für €69
+                </Link>
+              </p>
             </Card>
           </div>
 

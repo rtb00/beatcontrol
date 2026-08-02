@@ -6,7 +6,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { Badge, NavBar, buttonVariants } from '@/app/components/ui';
 
 type Cycle = 'yearly' | 'monthly';
-type StripeTier = 'pro_monthly' | 'pro_yearly' | 'event_pass' | 'studio_monthly' | 'studio_yearly';
+type StripeTier = 'pro_monthly' | 'pro_yearly' | 'event_pass' | 'credit_pack_5' | 'studio_monthly' | 'studio_yearly';
 
 interface Me {
   plan: 'free' | 'pro' | 'event_pass' | 'studio';
@@ -85,6 +85,7 @@ function parsePlan(raw: string | null): StripeTier | null {
     raw === 'pro_yearly' ||
     raw === 'pro_monthly' ||
     raw === 'event_pass' ||
+    raw === 'credit_pack_5' ||
     raw === 'studio_monthly' ||
     raw === 'studio_yearly'
   ) {
@@ -367,6 +368,19 @@ function PricingPageInner() {
             </tbody>
           </table>
         </div>
+
+        {/* Credit-Pack: Mittelweg zwischen Einzelkauf und Abo für 5 bis 12 Gigs im Jahr */}
+        <p className="text-sm text-fg-muted text-center mt-10 max-w-xl mx-auto">
+          Öfter unterwegs, aber kein Abo?{' '}
+          <button
+            onClick={() => startCheckout('credit_pack_5')}
+            disabled={busy !== null || loadingMe}
+            className="text-turquoise hover:underline disabled:opacity-60"
+          >
+            {busy === 'credit_pack_5' ? 'Lädt…' : 'Hol dir 5 Hochzeiten für €69 im Paket.'}
+          </button>{' '}
+          Dein Guthaben verfällt nicht.
+        </p>
 
         <p className="text-xs text-fg-muted text-center mt-12 max-w-xl mx-auto">
           Alle Preise inkl. MwSt. Zahlung über Stripe. Du kannst jederzeit über das Kunden-Portal kündigen oder Rechnungen einsehen.

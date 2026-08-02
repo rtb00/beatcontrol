@@ -80,25 +80,47 @@ export async function POST(req: NextRequest) {
 
   // Plan-Check: aktive Events zählen
   const { rows: ownerRows } = await sql`
-    SELECT plan, plan_status, current_period_end
+    SELECT plan, plan_status, current_period_end, event_credits
     FROM users WHERE id = ${userId}
   `;
-  const owner = ownerRows[0] ?? { plan: 'free', plan_status: null, current_period_end: null };
+  const owner = ownerRows[0] ?? { plan: 'free', plan_status: null, current_period_end: null, event_credits: 0 };
   const plan = getEffectivePlan({
     plan: owner.plan,
     plan_status: owner.plan_status,
     current_period_end: owner.current_period_end,
   });
   const limits = getPlanLimits(plan);
+  // Ist das Plan-Limit erreicht, springt gekauftes Event-Guthaben ein: das neue
+  // Event wird als credit_redeemed markiert und zählt nicht gegen das Limit.
+  let redeemCredit = false;
   if (Number.isFinite(limits.maxEvents)) {
     const { rows: countRows } = await sql`
       SELECT COUNT(*)::int AS cnt FROM events
-      WHERE dj_id = ${userId} AND active = TRUE
+      WHERE dj_id = ${userId} AND active = TRUE AND credit_redeemed = FALSE
     `;
     const eventCount = countRows[0].cnt as number;
     if (eventCount >= limits.maxEvents) {
+      if ((owner.event_credits as number) > 0) {
+        redeemCredit = true;
+      } else {
+        return NextResponse.json(
+          { error: 'plan_limit', limit: 'events', current: eventCount, max: limits.maxEvents },
+          { status: 402 }
+        );
+      }
+    }
+  }
+
+  if (redeemCredit) {
+    // Guarded decrement: schlägt bei parallelem Verbrauch fehl statt ins Minus zu laufen.
+    const { rows: creditRows } = await sql`
+      UPDATE users SET event_credits = event_credits - 1
+      WHERE id = ${userId} AND event_credits > 0
+      RETURNING event_credits
+    `;
+    if (creditRows.length === 0) {
       return NextResponse.json(
-        { error: 'plan_limit', limit: 'events', current: eventCount, max: limits.maxEvents },
+        { error: 'plan_limit', limit: 'events', current: 0, max: limits.maxEvents },
         { status: 402 }
       );
     }
@@ -107,14 +129,15 @@ export async function POST(req: NextRequest) {
   const slug = await generateUniqueSlug();
 
   const { rows } = await sql`
-    INSERT INTO events (slug, title, dj_id, event_date)
+    INSERT INTO events (slug, title, dj_id, event_date, credit_redeemed)
     VALUES (
       ${slug},
       ${title.trim()},
       ${userId},
-      ${normalizedDate}
+      ${normalizedDate},
+      ${redeemCredit}
     )
-    RETURNING id, slug, title, active, event_date, created_at
+    RETURNING id, slug, title, active, event_date, created_at, credit_redeemed
   `;
   return NextResponse.json(rows[0], { status: 201 });
 }
