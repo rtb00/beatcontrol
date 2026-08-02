@@ -30,6 +30,9 @@ export async function GET(
 
   let brandingName: string | null = null;
   let brandingLogoUrl: string | null = null;
+  // Nur Team (studio) ist Whitelabel: dort verschwindet der BeatControl-Hinweis
+  // auf der Gäste-Seite komplett.
+  let whitelabel = false;
   if (row.owner_plan) {
     const plan = getEffectivePlan({
       plan: row.owner_plan,
@@ -40,6 +43,7 @@ export async function GET(
       brandingName = row.owner_branding_name ?? null;
       brandingLogoUrl = row.owner_branding_logo_url ?? null;
     }
+    whitelabel = plan === 'studio';
   }
 
   return NextResponse.json({
@@ -51,6 +55,7 @@ export async function GET(
     created_at: row.created_at,
     branding_name: brandingName,
     branding_logo_url: brandingLogoUrl,
+    whitelabel,
   });
 }
 

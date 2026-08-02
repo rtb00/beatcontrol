@@ -17,9 +17,8 @@ type Stats = {
   minutes: number;
 };
 
-const PRO_PRICE_YEARLY_PER_MONTH = '49,99';
-const PRO_PRICE_YEARLY_TOTAL = '599,88';
-const PRO_PRICE_MONTHLY = '59,99';
+const PRO_PRICE_YEARLY_TOTAL = '249';
+const PRO_PRICE_MONTHLY = '29';
 const EVENT_PASS_PRICE = '19';
 
 const AUDIENCE_LABELS: Record<Audience, string> = {
@@ -262,10 +261,10 @@ export default function LandingPage() {
     track('cta_click', tier);
   }
 
-  const proPrice = cycle === 'yearly' ? PRO_PRICE_YEARLY_PER_MONTH : PRO_PRICE_MONTHLY;
+  const proPrice = cycle === 'yearly' ? PRO_PRICE_YEARLY_TOTAL : PRO_PRICE_MONTHLY;
   const proHint =
     cycle === 'yearly'
-      ? `jährlich abgerechnet (€${PRO_PRICE_YEARLY_TOTAL}/Jahr)`
+      ? 'ein Preis für die ganze Saison, ab 14 Hochzeiten günstiger als einzeln'
       : 'monatlich kündbar';
   const proFootnote =
     cycle === 'yearly'
@@ -563,7 +562,7 @@ export default function LandingPage() {
                     cycle === 'yearly' ? 'font-display bg-turquoise text-base' : 'font-display text-fg-muted hover:text-fg'
                   }`}
                 >
-                  Jährlich −17%
+                  Jährlich −28%
                 </button>
                 <button
                   type="button"
@@ -578,7 +577,7 @@ export default function LandingPage() {
 
               <div className="flex items-baseline gap-1 mb-1">
                 <p className="font-display text-4xl font-bold text-fg">€{proPrice}</p>
-                <p className="text-sm text-fg-muted">/Monat</p>
+                <p className="text-sm text-fg-muted">{cycle === 'yearly' ? '/Jahr' : '/Monat'}</p>
               </div>
               <p className="text-xs text-fg-muted mb-6">{proHint}</p>
               <ul className="flex flex-col gap-3 text-sm text-fg mb-6 flex-1">
@@ -643,10 +642,21 @@ export default function LandingPage() {
             </Card>
           </div>
 
+          {/* Profit-Center-Rechnung: dreht die Wahrnehmung von Kosten zu Einnahme */}
+          <div className="mt-10 max-w-2xl mx-auto text-center">
+            <p className="font-display text-xl font-semibold uppercase text-fg mb-2">
+              Rechne BeatControl als Einnahme, nicht als Ausgabe
+            </p>
+            <p className="text-sm text-fg-muted">
+              Biete das Live-Voting deinem Brautpaar als Extra für €49 an.
+              Dich kostet die Hochzeit €19, der Rest bleibt bei dir.
+            </p>
+          </div>
+
         </div>
       </section>
 
-      {/* Pilot-Saison Strip, ein Job: 2 Pilot-DJs gewinnen */}
+      {/* Pilot-Saison Strip, ein Job: Bewerbungen für die Pilot-Saison gewinnen */}
       <section className="bg-panel border-y border-line py-6">
         <div className="max-w-4xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
           <div>
@@ -654,7 +664,7 @@ export default function LandingPage() {
               Pilot-Saison 2026
             </p>
             <p className="font-display text-xl md:text-2xl font-semibold text-fg">
-              Wir suchen 2 DJs für diese Saison.
+              Bewirb dich für die kostenlose Pilot-Saison 2026
             </p>
             <p className="text-xs text-fg-muted mt-1">
               Pro gratis für die ganze Saison, dafür dein ehrliches Feedback nach der Hochzeit.

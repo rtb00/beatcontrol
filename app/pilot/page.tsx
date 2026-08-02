@@ -43,7 +43,7 @@ export default function PilotLanding() {
             {[
               {
                 t: 'Saison-Pro kostenlos',
-                d: 'BeatControl Pro für die komplette Saison 2026 ohne Kosten. Unbegrenzt Events, alle Features, dein Branding. Wert ca. €600.',
+                d: 'BeatControl Pro für die komplette Saison 2026 ohne Kosten. Unbegrenzt Events, alle Features, dein Branding. Wert ca. €250.',
               },
               {
                 t: 'Persönliches Onboarding',

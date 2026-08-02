@@ -12,6 +12,7 @@ interface Event {
   active: boolean;
   branding_name: string | null;
   branding_logo_url: string | null;
+  whitelabel?: boolean;
 }
 
 interface Song {
@@ -357,6 +358,19 @@ export default function GuestPage() {
               </div>
             )}
           </>
+        )}
+
+        {/* Viraler Loop: unter den Gästen sind Brautpaare und DJs von morgen.
+            Bei Whitelabel (Team) verschwindet der Hinweis komplett. */}
+        {event && !event.whitelabel && (
+          <footer className="mt-12 text-center">
+            <a
+              href="/?ref=gast"
+              className="text-fg-muted/70 text-xs hover:text-turquoise transition-colors"
+            >
+              Läuft mit BeatControl, dem Live-Voting für DJs
+            </a>
+          </footer>
         )}
       </div>
     </div>
