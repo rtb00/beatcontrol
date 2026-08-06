@@ -6,7 +6,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { Badge, NavBar, buttonVariants } from '@/app/components/ui';
 
 type Cycle = 'yearly' | 'monthly';
-type StripeTier = 'pro_monthly' | 'pro_yearly' | 'event_pass' | 'credit_pack_5' | 'studio_monthly' | 'studio_yearly';
+type StripeTier = 'pro_monthly' | 'pro_yearly' | 'event_pass' | 'couple_pass' | 'credit_pack_5' | 'studio_monthly' | 'studio_yearly';
 
 interface Me {
   plan: 'free' | 'pro' | 'event_pass' | 'studio';
@@ -85,6 +85,7 @@ function parsePlan(raw: string | null): StripeTier | null {
     raw === 'pro_yearly' ||
     raw === 'pro_monthly' ||
     raw === 'event_pass' ||
+    raw === 'couple_pass' ||
     raw === 'credit_pack_5' ||
     raw === 'studio_monthly' ||
     raw === 'studio_yearly'

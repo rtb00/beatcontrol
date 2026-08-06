@@ -23,6 +23,9 @@ export const STRIPE_PRICE_IDS = {
   pro_monthly: process.env.STRIPE_PRICE_PRO_MONTHLY ?? '',
   pro_yearly: process.env.STRIPE_PRICE_PRO_YEARLY ?? '',
   event_pass: process.env.STRIPE_PRICE_EVENT_PASS ?? '',
+  // Gleiche Leistung wie event_pass, aber Brautpaar-Einstieg zu 49 €:
+  // das Brautpaar kauft, der DJ bekommt das Voting geschenkt.
+  couple_pass: process.env.STRIPE_PRICE_COUPLE_PASS ?? '',
   credit_pack_5: process.env.STRIPE_PRICE_CREDIT_PACK_5 ?? '',
   studio_monthly: process.env.STRIPE_PRICE_STUDIO_MONTHLY ?? '',
   studio_yearly: process.env.STRIPE_PRICE_STUDIO_YEARLY ?? '',

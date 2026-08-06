@@ -21,7 +21,7 @@ export async function POST(req: NextRequest) {
   }
   // Server-side validation of the client-supplied event date for the pay-per-use
   // pass: must be a real date and not absurdly far in the future. Never trust the client.
-  if (eventDate && tier === 'event_pass') {
+  if (eventDate && (tier === 'event_pass' || tier === 'couple_pass')) {
     const parsed = new Date(eventDate);
     const maxAhead = new Date();
     maxAhead.setFullYear(maxAhead.getFullYear() + 1);

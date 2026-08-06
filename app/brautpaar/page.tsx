@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useBranding } from '@/app/lib/branding-context';
 import { Card, NavBar, buttonVariants } from '@/app/components/ui';
 
-const EVENT_PASS_PRICE = '19';
+const COUPLE_PRICE = '49';
 
 export default function BrautpaarLanding() {
   const branding = useBranding();
@@ -23,8 +23,8 @@ export default function BrautpaarLanding() {
             <span className="font-display text-xl font-bold tracking-tight">{brandName}</span>
           )}
         </Link>
-        <Link href="/pricing#event-pass" className={buttonVariants({ variant: 'primary', size: 'sm' })}>
-          Je Event · €{EVENT_PASS_PRICE}
+        <Link href="/auth/register?plan=couple_pass" className={buttonVariants({ variant: 'primary', size: 'sm' })}>
+          Für eure Feier · €{COUPLE_PRICE}
         </Link>
       </NavBar>
 
@@ -41,8 +41,8 @@ export default function BrautpaarLanding() {
           Fast jede Hochzeit hat diesen einen Moment: Die Tanzfläche wird leer und keiner weiß warum. Mit BeatControl schlagen eure Gäste vom Handy ihre Songs vor und voten füreinander. Euer DJ sieht live, was gerade gefragt ist, und legt sicher nach.
         </p>
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
-          <Link href="/pricing#event-pass" className={buttonVariants({ variant: 'primary', size: 'lg' })}>
-            Je Event kaufen · €{EVENT_PASS_PRICE}
+          <Link href="/auth/register?plan=couple_pass" className={buttonVariants({ variant: 'primary', size: 'lg' })}>
+            Für eure Feier kaufen · €{COUPLE_PRICE}
           </Link>
           <Link href="#wie" className={buttonVariants({ variant: 'ghost', size: 'lg' })}>
             Wie es funktioniert
@@ -148,11 +148,11 @@ export default function BrautpaarLanding() {
           {[
             {
               q: 'Was kostet das?',
-              a: '€19 einmalig. Kein Abo. Gültig 30 Tage vor bis 1 Tag nach eurer Feier. Wenn ihr es nicht braucht, kein Verlust.',
+              a: '€49 einmalig. Kein Abo. Gültig 30 Tage vor bis 1 Tag nach eurer Feier. Zum Vergleich: weniger als ein Hochzeitsstrauß, und es wirkt den ganzen Abend.',
             },
             {
               q: 'Was muss unser DJ tun?',
-              a: 'Wir senden euch einen Link, den ihr eurem DJ weitergebt. Er öffnet ihn auf seinem iPad, fertig. Kein Account-Setup auf seiner Seite, keine extra Software.',
+              a: 'Nichts kaufen, nichts installieren: Ihr schenkt ihm das Voting. Ihr gebt ihm einfach einen Link, er öffnet ihn auf seinem iPad, fertig. Die meisten DJs freuen sich, weil sie den ganzen Abend sehen, was eure Gäste wirklich hören wollen.',
             },
             {
               q: 'Was wenn unser DJ das nicht möchte?',
@@ -182,9 +182,9 @@ export default function BrautpaarLanding() {
             Ihr plant alles, plant auch die Tanzfläche
           </h2>
           <p className="text-fg-muted text-lg leading-relaxed mb-10">
-            Für €19 weiß euer DJ den ganzen Abend, was eure Leute hören wollen. Einmal zahlen, kein Abo. Und wenn ihr es am Ende nicht braucht, habt ihr nichts verloren.
+            Für €49 weiß euer DJ den ganzen Abend, was eure Leute hören wollen. Ihr schenkt es ihm, er muss nichts kaufen und nichts installieren. Einmal zahlen, kein Abo.
           </p>
-          <Link href="/pricing#event-pass" className={buttonVariants({ variant: 'primary', size: 'lg' })}>
+          <Link href="/auth/register?plan=couple_pass" className={buttonVariants({ variant: 'primary', size: 'lg' })}>
             Jetzt für eure Feier kaufen
           </Link>
         </Card>

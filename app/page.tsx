@@ -779,6 +779,9 @@ export default function LandingPage() {
             )}
           </p>
           <nav className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs">
+            <Link href="/brautpaar" className="text-neon-gold hover:text-turquoise transition-colors">
+              Für Brautpaare
+            </Link>
             <Link href="/impressum" className="hover:text-turquoise transition-colors">
               Impressum
             </Link>
