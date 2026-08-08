@@ -62,9 +62,6 @@ export default function BrautpaarLanding() {
           <div className="absolute inset-0 bg-gradient-to-b from-base via-base/30 to-base" />
         </div>
         <div className="relative z-10 max-w-4xl mx-auto px-4 pt-20 pb-16 md:pt-28 md:pb-24 text-center">
-        <p className="font-mono text-xs font-semibold uppercase tracking-widest text-neon-gold mb-5">
-          Für Brautpaare
-        </p>
         <h1 className="font-display text-5xl md:text-6xl font-black uppercase leading-[1.05] mb-8 text-glow-gold">
           Der interaktive DJ<br />
           <span className="text-turquoise">für eine volle Tanzfläche</span>
@@ -209,18 +206,26 @@ export default function BrautpaarLanding() {
         </div>
       </section>
 
-      {/* CTA: eckige Box, vor den FAQ */}
-      <section className="py-20 px-4">
-        <div className="max-w-2xl mx-auto border border-line bg-panel-elevated shadow-lg shadow-black/30 px-6 py-14 md:px-12 text-center">
-          <h2 className="font-display text-3xl md:text-4xl font-black uppercase leading-tight mb-6 text-glow-gold">
-            Bereit für eine volle Tanzfläche?
-          </h2>
-          <p className="text-fg-muted text-lg leading-relaxed mb-10">
-            Die Deko sehen eure Gäste, die Party fühlen sie. Für €49 weiß euer DJ den ganzen Abend, was eure Leute hören wollen.
-          </p>
-          <Link href="/brautpaar/start" className={buttonVariants({ variant: 'primary', size: 'lg' })}>
-            Jetzt Musikwünsche sammeln
-          </Link>
+      {/* CTA: Finale als durchgehendes Band (wie die anderen Sections), das
+          Gewicht kommt aus Raum und Licht statt aus Rahmen und Schlagschatten.
+          Der eckige Doppelrahmen greift das Motiv der Pain-Karten auf. */}
+      <section className="relative overflow-hidden bg-panel border-y border-line py-24 md:py-32 px-4">
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_55%_60%_at_50%_50%,rgba(255,206,84,0.10),transparent_72%)]"
+        />
+        <div className="relative max-w-2xl mx-auto border border-neon-gold/25 p-2">
+          <div className="border border-line/80 px-6 py-14 md:px-14 md:py-16 text-center">
+            <h2 className="font-display text-3xl md:text-5xl font-black uppercase leading-[1.05] mb-7 text-glow-gold">
+              Bereit für eine volle Tanzfläche?
+            </h2>
+            <p className="text-fg-muted text-lg leading-relaxed max-w-lg mx-auto mb-11">
+              Die Deko sehen eure Gäste, die Party fühlen sie. Für €49 weiß euer DJ den ganzen Abend, was eure Leute hören wollen.
+            </p>
+            <Link href="/brautpaar/start" className={buttonVariants({ variant: 'primary', size: 'lg' })}>
+              Jetzt Musikwünsche sammeln
+            </Link>
+          </div>
         </div>
       </section>
 
