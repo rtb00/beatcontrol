@@ -197,7 +197,7 @@ export default function BrautpaarLanding() {
             Von DJs für eure Feier gebaut
           </p>
           <blockquote className="font-display text-2xl md:text-3xl leading-relaxed text-fg mb-6">
-            72 Songwünsche und über 230 Stimmen auf einer einzigen Hochzeit.
+            72 Songwünsche auf der letzten Hochzeit mit BeatControl.
           </blockquote>
           <p className="text-sm text-fg-muted">
             BeatControl haben DJs gebaut, die selbst auf Hochzeiten auflegen. Damit eure Feier die wird,
