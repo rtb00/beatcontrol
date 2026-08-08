@@ -183,7 +183,7 @@ export default function BrautpaarStartFunnel() {
                 onChange={(e) => setEmail(e.target.value)}
                 inputMode="email"
                 autoComplete="email"
-                placeholder="Eure E-Mail-Adresse"
+                placeholder="E-Mail-Adresse"
                 className="w-full h-14 px-5 rounded-2xl border border-line bg-panel text-fg text-center placeholder:text-fg-muted/60 focus:outline-none focus:border-neon-gold transition-colors mb-4"
               />
               <Button
@@ -203,32 +203,23 @@ export default function BrautpaarStartFunnel() {
           {/* Screen 2: Listen-Vorschau + Zugang-CTA (Belohnungs-Framing statt Verlust-Hinweis) */}
           {step === 1 && (
             <div className="m-auto w-full max-w-md text-center animate-fade-up">
-              <p className="text-[11px] font-mono font-semibold uppercase tracking-widest text-neon-gold mb-4">
+              <p className="text-[11px] font-mono font-semibold uppercase tracking-widest text-neon-gold mb-8">
                 Eure Musikwunschliste ist startklar
               </p>
 
               {/* Vorschau-Karte im Dashboard-Stil, damit die Liste "echt" wirkt */}
               <Card tone="party" className="mb-6 text-left glow-gold">
-                <div className="flex items-start justify-between gap-3 mb-3">
-                  <h1 className="font-display text-2xl font-black uppercase leading-tight break-words min-w-0">
-                    {title.trim() || 'Eure Feier'}
-                  </h1>
-                  <span className="shrink-0 inline-flex items-center gap-1.5 border border-neon-gold/40 bg-neon-gold/15 text-neon-gold rounded-full px-3 py-1 font-display text-xs font-bold uppercase tracking-wide">
-                    Startklar
-                  </span>
-                </div>
+                <h1 className="font-display text-2xl font-black uppercase leading-tight break-words mb-3">
+                  {title.trim() || 'Eure Feier'}
+                </h1>
                 <p className="text-sm text-fg-muted mb-4">{fmtDate(date)}</p>
                 <div className="flex items-center gap-3 rounded-2xl border border-line bg-base/40 px-4 py-3">
                   <svg viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6 shrink-0 text-neon-gold" aria-hidden="true">
                     <path d="M3 3h8v8H3V3zm2 2v4h4V5H5z" /><path d="M13 3h8v8h-8V3zm2 2v4h4V5h-4z" /><path d="M3 13h8v8H3v-8zm2 2v4h4v-4H5z" /><path d="M13 13h2v2h-2zm4 0h2v2h-2v2h2v2h-2v2h-2v-2h-2v-2h2v-2h2v-2zm2 6h2v2h-2zm0-4h2v2h-2z" />
                   </svg>
-                  <p className="text-sm text-fg-muted text-left">Der Link für eure Gäste und das Abstimmen vom Handy liegen bereit</p>
+                  <p className="text-sm text-fg-muted text-left">Der QR-Code für eure Gäste liegt bereit</p>
                 </div>
               </Card>
-
-              <p className="text-fg-muted leading-relaxed mb-8">
-                Legt euch einen kostenlosen Zugang an, um eure Liste zu speichern und sie euren Gästen zu schicken.
-              </p>
 
               <Button onClick={finish} variant="primary" tone="party" size="lg" className="w-full">
                 Kostenlosen Zugang anlegen
