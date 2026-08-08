@@ -28,8 +28,19 @@ export default function BrautpaarLanding() {
         </Link>
       </NavBar>
 
-      {/* Hero */}
-      <section className="max-w-4xl mx-auto px-4 pt-20 pb-12 md:pt-28 md:pb-16 text-center">
+      {/* Hero mit Tanzflächen-Bild: Overlays dunkeln oben (Navbar), Mitte
+          (Headline-Lesbarkeit) und unten (Übergang in die Seite) gezielt ab */}
+      <section className="relative overflow-hidden">
+        <div className="absolute inset-0" aria-hidden="true">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/brautpaar-hero.jpg"
+            alt=""
+            className="h-full w-full object-cover object-[center_40%] opacity-65"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-base via-base/30 to-base" />
+        </div>
+        <div className="relative z-10 max-w-4xl mx-auto px-4 pt-20 pb-16 md:pt-28 md:pb-24 text-center">
         <p className="font-mono text-xs font-semibold uppercase tracking-widest text-neon-gold mb-5">
           Für Brautpaare
         </p>
@@ -37,7 +48,7 @@ export default function BrautpaarLanding() {
           Die Tanzfläche bleibt voll,<br />
           <span className="text-turquoise">weil eure Gäste mitreden</span>
         </h1>
-        <p className="text-fg-muted text-lg leading-relaxed max-w-2xl mx-auto mb-10">
+        <p className="text-fg/90 [text-shadow:0_1px_4px_rgba(0,0,0,0.6)] text-lg leading-relaxed max-w-2xl mx-auto mb-10">
           Ihr kennt das von anderen Hochzeiten: Um elf ist die Tanzfläche auf einmal leer, und keiner weiß warum. Mit BeatControl wünschen sich eure Gäste ihre Songs vom Handy und stimmen füreinander ab. Euer DJ sieht den ganzen Abend, worauf eure Leute gerade Lust haben.
         </p>
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
@@ -51,6 +62,7 @@ export default function BrautpaarLanding() {
         <p className="text-xs text-fg-muted mt-5">
           Einmalig · 30 Tage vor bis 1 Tag nach der Feier gültig · keine Abos
         </p>
+        </div>
       </section>
 
       {/* Pain Section */}
