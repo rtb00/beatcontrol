@@ -66,7 +66,7 @@ export default function BrautpaarLanding() {
             {[
               {
                 t: 'Der DJ kennt eure Gäste nicht',
-                d: 'Er weiß nicht, dass dein bester Freund auf 90er-Hits steht und deine Cousine nur tanzt, wenn etwas Italienisches läuft. Er spielt das, was er denkt, nicht das, was zündet.',
+                d: 'Er weiß nicht, dass dein bester Freund auf 90er-Hits steht und deine Cousine nur tanzt, wenn etwas Italienisches läuft. Er spielt das, was er denkt, nicht das, was eure Leute wirklich auf die Tanzfläche holt.',
               },
               {
                 t: 'Zettel, WhatsApp und Geschrei',
