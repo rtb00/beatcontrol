@@ -6,36 +6,26 @@ import { Accordion, Card, NavBar, buttonVariants } from '@/app/components/ui';
 
 const COUPLE_PRICE = '49';
 
-// Icons für die zwei Pain-Karten im Rot-Gold-Verlauf der Marke:
+// Icons für die zwei Pain-Karten in Gold:
 // 0 = unbekannte Gäste (Person mit Fragezeichen), 1 = Zettel-Chaos (Notizzettel).
-const painIcon = (i: number) => {
-  const grad = `url(#pain-grad-${i})`;
-  const shapes = i === 0 ? (
-    <g>
-      <circle cx="9" cy="8" r="3.5" stroke={grad} strokeWidth="1.5" />
-      <path d="M3.5 19.5c.7-3.4 3-5.3 5.5-5.3s4.8 1.9 5.5 5.3" stroke={grad} strokeWidth="1.5" strokeLinecap="round" />
-      <path d="M16.6 8.3a2.4 2.4 0 114 1.8c-.8.8-1.6 1.1-1.6 2.3" stroke={grad} strokeWidth="1.5" strokeLinecap="round" />
-      <circle cx="19" cy="15.6" r="0.9" fill={grad} stroke="none" />
-    </g>
-  ) : (
-    <g>
-      <path d="M6.5 3.5h8l4 4v13h-12z" stroke={grad} strokeWidth="1.5" strokeLinejoin="round" />
-      <path d="M14.5 3.5v4h4" stroke={grad} strokeWidth="1.5" strokeLinejoin="round" />
-      <path d="M9.5 12h6M9.5 15h6M9.5 18h3.5" stroke={grad} strokeWidth="1.5" strokeLinecap="round" />
-    </g>
-  );
-  return (
-    <svg viewBox="0 0 24 24" fill="none" className="w-10 h-10 shrink-0" aria-hidden="true">
-      <defs>
-        <linearGradient id={`pain-grad-${i}`} x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stopColor="#ff3547" />
-          <stop offset="1" stopColor="#ffce54" />
-        </linearGradient>
-      </defs>
-      {shapes}
-    </svg>
-  );
-};
+const painIcon = (i: number) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-10 h-10 shrink-0 text-neon-gold" aria-hidden="true">
+    {i === 0 ? (
+      <g>
+        <circle cx="9" cy="8" r="3.5" />
+        <path d="M3.5 19.5c.7-3.4 3-5.3 5.5-5.3s4.8 1.9 5.5 5.3" strokeLinecap="round" />
+        <path d="M16.6 8.3a2.4 2.4 0 114 1.8c-.8.8-1.6 1.1-1.6 2.3" strokeLinecap="round" />
+        <circle cx="19" cy="15.6" r="0.9" fill="currentColor" stroke="none" />
+      </g>
+    ) : (
+      <g>
+        <path d="M6.5 3.5h8l4 4v13h-12z" strokeLinejoin="round" />
+        <path d="M14.5 3.5v4h4" strokeLinejoin="round" />
+        <path d="M9.5 12h6M9.5 15h6M9.5 18h3.5" strokeLinecap="round" />
+      </g>
+    )}
+  </svg>
+);
 
 export default function BrautpaarLanding() {
   const branding = useBranding();
@@ -116,10 +106,10 @@ export default function BrautpaarLanding() {
                 d: 'Gäste schreiben Wünsche auf Servietten, schicken sie per WhatsApp, gehen ans Pult. Manche Wünsche gehen verloren, andere wiederholen sich.',
               },
             ].map(({ t, d }, i) => (
-              <div key={t} className="flex items-center gap-8">
-                {painIcon(i)}
-                <div className="flex-1 rounded-2xl border border-line p-1.5">
-                  <div className="rounded-xl border border-line px-5 py-4">
+              <div key={t} className="rounded-2xl border border-line p-1.5">
+                <div className="rounded-xl border border-line px-5 py-5 flex items-center gap-5 h-full">
+                  {painIcon(i)}
+                  <div>
                     <p className="font-semibold text-fg mb-2">{t}</p>
                     <p className="text-fg-muted leading-relaxed">{d}</p>
                   </div>
