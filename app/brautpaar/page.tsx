@@ -70,7 +70,7 @@ export default function BrautpaarLanding() {
           <span className="text-turquoise">für eine volle Tanzfläche</span>
         </h1>
         <p className="text-fg/90 [text-shadow:0_1px_4px_rgba(0,0,0,0.6)] text-lg leading-relaxed max-w-2xl mx-auto mb-10">
-          Um halb elf ist die Tanzfläche leer und der DJ weiß nicht weiter. Mit BeatControl wünschen sich eure Gäste ihre Songs vom Handy und stimmen über die Wünsche der anderen ab. Euer DJ sieht den ganzen Abend, worauf eure Leute abgehen werden.
+          Um halb elf ist die Tanzfläche leer und der DJ weiß nicht weiter. Mit BeatControl wünschen sich eure Gäste ihre Songs vom Handy und stimmen über die Wünsche der anderen ab. Euer DJ sieht den ganzen Abend, worauf eure Leute abgehen.
         </p>
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <Link href="/brautpaar/start" className={buttonVariants({ variant: 'primary', size: 'lg' })}>
