@@ -45,17 +45,17 @@ export default function BrautpaarLanding() {
           Für Brautpaare
         </p>
         <h1 className="font-display text-5xl md:text-6xl font-black uppercase leading-[1.05] mb-8 text-glow-gold">
-          Eure Gäste wünschen die Songs,<br />
-          <span className="text-turquoise">die Tanzfläche bleibt voll</span>
+          Der interaktive DJ<br />
+          <span className="text-turquoise">für eine volle Tanzfläche</span>
         </h1>
         <p className="text-fg/90 [text-shadow:0_1px_4px_rgba(0,0,0,0.6)] text-lg leading-relaxed max-w-2xl mx-auto mb-10">
-          Um elf ist die Tanzfläche auf einmal leer, und keiner weiß warum. Mit BeatControl wünschen sich eure Gäste ihre Songs vom Handy und stimmen über die Wünsche der anderen ab. Euer DJ sieht den ganzen Abend, worauf eure Leute gerade Lust haben.
+          Um halb elf ist die Tanzfläche leer und der DJ weiß nicht weiter. Mit BeatControl wünschen sich eure Gäste ihre Songs vom Handy und stimmen über die Wünsche der anderen ab. Euer DJ sieht den ganzen Abend, worauf eure Leute gerade Lust haben.
         </p>
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <Link href="/auth/register?plan=couple_pass" className={buttonVariants({ variant: 'primary', size: 'lg' })}>
             Für eure Feier kaufen · €{COUPLE_PRICE}
           </Link>
-          <Link href="#wie" className={buttonVariants({ variant: 'ghost', size: 'lg' })}>
+          <Link href="#wie" className={buttonVariants({ variant: 'secondary', size: 'lg' })}>
             Wie es funktioniert
           </Link>
         </div>
@@ -92,7 +92,7 @@ export default function BrautpaarLanding() {
             ))}
           </div>
           <p className="text-center text-fg mt-14 max-w-2xl mx-auto leading-relaxed">
-            Mit BeatControl zeigen eure Gäste dem DJ den ganzen Abend, was ankommt.
+            Mit BeatControl zeigen eure Gäste dem DJ den ganzen Abend, was sie abfeiern.
             Ihr müsst nur noch tanzen.
           </p>
         </div>
@@ -104,7 +104,7 @@ export default function BrautpaarLanding() {
           So funktioniert es
         </p>
         <h2 className="font-display text-3xl md:text-4xl font-black uppercase text-center mb-16 leading-tight">
-          Drei Schritte, sechs Minuten Setup
+          Drei Schritte
         </h2>
 
         <div className="space-y-10">
