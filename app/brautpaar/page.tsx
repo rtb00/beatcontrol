@@ -57,7 +57,7 @@ export default function BrautpaarLanding() {
           <img
             src="/brautpaar-hero.jpg"
             alt=""
-            className="h-full w-full object-cover object-[center_40%] opacity-65"
+            className="h-full w-full object-cover object-[center_40%] opacity-45"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-base via-base/30 to-base" />
         </div>
@@ -67,15 +67,15 @@ export default function BrautpaarLanding() {
           <span className="text-turquoise">für eine volle Tanzfläche</span>
         </h1>
         <p className="text-fg/90 [text-shadow:0_1px_4px_rgba(0,0,0,0.6)] text-lg leading-relaxed max-w-2xl mx-auto mb-10">
-          Um halb elf ist die Tanzfläche leer und der DJ weiß nicht weiter. Mit BeatControl wünschen sich eure Gäste ihre Songs vom Handy und stimmen über die Wünsche der anderen ab. Euer DJ sieht den ganzen Abend, worauf eure Leute abgehen.
+          Mit BeatControl wünschen sich eure Gäste ihre Songs vom Handy und stimmen über die Wünsche der anderen ab. Euer DJ sieht den ganzen Abend, worauf eure Leute abgehen.
         </p>
         <div className="flex justify-center">
-          <Link href="/brautpaar/start" className={buttonVariants({ variant: 'primary', size: 'lg' })}>
+          <Link href="/brautpaar/start" className={`${buttonVariants({ variant: 'primary', size: 'lg' })} whitespace-nowrap max-[400px]:px-4 max-[400px]:text-[13px] max-[340px]:text-xs`}>
             Startet eure Musikwunschliste
           </Link>
         </div>
         <p className="text-xs text-fg-muted mt-5">
-          Kostenlos starten · kein Abo · einmalig €49 für euren großen Tag
+          Kostenlos starten · kein Abo · einmalig 49€ für euren großen Tag
         </p>
         <Link
           href="#wie"
@@ -102,7 +102,7 @@ export default function BrautpaarLanding() {
                 d: 'Er weiß nicht, dass dein bester Freund auf 90er-Hits steht und deine Cousine nur tanzt, wenn etwas Italienisches läuft. Er spielt das, was er denkt, nicht das, was eure Leute wirklich auf die Tanzfläche holt.',
               },
               {
-                t: 'Zettel, WhatsApp und Geschrei',
+                t: 'Zettel, WhatsApp und Chaos',
                 d: 'Gäste schreiben Wünsche auf Servietten, schicken sie per WhatsApp, gehen ans Pult. Manche Wünsche gehen verloren, andere wiederholen sich.',
               },
             ].map(({ t, d }, i) => (
@@ -215,15 +215,15 @@ export default function BrautpaarLanding() {
           className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_55%_60%_at_50%_50%,rgba(255,206,84,0.10),transparent_72%)]"
         />
         <div className="relative max-w-2xl mx-auto border border-neon-gold/25 p-2">
-          <div className="border border-line/80 px-6 py-14 md:px-14 md:py-16 text-center">
+          <div className="border border-line/80 px-4 sm:px-6 py-14 md:px-14 md:py-16 text-center">
             <h2 className="font-display text-3xl md:text-5xl font-black uppercase leading-[1.05] mb-7 text-glow-gold">
               Bereit für eine volle Tanzfläche?
             </h2>
             <p className="text-fg-muted text-lg leading-relaxed max-w-lg mx-auto mb-11">
-              Die Deko sehen eure Gäste, die Party fühlen sie. Für €49 weiß euer DJ den ganzen Abend, was eure Leute hören wollen.
+              Die Deko sehen eure Gäste, die Party fühlen sie. Für 49€ weiß euer DJ den ganzen Abend, was eure Leute hören wollen.
             </p>
-            <Link href="/brautpaar/start" className={buttonVariants({ variant: 'primary', size: 'lg' })}>
-              Jetzt Musikwünsche sammeln
+            <Link href="/brautpaar/start" className={`${buttonVariants({ variant: 'primary', size: 'lg' })} whitespace-nowrap max-[400px]:px-4 max-[400px]:text-[13px] max-[340px]:text-xs`}>
+              Startet eure Musikwunschliste
             </Link>
           </div>
         </div>
@@ -238,7 +238,7 @@ export default function BrautpaarLanding() {
           items={[
             {
               question: 'Was kostet das?',
-              answer: '€49 einmalig. Kein Abo. Gültig 30 Tage vor bis 1 Tag nach eurer Feier. Zum Vergleich: weniger als ein Hochzeitsstrauß, und es wirkt den ganzen Abend.',
+              answer: '49€ einmalig. Kein Abo. Gültig 30 Tage vor bis 1 Tag nach eurer Feier. Zum Vergleich: weniger als ein Hochzeitsstrauß, und es wirkt den ganzen Abend.',
             },
             {
               question: 'Was muss unser DJ tun?',
