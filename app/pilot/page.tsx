@@ -59,7 +59,7 @@ export default function PilotLanding() {
               },
             ].map(({ t, d }) => (
               <div key={t}>
-                <p className="font-semibold text-base mb-2">{t}</p>
+                <p className="font-semibold text-fg mb-2">{t}</p>
                 <p className="text-sm text-fg-muted leading-relaxed">{d}</p>
               </div>
             ))}

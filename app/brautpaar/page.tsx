@@ -38,7 +38,7 @@ export default function BrautpaarLanding() {
           <span className="text-turquoise">weil eure Gäste mitreden</span>
         </h1>
         <p className="text-fg-muted text-lg leading-relaxed max-w-2xl mx-auto mb-10">
-          Fast jede Hochzeit hat diesen einen Moment: Die Tanzfläche wird leer und keiner weiß warum. Mit BeatControl schlagen eure Gäste vom Handy ihre Songs vor und voten füreinander. Euer DJ sieht live, was gerade gefragt ist, und legt sicher nach.
+          Ihr kennt das von anderen Hochzeiten: Um elf ist die Tanzfläche auf einmal leer, und keiner weiß warum. Mit BeatControl wünschen sich eure Gäste ihre Songs vom Handy und stimmen füreinander ab. Euer DJ sieht den ganzen Abend, worauf eure Leute gerade Lust haben.
         </p>
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <Link href="/auth/register?plan=couple_pass" className={buttonVariants({ variant: 'primary', size: 'lg' })}>
@@ -78,7 +78,7 @@ export default function BrautpaarLanding() {
               },
             ].map(({ t, d }) => (
               <div key={t}>
-                <p className="font-semibold text-base mb-2">{t}</p>
+                <p className="font-semibold text-fg mb-2">{t}</p>
                 <p className="text-fg-muted leading-relaxed">{d}</p>
               </div>
             ))}
@@ -100,17 +100,17 @@ export default function BrautpaarLanding() {
             {
               num: '1',
               t: 'Ihr legt euer Event an',
-              d: 'Datum, Hochzeits-Name, optional Logo. BeatControl erstellt einen QR-Code für eure Gäste. Druckt ihn auf die Menükarte, klebt ihn an die Bar, packt ihn ins Save-the-Date.',
+              d: 'Datum und Name eurer Feier eingeben, fertig. Ihr bekommt schöne Gastkarten mit QR-Code zum Ausdrucken: auf die Tische legen, an die Bar kleben oder mit der Einladung verschicken.',
             },
             {
               num: '2',
               t: 'Gäste schlagen vor und voten',
-              d: 'Jeder Gast scannt den QR-Code mit seinem Handy. Schlägt 1–3 Lieblingssongs vor, stimmt für andere Vorschläge ab. Kein Account, keine App, keine Anmeldung. Funktioniert auf jedem Handy seit 2018.',
+              d: 'Jeder Gast scannt den QR-Code mit der Handykamera, wünscht sich bis zu drei Songs und gibt den Wünschen der anderen ein Like. Keine App, keine Anmeldung. Wenn eure Oma WhatsApp kann, kann sie das hier auch.',
             },
             {
               num: '3',
               t: 'Der DJ sieht alles live',
-              d: 'Sortiert nach Stimmen, in Echtzeit. Er spielt die Top-Wünsche zwischen seinen geplanten Sets, markiert gespielte Songs als erledigt. Eure Gäste sehen sofort, dass ihr Wunsch durchgekommen ist. Stimmung trägt sich selbst.',
+              d: 'Er sieht jederzeit, welche Songs sich gerade die meisten wünschen. Und wenn ein Wunsch läuft, merkt ihr das sofort: Der Tisch, der ihn eingereicht hat, ist als erster auf der Tanzfläche.',
             },
           ].map(({ num, t, d }) => (
             <div key={num} className="flex gap-6 items-start">
@@ -121,6 +121,24 @@ export default function BrautpaarLanding() {
               </div>
             </div>
           ))}
+        </div>
+      </section>
+
+      {/* Vor der Hochzeit: Pre-Voting statt Playlist-Bastelei */}
+      <section className="max-w-3xl mx-auto px-4 pb-20">
+        <div className="rounded-3xl border border-neon-gold/40 bg-neon-gold/5 px-8 py-10 text-center">
+          <p className="font-mono text-xs font-semibold uppercase tracking-widest text-neon-gold mb-4">
+            Schon vor der Hochzeit
+          </p>
+          <h3 className="font-display text-2xl font-black uppercase mb-4 text-fg">
+            Eure Gäste dürfen sich jetzt schon freuen
+          </h3>
+          <p className="text-fg-muted leading-relaxed max-w-xl mx-auto">
+            Der Link funktioniert schon 30 Tage vor eurer Feier. Schickt ihn mit der Einladung oder in die
+            Familien-Gruppe, und eure Gäste wünschen und voten, bevor die Feier überhaupt losgeht. Ihr müsst
+            keine Playlist mehr zusammenbasteln, die Wunschliste füllt sich von selbst, und euer DJ weiß am
+            großen Tag schon, was eure Leute feiern wollen.
+          </p>
         </div>
       </section>
 
@@ -168,7 +186,7 @@ export default function BrautpaarLanding() {
             },
           ].map(({ q, a }) => (
             <div key={q}>
-              <p className="font-semibold text-base mb-2">{q}</p>
+              <p className="font-semibold text-fg mb-2">{q}</p>
               <p className="text-fg-muted leading-relaxed">{a}</p>
             </div>
           ))}

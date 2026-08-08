@@ -366,7 +366,7 @@ export default function GuestPage() {
           <footer className="mt-12 text-center">
             <a
               href="/?ref=gast"
-              className="text-fg-muted/70 text-xs hover:text-turquoise transition-colors"
+              className="text-fg-muted text-xs hover:text-turquoise transition-colors"
             >
               Läuft mit BeatControl, dem Live-Voting für DJs
             </a>
