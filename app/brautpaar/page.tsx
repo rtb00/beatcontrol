@@ -121,7 +121,7 @@ export default function BrautpaarLanding() {
                   <p className="text-fg-muted text-sm leading-relaxed">
                     Schickt den Link einfach mit der Einladung oder in die Familien-Gruppe, mehr müsst ihr
                     nicht tun. Eure Gäste wünschen sich ihre Songs schon Wochen vorher, und euer DJ weiß am
-                    großen Tag, was eure Leute feiern, statt es erst um elf herauszufinden.
+                    großen Tag, was eure Leute feiern, statt es erst um halb zwölf herauszufinden.
                   </p>
                 </div>
                 <div className="rounded-2xl border border-line bg-panel px-5 py-4">
