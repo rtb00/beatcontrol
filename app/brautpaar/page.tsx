@@ -6,6 +6,22 @@ import { Accordion, Card, NavBar, buttonVariants } from '@/app/components/ui';
 
 const COUPLE_PRICE = '49';
 
+// Icons für die zwei Pain-Karten, gleicher Stroke-Stil wie auf der Landingpage:
+// 0 = unbekannte Gäste (Person mit Fragezeichen), 1 = Zettel-Chaos (Notizzettel).
+const PAIN_ICONS = [
+  <g key="gaeste">
+    <circle cx="9" cy="8" r="3.5" stroke="currentColor" strokeWidth="1.5" />
+    <path d="M3.5 19.5c.7-3.4 3-5.3 5.5-5.3s4.8 1.9 5.5 5.3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    <path d="M16.6 8.3a2.4 2.4 0 114 1.8c-.8.8-1.6 1.1-1.6 2.3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    <circle cx="19" cy="15.6" r="0.9" fill="currentColor" stroke="none" />
+  </g>,
+  <g key="zettel">
+    <path d="M6.5 3.5h8l4 4v13h-12z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
+    <path d="M14.5 3.5v4h4" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
+    <path d="M9.5 12h6M9.5 15h6M9.5 18h3.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+  </g>,
+];
+
 export default function BrautpaarLanding() {
   const branding = useBranding();
   const brandName = branding.brandingName ?? 'BeatControl';
@@ -84,10 +100,15 @@ export default function BrautpaarLanding() {
                 t: 'Zettel, WhatsApp und Geschrei',
                 d: 'Gäste schreiben Wünsche auf Servietten, schicken sie per WhatsApp, gehen ans Pult. Manche Wünsche gehen verloren, andere wiederholen sich.',
               },
-            ].map(({ t, d }) => (
-              <div key={t}>
-                <p className="font-semibold text-fg mb-2">{t}</p>
-                <p className="text-fg-muted leading-relaxed">{d}</p>
+            ].map(({ t, d }, i) => (
+              <div key={t} className="flex items-center gap-5">
+                <svg viewBox="0 0 24 24" fill="none" className="w-10 h-10 shrink-0 text-turquoise" aria-hidden="true">
+                  {PAIN_ICONS[i]}
+                </svg>
+                <div>
+                  <p className="font-semibold text-fg mb-2">{t}</p>
+                  <p className="text-fg-muted leading-relaxed">{d}</p>
+                </div>
               </div>
             ))}
           </div>
