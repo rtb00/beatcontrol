@@ -80,7 +80,7 @@ export default function BrautpaarLanding() {
           <span className="text-turquoise">für eine volle Tanzfläche</span>
         </h1>
         <p className="text-fg/90 [text-shadow:0_1px_4px_rgba(0,0,0,0.6)] text-lg leading-relaxed max-w-2xl mx-auto mb-10">
-          Um halb elf ist die Tanzfläche leer und der DJ weiß nicht weiter. Mit BeatControl wünschen sich eure Gäste ihre Songs vom Handy und stimmen über die Wünsche der anderen ab. Euer DJ sieht den ganzen Abend, worauf eure Leute gerade Lust haben.
+          Um halb elf ist die Tanzfläche leer und der DJ weiß nicht weiter. Mit BeatControl wünschen sich eure Gäste ihre Songs vom Handy und stimmen über die Wünsche der anderen ab. Euer DJ sieht den ganzen Abend, worauf eure Leute abgehen werden.
         </p>
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <Link href="/auth/register?plan=couple_pass" className={buttonVariants({ variant: 'primary', size: 'lg' })}>
@@ -216,6 +216,21 @@ export default function BrautpaarLanding() {
         </div>
       </section>
 
+      {/* CTA: eckige Box, vor den FAQ */}
+      <section className="py-20 px-4">
+        <div className="max-w-2xl mx-auto border border-line bg-panel-elevated shadow-lg shadow-black/30 px-6 py-14 md:px-12 text-center">
+          <h2 className="font-display text-3xl md:text-4xl font-black uppercase leading-tight mb-6 text-glow-gold">
+            Bereit für eine volle Tanzfläche?
+          </h2>
+          <p className="text-fg-muted text-lg leading-relaxed mb-10">
+            Die Deko sehen eure Gäste, die Party fühlen sie. Für €49 weiß euer DJ den ganzen Abend, was eure Leute hören wollen.
+          </p>
+          <Link href="/auth/register?plan=couple_pass" className={buttonVariants({ variant: 'primary', size: 'lg' })}>
+            Jetzt für eure Feier kaufen
+          </Link>
+        </div>
+      </section>
+
       {/* FAQ */}
       <section className="max-w-3xl mx-auto px-4 py-20">
         <h2 className="font-display text-3xl md:text-4xl font-black uppercase text-center mb-12 leading-tight">
@@ -249,21 +264,6 @@ export default function BrautpaarLanding() {
             },
           ]}
         />
-      </section>
-
-      {/* CTA */}
-      <section className="py-20">
-        <Card tone="party" elevated className="max-w-2xl mx-auto px-4 py-16 text-center">
-          <h2 className="font-display text-3xl md:text-4xl font-black uppercase leading-tight mb-6 text-glow-gold">
-            Ihr plant alles, plant auch die Tanzfläche
-          </h2>
-          <p className="text-fg-muted text-lg leading-relaxed mb-10">
-            Die Deko sehen eure Gäste, die Party fühlen sie. Für €49 weiß euer DJ den ganzen Abend, was eure Leute hören wollen.
-          </p>
-          <Link href="/auth/register?plan=couple_pass" className={buttonVariants({ variant: 'primary', size: 'lg' })}>
-            Jetzt für eure Feier kaufen
-          </Link>
-        </Card>
       </section>
 
       {/* Footer */}
