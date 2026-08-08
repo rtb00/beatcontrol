@@ -226,7 +226,7 @@ export default function BrautpaarLanding() {
             Die Deko sehen eure Gäste, die Party fühlen sie. Für €49 weiß euer DJ den ganzen Abend, was eure Leute hören wollen.
           </p>
           <Link href="/auth/register?plan=couple_pass" className={buttonVariants({ variant: 'primary', size: 'lg' })}>
-            Jetzt für eure Feier kaufen
+            Jetzt Musikwünsche sammeln
           </Link>
         </div>
       </section>
