@@ -128,14 +128,17 @@ export async function POST(req: NextRequest) {
 
   const slug = await generateUniqueSlug();
 
+  const djToken = randomBytes(16).toString('hex');
+
   const { rows } = await sql`
-    INSERT INTO events (slug, title, dj_id, event_date, credit_redeemed)
+    INSERT INTO events (slug, title, dj_id, event_date, credit_redeemed, dj_token)
     VALUES (
       ${slug},
       ${title.trim()},
       ${userId},
       ${normalizedDate},
-      ${redeemCredit}
+      ${redeemCredit},
+      ${djToken}
     )
     RETURNING id, slug, title, active, event_date, created_at, credit_redeemed
   `;

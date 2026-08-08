@@ -172,6 +172,11 @@ export async function initDB() {
   await sql`ALTER TABLE users ADD COLUMN IF NOT EXISTS branding_name TEXT`;
   await sql`ALTER TABLE users ADD COLUMN IF NOT EXISTS branding_logo_url TEXT`;
 
+  // DJ-Link: geheimes Token pro Event, mit dem der Live-Screen ohne Account
+  // bedient werden kann (Brautpaar teilt den Link mit seinem DJ).
+  await sql`ALTER TABLE events ADD COLUMN IF NOT EXISTS dj_token TEXT`;
+  await sql`UPDATE events SET dj_token = md5(random()::text || clock_timestamp()::text || id::text) WHERE dj_token IS NULL`;
+
   // Credit-Packs: gekauftes Event-Guthaben am Nutzer, Einlösung markiert das
   // einzelne Event dauerhaft als freigeschaltet (verhält sich wie Event-Pass).
   await sql`ALTER TABLE users ADD COLUMN IF NOT EXISTS event_credits INT NOT NULL DEFAULT 0`;

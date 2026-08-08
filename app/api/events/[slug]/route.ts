@@ -12,6 +12,7 @@ export async function GET(
   const { rows } = await sql`
     SELECT
       e.id, e.slug, e.title, e.active, e.event_date, e.created_at, e.credit_redeemed,
+      e.dj_id, e.dj_token,
       u.plan AS owner_plan,
       u.plan_status AS owner_plan_status,
       u.current_period_end AS owner_current_period_end,
@@ -47,6 +48,11 @@ export async function GET(
     whitelabel = plan === 'studio';
   }
 
+  // Das DJ-Token verlässt den Server nur Richtung Owner — damit teilt das
+  // Brautpaar den Live-Screen mit seinem DJ, ohne Zugangsdaten weiterzugeben.
+  const session = await auth();
+  const isOwner = !!session?.user?.id && session.user.id === row.dj_id;
+
   return NextResponse.json({
     id: row.id,
     slug: row.slug,
@@ -57,6 +63,7 @@ export async function GET(
     branding_name: brandingName,
     branding_logo_url: brandingLogoUrl,
     whitelabel,
+    ...(isOwner ? { dj_token: row.dj_token } : {}),
   });
 }
 

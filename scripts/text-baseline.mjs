@@ -45,7 +45,7 @@ const TARGET_FILES = [
   'app/pilot/page.tsx',
   'app/start/page.tsx',
   'app/dj/page.tsx',
-  'app/dj/[slug]/page.tsx',
+  'app/dj/[slug]/DJEventClient.tsx',
   'app/[slug]/page.tsx',
   'app/auth/signin/page.tsx',
   'app/auth/register/page.tsx',
