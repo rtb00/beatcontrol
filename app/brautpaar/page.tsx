@@ -119,9 +119,9 @@ export default function BrautpaarLanding() {
                     Schon vor der Feier
                   </p>
                   <p className="text-fg-muted text-sm leading-relaxed">
-                    Schickt den Link mit der Einladung oder in die Familien-Gruppe. Eure Gäste wünschen sich
-                    ihre Songs schon Wochen vorher, die Vorfreude beginnt beim ersten Blick auf die Liste, und
-                    euer DJ kennt eure Leute, bevor er zum ersten Mal auflegt.
+                    Kennt ihr die Musikwunsch-Zeile in Hochzeitseinladungen? Das hier ist dasselbe, nur dass
+                    die Wünsche wirklich beim DJ landen. Schickt den Link mit der Einladung, eure Gäste wünschen
+                    schon Wochen vorher, und euer DJ kennt eure Leute, bevor er zum ersten Mal auflegt.
                   </p>
                 </div>
                 <div className="rounded-2xl border border-line bg-panel px-5 py-4">
@@ -144,8 +144,9 @@ export default function BrautpaarLanding() {
             <div>
               <p className="font-display text-xl font-semibold mb-2">Der DJ sieht alles live</p>
               <p className="text-fg-muted leading-relaxed">
-                Er sieht jederzeit, welche Songs sich gerade die meisten wünschen. Und wenn ein Wunsch läuft,
-                merkt ihr das sofort: Der Tisch, der ihn eingereicht hat, ist als erster auf der Tanzfläche.
+                Er sieht jederzeit, welche Songs sich gerade die meisten wünschen. Und wer für einen Song
+                gestimmt hat, kommt auch tanzen, wenn er läuft: Der Tisch, der ihn sich gewünscht hat, ist als
+                erster auf der Fläche.
               </p>
             </div>
           </div>
@@ -187,6 +188,10 @@ export default function BrautpaarLanding() {
               a: 'Dann nehmt es selbst in die Hand. Ihr seid die Event-Owner. Eine Person aus der Hochzeitsgesellschaft (Trauzeuge, Schwiegervater, ein Freund) kann das Display am DJ-Pult auf dem iPad zeigen. Der DJ sieht die Wünsche, ohne dass er aktiv mitmachen muss.',
             },
             {
+              q: 'Was, wenn sich jemand etwas Peinliches wünscht?',
+              a: 'Jeder Gast hat nur drei Wünsche, und nach oben kommt, was viele wollen. Ein einzelner Scherz-Wunsch geht in der Liste einfach unter. Und am Ende entscheidet sowieso euer DJ, was läuft. Ihr müsst mit niemandem diskutieren.',
+            },
+            {
               q: 'Was passiert mit unseren Daten?',
               a: 'Hosting in der EU. Keine Werbe-Cookies, kein Google Analytics, keine Profile. IP-Adressen werden anonymisiert per kryptographischem Hash gespeichert (nur für Spam-Schutz innerhalb des Events). DSGVO-konform, deutsche Rechtslage.',
             },
@@ -210,7 +215,7 @@ export default function BrautpaarLanding() {
             Ihr plant alles, plant auch die Tanzfläche
           </h2>
           <p className="text-fg-muted text-lg leading-relaxed mb-10">
-            Für €49 weiß euer DJ den ganzen Abend, was eure Leute hören wollen. Ihr schenkt es ihm, er muss nichts kaufen und nichts installieren. Einmal zahlen, kein Abo.
+            Hinterher reden eure Gäste nicht über die Deko, sie reden über die Party. Für €49 weiß euer DJ den ganzen Abend, was eure Leute hören wollen. Ihr schenkt es ihm, er muss nichts kaufen und nichts installieren. Einmal zahlen, kein Abo.
           </p>
           <Link href="/auth/register?plan=couple_pass" className={buttonVariants({ variant: 'primary', size: 'lg' })}>
             Jetzt für eure Feier kaufen
