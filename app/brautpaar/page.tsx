@@ -95,50 +95,60 @@ export default function BrautpaarLanding() {
           Drei Schritte, sechs Minuten Setup
         </h2>
 
-        <div className="space-y-8">
-          {[
-            {
-              num: '1',
-              t: 'Ihr legt euer Event an',
-              d: 'Datum und Name eurer Feier eingeben, fertig. Ihr bekommt schöne Gastkarten mit QR-Code zum Ausdrucken: auf die Tische legen, an die Bar kleben oder mit der Einladung verschicken.',
-            },
-            {
-              num: '2',
-              t: 'Gäste schlagen vor und voten',
-              d: 'Jeder Gast scannt den QR-Code mit der Handykamera, wünscht sich bis zu drei Songs und gibt den Wünschen der anderen ein Like. Keine App, keine Anmeldung. Wenn eure Oma WhatsApp kann, kann sie das hier auch.',
-            },
-            {
-              num: '3',
-              t: 'Der DJ sieht alles live',
-              d: 'Er sieht jederzeit, welche Songs sich gerade die meisten wünschen. Und wenn ein Wunsch läuft, merkt ihr das sofort: Der Tisch, der ihn eingereicht hat, ist als erster auf der Tanzfläche.',
-            },
-          ].map(({ num, t, d }) => (
-            <div key={num} className="flex gap-6 items-start">
-              <span className="font-display text-5xl font-black text-neon-gold shrink-0 leading-none">{num}</span>
-              <div>
-                <p className="font-display text-xl font-semibold mb-2">{t}</p>
-                <p className="text-fg-muted leading-relaxed">{d}</p>
+        <div className="space-y-10">
+          {/* Schritt 1 */}
+          <div className="flex gap-6 items-start">
+            <span className="font-display text-5xl font-black text-neon-gold shrink-0 leading-none">1</span>
+            <div>
+              <p className="font-display text-xl font-semibold mb-2">Ihr legt euer Event an</p>
+              <p className="text-fg-muted leading-relaxed">
+                Datum und Name eurer Feier eingeben, fertig. Ihr bekommt schöne Gastkarten mit QR-Code zum
+                Ausdrucken: auf die Tische legen, an die Bar kleben oder mit der Einladung verschicken.
+              </p>
+            </div>
+          </div>
+
+          {/* Schritt 2 mit zwei Momenten: vorher und am Abend */}
+          <div className="flex gap-6 items-start">
+            <span className="font-display text-5xl font-black text-neon-gold shrink-0 leading-none">2</span>
+            <div className="min-w-0 flex-1">
+              <p className="font-display text-xl font-semibold mb-4">Eure Gäste wünschen und voten</p>
+              <div className="grid sm:grid-cols-2 gap-4">
+                <div className="rounded-2xl border border-line bg-panel px-5 py-4">
+                  <p className="font-mono text-[11px] font-semibold uppercase tracking-widest text-neon-gold mb-2">
+                    Schon vor der Feier
+                  </p>
+                  <p className="text-fg-muted text-sm leading-relaxed">
+                    Schickt den Link mit der Einladung oder in die Familien-Gruppe. Eure Gäste wünschen sich
+                    ihre Songs schon Wochen vorher, die Vorfreude beginnt beim ersten Blick auf die Liste, und
+                    euer DJ kennt eure Leute, bevor er zum ersten Mal auflegt.
+                  </p>
+                </div>
+                <div className="rounded-2xl border border-line bg-panel px-5 py-4">
+                  <p className="font-mono text-[11px] font-semibold uppercase tracking-widest text-turquoise mb-2">
+                    Am Abend
+                  </p>
+                  <p className="text-fg-muted text-sm leading-relaxed">
+                    Jeder Gast scannt den QR-Code mit der Handykamera, wünscht sich bis zu drei Songs und gibt
+                    den Wünschen der anderen ein Like. Keine App, keine Anmeldung. Wenn eure Oma WhatsApp kann,
+                    kann sie das hier auch.
+                  </p>
+                </div>
               </div>
             </div>
-          ))}
-        </div>
-      </section>
+          </div>
 
-      {/* Vor der Hochzeit: Pre-Voting statt Playlist-Bastelei */}
-      <section className="max-w-3xl mx-auto px-4 pb-20">
-        <div className="rounded-3xl border border-neon-gold/40 bg-neon-gold/5 px-8 py-10 text-center">
-          <p className="font-mono text-xs font-semibold uppercase tracking-widest text-neon-gold mb-4">
-            Schon vor der Hochzeit
-          </p>
-          <h3 className="font-display text-2xl font-black uppercase mb-4 text-fg">
-            Eure Gäste dürfen sich jetzt schon freuen
-          </h3>
-          <p className="text-fg-muted leading-relaxed max-w-xl mx-auto">
-            Der Link funktioniert schon 30 Tage vor eurer Feier. Schickt ihn mit der Einladung oder in die
-            Familien-Gruppe, und eure Gäste wünschen und voten, bevor die Feier überhaupt losgeht. Ihr müsst
-            keine Playlist mehr zusammenbasteln, die Wunschliste füllt sich von selbst, und euer DJ weiß am
-            großen Tag schon, was eure Leute feiern wollen.
-          </p>
+          {/* Schritt 3 */}
+          <div className="flex gap-6 items-start">
+            <span className="font-display text-5xl font-black text-neon-gold shrink-0 leading-none">3</span>
+            <div>
+              <p className="font-display text-xl font-semibold mb-2">Der DJ sieht alles live</p>
+              <p className="text-fg-muted leading-relaxed">
+                Er sieht jederzeit, welche Songs sich gerade die meisten wünschen. Und wenn ein Wunsch läuft,
+                merkt ihr das sofort: Der Tisch, der ihn eingereicht hat, ist als erster auf der Tanzfläche.
+              </p>
+            </div>
+          </div>
         </div>
       </section>
 
