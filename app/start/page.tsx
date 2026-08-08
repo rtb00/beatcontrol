@@ -151,7 +151,7 @@ export default function StartFunnel() {
                   das Overlay ersetzt den fehlenden Placeholder, solange kein
                   Datum gewählt ist (pointer-events-none lässt Taps durch,
                   peer-focus blendet es aus, damit der Fokus sichtbar bleibt). */}
-              <div className="relative mb-4">
+              <div className="relative h-14 mb-4">
                 <input
                   ref={dateRef}
                   type="date"
@@ -159,7 +159,7 @@ export default function StartFunnel() {
                   onChange={(e) => setDate(e.target.value)}
                   onClick={openDatePicker}
                   aria-label="Datum der Feier"
-                  className="peer block w-full h-14 min-w-0 appearance-none px-5 rounded-2xl border border-line bg-panel text-fg text-center focus:outline-none focus:border-turquoise transition-colors [&::-webkit-date-and-time-value]:text-center"
+                  className="peer absolute inset-0 block w-full h-full min-w-0 appearance-none px-5 rounded-2xl border border-line bg-panel text-fg text-center focus:outline-none focus:border-turquoise transition-colors [&::-webkit-date-and-time-value]:text-center [&::-webkit-date-and-time-value]:h-full [&::-webkit-date-and-time-value]:leading-[3.5rem]"
                 />
                 {!date && (
                   <span
