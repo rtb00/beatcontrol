@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useBranding } from '@/app/lib/branding-context';
-import { Card, NavBar, buttonVariants } from '@/app/components/ui';
+import { Accordion, Card, NavBar, buttonVariants } from '@/app/components/ui';
 
 const COUPLE_PRICE = '49';
 
@@ -60,7 +60,7 @@ export default function BrautpaarLanding() {
             Ihr kennt das von anderen Hochzeiten
           </p>
           <h2 className="font-display text-3xl md:text-4xl font-black uppercase text-center mb-16 leading-tight">
-            Die Tanzfläche, die plötzlich leer ist
+            Wie gut euer DJ wirklich ist,<br />merkt ihr erst, wenn es zu spät ist
           </h2>
           <div className="grid md:grid-cols-3 gap-10 text-sm">
             {[
@@ -73,8 +73,8 @@ export default function BrautpaarLanding() {
                 d: 'Gäste schreiben Wünsche auf Servietten, schicken sie per WhatsApp, gehen ans Pult. Manche Wünsche gehen verloren, andere wiederholen sich. Stress für alle.',
               },
               {
-                t: 'Niemand sagt was, bis es zu spät ist',
-                d: 'Wenn die Stimmung kippt, geht keiner zum DJ. Die Gäste denken "das wird schon", der DJ denkt "läuft", und am Ende reden alle drüber, dass es zwischen 23 und 24 Uhr "ruhig wurde".',
+                t: 'Ihr könnt nur noch zuschauen',
+                d: 'Am Abend habt ihr keine Kontrolle mehr: Ihr habt gebucht, ihr habt bezahlt, und jetzt könnt ihr nur hoffen. Wenn die Stimmung kippt, geht keiner zum DJ, und hinterher reden alle darüber, dass es ab halb zwölf "ruhig wurde".',
               },
             ].map(({ t, d }) => (
               <div key={t}>
@@ -83,6 +83,10 @@ export default function BrautpaarLanding() {
               </div>
             ))}
           </div>
+          <p className="text-center text-fg mt-14 max-w-2xl mx-auto leading-relaxed">
+            BeatControl ist eure Absicherung: Eure Gäste zeigen dem DJ den ganzen Abend, was wirklich
+            ankommt. Ihr müsst nicht mehr hoffen, ihr könnt zusehen, wie es funktioniert.
+          </p>
         </div>
       </section>
 
@@ -173,39 +177,34 @@ export default function BrautpaarLanding() {
         <h2 className="font-display text-3xl md:text-4xl font-black uppercase text-center mb-12 leading-tight">
           Häufige Fragen
         </h2>
-        <div className="space-y-8">
-          {[
+        <Accordion
+          items={[
             {
-              q: 'Was kostet das?',
-              a: '€49 einmalig. Kein Abo. Gültig 30 Tage vor bis 1 Tag nach eurer Feier. Zum Vergleich: weniger als ein Hochzeitsstrauß, und es wirkt den ganzen Abend.',
+              question: 'Was kostet das?',
+              answer: '€49 einmalig. Kein Abo. Gültig 30 Tage vor bis 1 Tag nach eurer Feier. Zum Vergleich: weniger als ein Hochzeitsstrauß, und es wirkt den ganzen Abend.',
             },
             {
-              q: 'Was muss unser DJ tun?',
-              a: 'Nichts kaufen, nichts installieren: Ihr schenkt ihm das Voting. Ihr gebt ihm einfach einen Link, er öffnet ihn auf seinem iPad, fertig. Die meisten DJs freuen sich, weil sie den ganzen Abend sehen, was eure Gäste wirklich hören wollen.',
+              question: 'Was muss unser DJ tun?',
+              answer: 'Nichts kaufen, nichts installieren: Ihr schenkt ihm das Voting. Ihr gebt ihm einfach einen Link, er öffnet ihn auf seinem iPad, fertig. Die meisten DJs freuen sich, weil sie den ganzen Abend sehen, was eure Gäste wirklich hören wollen.',
             },
             {
-              q: 'Was wenn unser DJ das nicht möchte?',
-              a: 'Dann nehmt es selbst in die Hand. Ihr seid die Event-Owner. Eine Person aus der Hochzeitsgesellschaft (Trauzeuge, Schwiegervater, ein Freund) kann das Display am DJ-Pult auf dem iPad zeigen. Der DJ sieht die Wünsche, ohne dass er aktiv mitmachen muss.',
+              question: 'Was wenn unser DJ das nicht möchte?',
+              answer: 'Dann nehmt es selbst in die Hand. Ihr seid die Event-Owner. Eine Person aus der Hochzeitsgesellschaft (Trauzeuge, Schwiegervater, ein Freund) kann das Display am DJ-Pult auf dem iPad zeigen. Der DJ sieht die Wünsche, ohne dass er aktiv mitmachen muss.',
             },
             {
-              q: 'Was, wenn sich jemand etwas Peinliches wünscht?',
-              a: 'Jeder Gast hat nur drei Wünsche, und nach oben kommt, was viele wollen. Ein einzelner Scherz-Wunsch geht in der Liste einfach unter. Und am Ende entscheidet sowieso euer DJ, was läuft. Ihr müsst mit niemandem diskutieren.',
+              question: 'Was, wenn sich jemand etwas Peinliches wünscht?',
+              answer: 'Jeder Gast hat nur drei Wünsche, und nach oben kommt, was viele wollen. Ein einzelner Scherz-Wunsch geht in der Liste einfach unter. Und am Ende entscheidet sowieso euer DJ, was läuft. Ihr müsst mit niemandem diskutieren.',
             },
             {
-              q: 'Was passiert mit unseren Daten?',
-              a: 'Hosting in der EU. Keine Werbe-Cookies, kein Google Analytics, keine Profile. IP-Adressen werden anonymisiert per kryptographischem Hash gespeichert (nur für Spam-Schutz innerhalb des Events). DSGVO-konform, deutsche Rechtslage.',
+              question: 'Was passiert mit unseren Daten?',
+              answer: 'Hosting in der EU. Keine Werbe-Cookies, kein Google Analytics, keine Profile. IP-Adressen werden anonymisiert per kryptographischem Hash gespeichert (nur für Spam-Schutz innerhalb des Events). DSGVO-konform, deutsche Rechtslage.',
             },
             {
-              q: 'Können wir das vorab testen?',
-              a: 'Ja. Ihr könnt jederzeit ein Test-Event anlegen, ein paar Beispiel-Songs eingeben und sehen wie es aussieht. Bezahlt wird erst, wenn ihr eure echte Hochzeit aktiviert.',
+              question: 'Können wir das vorab testen?',
+              answer: 'Ja. Ihr könnt jederzeit ein Test-Event anlegen, ein paar Beispiel-Songs eingeben und sehen wie es aussieht. Bezahlt wird erst, wenn ihr eure echte Hochzeit aktiviert.',
             },
-          ].map(({ q, a }) => (
-            <div key={q}>
-              <p className="font-semibold text-fg mb-2">{q}</p>
-              <p className="text-fg-muted leading-relaxed">{a}</p>
-            </div>
-          ))}
-        </div>
+          ]}
+        />
       </section>
 
       {/* CTA */}
