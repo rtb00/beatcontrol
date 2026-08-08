@@ -39,6 +39,7 @@ export default function BrautpaarStartFunnel() {
   const [step, setStep] = useState(0);
   const [title, setTitle] = useState('');
   const [date, setDate] = useState('');
+  const [email, setEmail] = useState('');
   const dateRef = useRef<HTMLInputElement>(null);
 
   // Desktop-Browser öffnen den Kalender nur über das (per appearance-none
@@ -70,13 +71,19 @@ export default function BrautpaarStartFunnel() {
     return () => window.removeEventListener('popstate', onPopState);
   }, []);
 
-  const canSubmit = !!title.trim() && !!date;
+  const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
+  const canSubmit = !!title.trim() && !!date && emailValid;
 
   function create() {
     if (!canSubmit) return;
     if (typeof window !== 'undefined') {
       window.history.pushState({ ...window.history.state, step: 1 }, '');
     }
+    fetch('/api/waitlist', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: email.trim(), selected_tier: 'brautpaar' }),
+    }).catch(() => {});
     setStep(1);
     track('funnel_step', 'brautpaar-1');
   }
@@ -94,6 +101,7 @@ export default function BrautpaarStartFunnel() {
       type: null,
       title: title.trim(),
       date,
+      email: email.trim(),
       pains: [],
       painsOther: null,
       method: null,
@@ -135,14 +143,14 @@ export default function BrautpaarStartFunnel() {
             <div className="m-auto w-full max-w-md text-center animate-fade-up">
               <p className="text-neon-gold text-3xl mb-4">♪</p>
               <h1 className="font-display text-4xl md:text-5xl font-black uppercase leading-tight mb-8 text-glow-gold">
-                Wie heißt eure Feier?
+                Eure Feier
               </h1>
               <input
                 type="text"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 autoFocus
-                placeholder="z. B. Hochzeit von Anna & Ben"
+                placeholder="z. B. Anna und Ben"
                 className="w-full h-14 px-5 rounded-2xl border border-line bg-panel text-fg text-center placeholder:text-fg-muted/60 focus:outline-none focus:border-neon-gold transition-colors mb-3"
               />
               {/* Nativer date-Input: appearance-none + min-w-0 verhindert den
@@ -169,6 +177,15 @@ export default function BrautpaarStartFunnel() {
                   </span>
                 )}
               </div>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                inputMode="email"
+                autoComplete="email"
+                placeholder="Eure E-Mail-Adresse"
+                className="w-full h-14 px-5 rounded-2xl border border-line bg-panel text-fg text-center placeholder:text-fg-muted/60 focus:outline-none focus:border-neon-gold transition-colors mb-4"
+              />
               <Button
                 onClick={create}
                 disabled={!canSubmit}

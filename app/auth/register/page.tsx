@@ -1,6 +1,6 @@
 'use client';
 
-import { Suspense, useState, type FormEvent } from 'react';
+import { Suspense, useEffect, useState, type FormEvent } from 'react';
 import { signIn } from 'next-auth/react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
@@ -29,6 +29,20 @@ function RegisterPageInner() {
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+
+  // E-Mail aus dem Funnel (/start, /brautpaar/start) übernehmen, damit sie
+  // niemand zweimal tippen muss. Das Feld bleibt editierbar.
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    try {
+      const pending = localStorage.getItem('bc_pending_event');
+      if (!pending) return;
+      const data = JSON.parse(pending) as { email?: string };
+      if (data.email) setEmail(data.email);
+    } catch {
+      /* defektes JSON ignorieren */
+    }
+  }, []);
   const [password, setPassword] = useState('');
   const [confirm, setConfirm] = useState('');
   const [acceptedAgb, setAcceptedAgb] = useState(false);

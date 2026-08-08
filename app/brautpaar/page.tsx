@@ -219,7 +219,7 @@ export default function BrautpaarLanding() {
             <h2 className="font-display text-3xl md:text-5xl font-black uppercase leading-[1.05] mb-7 text-glow-gold">
               Bereit für eine volle Tanzfläche?
             </h2>
-            <p className="text-fg-muted text-lg leading-relaxed max-w-lg mx-auto mb-11">
+            <p className="text-fg-muted leading-relaxed max-w-lg mx-auto mb-11">
               Die Deko sehen eure Gäste, die Party fühlen sie. Für 49€ weiß euer DJ den ganzen Abend, was eure Leute hören wollen.
             </p>
             <Link href="/brautpaar/start" className={`${buttonVariants({ variant: 'primary', size: 'lg' })} whitespace-nowrap max-[400px]:px-4 max-[400px]:text-[13px] max-[340px]:text-xs`}>
