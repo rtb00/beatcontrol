@@ -67,7 +67,7 @@ export default function BrautpaarLanding() {
           <span className="text-turquoise">für eine volle Tanzfläche</span>
         </h1>
         <p className="text-fg/90 [text-shadow:0_1px_4px_rgba(0,0,0,0.6)] text-lg leading-relaxed max-w-2xl mx-auto mb-10">
-          Mit BeatControl wünschen sich eure Gäste ihre Songs vom Handy und stimmen über die Wünsche der anderen ab. Euer DJ sieht den ganzen Abend, worauf eure Leute abgehen.
+          Mit BeatControl wünschen sich eure Gäste ihre Songs vom Handy und stimmen über die Wünsche der anderen ab. Euer DJ bekommt einen sechsten Sinn und weiß den ganzen Abend, welche Songs eure Leute abfeiern.
         </p>
         <div className="flex justify-center">
           <Link href="/brautpaar/start" className={`${buttonVariants({ variant: 'primary', size: 'lg' })} whitespace-nowrap max-[400px]:px-4 max-[400px]:text-[13px] max-[340px]:text-xs`}>
