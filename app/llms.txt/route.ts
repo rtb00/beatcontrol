@@ -14,13 +14,13 @@ const CONTENT = `# BeatControl
 
 ## Zielgruppe
 
-Hochzeits-DJs, Party- und Firmenfeier-DJs im deutschsprachigen Raum sowie Brautpaare, die ihrem DJ das Tool schenken. Team-Tarif für DJ-Kollektive und Eventagenturen (Whitelabel, Sub-Accounts, eigene Subdomain).
+Hochzeits-DJs, Party- und Firmenfeier-DJs im deutschsprachigen Raum sowie Brautpaare, die das Tool direkt für ihre eigene Feier buchen. Team-Tarif für DJ-Kollektive und Eventagenturen (Whitelabel, Sub-Accounts, eigene Subdomain).
 
 ## Preise (https://beatcontrol.io/pricing)
 
 - Free: 0 €, für immer kostenlos, 1 aktives Event, bis zu 30 Songwünsche
 - Je Event: 19 € einmalig, kein Abo, unbegrenzte Songwünsche, eigenes Branding
-- Für Brautpaare: 49 € einmalig, das Brautpaar schenkt seinem DJ das Live-Voting für die eigene Feier
+- Für Brautpaare: 49 € einmalig, das Brautpaar bucht das Live-Voting direkt für die eigene Feier, der DJ nutzt es ohne eigene Kosten
 - Pro: 249 €/Jahr (monatlich 29 €), unbegrenzte Events, 30 Tage Geld-zurück-Garantie
 - Team: 124 €/Monat bei jährlicher Abrechnung (monatlich 149 €), Whitelabel für DJ-Kollektive
 

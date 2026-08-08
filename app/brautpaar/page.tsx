@@ -185,7 +185,7 @@ export default function BrautpaarLanding() {
             },
             {
               question: 'Was muss unser DJ tun?',
-              answer: 'Nichts kaufen, nichts installieren: Ihr schenkt ihm das Voting. Ihr gebt ihm einfach einen Link, er öffnet ihn auf seinem iPad, fertig. Die meisten DJs freuen sich, weil sie den ganzen Abend sehen, was eure Gäste wirklich hören wollen.',
+              answer: 'Fast nichts: Ihr gebt ihm einfach einen Link, er öffnet ihn auf seinem iPad, fertig. Die meisten DJs freuen sich, weil sie den ganzen Abend sehen, was eure Gäste wirklich hören wollen.',
             },
             {
               question: 'Was wenn unser DJ das nicht möchte?',
@@ -214,7 +214,7 @@ export default function BrautpaarLanding() {
             Ihr plant alles, plant auch die Tanzfläche
           </h2>
           <p className="text-fg-muted text-lg leading-relaxed mb-10">
-            Hinterher reden eure Gäste nicht über die Deko, sie reden über die Party. Für €49 weiß euer DJ den ganzen Abend, was eure Leute hören wollen. Ihr schenkt es ihm, er muss nichts kaufen und nichts installieren. Einmal zahlen, kein Abo.
+            Hinterher reden eure Gäste nicht über die Deko, sie reden über die Party. Für €49 weiß euer DJ den ganzen Abend, was eure Leute hören wollen.
           </p>
           <Link href="/auth/register?plan=couple_pass" className={buttonVariants({ variant: 'primary', size: 'lg' })}>
             Jetzt für eure Feier kaufen
