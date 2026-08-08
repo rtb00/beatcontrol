@@ -45,11 +45,11 @@ export default function BrautpaarLanding() {
           Für Brautpaare
         </p>
         <h1 className="font-display text-5xl md:text-6xl font-black uppercase leading-[1.05] mb-8 text-glow-gold">
-          Die Tanzfläche bleibt voll,<br />
-          <span className="text-turquoise">weil eure Gäste mitreden</span>
+          Eure Gäste wünschen die Songs,<br />
+          <span className="text-turquoise">die Tanzfläche bleibt voll</span>
         </h1>
         <p className="text-fg/90 [text-shadow:0_1px_4px_rgba(0,0,0,0.6)] text-lg leading-relaxed max-w-2xl mx-auto mb-10">
-          Ihr kennt das von anderen Hochzeiten: Um elf ist die Tanzfläche auf einmal leer, und keiner weiß warum. Mit BeatControl wünschen sich eure Gäste ihre Songs vom Handy und stimmen füreinander ab. Euer DJ sieht den ganzen Abend, worauf eure Leute gerade Lust haben.
+          Um elf ist die Tanzfläche auf einmal leer, und keiner weiß warum. Mit BeatControl wünschen sich eure Gäste ihre Songs vom Handy und stimmen über die Wünsche der anderen ab. Euer DJ sieht den ganzen Abend, worauf eure Leute gerade Lust haben.
         </p>
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <Link href="/auth/register?plan=couple_pass" className={buttonVariants({ variant: 'primary', size: 'lg' })}>
@@ -60,7 +60,7 @@ export default function BrautpaarLanding() {
           </Link>
         </div>
         <p className="text-xs text-fg-muted mt-5">
-          Einmalig · 30 Tage vor bis 1 Tag nach der Feier gültig · keine Abos
+          Einmalig · kein Abo · vorher jederzeit kostenlos ausprobieren
         </p>
         </div>
       </section>
@@ -69,12 +69,12 @@ export default function BrautpaarLanding() {
       <section className="bg-panel py-20 border-y border-line">
         <div className="max-w-4xl mx-auto px-4">
           <p className="font-mono text-xs font-semibold uppercase tracking-widest text-neon-gold mb-6 text-center">
-            Ihr kennt das von anderen Hochzeiten
+            Die Sache mit der Musik
           </p>
           <h2 className="font-display text-3xl md:text-4xl font-black uppercase text-center mb-16 leading-tight">
-            Wie gut euer DJ wirklich ist,<br />merkt ihr erst, wenn es zu spät ist
+            Auch der beste DJ kann nicht wissen,<br />was eure Leute feiern
           </h2>
-          <div className="grid md:grid-cols-3 gap-10 text-sm">
+          <div className="grid md:grid-cols-2 gap-10 text-sm max-w-3xl mx-auto">
             {[
               {
                 t: 'Der DJ kennt eure Gäste nicht',
@@ -82,11 +82,7 @@ export default function BrautpaarLanding() {
               },
               {
                 t: 'Zettel, WhatsApp und Geschrei',
-                d: 'Gäste schreiben Wünsche auf Servietten, schicken sie per WhatsApp, gehen ans Pult. Manche Wünsche gehen verloren, andere wiederholen sich. Stress für alle.',
-              },
-              {
-                t: 'Ihr könnt nur noch zuschauen',
-                d: 'Am Abend habt ihr keine Kontrolle mehr: Ihr habt gebucht, ihr habt bezahlt, und jetzt könnt ihr nur hoffen. Wenn die Stimmung kippt, geht keiner zum DJ, und hinterher reden alle darüber, dass es ab halb zwölf "ruhig wurde".',
+                d: 'Gäste schreiben Wünsche auf Servietten, schicken sie per WhatsApp, gehen ans Pult. Manche Wünsche gehen verloren, andere wiederholen sich.',
               },
             ].map(({ t, d }) => (
               <div key={t}>
@@ -96,8 +92,8 @@ export default function BrautpaarLanding() {
             ))}
           </div>
           <p className="text-center text-fg mt-14 max-w-2xl mx-auto leading-relaxed">
-            BeatControl ist eure Absicherung: Eure Gäste zeigen dem DJ den ganzen Abend, was wirklich
-            ankommt. Ihr müsst nicht mehr hoffen, ihr könnt zusehen, wie es funktioniert.
+            Mit BeatControl zeigen eure Gäste dem DJ den ganzen Abend, was ankommt.
+            Ihr müsst nur noch tanzen.
           </p>
         </div>
       </section>
@@ -136,8 +132,8 @@ export default function BrautpaarLanding() {
                   </p>
                   <p className="text-fg-muted text-sm leading-relaxed">
                     Schickt den Link einfach mit der Einladung oder in die Familien-Gruppe, mehr müsst ihr
-                    nicht tun. Eure Gäste wünschen sich ihre Songs schon Wochen vorher, und euer DJ weiß am
-                    großen Tag, was eure Leute feiern, statt es erst um halb zwölf herauszufinden.
+                    nicht tun. Eure Gäste wünschen sich ihre Songs schon Wochen vorher, und euer DJ kommt am
+                    großen Tag mit einer Wunschliste an, die eure Leute sich selbst gebaut haben.
                   </p>
                 </div>
                 <div className="rounded-2xl border border-line bg-panel px-5 py-4">
@@ -160,9 +156,8 @@ export default function BrautpaarLanding() {
             <div>
               <p className="font-display text-xl font-semibold mb-2">Der DJ sieht alles live</p>
               <p className="text-fg-muted leading-relaxed">
-                Er sieht jederzeit, welche Songs sich gerade die meisten wünschen. Und wer für einen Song
-                gestimmt hat, kommt auch tanzen, wenn er läuft: Der Tisch, der ihn sich gewünscht hat, ist als
-                erster auf der Fläche.
+                Er sieht jederzeit, welche Songs sich gerade die meisten wünschen. Und wenn der Wunsch-Song
+                vom Kolleginnen-Tisch läuft, wissen die das, und stehen als Erste auf der Fläche.
               </p>
             </div>
           </div>
@@ -173,14 +168,15 @@ export default function BrautpaarLanding() {
       <section className="bg-panel py-16 border-y border-line">
         <div className="max-w-3xl mx-auto px-4 text-center">
           <p className="font-mono text-xs font-semibold uppercase tracking-widest text-neon-gold mb-6">
-            Von einer echten Hochzeit
+            Von DJs für eure Feier gebaut
           </p>
           <blockquote className="font-display text-2xl md:text-3xl leading-relaxed text-fg mb-6">
-            &ldquo;Die Gäste haben den ganzen Abend gevotet. Ich wusste jederzeit, was als Nächstes ankommt, statt zu raten.&rdquo;
+            72 Songwünsche und über 230 Stimmen auf einer einzigen Hochzeit.
           </blockquote>
-          <cite className="text-sm text-fg-muted not-italic block">
-            Hochzeits-DJ · echte Hochzeit 2026
-          </cite>
+          <p className="text-sm text-fg-muted">
+            BeatControl haben DJs gebaut, die selbst auf Hochzeiten auflegen, und es läuft dort seit 2026
+            im echten Einsatz. Eure Gäste machen wirklich mit, das zeigen die Zahlen.
+          </p>
         </div>
       </section>
 
@@ -226,7 +222,7 @@ export default function BrautpaarLanding() {
             Ihr plant alles, plant auch die Tanzfläche
           </h2>
           <p className="text-fg-muted text-lg leading-relaxed mb-10">
-            Hinterher reden eure Gäste nicht über die Deko, sie reden über die Party. Für €49 weiß euer DJ den ganzen Abend, was eure Leute hören wollen.
+            Die Deko sehen eure Gäste, die Party fühlen sie. Für €49 weiß euer DJ den ganzen Abend, was eure Leute hören wollen.
           </p>
           <Link href="/auth/register?plan=couple_pass" className={buttonVariants({ variant: 'primary', size: 'lg' })}>
             Jetzt für eure Feier kaufen
