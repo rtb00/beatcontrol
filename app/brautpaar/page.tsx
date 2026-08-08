@@ -116,7 +116,7 @@ export default function BrautpaarLanding() {
               <div className="grid sm:grid-cols-2 gap-4">
                 <div className="rounded-2xl border border-line bg-panel px-5 py-4">
                   <p className="font-mono text-[11px] font-semibold uppercase tracking-widest text-neon-gold mb-2">
-                    Schon vor der Feier
+                    Vor der Feier
                   </p>
                   <p className="text-fg-muted text-sm leading-relaxed">
                     Kennt ihr die Musikwunsch-Zeile in Hochzeitseinladungen? Das hier ist dasselbe, nur dass
