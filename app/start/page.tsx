@@ -144,7 +144,7 @@ export default function StartFunnel() {
                 onChange={(e) => setTitle(e.target.value)}
                 autoFocus
                 placeholder="z. B. Hochzeit Müller"
-                className="w-full px-5 py-4 rounded-2xl border border-line bg-panel text-fg text-center placeholder:text-fg-muted/60 focus:outline-none focus:border-turquoise transition-colors mb-3"
+                className="w-full h-14 px-5 rounded-2xl border border-line bg-panel text-fg text-center placeholder:text-fg-muted/60 focus:outline-none focus:border-turquoise transition-colors mb-3"
               />
               {/* Nativer date-Input: appearance-none + min-w-0 verhindert den
                   WebKit-Overflow des internen Kalender-Widgets auf Mobile;
@@ -159,7 +159,7 @@ export default function StartFunnel() {
                   onChange={(e) => setDate(e.target.value)}
                   onClick={openDatePicker}
                   aria-label="Datum der Feier"
-                  className="peer block w-full min-w-0 appearance-none px-5 py-4 rounded-2xl border border-line bg-panel text-fg text-center focus:outline-none focus:border-turquoise transition-colors [&::-webkit-date-and-time-value]:text-center"
+                  className="peer block w-full h-14 min-w-0 appearance-none px-5 rounded-2xl border border-line bg-panel text-fg text-center focus:outline-none focus:border-turquoise transition-colors [&::-webkit-date-and-time-value]:text-center"
                 />
                 {!date && (
                   <span
