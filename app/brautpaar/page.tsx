@@ -44,8 +44,8 @@ export default function BrautpaarLanding() {
             <span className="font-display text-xl font-bold tracking-tight">{brandName}</span>
           )}
         </Link>
-        <Link href="/auth/register?plan=couple_pass" className={buttonVariants({ variant: 'primary', size: 'sm' })}>
-          Für eure Feier · €{COUPLE_PRICE}
+        <Link href="/brautpaar/start" className={buttonVariants({ variant: 'primary', size: 'sm' })}>
+          Jetzt starten
         </Link>
       </NavBar>
 
@@ -73,15 +73,15 @@ export default function BrautpaarLanding() {
           Um halb elf ist die Tanzfläche leer und der DJ weiß nicht weiter. Mit BeatControl wünschen sich eure Gäste ihre Songs vom Handy und stimmen über die Wünsche der anderen ab. Euer DJ sieht den ganzen Abend, worauf eure Leute abgehen werden.
         </p>
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
-          <Link href="/auth/register?plan=couple_pass" className={buttonVariants({ variant: 'primary', size: 'lg' })}>
-            Für eure Feier kaufen · €{COUPLE_PRICE}
+          <Link href="/brautpaar/start" className={buttonVariants({ variant: 'primary', size: 'lg' })}>
+            Startet eure Musikwunschliste
           </Link>
           <Link href="#wie" className={buttonVariants({ variant: 'secondary', size: 'lg' })}>
             Wie es funktioniert
           </Link>
         </div>
         <p className="text-xs text-fg-muted mt-5">
-          Einmalig · kein Abo · vorher jederzeit kostenlos ausprobieren
+          Kostenlos starten · kein Abo · einmalig €49 für euren großen Tag
         </p>
         </div>
       </section>
@@ -215,7 +215,7 @@ export default function BrautpaarLanding() {
           <p className="text-fg-muted text-lg leading-relaxed mb-10">
             Die Deko sehen eure Gäste, die Party fühlen sie. Für €49 weiß euer DJ den ganzen Abend, was eure Leute hören wollen.
           </p>
-          <Link href="/auth/register?plan=couple_pass" className={buttonVariants({ variant: 'primary', size: 'lg' })}>
+          <Link href="/brautpaar/start" className={buttonVariants({ variant: 'primary', size: 'lg' })}>
             Jetzt Musikwünsche sammeln
           </Link>
         </div>
