@@ -119,9 +119,9 @@ export default function BrautpaarLanding() {
                     Vor der Feier
                   </p>
                   <p className="text-fg-muted text-sm leading-relaxed">
-                    Kennt ihr die Musikwunsch-Zeile in Hochzeitseinladungen? Das hier ist dasselbe, nur dass
-                    die Wünsche wirklich beim DJ landen. Schickt den Link mit der Einladung, eure Gäste wünschen
-                    schon Wochen vorher, und euer DJ kennt eure Leute, bevor er zum ersten Mal auflegt.
+                    Schickt den Link einfach mit der Einladung oder in die Familien-Gruppe, mehr müsst ihr
+                    nicht tun. Eure Gäste wünschen sich ihre Songs schon Wochen vorher, und euer DJ weiß am
+                    großen Tag, was eure Leute feiern, statt es erst um elf herauszufinden.
                   </p>
                 </div>
                 <div className="rounded-2xl border border-line bg-panel px-5 py-4">
