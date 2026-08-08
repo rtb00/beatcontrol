@@ -6,21 +6,36 @@ import { Accordion, Card, NavBar, buttonVariants } from '@/app/components/ui';
 
 const COUPLE_PRICE = '49';
 
-// Icons für die zwei Pain-Karten, gleicher Stroke-Stil wie auf der Landingpage:
+// Icons für die zwei Pain-Karten im Rot-Gold-Verlauf der Marke:
 // 0 = unbekannte Gäste (Person mit Fragezeichen), 1 = Zettel-Chaos (Notizzettel).
-const PAIN_ICONS = [
-  <g key="gaeste">
-    <circle cx="9" cy="8" r="3.5" stroke="currentColor" strokeWidth="1.5" />
-    <path d="M3.5 19.5c.7-3.4 3-5.3 5.5-5.3s4.8 1.9 5.5 5.3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-    <path d="M16.6 8.3a2.4 2.4 0 114 1.8c-.8.8-1.6 1.1-1.6 2.3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-    <circle cx="19" cy="15.6" r="0.9" fill="currentColor" stroke="none" />
-  </g>,
-  <g key="zettel">
-    <path d="M6.5 3.5h8l4 4v13h-12z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
-    <path d="M14.5 3.5v4h4" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
-    <path d="M9.5 12h6M9.5 15h6M9.5 18h3.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-  </g>,
-];
+const painIcon = (i: number) => {
+  const grad = `url(#pain-grad-${i})`;
+  const shapes = i === 0 ? (
+    <g>
+      <circle cx="9" cy="8" r="3.5" stroke={grad} strokeWidth="1.5" />
+      <path d="M3.5 19.5c.7-3.4 3-5.3 5.5-5.3s4.8 1.9 5.5 5.3" stroke={grad} strokeWidth="1.5" strokeLinecap="round" />
+      <path d="M16.6 8.3a2.4 2.4 0 114 1.8c-.8.8-1.6 1.1-1.6 2.3" stroke={grad} strokeWidth="1.5" strokeLinecap="round" />
+      <circle cx="19" cy="15.6" r="0.9" fill={grad} stroke="none" />
+    </g>
+  ) : (
+    <g>
+      <path d="M6.5 3.5h8l4 4v13h-12z" stroke={grad} strokeWidth="1.5" strokeLinejoin="round" />
+      <path d="M14.5 3.5v4h4" stroke={grad} strokeWidth="1.5" strokeLinejoin="round" />
+      <path d="M9.5 12h6M9.5 15h6M9.5 18h3.5" stroke={grad} strokeWidth="1.5" strokeLinecap="round" />
+    </g>
+  );
+  return (
+    <svg viewBox="0 0 24 24" fill="none" className="w-10 h-10 shrink-0" aria-hidden="true">
+      <defs>
+        <linearGradient id={`pain-grad-${i}`} x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stopColor="#ff3547" />
+          <stop offset="1" stopColor="#ffce54" />
+        </linearGradient>
+      </defs>
+      {shapes}
+    </svg>
+  );
+};
 
 export default function BrautpaarLanding() {
   const branding = useBranding();
@@ -101,13 +116,13 @@ export default function BrautpaarLanding() {
                 d: 'Gäste schreiben Wünsche auf Servietten, schicken sie per WhatsApp, gehen ans Pult. Manche Wünsche gehen verloren, andere wiederholen sich.',
               },
             ].map(({ t, d }, i) => (
-              <div key={t} className="flex items-center gap-5">
-                <svg viewBox="0 0 24 24" fill="none" className="w-10 h-10 shrink-0 text-turquoise" aria-hidden="true">
-                  {PAIN_ICONS[i]}
-                </svg>
-                <div>
-                  <p className="font-semibold text-fg mb-2">{t}</p>
-                  <p className="text-fg-muted leading-relaxed">{d}</p>
+              <div key={t} className="flex items-center gap-8">
+                {painIcon(i)}
+                <div className="flex-1 rounded-2xl border border-line p-1.5">
+                  <div className="rounded-xl border border-line px-5 py-4">
+                    <p className="font-semibold text-fg mb-2">{t}</p>
+                    <p className="text-fg-muted leading-relaxed">{d}</p>
+                  </div>
                 </div>
               </div>
             ))}
@@ -122,10 +137,10 @@ export default function BrautpaarLanding() {
       {/* How it works */}
       <section id="wie" className="max-w-4xl mx-auto px-4 py-20">
         <p className="font-mono text-xs font-semibold uppercase tracking-widest text-neon-gold mb-6 text-center">
-          So funktioniert es
+          So funktioniert
         </p>
         <h2 className="font-display text-3xl md:text-4xl font-black uppercase text-center mb-16 leading-tight">
-          Drei Schritte
+          BeatControl
         </h2>
 
         <div className="space-y-10">
@@ -152,9 +167,9 @@ export default function BrautpaarLanding() {
                     Vor der Feier
                   </p>
                   <p className="text-fg-muted text-sm leading-relaxed">
-                    Schickt den Link einfach mit der Einladung oder in die Familien-Gruppe, mehr müsst ihr
-                    nicht tun. Eure Gäste wünschen sich ihre Songs schon Wochen vorher, und euer DJ kommt am
-                    großen Tag mit einer Wunschliste an, die eure Leute sich selbst gebaut haben.
+                    Schickt euren Gästen einfach den Link zur Musikwunschliste und stimmt ab, welche Songs
+                    ihr besonders feiert. Am großen Tag weiß euer DJ genau Bescheid, wie er die Tanzfläche
+                    zum Beben bringt.
                   </p>
                 </div>
                 <div className="rounded-2xl border border-line bg-panel px-5 py-4">
@@ -162,7 +177,7 @@ export default function BrautpaarLanding() {
                     Am Abend
                   </p>
                   <p className="text-fg-muted text-sm leading-relaxed">
-                    Jeder Gast scannt den QR-Code mit der Handykamera, wünscht sich bis zu drei Songs und gibt
+                    Eure Gäste scannen den QR-Code mit ihrem Handy, wünschen sich bis zu drei Songs und geben
                     den Wünschen der anderen ein Like. Keine App, keine Anmeldung. Wenn eure Oma WhatsApp kann,
                     kann sie das hier auch.
                   </p>
