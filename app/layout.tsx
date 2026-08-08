@@ -122,6 +122,8 @@ export const viewport = {
   width: 'device-width',
   initialScale: 1,
   viewportFit: 'cover' as const,
+  themeColor: '#06030c',
+  colorScheme: 'dark' as const,
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
@@ -130,7 +132,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
   return (
     <html lang="de" className={`${playfair.variable} ${inter.variable} ${baloo.variable} ${jetbrainsMono.variable}`}>
-      <body className="bg-cream text-ink antialiased font-sans">
+      <body className="bg-base text-fg antialiased font-sans">
         {!isWhiteLabel && (
           <script
             type="application/ld+json"

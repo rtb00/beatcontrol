@@ -5,6 +5,15 @@
 @layer base {
   html {
     -webkit-tap-highlight-color: transparent;
+    /* iOS Safari leitet die Farbe der Browser-Toolbar und des Overscroll-
+       Bereichs vom Seiten-Hintergrund ab. Ohne dunkles html/body blitzt dort
+       Weiß durch, obwohl der Gradient auf inneren Containern liegt. */
+    color-scheme: dark;
+    background-color: var(--bg-base);
+  }
+
+  body {
+    background-color: var(--bg-base);
   }
 
   /*
