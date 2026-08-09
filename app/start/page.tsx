@@ -38,7 +38,13 @@ export default function StartFunnel() {
   const router = useRouter();
   const [step, setStep] = useState(0);
   const [title, setTitle] = useState('');
-  const [date, setDate] = useState('');
+  // Vorbelegung ein Jahr voraus: Hochzeiten werden lange im Voraus geplant,
+  // und ein gefülltes Feld ist schneller korrigiert als eines, das bei null steht.
+  const [date, setDate] = useState(() => {
+    const d = new Date();
+    d.setFullYear(d.getFullYear() + 1);
+    return d.toISOString().slice(0, 10);
+  });
   const [email, setEmail] = useState('');
   const dateRef = useRef<HTMLInputElement>(null);
 
