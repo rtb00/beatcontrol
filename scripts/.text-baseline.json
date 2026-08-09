@@ -212,12 +212,13 @@
     "Dein Event ist startklar",
     "Deine E-Mail-Adresse",
     "Deine Feier",
+    "Diesem Event als Organisator beitreten",
     "Event anlegen",
     "Kostenlos, keine Kreditkarte. Dauert keine Minute.",
-    "Kostenlosen DJ-Zugang anlegen",
     "Leg dir einen kostenlosen DJ-Zugang an, um das Event zu speichern und am Tag des Gigs direkt loszulegen.",
     "QR-Code und Live-Voting für deine Gäste liegen bereit",
     "Startklar",
+    "button",
     "z. B. Anna und Ben",
     "← Zurück",
     "♪"
@@ -369,7 +370,6 @@
     "♪"
   ],
   "app/auth/register/page.tsx": [
-    "(optional)",
     "AGB",
     "Account erstellen",
     "Anmelden",
@@ -383,7 +383,6 @@
     "Mindestens 8 Zeichen",
     "Mit Google registrieren",
     "Nach dem Anlegen geht&apos;s direkt zur Buchung.",
-    "Name",
     "Passwort",
     "Passwort bestätigen",
     "Registriere…",

@@ -27,7 +27,6 @@ function RegisterPageInner() {
   const postRegisterUrl = plan ? `/pricing?plan=${plan}` : '/dj';
   const signinHref = plan ? `/auth/signin?plan=${plan}` : '/auth/signin';
 
-  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
 
   // E-Mail aus dem Funnel (/start, /brautpaar/start) übernehmen, damit sie
@@ -80,7 +79,7 @@ function RegisterPageInner() {
       const res = await fetch('/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password, name }),
+        body: JSON.stringify({ email, password }),
       });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) {
@@ -158,20 +157,6 @@ function RegisterPageInner() {
           )}
 
           <form onSubmit={handleSubmit} className="space-y-3">
-            <div>
-              <label htmlFor="name" className="block text-xs font-medium text-fg mb-1">
-                Name <span className="text-fg-muted">(optional)</span>
-              </label>
-              <input
-                id="name"
-                name="name"
-                type="text"
-                autoComplete="name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                className="w-full px-4 py-3 rounded-2xl border border-line bg-panel text-fg placeholder:text-fg-muted focus:outline-none focus:border-turquoise transition-colors"
-              />
-            </div>
             <div>
               <label htmlFor="email" className="block text-xs font-medium text-fg mb-1">
                 Email

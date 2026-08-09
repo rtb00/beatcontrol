@@ -46,6 +46,7 @@ export default function StartFunnel() {
     return d.toISOString().slice(0, 10);
   });
   const [email, setEmail] = useState('');
+  const [joining, setJoining] = useState(false);
   const dateRef = useRef<HTMLInputElement>(null);
 
   // Desktop-Browser öffnen den Kalender nur über das (per appearance-none
@@ -101,6 +102,14 @@ export default function StartFunnel() {
     } else {
       setStep(0);
     }
+  }
+
+  function join() {
+    if (joining) return;
+    setJoining(true);
+    // Der Ladezustand ist bewusst sichtbar: er benennt, was gerade passiert,
+    // bevor die Registrierung erscheint.
+    setTimeout(finish, 2000);
   }
 
   function finish() {
@@ -165,6 +174,15 @@ export default function StartFunnel() {
                   das Overlay ersetzt den fehlenden Placeholder, solange kein
                   Datum gewählt ist (pointer-events-none lässt Taps durch,
                   peer-focus blendet es aus, damit der Fokus sichtbar bleibt). */}
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                inputMode="email"
+                autoComplete="email"
+                placeholder="Deine E-Mail-Adresse"
+                className="w-full h-14 px-5 rounded-2xl border border-line bg-panel text-fg text-center placeholder:text-fg-muted/60 focus:outline-none focus:border-turquoise transition-colors mb-3"
+              />
               <div className="relative h-14 mb-4">
                 <input
                   ref={dateRef}
@@ -184,15 +202,6 @@ export default function StartFunnel() {
                   </span>
                 )}
               </div>
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                inputMode="email"
-                autoComplete="email"
-                placeholder="Deine E-Mail-Adresse"
-                className="w-full h-14 px-5 rounded-2xl border border-line bg-panel text-fg text-center placeholder:text-fg-muted/60 focus:outline-none focus:border-turquoise transition-colors mb-4"
-              />
               <Button
                 onClick={create}
                 disabled={!canSubmit}
@@ -215,7 +224,15 @@ export default function StartFunnel() {
               </p>
 
               {/* Vorschau-Karte im Dashboard-Stil, damit das Event "echt" wirkt */}
-              <Card tone="party" className="mb-6 text-left glow-turquoise">
+              <Card
+                tone="party"
+                role="button"
+                tabIndex={0}
+                onClick={join}
+                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); join(); } }}
+                aria-busy={joining}
+                className="relative mb-6 text-left glow-turquoise cursor-pointer transition-transform hover:scale-[1.01] active:scale-[0.99] focus:outline-none focus-visible:ring-2 focus-visible:ring-turquoise"
+              >
                 <div className="flex items-start justify-between gap-3 mb-3">
                   <h1 className="font-display text-2xl font-black uppercase leading-tight break-words min-w-0">
                     {title.trim() || 'Dein Event'}
@@ -231,15 +248,24 @@ export default function StartFunnel() {
                   </svg>
                   <p className="text-sm text-fg-muted text-left">QR-Code und Live-Voting für deine Gäste liegen bereit</p>
                 </div>
+                {joining && (
+                  <div className="absolute inset-0 rounded-3xl bg-base/85 backdrop-blur-sm flex flex-col items-center justify-center gap-4 text-center px-6">
+                    <span className="relative flex h-12 w-12" aria-hidden="true">
+                      <span className="absolute inset-0 rounded-full border-2 border-turquoise/25" />
+                      <span className="absolute inset-0 rounded-full border-2 border-transparent border-t-turquoise animate-spin" />
+                      <span className="absolute inset-2 rounded-full bg-turquoise/20 animate-ping" />
+                    </span>
+                    <p className="font-display text-xs sm:text-sm font-bold uppercase tracking-wide leading-snug text-turquoise max-w-[16rem]">
+                      Diesem Event als Organisator beitreten
+                    </p>
+                  </div>
+                )}
               </Card>
 
               <p className="text-fg-muted leading-relaxed mb-8">
                 Leg dir einen kostenlosen DJ-Zugang an, um das Event zu speichern und am Tag des Gigs direkt loszulegen.
               </p>
 
-              <Button onClick={finish} variant="primary" tone="party" size="lg" className="w-full">
-                Kostenlosen DJ-Zugang anlegen
-              </Button>
             </div>
           )}
         </div>
