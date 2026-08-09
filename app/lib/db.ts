@@ -169,6 +169,8 @@ export async function initDB() {
   // Which price the active subscription is on (monthly vs yearly) + the interval.
   await sql`ALTER TABLE users ADD COLUMN IF NOT EXISTS current_price_id TEXT`;
   await sql`ALTER TABLE users ADD COLUMN IF NOT EXISTS billing_cycle TEXT`;
+  // Brautpaar-Konto: unterscheidet Paare von DJs (andere Ansprache, andere Ansicht)
+  await sql`ALTER TABLE users ADD COLUMN IF NOT EXISTS is_couple BOOLEAN NOT NULL DEFAULT FALSE`;
   await sql`ALTER TABLE users ADD COLUMN IF NOT EXISTS branding_name TEXT`;
   await sql`ALTER TABLE users ADD COLUMN IF NOT EXISTS branding_logo_url TEXT`;
 

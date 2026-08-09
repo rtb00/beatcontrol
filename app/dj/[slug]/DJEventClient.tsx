@@ -26,6 +26,13 @@ interface Song {
   has_voted: boolean;
 }
 
+interface SongsResponse {
+  songs: Song[];
+  unlocked: boolean;
+  total: number;
+  hidden_count: number;
+}
+
 interface Event {
   id: number;
   slug: string;
@@ -121,8 +128,8 @@ export default function DJEventPage() {
     } catch { /* ignore */ }
   }, [slug]);
 
-  const handlePollData = useCallback((data: Song[]) => {
-    setSongs(data);
+  const handlePollData = useCallback((data: SongsResponse) => {
+    setSongs(data.songs ?? []);
     setLoading(false);
   }, []);
 
@@ -131,8 +138,10 @@ export default function DJEventPage() {
     fetch('/api/me').then((r) => (r.ok ? r.json() : null)).then((d) => d && setMe(d)).catch(() => {});
   }, [loadEvent]);
 
-  usePolling<Song[]>({
-    url: `/api/events/${slug}/songs`,
+  // Der Live-Screen sieht immer alles: als eingeloggter Besitzer oder per dj-Token
+  // aus dem geteilten Link.
+  usePolling<SongsResponse>({
+    url: `/api/events/${slug}/songs${guestToken ? `?dj=${encodeURIComponent(guestToken)}` : ''}`,
     baseInterval: 3000,
     maxInterval: 18000,
     onData: handlePollData,

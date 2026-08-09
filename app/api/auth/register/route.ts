@@ -19,12 +19,13 @@ async function ensureUsersTable() {
     )
   `);
   await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS password TEXT`);
+  await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS is_couple BOOLEAN NOT NULL DEFAULT FALSE`);
 }
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export async function POST(req: NextRequest) {
-  let body: { email?: unknown; password?: unknown; name?: unknown };
+  let body: { email?: unknown; password?: unknown; name?: unknown; is_couple?: unknown };
   try {
     body = await req.json();
   } catch {
@@ -34,6 +35,7 @@ export async function POST(req: NextRequest) {
   const email = typeof body.email === 'string' ? body.email.trim().toLowerCase() : '';
   const password = typeof body.password === 'string' ? body.password : '';
   const name = typeof body.name === 'string' ? body.name.trim() : '';
+  const isCouple = body.is_couple === true;
 
   if (!email || !EMAIL_RE.test(email)) {
     return NextResponse.json({ error: 'Bitte eine gültige Email-Adresse angeben.' }, { status: 400 });
@@ -56,13 +58,17 @@ export async function POST(req: NextRequest) {
 
   if (existing[0]) {
     await pool.query(
-      `UPDATE users SET password = $1, name = COALESCE(NULLIF($2, ''), name) WHERE id = $3`,
-      [hash, name, existing[0].id]
+      `UPDATE users
+       SET password = $1,
+           name = COALESCE(NULLIF($2, ''), name),
+           is_couple = (is_couple OR $4)
+       WHERE id = $3`,
+      [hash, name, existing[0].id, isCouple]
     );
   } else {
     await pool.query(
-      `INSERT INTO users (email, password, name) VALUES ($1, $2, NULLIF($3, ''))`,
-      [email, hash, name]
+      `INSERT INTO users (email, password, name, is_couple) VALUES ($1, $2, NULLIF($3, ''), $4)`,
+      [email, hash, name, isCouple]
     );
   }
 

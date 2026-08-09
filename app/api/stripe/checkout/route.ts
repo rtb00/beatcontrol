@@ -21,10 +21,11 @@ export async function POST(req: NextRequest) {
   }
   // Server-side validation of the client-supplied event date for the pay-per-use
   // pass: must be a real date and not absurdly far in the future. Never trust the client.
+  // Zwei Jahre Vorlauf, weil Hochzeiten 12 bis 18 Monate im Voraus geplant werden.
   if (eventDate && (tier === 'event_pass' || tier === 'couple_pass')) {
     const parsed = new Date(eventDate);
     const maxAhead = new Date();
-    maxAhead.setFullYear(maxAhead.getFullYear() + 1);
+    maxAhead.setFullYear(maxAhead.getFullYear() + 2);
     if (Number.isNaN(parsed.getTime()) || parsed > maxAhead) {
       return NextResponse.json({ error: 'invalid event_date' }, { status: 400 });
     }
@@ -58,6 +59,8 @@ export async function POST(req: NextRequest) {
 
   const origin = req.headers.get('origin') ?? new URL(req.url).origin;
 
+  const isCouplePass = tier === 'couple_pass';
+
   const isSubscription =
     tier === 'pro_monthly' ||
     tier === 'pro_yearly' ||
@@ -78,8 +81,10 @@ export async function POST(req: NextRequest) {
     // Tester unerwartet zu belasten. Bei bezahlten Checkouts verlangt Stripe
     // weiterhin normal die Zahlungsmethode.
     payment_method_collection: 'if_required',
-    success_url: `${origin}/dj?checkout=success`,
-    cancel_url: `${origin}/pricing`,
+    // Der Brautpaar-Pass wird auf /feier gekauft, also führt der Rückweg auch
+    // dorthin zurück und nicht in die DJ-Ansicht.
+    success_url: `${origin}${isCouplePass ? '/feier?checkout=success' : '/dj?checkout=success'}`,
+    cancel_url: `${origin}${isCouplePass ? '/feier' : '/pricing'}`,
     client_reference_id: userId,
     metadata: { user_id: userId, tier, event_date: eventDate ?? '' },
     ...(isSubscription

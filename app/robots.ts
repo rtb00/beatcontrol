@@ -17,7 +17,7 @@ const AI_CRAWLERS = [
   'Bingbot',
 ];
 
-const DISALLOW = ['/api/', '/auth/', '/account', '/dj'];
+const DISALLOW = ['/api/', '/auth/', '/account', '/dj', '/feier'];
 
 export default function robots(): MetadataRoute.Robots {
   return {

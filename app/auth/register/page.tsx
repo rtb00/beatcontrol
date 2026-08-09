@@ -24,10 +24,16 @@ const PLAN_LABEL: Record<Plan, string> = {
 function RegisterPageInner() {
   const params = useSearchParams();
   const plan = parsePlan(params.get('plan'));
-  const postRegisterUrl = plan ? `/pricing?plan=${plan}` : '/dj';
   const signinHref = plan ? `/auth/signin?plan=${plan}` : '/auth/signin';
 
   const [email, setEmail] = useState('');
+  // Kommt der Weg aus dem Brautpaar-Funnel, gehört das Konto einem Paar.
+  const [isCouple, setIsCouple] = useState(false);
+
+  // Ein ausgewählter Plan führt immer zuerst zur Buchung, daran ändert das
+  // Paar-Merkmal nichts. Ohne Plan geht ein Paar zu seiner Feier, alle
+  // anderen in den DJ-Bereich.
+  const postRegisterUrl = plan ? `/pricing?plan=${plan}` : isCouple ? '/feier' : '/dj';
 
   // E-Mail aus dem Funnel (/start, /brautpaar/start) übernehmen, damit sie
   // niemand zweimal tippen muss. Das Feld bleibt editierbar.
@@ -36,8 +42,9 @@ function RegisterPageInner() {
     try {
       const pending = localStorage.getItem('bc_pending_event');
       if (!pending) return;
-      const data = JSON.parse(pending) as { email?: string };
+      const data = JSON.parse(pending) as { email?: string; is_couple?: unknown };
       if (data.email) setEmail(data.email);
+      if (data.is_couple === true) setIsCouple(true);
     } catch {
       /* defektes JSON ignorieren */
     }
@@ -79,7 +86,7 @@ function RegisterPageInner() {
       const res = await fetch('/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email, password, is_couple: isCouple }),
       });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) {
@@ -247,6 +254,7 @@ function RegisterPageInner() {
             >
               {loading ? 'Registriere…' : 'Account erstellen'}
             </Button>
+            <p className="text-xs text-fg-muted text-center">Kostenlos, keine Kreditkarte.</p>
           </form>
         </Card>
 

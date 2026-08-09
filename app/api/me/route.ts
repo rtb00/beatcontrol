@@ -14,7 +14,7 @@ export async function GET() {
   const { rows } = await sql`
     SELECT id, name, email, plan, plan_status, current_period_end,
            cancel_at_period_end, branding_name, branding_logo_url, subdomain,
-           event_credits
+           event_credits, is_couple
     FROM users
     WHERE id = ${session.user.id}
   `;
@@ -43,6 +43,9 @@ export async function GET() {
     brandingLogoUrl: user.branding_logo_url,
     subdomain: user.subdomain,
     eventCredits: user.event_credits ?? 0,
+    // Merkmal aus der Registrierung: ein Paar gehört nach /feier, nicht ins
+    // DJ-Dashboard.
+    isCouple: user.is_couple === true,
     limits: {
       maxEvents: Number.isFinite(limits.maxEvents) ? limits.maxEvents : null,
       maxSongs: Number.isFinite(limits.maxSongs) ? limits.maxSongs : null,

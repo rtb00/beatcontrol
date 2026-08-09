@@ -5,6 +5,34 @@ import { getFingerprint } from '@/app/lib/fingerprint';
 import { containsProfanity } from '@/app/lib/profanity';
 import { getSongSuggestions } from '@/app/lib/ai';
 import { getEffectivePlan, getPlanLimits } from '@/app/lib/plans';
+import { FREE_VISIBLE_SONGS, isUnlocked } from '@/app/lib/visibility';
+import { auth } from '@/auth';
+
+interface SongRow {
+  id: number;
+  title: string;
+  artist: string;
+  deezer_id: string | null;
+  album_art_url: string | null;
+  suggestions: string | null;
+  created_at: string;
+  played: boolean;
+  vote_count: number;
+  has_voted: boolean | null;
+  is_mine: boolean;
+}
+
+type Mode = 'full' | 'owner' | 'guest';
+
+// Zufällige Auswahl ohne Reihenfolge-Verzerrung (Fisher-Yates auf einer Kopie).
+function pickRandom<T>(items: T[], count: number): T[] {
+  const copy = [...items];
+  for (let i = copy.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [copy[i], copy[j]] = [copy[j], copy[i]];
+  }
+  return copy.slice(0, count);
+}
 
 export async function GET(
   req: NextRequest,
@@ -13,6 +41,61 @@ export async function GET(
   await initDB();
 
   const fp = getFingerprint(req, params.slug);
+  const url = new URL(req.url);
+  const requestedView = url.searchParams.get('view') === 'owner' ? 'owner' : 'guest';
+  const djTokenParam = url.searchParams.get('dj');
+
+  const { rows: eventRows } = await sql`
+    SELECT
+      e.id,
+      e.dj_id,
+      e.dj_token,
+      e.credit_redeemed,
+      u.plan AS owner_plan,
+      u.plan_status AS owner_plan_status,
+      u.current_period_end AS owner_current_period_end
+    FROM events e
+    LEFT JOIN users u ON u.id = e.dj_id
+    WHERE e.slug = ${params.slug}
+  `;
+
+  if (eventRows.length === 0) {
+    return NextResponse.json(
+      { songs: [], unlocked: false, total: 0, hidden_count: 0 },
+      { status: 200, headers: { 'Cache-Control': 'private, no-store' } }
+    );
+  }
+
+  const evt = eventRows[0];
+  const unlocked = isUnlocked(
+    evt.owner_plan
+      ? {
+          plan: evt.owner_plan,
+          plan_status: evt.owner_plan_status,
+          current_period_end: evt.owner_current_period_end,
+        }
+      : null,
+    evt.credit_redeemed === true
+  );
+
+  // Der DJ-Screen bleibt immer vollständig: eingeloggter Besitzer ohne explizite
+  // Paar-Ansicht oder gültiges dj_token aus dem geteilten Link.
+  let isOwner = false;
+  if (!unlocked) {
+    const session = await auth();
+    isOwner = !!session?.user?.id && session.user.id === evt.dj_id;
+  }
+  const hasDjToken = !!djTokenParam && !!evt.dj_token && djTokenParam === evt.dj_token;
+
+  let mode: Mode;
+  if (unlocked || hasDjToken || (isOwner && requestedView !== 'owner')) {
+    mode = 'full';
+  } else if (requestedView === 'owner' && isOwner) {
+    mode = 'owner';
+  } else {
+    // view=owner ohne Besitz fällt bewusst auf die Gästeregeln zurück.
+    mode = 'guest';
+  }
 
   const { rows } = await sql`
     SELECT
@@ -34,8 +117,74 @@ export async function GET(
     GROUP BY s.id
     ORDER BY s.played ASC, vote_count DESC, s.created_at ASC
   `;
+  const all = rows as SongRow[];
 
-  const body = JSON.stringify(rows);
+  let ordered = all;
+  const visibleIds = new Set<number>();
+
+  if (mode === 'full') {
+    for (const s of all) visibleIds.add(s.id);
+  } else if (mode === 'owner') {
+    const newest = [...all].sort(
+      (a, b) =>
+        new Date(b.created_at).getTime() - new Date(a.created_at).getTime() || b.id - a.id
+    );
+    for (const s of newest.slice(0, FREE_VISIBLE_SONGS)) visibleIds.add(s.id);
+  } else {
+    // Gäste sehen ihre eigenen Wünsche plus drei zufällige fremde. Die Reihenfolge
+    // wird chronologisch, damit die Position keine Rangfolge verrät.
+    ordered = [...all].sort(
+      (a, b) =>
+        Number(a.played) - Number(b.played) ||
+        new Date(a.created_at).getTime() - new Date(b.created_at).getTime() ||
+        a.id - b.id
+    );
+    const foreign: SongRow[] = [];
+    for (const s of ordered) {
+      if (s.is_mine) visibleIds.add(s.id);
+      else foreign.push(s);
+    }
+    for (const s of pickRandom(foreign, FREE_VISIBLE_SONGS)) visibleIds.add(s.id);
+  }
+
+  const songs = ordered.map((s) => {
+    if (visibleIds.has(s.id)) return { ...s, hidden: false };
+    // Sicherheitsrelevant: Titel, Interpret, Cover und Vorschläge werden serverseitig
+    // geleert. Ein reines Weichzeichnen im Browser wäre über die Entwicklerwerkzeuge
+    // auslesbar und damit keine Bezahlschranke.
+    return {
+      ...s,
+      title: '',
+      artist: '',
+      deezer_id: null,
+      album_art_url: null,
+      suggestions: null,
+      // Gäste erfahren keine Rangfolge, das Paar sieht die Like-Zahlen als Kaufanreiz.
+      vote_count: mode === 'guest' ? null : s.vote_count,
+      has_voted: mode === 'guest' ? false : s.has_voted,
+      hidden: true,
+    };
+  });
+
+  const body = JSON.stringify({
+    songs,
+    unlocked,
+    total: songs.length,
+    hidden_count: songs.filter((s) => s.hidden).length,
+  });
+
+  // Die Gästeauswahl wechselt pro Aufruf. Ein ETag würde die drei sichtbaren
+  // Songs über 304-Antworten einfrieren, deshalb gibt es hier bewusst keinen.
+  if (mode === 'guest') {
+    return new NextResponse(body, {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json',
+        'Cache-Control': 'private, no-store',
+      },
+    });
+  }
+
   const etag = `W/"${createHash('sha1').update(body).digest('hex').slice(0, 16)}"`;
 
   if (req.headers.get('if-none-match') === etag) {

@@ -24,6 +24,7 @@ interface Event {
 
 interface Me {
   plan: 'free' | 'pro' | 'event_pass' | 'studio';
+  isCouple?: boolean;
   planStatus: string | null;
   currentPeriodEnd: string | null;
   cancelAtPeriodEnd: boolean | null;
@@ -81,6 +82,7 @@ export default function DJDashboard() {
   const [exportingSlug, setExportingSlug] = useState<string | null>(null);
 
   const [showOnboarding, setShowOnboarding] = useState(false);
+  const [leavingToFeier, setLeavingToFeier] = useState(false);
   const [autoCreating, setAutoCreating] = useState(false);
   const [funnelCreated, setFunnelCreated] = useState(false);
 
@@ -89,14 +91,43 @@ export default function DJDashboard() {
     type: 'events',
   });
 
+  // Ein Paar gehört nach /feier. Der Weg dorthin wird hier abgefangen, weil
+  // hier alle Wege zusammenlaufen: Registrierung, Anmeldung mit Passwort,
+  // Anmeldung über Google und jeder gespeicherte Link auf /dj.
   useEffect(() => {
+    if (!me?.isCouple) return;
+    setLeavingToFeier(true);
+    router.replace('/feier');
+  }, [me?.isCouple, router]);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') {
+      loadEvents();
+      loadMe();
+      return;
+    }
+
+    // Kommt der Aufruf frisch aus dem Brautpaar-Funnel, wird hier nichts
+    // angelegt: der Eintrag bleibt liegen und /feier legt die Feier an. Sonst
+    // entstünde sie im DJ-Bereich, und das Paar säße im falschen Bereich fest.
+    const pending = localStorage.getItem(PENDING_EVENT_KEY);
+    if (pending) {
+      try {
+        if ((JSON.parse(pending) as { is_couple?: unknown }).is_couple === true) {
+          setLeavingToFeier(true);
+          router.replace('/feier');
+          return;
+        }
+      } catch {
+        /* defektes JSON ignorieren */
+      }
+    }
+
     loadEvents();
     loadMe();
-    if (typeof window === 'undefined') return;
 
     // Event aus dem Funnel (/start) direkt anlegen, keine zweite Bestätigung nötig —
     // der Funnel selbst war schon die Bestätigung.
-    const pending = localStorage.getItem(PENDING_EVENT_KEY);
     if (pending) {
       localStorage.removeItem(PENDING_EVENT_KEY);
       try {
@@ -280,6 +311,12 @@ export default function DJDashboard() {
   const isPastDue = me?.plan === 'pro' && me.planStatus === 'past_due';
   const isCancelAtEnd = me?.plan === 'pro' && me.cancelAtPeriodEnd === true;
   const periodEnd = fmtFullDate(me?.currentPeriodEnd ?? null);
+
+  // Während der Weiterleitung nach /feier bleibt der Bereich leer, damit das
+  // Paar das DJ-Dashboard gar nicht erst zu sehen bekommt.
+  if (leavingToFeier) {
+    return <div className="min-h-screen bg-rave-gradient" />;
+  }
 
   return (
     <div className="min-h-screen bg-rave-gradient">

@@ -121,6 +121,9 @@ export default function BrautpaarStartFunnel() {
       painsOther: null,
       method: null,
       methodOther: null,
+      // Merkmal für den weiteren Weg: nach der Registrierung geht es für ein
+      // Paar nach /feier statt in den DJ-Bereich. Der DJ-Funnel setzt das nicht.
+      is_couple: true,
       ts: Date.now(),
     };
     try {
@@ -180,7 +183,7 @@ export default function BrautpaarStartFunnel() {
                 inputMode="email"
                 autoComplete="email"
                 placeholder="E-Mail-Adresse"
-                className="w-full h-14 px-5 rounded-2xl border border-line bg-panel text-fg text-center placeholder:text-fg-muted/60 focus:outline-none focus:border-neon-gold transition-colors mb-3"
+                className="w-full h-12 px-5 rounded-2xl border border-line/50 bg-transparent text-sm text-fg-muted text-center placeholder:text-fg-muted/45 focus:outline-none focus:border-neon-gold focus:text-fg transition-colors mb-3"
               />
               <div className="relative h-14 mb-4">
                 <input
@@ -211,7 +214,6 @@ export default function BrautpaarStartFunnel() {
               >
                 Musikwunschliste anlegen
               </Button>
-              <p className="text-xs text-fg-muted mt-5">Kostenlos, keine Kreditkarte. Dauert keine Minute.</p>
             </div>
           )}
 

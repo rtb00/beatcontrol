@@ -26,6 +26,14 @@ interface Song {
   played: boolean;
   vote_count: number;
   has_voted: boolean;
+  hidden: boolean;
+}
+
+interface SongsResponse {
+  songs: Song[];
+  unlocked: boolean;
+  total: number;
+  hidden_count: number;
 }
 
 interface SearchResult {
@@ -41,6 +49,7 @@ export default function GuestPage() {
   const [event, setEvent] = useState<Event | null>(null);
   const [notFound, setNotFound] = useState(false);
   const [songs, setSongs] = useState<Song[]>([]);
+  const [unlocked, setUnlocked] = useState(true);
   const [loading, setLoading] = useState(true);
 
   const [query, setQuery] = useState('');
@@ -82,15 +91,18 @@ export default function GuestPage() {
     } catch { /* ignore */ }
   }, [slug]);
 
-  const handlePollData = useCallback((data: Song[]) => {
-    setSongs(data);
+  const handlePollData = useCallback((data: SongsResponse) => {
+    // Versteckte Wünsche kommen ohne Like-Zahl (null). Sie werden nie mit Zahl
+    // dargestellt, deshalb ist die Normalisierung auf 0 rein technisch.
+    setSongs((data.songs ?? []).map((s) => ({ ...s, vote_count: s.vote_count ?? 0 })));
+    setUnlocked(data.unlocked !== false);
     setLoading(false);
   }, []);
 
   useEffect(() => { loadEvent(); }, [loadEvent]);
 
-  usePolling<Song[]>({
-    url: `/api/events/${slug}/songs`,
+  usePolling<SongsResponse>({
+    url: `/api/events/${slug}/songs?view=guest`,
     baseInterval: 2500,
     maxInterval: 15000,
     headers: () => ({ 'x-client-id': clientIdRef.current }),
@@ -164,14 +176,16 @@ export default function GuestPage() {
   async function handleVote(song: Song) {
     if (votingId !== null) return;
     setVotingId(song.id);
-    setSongs((prev) =>
-      prev
-        .map((s) => s.id === song.id
-          ? { ...s, vote_count: song.has_voted ? s.vote_count - 1 : s.vote_count + 1, has_voted: !song.has_voted }
-          : s
-        )
-        .sort((a, b) => Number(a.played) - Number(b.played) || b.vote_count - a.vote_count)
-    );
+    setSongs((prev) => {
+      const next = prev.map((s) => s.id === song.id
+        ? { ...s, vote_count: song.has_voted ? s.vote_count - 1 : s.vote_count + 1, has_voted: !song.has_voted }
+        : s
+      );
+      // Solange das Event nicht freigeschaltet ist, bleibt die Reihenfolge
+      // bewusst chronologisch. Eine Sortierung nach Likes wäre eine Rangfolge.
+      if (!unlocked) return next;
+      return next.sort((a, b) => Number(a.played) - Number(b.played) || b.vote_count - a.vote_count);
+    });
     await fetch(
       song.has_voted ? `/api/events/${slug}/songs/unvote` : `/api/events/${slug}/songs/vote`,
       { method: 'POST', headers: clientHeaders({ 'Content-Type': 'application/json' }), body: JSON.stringify({ songId: song.id }) }
@@ -215,8 +229,12 @@ export default function GuestPage() {
     );
   }
 
-  const unplayed = songs.filter((s) => !s.played);
-  const played = songs.filter((s) => s.played);
+  const unplayed = songs.filter((s) => !s.played && !s.hidden);
+  const played = songs.filter((s) => s.played && !s.hidden);
+  // Es wird immer die gleiche, feste Zahl an verschwommenen Zeilen gezeigt.
+  // Würde pro verstecktem Wunsch eine Zeile erscheinen, könnte ein Gast die
+  // Wünsche abzählen und wüsste die Gesamtzahl.
+  const showBlurred = !unlocked && songs.some((s) => s.hidden);
 
   return (
     <div className="min-h-screen bg-rave-gradient">
@@ -334,14 +352,20 @@ export default function GuestPage() {
           <>
             <h2 className="font-display text-xl font-extrabold uppercase text-fg text-center mb-4">
               Wunschliste
-              {unplayed.length > 0 && <span className="ml-2 text-neon-gold text-base font-normal normal-case">({unplayed.length})</span>}
+              {unlocked && unplayed.length > 0 && <span className="ml-2 text-neon-gold text-base font-normal normal-case">({unplayed.length})</span>}
             </h2>
             <div className="space-y-2">
               {unplayed.map((song, i) => (
-                <SongCard key={song.id} song={song} rank={i + 1} onVote={handleVote} voting={votingId === song.id}
+                <SongCard key={song.id} song={song} rank={unlocked ? i + 1 : null} onVote={handleVote} voting={votingId === song.id}
                   onRetract={handleRetract} retracting={retractingId === song.id} />
               ))}
+              {showBlurred && BLURRED_ROWS.map((w) => <BlurredSongRow key={w.key} widths={w} />)}
             </div>
+            {showBlurred && (
+              <p className="mt-4 text-center text-fg-muted text-sm leading-relaxed">
+                Die ganze Liste sehen das Brautpaar und der DJ. Dein Wunsch ist auf jeden Fall dabei.
+              </p>
+            )}
             {played.length > 0 && (
               <div className="mt-6">
                 <div className="flex items-center gap-3 mb-3">
@@ -377,6 +401,35 @@ export default function GuestPage() {
   );
 }
 
+// Platzhalter für einen Wunsch, den dieser Gast nicht sehen darf.
+// Gleiche Zeilenhöhe und gleicher Rhythmus wie eine echte Zeile, aber der Text
+// ist durch weichgezeichnete Balken ersetzt. Keine Like-Zahl, kein Knopf, kein
+// Klick, nicht fokussierbar und für Screenreader unsichtbar.
+// Feste Zahl an Platzhalter-Zeilen mit unterschiedlich langen Balken, damit es
+// organisch wirkt. Fest verdrahtet, damit nichts flackert und die Zahl der
+// Zeilen nichts über die Menge der Wünsche verrät.
+const BLURRED_ROWS = [
+  { key: 'a', title: 'w-4/5', sub: 'w-2/5' },
+  { key: 'b', title: 'w-1/2', sub: 'w-1/3' },
+  { key: 'c', title: 'w-11/12', sub: 'w-5/12' },
+  { key: 'd', title: 'w-3/5', sub: 'w-1/4' },
+];
+
+function BlurredSongRow({ widths }: { widths: { title: string; sub: string } }) {
+  return (
+    <div
+      aria-hidden="true"
+      className="bg-panel rounded-2xl p-4 flex items-center gap-3 border border-line shadow-lg shadow-black/20 pointer-events-none select-none"
+    >
+      <div className="h-10 w-10 rounded-xl shrink-0 bg-fg/20 blur-sm opacity-70" />
+      <div className="flex-1 min-w-0 h-11 flex flex-col justify-center gap-2 blur-sm opacity-70">
+        <div className={`h-4 rounded-full bg-fg/25 ${widths.title}`} />
+        <div className={`h-3 rounded-full bg-fg/10 ${widths.sub}`} />
+      </div>
+    </div>
+  );
+}
+
 function SongCard({
   song, rank, onVote, voting, onRetract, retracting,
 }: {
@@ -394,7 +447,9 @@ function SongCard({
         <img src={song.album_art_url} alt={song.title} width={40} height={40} className="rounded-xl shrink-0 object-cover" />
       ) : rank !== null ? (
         <span className="font-display text-turquoise text-xl font-black w-10 text-center shrink-0">{rank}</span>
-      ) : null}
+      ) : (
+        <span aria-hidden="true" className="font-display text-turquoise/50 text-xl w-10 text-center shrink-0">♪</span>
+      )}
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-1.5 flex-wrap">
           <p className="font-medium text-fg text-base truncate">{song.title}</p>

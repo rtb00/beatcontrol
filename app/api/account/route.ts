@@ -15,12 +15,19 @@ export async function PATCH(req: NextRequest) {
   await initDB();
 
   const body = await req.json().catch(() => ({}));
-  const { name, brandingName, brandingLogoUrl, subdomain } = body as {
+  const { name, brandingName, brandingLogoUrl, subdomain, isCouple } = body as {
     name?: string | null;
     brandingName?: string | null;
     brandingLogoUrl?: string | null;
     subdomain?: string | null;
+    isCouple?: unknown;
   };
+
+  // Das Paar-Merkmal lässt sich nur setzen, nicht zurücknehmen. So kann ein
+  // versehentlicher Aufruf niemandem seinen Bereich wegnehmen.
+  if (isCouple === true) {
+    await sql`UPDATE users SET is_couple = TRUE WHERE id = ${userId}`;
+  }
 
   if (name !== undefined) {
     const trimmed = typeof name === 'string' ? name.trim() : '';
