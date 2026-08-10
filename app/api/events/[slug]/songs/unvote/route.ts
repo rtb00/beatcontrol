@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { initDB, sql } from '@/app/lib/db';
 import { getFingerprint } from '@/app/lib/fingerprint';
+import { readOrCreateGuestId, attachGuestCookie } from '@/app/lib/guest-id';
 
 export async function POST(
   req: NextRequest,
@@ -8,11 +9,13 @@ export async function POST(
 ) {
   await initDB();
 
-  const fp = getFingerprint(req, params.slug);
+  const { id: guestId, isNew: guestIdIsNew } = readOrCreateGuestId(req);
+  const fp = getFingerprint(guestId, params.slug);
   const { songId } = await req.json();
 
   if (!songId) {
-    return NextResponse.json({ error: 'songId required' }, { status: 400 });
+    const res = NextResponse.json({ error: 'songId required' }, { status: 400 });
+    return attachGuestCookie(res, guestId, guestIdIsNew);
   }
 
   await sql`
@@ -21,5 +24,6 @@ export async function POST(
       AND voter_ip = ${fp}
   `;
 
-  return NextResponse.json({ ok: true });
+  const res = NextResponse.json({ ok: true });
+  return attachGuestCookie(res, guestId, guestIdIsNew);
 }

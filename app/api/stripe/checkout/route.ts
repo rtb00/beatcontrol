@@ -16,6 +16,11 @@ export async function POST(req: NextRequest) {
   const body = await req.json().catch(() => ({}));
   const tier = body.tier as StripeTier;
   const eventDate = typeof body.event_date === 'string' ? body.event_date : null;
+  // slug identifiziert die Feier, die freigeschaltet werden soll (beide
+  // Kaufwege, Paar und DJ). unlock_gift markiert den DJ-Kaufweg: der Käufer
+  // bekommt dafür ein Event-Guthaben geschenkt.
+  const slug = typeof body.slug === 'string' && body.slug.trim() ? body.slug.trim() : null;
+  const unlockGiftRequested = body.unlock_gift === true;
   if (!tier || !(tier in STRIPE_PRICE_IDS)) {
     return NextResponse.json({ error: 'invalid tier' }, { status: 400 });
   }
@@ -39,6 +44,21 @@ export async function POST(req: NextRequest) {
 
   const stripe = getStripe();
   const userId = session.user.id;
+
+  // Sicherheitsrelevant: unlock_gift kommt aus dem Request-Body und ist damit
+  // vom Client frei wählbar. Das Guthaben ist exklusiv dem DJ-Kaufweg
+  // vorbehalten (DJ ohne Konto registriert sich im Zuge des Kaufs). Ohne
+  // diese Prüfung könnte jedes eingeloggte Paar bei seinem eigenen Kauf
+  // zusätzlich unlock_gift:true setzen und sich selbst ein Guthaben schenken.
+  // Ein Guthaben gibt es daher nur, wenn die Feier existiert und der Käufer
+  // nicht ihr eigener Besitzer ist.
+  let unlockGift = false;
+  if (unlockGiftRequested && slug) {
+    const { rows: giftEventRows } = await sql`
+      SELECT dj_id FROM events WHERE slug = ${slug}
+    `;
+    unlockGift = giftEventRows.length > 0 && giftEventRows[0].dj_id !== userId;
+  }
 
   // Lazy-create stripe customer
   const { rows } = await sql`
@@ -86,10 +106,26 @@ export async function POST(req: NextRequest) {
     success_url: `${origin}${isCouplePass ? '/feier?checkout=success' : '/dj?checkout=success'}`,
     cancel_url: `${origin}${isCouplePass ? '/feier' : '/pricing'}`,
     client_reference_id: userId,
-    metadata: { user_id: userId, tier, event_date: eventDate ?? '' },
+    metadata: {
+      user_id: userId,
+      tier,
+      event_date: eventDate ?? '',
+      ...(slug ? { slug } : {}),
+      ...(unlockGift ? { gift_credit: '1' } : {}),
+    },
     ...(isSubscription
       ? { subscription_data: { metadata: { user_id: userId, tier } } }
-      : { payment_intent_data: { metadata: { user_id: userId, tier, event_date: eventDate ?? '' } } }),
+      : {
+          payment_intent_data: {
+            metadata: {
+              user_id: userId,
+              tier,
+              event_date: eventDate ?? '',
+              ...(slug ? { slug } : {}),
+              ...(unlockGift ? { gift_credit: '1' } : {}),
+            },
+          },
+        }),
   });
 
   return NextResponse.json({ url: checkout.url });

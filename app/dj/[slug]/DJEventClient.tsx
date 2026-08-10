@@ -24,6 +24,7 @@ interface Song {
   played: boolean;
   vote_count: number;
   has_voted: boolean;
+  hidden: boolean;
 }
 
 interface SongsResponse {
@@ -91,6 +92,7 @@ export default function DJEventPage() {
 
   const [event, setEvent] = useState<Event | null>(null);
   const [songs, setSongs] = useState<Song[]>([]);
+  const [unlocked, setUnlocked] = useState(true);
   const [loading, setLoading] = useState(true);
   const [me, setMe] = useState<Me | null>(null);
 
@@ -112,6 +114,7 @@ export default function DJEventPage() {
   // window.location statt useSearchParams, um keine Suspense-Boundary zu brauchen.
   const [guestToken, setGuestToken] = useState('');
   const [djLinkCopied, setDjLinkCopied] = useState(false);
+  const [coupleTextCopied, setCoupleTextCopied] = useState(false);
 
   useEffect(() => {
     setOrigin(window.location.origin);
@@ -130,6 +133,7 @@ export default function DJEventPage() {
 
   const handlePollData = useCallback((data: SongsResponse) => {
     setSongs(data.songs ?? []);
+    setUnlocked(data.unlocked ?? true);
     setLoading(false);
   }, []);
 
@@ -138,10 +142,11 @@ export default function DJEventPage() {
     fetch('/api/me').then((r) => (r.ok ? r.json() : null)).then((d) => d && setMe(d)).catch(() => {});
   }, [loadEvent]);
 
-  // Der Live-Screen sieht immer alles: als eingeloggter Besitzer oder per dj-Token
-  // aus dem geteilten Link.
+  // Der Live-Screen fragt die DJ-Sicht ab: solange die Feier nicht freigeschaltet
+  // ist, kommen die drei beliebtesten Songs offen, der Rest verschwommen mit
+  // scharfen Like-Zahlen zurück.
   usePolling<SongsResponse>({
-    url: `/api/events/${slug}/songs${guestToken ? `?dj=${encodeURIComponent(guestToken)}` : ''}`,
+    url: `/api/events/${slug}/songs?view=dj${guestToken ? `&dj=${encodeURIComponent(guestToken)}` : ''}`,
     baseInterval: 3000,
     maxInterval: 18000,
     onData: handlePollData,
@@ -190,6 +195,43 @@ export default function DJEventPage() {
     } finally {
       setExporting(false);
     }
+  }
+
+  const [unlocking, setUnlocking] = useState(false);
+
+  async function handleUnlockClick() {
+    // Ohne Konto (Zugang per geteiltem dj-Token): erst registrieren, die
+    // Registrierung führt danach automatisch in denselben Checkout.
+    if (guestToken) {
+      window.location.href = `/auth/register?slug=${encodeURIComponent(slug)}&dj=${encodeURIComponent(guestToken)}`;
+      return;
+    }
+    setUnlocking(true);
+    try {
+      const res = await fetch('/api/stripe/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ tier: 'couple_pass', slug, unlock_gift: true }),
+      });
+      const data = await res.json().catch(() => null);
+      if (data?.url) window.location.href = data.url;
+      else setUnlocking(false);
+    } catch {
+      setUnlocking(false);
+    }
+  }
+
+  const coupleMessage = origin
+    ? `Hallo! Bei eurer Feier können eure Gäste schon Songs wünschen: ${origin}/${slug}\nUm alle Wünsche zu sehen, schaltet eure Feier auf BeatControl einmalig für 49 Euro frei.`
+    : '';
+
+  async function copyCoupleText() {
+    if (!coupleMessage) return;
+    try {
+      await navigator.clipboard.writeText(coupleMessage);
+      setCoupleTextCopied(true);
+      setTimeout(() => setCoupleTextCopied(false), 2500);
+    } catch { /* ignore */ }
   }
 
   async function handleDeactivate() {
@@ -592,6 +634,32 @@ export default function DJEventPage() {
 
         {/* Song list */}
         <div className="flex-1 overflow-y-auto p-3 sm:p-5 lg:p-8 pb-16">
+          {!unlocked && !loading && (
+            <div className="mb-4 rounded-2xl border border-turquoise/25 bg-panel-elevated/60 px-4 py-3.5 sm:px-5 sm:py-4">
+              <p className="text-sm text-fg leading-snug">
+                <span className="font-semibold">Diese Feier ist noch nicht freigeschaltet.</span>{' '}
+                Du siehst die drei beliebtesten Wünsche offen, den Rest verschwommen mit
+                Like-Zahlen. Schaltest du frei, bekommst du dafür ein Event geschenkt, das
+                du bei einer deiner nächsten Feiern einlösen kannst.
+              </p>
+              <div className="mt-3 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
+                <button
+                  onClick={handleUnlockClick}
+                  disabled={unlocking}
+                  className="px-4 py-2.5 rounded-xl bg-turquoise text-[color:var(--bg-base)] text-sm font-semibold hover:brightness-110 transition-all active:scale-95 disabled:opacity-50"
+                >
+                  {unlocking ? '…' : 'Jetzt freischalten'}
+                </button>
+                <button
+                  onClick={copyCoupleText}
+                  disabled={!origin}
+                  className="px-4 py-2.5 rounded-xl border border-line text-sm text-fg-muted hover:border-turquoise hover:text-turquoise transition-all active:scale-95 disabled:opacity-40"
+                >
+                  {coupleTextCopied ? 'Text kopiert' : 'Text für euer Brautpaar kopieren'}
+                </button>
+              </div>
+            </div>
+          )}
           {loading ? (
             <p className="text-center text-fg-muted py-12">Lädt…</p>
           ) : unplayed.length === 0 && played.length === 0 ? (
@@ -600,9 +668,13 @@ export default function DJEventPage() {
             <>
               <div className="space-y-3">
                 {unplayed.map((song, i) => (
-                  <DJCard key={song.id} song={song} rank={i + 1}
-                    onToggle={handleToggle} toggling={togglingId === song.id}
-                    onDelete={handleDelete} deleting={deletingId === song.id} />
+                  song.hidden ? (
+                    <DJHiddenCard key={song.id} song={song} />
+                  ) : (
+                    <DJCard key={song.id} song={song} rank={i + 1}
+                      onToggle={handleToggle} toggling={togglingId === song.id}
+                      onDelete={handleDelete} deleting={deletingId === song.id} />
+                  )
                 ))}
               </div>
               {played.length > 0 && (
@@ -614,15 +686,64 @@ export default function DJEventPage() {
                   </div>
                   <div className="space-y-3 opacity-50">
                     {played.map((song) => (
-                      <DJCard key={song.id} song={song} rank={null}
-                        onToggle={handleToggle} toggling={togglingId === song.id}
-                        onDelete={handleDelete} deleting={deletingId === song.id} />
+                      song.hidden ? (
+                        <DJHiddenCard key={song.id} song={song} />
+                      ) : (
+                        <DJCard key={song.id} song={song} rank={null}
+                          onToggle={handleToggle} toggling={togglingId === song.id}
+                          onDelete={handleDelete} deleting={deletingId === song.id} />
+                      )
                     ))}
                   </div>
                 </div>
               )}
             </>
           )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Verstecke Zeile für eine nicht freigeschaltete Feier: Titel/Interpret kommen
+// bereits serverseitig leer an, hier nur noch verschwommene Platzhalterbalken
+// statt Text. Weder Button noch Link, damit am DJ-Pult nichts versehentlich
+// ausgelöst wird. Die Like-Zahl bleibt bewusst scharf lesbar.
+function DJHiddenCard({ song }: { song: Song }) {
+  return (
+    <div
+      aria-hidden="true"
+      className="bg-panel/70 rounded-2xl sm:rounded-3xl p-3 sm:p-4 flex items-center gap-3 sm:gap-5 border border-line/60 select-none"
+    >
+      <div className="flex items-center gap-3 sm:gap-4 min-w-0 flex-1">
+        <div className="relative w-11 h-11 sm:w-12 sm:h-12 shrink-0">
+          <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-panel-elevated blur-[3px]" />
+          {/* Schloss-Symbol statt reinem Weichzeichner: im Halbdunkel des
+              Floors soll auf einen Blick klar sein "gesperrt", nicht "kaputt". */}
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+            className="absolute inset-0 m-auto h-4 w-4 sm:h-5 sm:w-5 text-fg-muted"
+          >
+            <path
+              fillRule="evenodd"
+              d="M10 1a4 4 0 00-4 4v2H5a1 1 0 00-1 1v8a2 2 0 002 2h8a2 2 0 002-2V8a1 1 0 00-1-1h-1V5a4 4 0 00-4-4zm2 6V5a2 2 0 10-4 0v2h4z"
+              clipRule="evenodd"
+            />
+          </svg>
+        </div>
+        <div className="flex-1 min-w-0">
+          <div className="h-4 sm:h-[18px] w-2/3 max-w-[240px] rounded-full bg-fg-muted/30 blur-[3px]" />
+          <div className="flex items-center gap-2 mt-2">
+            <div className="h-3 w-1/3 max-w-[140px] rounded-full bg-fg-muted/20 blur-[3px]" />
+            <Badge color="gold" tone="party" className="!rounded-full tabular-nums leading-tight">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-3 h-3" aria-hidden="true">
+                <path d="M9.653 16.915l-.005-.003-.019-.01a20.759 20.759 0 01-1.162-.682 22.045 22.045 0 01-2.582-1.9C4.045 12.733 2 10.352 2 7.5a4.5 4.5 0 018-2.828A4.5 4.5 0 0118 7.5c0 2.852-2.044 5.233-3.885 6.82a22.049 22.049 0 01-3.744 2.582l-.019.01-.005.003h-.002a.739.739 0 01-.69.001l-.002-.001z" />
+              </svg>
+              {song.vote_count}
+            </Badge>
+          </div>
         </div>
       </div>
     </div>

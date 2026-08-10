@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { initDB, sql } from '@/app/lib/db';
 import { auth } from '@/auth';
 import { getEffectivePlan, getPlanLimits } from '@/app/lib/plans';
+import { isUnlocked } from '@/app/lib/visibility';
 
 export async function GET(
   _req: NextRequest,
@@ -12,7 +13,7 @@ export async function GET(
   const { rows } = await sql`
     SELECT
       e.id, e.slug, e.title, e.active, e.event_date, e.created_at, e.credit_redeemed,
-      e.dj_id, e.dj_token,
+      e.unlocked_at, e.dj_id, e.dj_token,
       u.plan AS owner_plan,
       u.plan_status AS owner_plan_status,
       u.current_period_end AS owner_current_period_end,
@@ -34,12 +35,15 @@ export async function GET(
   // Nur Team (studio) ist Whitelabel: dort verschwindet der BeatControl-Hinweis
   // auf der Gäste-Seite komplett.
   let whitelabel = false;
-  if (row.owner_plan) {
-    const plan = getEffectivePlan({
-      plan: row.owner_plan,
-      plan_status: row.owner_plan_status,
-      current_period_end: row.owner_current_period_end,
-    });
+  const ownerPlan = row.owner_plan
+    ? {
+        plan: row.owner_plan,
+        plan_status: row.owner_plan_status,
+        current_period_end: row.owner_current_period_end,
+      }
+    : null;
+  if (ownerPlan) {
+    const plan = getEffectivePlan(ownerPlan);
     // Per Guthaben freigeschaltete Events tragen wie Event-Pass-Events das DJ-Branding.
     if (getPlanLimits(plan).branding || row.credit_redeemed === true) {
       brandingName = row.owner_branding_name ?? null;
@@ -47,6 +51,8 @@ export async function GET(
     }
     whitelabel = plan === 'studio';
   }
+
+  const unlocked = isUnlocked(ownerPlan, row.credit_redeemed === true, row.unlocked_at);
 
   // Das DJ-Token verlässt den Server nur Richtung Owner — damit teilt das
   // Brautpaar den Live-Screen mit seinem DJ, ohne Zugangsdaten weiterzugeben.
@@ -63,6 +69,7 @@ export async function GET(
     branding_name: brandingName,
     branding_logo_url: brandingLogoUrl,
     whitelabel,
+    unlocked,
     ...(isOwner ? { dj_token: row.dj_token } : {}),
   });
 }

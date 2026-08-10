@@ -92,8 +92,10 @@ export default function GuestPage() {
   }, [slug]);
 
   const handlePollData = useCallback((data: SongsResponse) => {
-    // Versteckte Wünsche kommen ohne Like-Zahl (null). Sie werden nie mit Zahl
-    // dargestellt, deshalb ist die Normalisierung auf 0 rein technisch.
+    // Versteckte Wünsche haben eine echte, scharfe Like-Zahl (siehe
+    // redactHiddenSongs in app/lib/visibility.ts) — nur Titel, Interpret und
+    // Cover werden serverseitig geleert. Die Normalisierung auf 0 fängt nur
+    // den theoretischen Fall ab, dass vote_count einmal fehlt.
     setSongs((data.songs ?? []).map((s) => ({ ...s, vote_count: s.vote_count ?? 0 })));
     setUnlocked(data.unlocked !== false);
     setLoading(false);
@@ -231,10 +233,11 @@ export default function GuestPage() {
 
   const unplayed = songs.filter((s) => !s.played && !s.hidden);
   const played = songs.filter((s) => s.played && !s.hidden);
-  // Es wird immer die gleiche, feste Zahl an verschwommenen Zeilen gezeigt.
-  // Würde pro verstecktem Wunsch eine Zeile erscheinen, könnte ein Gast die
-  // Wünsche abzählen und wüsste die Gesamtzahl.
-  const showBlurred = !unlocked && songs.some((s) => s.hidden);
+  // Versteckte Songs kommen von der API bereits nach Like-Zahl absteigend
+  // sortiert (hinter den sichtbaren). Titel/Interpret sind serverseitig
+  // geleert, die Like-Zahl ist echt und bleibt scharf sichtbar.
+  const hidden = songs.filter((s) => s.hidden);
+  const showBlurred = !unlocked && hidden.length > 0;
 
   return (
     <div className="min-h-screen bg-rave-gradient">
@@ -359,7 +362,9 @@ export default function GuestPage() {
                 <SongCard key={song.id} song={song} rank={unlocked ? i + 1 : null} onVote={handleVote} voting={votingId === song.id}
                   onRetract={handleRetract} retracting={retractingId === song.id} />
               ))}
-              {showBlurred && BLURRED_ROWS.map((w) => <BlurredSongRow key={w.key} widths={w} />)}
+              {showBlurred && hidden.map((song) => (
+                <BlurredSongRow key={song.id} song={song} widths={widthsForSong(song.id)} />
+              ))}
             </div>
             {showBlurred && (
               <p className="mt-4 text-center text-fg-muted text-sm leading-relaxed">
@@ -401,31 +406,52 @@ export default function GuestPage() {
   );
 }
 
-// Platzhalter für einen Wunsch, den dieser Gast nicht sehen darf.
-// Gleiche Zeilenhöhe und gleicher Rhythmus wie eine echte Zeile, aber der Text
-// ist durch weichgezeichnete Balken ersetzt. Keine Like-Zahl, kein Knopf, kein
-// Klick, nicht fokussierbar und für Screenreader unsichtbar.
-// Feste Zahl an Platzhalter-Zeilen mit unterschiedlich langen Balken, damit es
-// organisch wirkt. Fest verdrahtet, damit nichts flackert und die Zahl der
-// Zeilen nichts über die Menge der Wünsche verrät.
-const BLURRED_ROWS = [
-  { key: 'a', title: 'w-4/5', sub: 'w-2/5' },
-  { key: 'b', title: 'w-1/2', sub: 'w-1/3' },
-  { key: 'c', title: 'w-11/12', sub: 'w-5/12' },
-  { key: 'd', title: 'w-3/5', sub: 'w-1/4' },
+// Platzhalter für einen Wunsch, den dieser Gast nicht sehen darf. Gleiche
+// Zeilenhöhe und gleicher Rhythmus wie eine echte Zeile: Titel und Interpret
+// sind weichgezeichnete Balken (für Screenreader ausgeblendet), die Like-Zahl
+// daneben ist echt und bleibt scharf lesbar. Die Zeile selbst ist nicht
+// anklickbar und nicht fokussierbar (kein Button, kein tabIndex).
+// Balkenbreiten sind deterministisch aus der Song-Id abgeleitet, damit sie
+// bei jedem Poll gleich bleiben statt zu flackern.
+const BLUR_WIDTHS = [
+  { title: 'w-4/5', sub: 'w-2/5' },
+  { title: 'w-1/2', sub: 'w-1/3' },
+  { title: 'w-11/12', sub: 'w-5/12' },
+  { title: 'w-3/5', sub: 'w-1/4' },
+  { title: 'w-2/3', sub: 'w-1/2' },
 ];
 
-function BlurredSongRow({ widths }: { widths: { title: string; sub: string } }) {
+function widthsForSong(id: number) {
+  return BLUR_WIDTHS[id % BLUR_WIDTHS.length];
+}
+
+function BlurredSongRow({ song, widths }: { song: Song; widths: { title: string; sub: string } }) {
   return (
-    <div
-      aria-hidden="true"
-      className="bg-panel rounded-2xl p-4 flex items-center gap-3 border border-line shadow-lg shadow-black/20 pointer-events-none select-none"
-    >
-      <div className="h-10 w-10 rounded-xl shrink-0 bg-fg/20 blur-sm opacity-70" />
-      <div className="flex-1 min-w-0 h-11 flex flex-col justify-center gap-2 blur-sm opacity-70">
+    <div className="bg-panel rounded-2xl p-4 flex items-center gap-3 border border-line shadow-lg shadow-black/20 select-none">
+      <div aria-hidden="true" className="relative h-10 w-10 shrink-0">
+        <div className="h-10 w-10 rounded-xl bg-fg/20 blur-sm opacity-70" />
+        {/* Schloss-Symbol: macht auf einen Blick klar, dass dies Absicht ist,
+            kein Ladefehler — unabhängig davon, wo in der Liste man gerade ist. */}
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+          className="absolute inset-0 m-auto h-4 w-4 text-fg-muted"
+        >
+          <path
+            fillRule="evenodd"
+            d="M10 1a4 4 0 00-4 4v2H5a1 1 0 00-1 1v8a2 2 0 002 2h8a2 2 0 002-2V8a1 1 0 00-1-1h-1V5a4 4 0 00-4-4zm2 6V5a2 2 0 10-4 0v2h4z"
+            clipRule="evenodd"
+          />
+        </svg>
+      </div>
+      <div aria-hidden="true" className="flex-1 min-w-0 h-11 flex flex-col justify-center gap-2 blur-sm opacity-70">
         <div className={`h-4 rounded-full bg-fg/25 ${widths.title}`} />
         <div className={`h-3 rounded-full bg-fg/10 ${widths.sub}`} />
       </div>
+      <span className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl font-semibold text-base min-w-[4.5rem] justify-center shrink-0 bg-panel text-fg-muted border border-line">
+        ♡&nbsp;{song.vote_count}
+      </span>
     </div>
   );
 }

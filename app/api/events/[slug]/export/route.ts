@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { initDB, sql } from '@/app/lib/db';
 import { auth } from '@/auth';
 import { getEffectivePlan, getPlanLimits } from '@/app/lib/plans';
+import { isUnlocked } from '@/app/lib/visibility';
 
 function csvEscape(val: unknown): string {
   if (val === null || val === undefined) return '';
@@ -23,9 +24,9 @@ export async function GET(
 
   const { rows: ownerRows } = await sql`
     SELECT u.id, u.plan, u.plan_status, u.current_period_end,
-           e.id AS event_id, e.title AS event_title, e.credit_redeemed
+           e.id AS event_id, e.title AS event_title, e.credit_redeemed, e.unlocked_at
     FROM users u
-    JOIN events e ON e.dj_id = u.id::text
+    JOIN events e ON e.dj_id = u.id
     WHERE u.id = ${session.user.id}
       AND e.slug = ${params.slug}
   `;
@@ -44,6 +45,14 @@ export async function GET(
   if (!limits.export && owner.credit_redeemed !== true) {
     return NextResponse.json({ error: 'plan_limit', limit: 'export' }, { status: 402 });
   }
+
+  // Nicht freigeschaltete Feiern exportieren ohne Titel: der Export darf die
+  // Bezahlschranke der Songs-API nicht umgehen.
+  const unlocked = isUnlocked(
+    { plan: owner.plan, plan_status: owner.plan_status, current_period_end: owner.current_period_end },
+    owner.credit_redeemed === true,
+    owner.unlocked_at
+  );
 
   const { rows: songs } = await sql`
     SELECT
@@ -64,8 +73,8 @@ export async function GET(
     '﻿' + header.join(';'),
     ...songs.map((row) =>
       [
-        csvEscape(row.title),
-        csvEscape(row.artist),
+        csvEscape(unlocked ? row.title : ''),
+        csvEscape(unlocked ? row.artist : ''),
         csvEscape(row.vote_count),
         csvEscape(new Date(row.created_at as string).toLocaleString('de-DE')),
         csvEscape(row.played ? 'ja' : 'nein'),

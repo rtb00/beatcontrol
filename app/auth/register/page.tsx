@@ -21,19 +21,78 @@ const PLAN_LABEL: Record<Plan, string> = {
   credit_pack_5: '5er-Pack · 5 Events',
 };
 
+// Feier freischalten: ein DJ ohne Konto muss sich im Zuge des Kaufs
+// registrieren. slug identifiziert die Feier, dj trägt das DJ-Token aus dem
+// geteilten Link. Beides landet direkt im Checkout, nicht über /pricing —
+// dort gibt es für diesen Weg keinen Plan-Vergleich zu zeigen.
+function parseSlug(raw: string | null): string | null {
+  if (!raw) return null;
+  const trimmed = raw.trim();
+  return trimmed.length > 0 && trimmed.length <= 80 ? trimmed : null;
+}
+
+async function startCoupleCheckout(slug: string, unlockGift: boolean): Promise<boolean> {
+  try {
+    const res = await fetch('/api/stripe/checkout', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ tier: 'couple_pass', slug, unlock_gift: unlockGift }),
+    });
+    const data = await res.json().catch(() => ({}));
+    if (res.ok && data.url) {
+      window.location.href = data.url;
+      return true;
+    }
+  } catch {
+    /* fällt unten auf die normale Weiterleitung zurück */
+  }
+  return false;
+}
+
 function RegisterPageInner() {
   const params = useSearchParams();
   const plan = parsePlan(params.get('plan'));
+  const slug = parseSlug(params.get('slug'));
+  const djToken = params.get('dj')?.trim() || null;
+  // Kommt der DJ über den geteilten Live-Screen-Link zum Kauf, bekommt er
+  // dafür ein Event-Guthaben geschenkt — der Kernanreiz für die Registrierung.
+  const isGiftPurchase = !!slug && !!djToken;
   const signinHref = plan ? `/auth/signin?plan=${plan}` : '/auth/signin';
 
   const [email, setEmail] = useState('');
   // Kommt der Weg aus dem Brautpaar-Funnel, gehört das Konto einem Paar.
   const [isCouple, setIsCouple] = useState(false);
 
-  // Ein ausgewählter Plan führt immer zuerst zur Buchung, daran ändert das
-  // Paar-Merkmal nichts. Ohne Plan geht ein Paar zu seiner Feier, alle
-  // anderen in den DJ-Bereich.
-  const postRegisterUrl = plan ? `/pricing?plan=${plan}` : isCouple ? '/feier' : '/dj';
+  // Eine Feier zum Freischalten führt direkt in ihren Checkout. Sonst führt
+  // ein ausgewählter Plan zur Buchung, daran ändert das Paar-Merkmal nichts.
+  // Ohne beides geht ein Paar zu seiner Feier, alle anderen in den DJ-Bereich.
+  const postRegisterUrl = slug
+    ? `/auth/register?slug=${encodeURIComponent(slug)}${djToken ? `&dj=${encodeURIComponent(djToken)}` : ''}`
+    : plan
+      ? `/pricing?plan=${plan}`
+      : isCouple
+        ? '/feier'
+        : '/dj';
+
+  // Google-Login verlässt die Seite komplett und kehrt erst nach dem OAuth-
+  // Roundtrip zurück. Ist dann eine Feier zum Freischalten in der URL und der
+  // Nutzer eingeloggt, startet der Checkout automatisch statt einer weiteren
+  // Zwischenseite.
+  useEffect(() => {
+    if (!slug) return;
+    let cancelled = false;
+    fetch('/api/me')
+      .then((r) => (r.ok ? r.json() : null))
+      .then((me) => {
+        if (cancelled || !me) return;
+        startCoupleCheckout(slug, isGiftPurchase);
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [slug]);
 
   // E-Mail aus dem Funnel (/start, /brautpaar/start) übernehmen, damit sie
   // niemand zweimal tippen muss. Das Feld bleibt editierbar.
@@ -105,6 +164,10 @@ function RegisterPageInner() {
         setLoading(false);
         return;
       }
+      if (slug) {
+        const started = await startCoupleCheckout(slug, isGiftPurchase);
+        if (started) return;
+      }
       window.location.href = postRegisterUrl;
     } catch {
       setError('Netzwerkfehler. Bitte erneut versuchen.');
@@ -121,7 +184,22 @@ function RegisterPageInner() {
         </h1>
         <p className="text-fg-muted text-sm text-center mb-10">DJ-Account erstellen</p>
 
-        {plan && (
+        {slug && (
+          <div className="mb-6 rounded-2xl border border-neon-gold/40 bg-neon-gold/10 px-4 py-3 text-center">
+            <p className="text-[10px] uppercase tracking-widest text-neon-gold font-semibold mb-1">
+              Feier freischalten
+            </p>
+            <p className="text-sm text-fg font-semibold">
+              Alle Songwünsche für 49 € einmalig sichtbar machen
+            </p>
+            <p className="text-xs text-fg-muted mt-1">
+              {isGiftPurchase
+                ? 'Nach dem Anlegen geht’s direkt zur Bezahlung. Als Dankeschön bekommst du ein Event geschenkt.'
+                : 'Nach dem Anlegen geht’s direkt zur Bezahlung.'}
+            </p>
+          </div>
+        )}
+        {!slug && plan && (
           <div className="mb-6 rounded-2xl border border-turquoise/40 bg-turquoise/10 px-4 py-3 text-center">
             <p className="text-[10px] uppercase tracking-widest text-turquoise font-semibold mb-1">
               Ausgewählter Plan

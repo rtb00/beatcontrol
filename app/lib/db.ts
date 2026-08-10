@@ -184,6 +184,10 @@ export async function initDB() {
   await sql`ALTER TABLE users ADD COLUMN IF NOT EXISTS event_credits INT NOT NULL DEFAULT 0`;
   await sql`ALTER TABLE events ADD COLUMN IF NOT EXISTS credit_redeemed BOOLEAN NOT NULL DEFAULT FALSE`;
 
+  // Freischaltung hängt an der Feier, nicht am Konto: Paar oder DJ können
+  // beide zahlen, beide schalten dieselbe Feier frei.
+  await sql`ALTER TABLE events ADD COLUMN IF NOT EXISTS unlocked_at TIMESTAMPTZ`;
+
   // Studio-Tier: Subdomain für Whitelabel-Routing (kundenname.beatcontrol.io)
   await sql`ALTER TABLE users ADD COLUMN IF NOT EXISTS subdomain TEXT`;
   await sql`CREATE UNIQUE INDEX IF NOT EXISTS idx_users_subdomain ON users(LOWER(subdomain)) WHERE subdomain IS NOT NULL`;

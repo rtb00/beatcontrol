@@ -5,9 +5,6 @@ import Link from 'next/link';
 import { usePolling } from '@/app/lib/use-polling';
 import { Button, Input } from '@/app/components/ui';
 
-// Ab so vielen versteckten Wünschen lohnt sich der Kaufblock. Darunter bleibt
-// die Seite ruhig, weil eine halbleere Liste kein Kaufargument ist.
-const PURCHASE_THRESHOLD = 10;
 // Ab hier wird die Zeit bis zur Feier im Kopf mitgezählt.
 const COUNTDOWN_WINDOW_DAYS = 90;
 const COUPLE_PRICE = '49 €';
@@ -36,8 +33,6 @@ interface Song {
   id: number;
   title: string;
   artist: string;
-  created_at: string;
-  played: boolean;
   vote_count: number | null;
   hidden: boolean;
 }
@@ -47,6 +42,15 @@ interface SongsResponse {
   unlocked: boolean;
   total: number;
   hidden_count: number;
+}
+
+interface Stats {
+  total: number;
+  votes_total: number;
+  contributors: number;
+  last_wish_at: string | null;
+  top_votes: number;
+  unlocked: boolean;
 }
 
 // ── Formatierung ──────────────────────────────────────────────────────────────
@@ -83,23 +87,46 @@ function formatDateLine(iso: string | null): string | null {
   return `${written}, noch ${days} Tage`;
 }
 
-function statusLine(total: number, unlocked: boolean): string {
-  if (total === 0) return 'Alles steht. Jetzt fehlen nur noch eure Gäste';
-  if (unlocked) return 'Alles sichtbar. Jetzt fehlt nur noch euer DJ';
-  if (total === 1) return '1 Wunsch ist schon da';
-  return `${total} Wünsche sind schon da`;
+// Sinnvoll gerundete relative Zeit auf Deutsch, für den Lebenszeichen-Block.
+function relativeTime(iso: string | null): string | null {
+  if (!iso) return null;
+  const then = new Date(iso).getTime();
+  if (Number.isNaN(then)) return null;
+  const diffMs = Date.now() - then;
+  const minutes = Math.round(diffMs / 60000);
+  if (minutes < 1) return 'gerade eben';
+  if (minutes === 1) return 'vor einer Minute';
+  if (minutes < 60) return `vor ${minutes} Minuten`;
+  const hours = Math.round(minutes / 60);
+  if (hours === 1) return 'vor einer Stunde';
+  if (hours < 24) return `vor ${hours} Stunden`;
+  const days = Math.round(hours / 24);
+  if (days === 1) return 'vor einem Tag';
+  return `vor ${days} Tagen`;
+}
+
+// Die zwei bis drei ruhigen Sätze des Lebenszeichen-Blocks.
+function lifeSignSentences(stats: Stats | null): string[] {
+  if (!stats || stats.total === 0) {
+    return ['Alles steht. Jetzt fehlen nur noch eure Gäste'];
+  }
+  const sentences: string[] = [];
+  sentences.push(
+    stats.total === 1 ? '1 Wunsch ist schon da' : `${stats.total} Wünsche sind schon da`
+  );
+  const rel = relativeTime(stats.last_wish_at);
+  if (rel) sentences.push(`${rel === 'gerade eben' ? 'Gerade eben' : rel.charAt(0).toUpperCase() + rel.slice(1)} kam der letzte Wunsch`);
+  if (stats.top_votes >= 1) {
+    sentences.push(
+      stats.top_votes === 1
+        ? 'Der beliebteste Wunsch hat 1 Herz'
+        : `Der beliebteste Wunsch hat ${stats.top_votes} Herzen`
+    );
+  }
+  return sentences;
 }
 
 // ── Kleine Bausteine ──────────────────────────────────────────────────────────
-
-// Feste Balkenbreiten, damit die verschwommenen Zeilen organisch wirken und
-// beim Neuladen nichts flackert.
-const BAR_WIDTHS = [
-  { title: 'w-4/5', sub: 'w-2/5' },
-  { title: 'w-1/2', sub: 'w-1/3' },
-  { title: 'w-11/12', sub: 'w-5/12' },
-  { title: 'w-3/5', sub: 'w-1/4' },
-];
 
 function LikeCount({ count }: { count: number | null }) {
   if (count === null) return null;
@@ -109,7 +136,7 @@ function LikeCount({ count }: { count: number | null }) {
         <path d="M9.653 16.915l-.005-.003-.019-.01a20.759 20.759 0 01-1.162-.682 22.045 22.045 0 01-2.582-1.9C4.045 12.733 2 10.352 2 7.5a4.5 4.5 0 018-2.828A4.5 4.5 0 0118 7.5c0 2.852-2.044 5.233-3.885 6.82a22.049 22.049 0 01-3.744 2.582l-.019.01-.005.003h-.002a.739.739 0 01-.69.001z" />
       </svg>
       <span className="font-display font-bold tabular-nums">{count}</span>
-      <span className="sr-only">Likes</span>
+      <span className="sr-only">Herzen</span>
     </span>
   );
 }
@@ -126,6 +153,8 @@ export default function FeierPage() {
   const [songs, setSongs] = useState<Song[]>([]);
   const [unlocked, setUnlocked] = useState(false);
   const [hiddenCount, setHiddenCount] = useState(0);
+  const [total, setTotal] = useState(0);
+  const [stats, setStats] = useState<Stats | null>(null);
 
   const [origin, setOrigin] = useState('');
   const [justPaid, setJustPaid] = useState(false);
@@ -133,7 +162,6 @@ export default function FeierPage() {
   const [notice, setNotice] = useState<string | null>(null);
 
   const [buying, setBuying] = useState(false);
-  const [removingId, setRemovingId] = useState<number | null>(null);
 
   const [titleDraft, setTitleDraft] = useState('');
   const [dateDraft, setDateDraft] = useState('');
@@ -226,10 +254,11 @@ export default function FeierPage() {
     };
   }, [createPendingEvent, loadEvent]);
 
-  const handlePollData = useCallback((data: SongsResponse) => {
+  const handleSongsData = useCallback((data: SongsResponse) => {
     setSongs(data.songs ?? []);
     setUnlocked(data.unlocked);
     setHiddenCount(data.hidden_count);
+    setTotal(data.total);
   }, []);
 
   usePolling<SongsResponse>({
@@ -237,7 +266,19 @@ export default function FeierPage() {
     baseInterval: 5000,
     maxInterval: 30000,
     enabled: !!event,
-    onData: handlePollData,
+    onData: handleSongsData,
+  });
+
+  const handleStatsData = useCallback((data: Stats) => {
+    setStats(data);
+  }, []);
+
+  usePolling<Stats>({
+    url: `/api/events/${event?.slug ?? ''}/stats`,
+    baseInterval: 8000,
+    maxInterval: 30000,
+    enabled: !!event,
+    onData: handleStatsData,
   });
 
   async function copy(text: string, key: string) {
@@ -258,7 +299,7 @@ export default function FeierPage() {
       const res = await fetch('/api/stripe/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ tier: 'couple_pass', event_date: event.event_date }),
+        body: JSON.stringify({ tier: 'couple_pass', slug: event.slug, event_date: event.event_date }),
       });
       const data = await res.json().catch(() => ({}));
       if (res.status === 503) {
@@ -274,28 +315,6 @@ export default function FeierPage() {
       setNotice('Keine Verbindung. Bitte versucht es noch einmal');
     } finally {
       setBuying(false);
-    }
-  }
-
-  async function removeSong(song: Song) {
-    if (!event) return;
-    if (!window.confirm(`„${song.title}“ wirklich aus der Liste entfernen?`)) return;
-    setRemovingId(song.id);
-    try {
-      const res = await fetch(`/api/events/${event.slug}/songs/delete`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ songId: song.id }),
-      });
-      if (res.ok) {
-        setSongs((prev) => prev.filter((s) => s.id !== song.id));
-      } else {
-        setNotice('Der Wunsch konnte nicht entfernt werden. Bitte versucht es noch einmal');
-      }
-    } catch {
-      setNotice('Keine Verbindung. Bitte versucht es noch einmal');
-    } finally {
-      setRemovingId(null);
     }
   }
 
@@ -356,34 +375,57 @@ export default function FeierPage() {
   const guestLink = origin ? `${origin}/${event.slug}` : `/${event.slug}`;
   const djLink = event.dj_token ? `${origin}/dj/${event.slug}?dj=${event.dj_token}` : null;
 
-  const total = songs.length;
-  const visible = songs
+  // Freigeschaltet: die volle Liste, sortiert nach Beliebtheit (wie überall
+  // sonst auch). Nicht freigeschaltet: nur die drei beliebtesten Titel, der
+  // Rest bleibt dem Gästelink und DJ-Link vorbehalten.
+  const sortedSongs = [...songs]
     .filter((s) => !s.hidden)
-    .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime() || b.id - a.id);
-  const blurred = songs
-    .filter((s) => s.hidden)
-    .sort((a, b) => (b.vote_count ?? 0) - (a.vote_count ?? 0) || a.id - b.id);
-  const sortedByLikes = [...songs].sort(
-    (a, b) => (b.vote_count ?? 0) - (a.vote_count ?? 0) || a.id - b.id
-  );
+    .sort((a, b) => (b.vote_count ?? 0) - (a.vote_count ?? 0));
+  const topSongs = unlocked ? sortedSongs : sortedSongs.slice(0, 3);
 
-  const showPurchase = !unlocked && hiddenCount >= PURCHASE_THRESHOLD;
   const listIsEmpty = total === 0;
+  const hasHidden = !unlocked && hiddenCount > 0;
 
   const guestMessage = `Hallo! Für unsere Feier sammeln wir Musikwünsche. Welches Lied wollt ihr hören? Hier eintragen: ${guestLink}`;
   const djMessage = djLink
-    ? `Hallo, hier ist die Liste mit den Musikwünschen unserer Gäste, sortiert nach Beliebtheit. Sie aktualisiert sich von allein: ${djLink}`
+    ? `Hallo, hier ist der Link für die Musikwünsche unserer Gäste, sie siehst du live auf deinem Gerät: ${djLink}`
     : '';
 
+  // 4) Kaufbereich: bleibt immer an derselben Stelle im Layout (direkt nach
+  // dem Lebenszeichen-Block), nur Inhalt und Ton ändern sich je nach Zustand.
+  // So springt der Bereich nicht mehr hoch und runter, wenn während des
+  // Pollens ein vierter Wunsch eintrifft und hasHidden kippt.
+  const purchaseBlock = unlocked ? (
+    <p className="mt-10 leading-relaxed text-fg-muted">
+      Ihr seht alle Wünsche, sortiert nach Beliebtheit
+    </p>
+  ) : hasHidden ? (
+    <div className="mt-10 rounded-3xl border border-neon-gold/40 bg-neon-gold/10 p-6 text-center">
+      <p className="font-display text-2xl font-bold text-neon-gold">
+        {hiddenCount === 1 ? '1 Wunsch ist noch verdeckt' : `${hiddenCount} Wünsche sind noch verdeckt`}
+      </p>
+      <p className="mt-2 text-sm leading-relaxed text-fg-muted">
+        Freigeschaltet seht ihr alle Titel mit Interpret, sortiert nach Beliebtheit
+      </p>
+      <Button onClick={startCheckout} disabled={buying} className="mt-5 w-full sm:w-auto">
+        {buying ? 'Einen Moment…' : `Jetzt freischalten, einmalig ${COUPLE_PRICE}`}
+      </Button>
+      <p className="mt-3 text-xs text-fg-muted">Kein Abo, kein Vertrag</p>
+    </div>
+  ) : (
+    <p className="mt-10 text-sm leading-relaxed text-fg-muted">
+      {listIsEmpty
+        ? 'Sobald mehr als drei Wünsche da sind, könnt ihr freischalten und seht sofort alle, sortiert nach Beliebtheit. '
+        : 'Ab vier Wünschen zeigen wir nur noch einen Ausschnitt. Ihr könnt schon jetzt freischalten und seht dann immer alles sofort. '}
+      <button onClick={startCheckout} disabled={buying} className="text-neon-gold underline underline-offset-2 hover:no-underline">
+        {buying ? 'Einen Moment…' : `Schon jetzt freischalten, einmalig ${COUPLE_PRICE}`}
+      </button>
+    </p>
+  );
+
   const shareBlock = (
-    <section className={listIsEmpty ? 'mt-10' : 'mt-14'}>
-      <h2
-        className={
-          listIsEmpty
-            ? 'font-display text-2xl font-bold text-fg'
-            : 'font-display text-lg font-bold text-fg'
-        }
-      >
+    <section className="mt-14">
+      <h2 className="font-display text-2xl font-bold text-fg">
         Euren Gästen den Link schicken
       </h2>
       {listIsEmpty && (
@@ -414,85 +456,28 @@ export default function FeierPage() {
     </section>
   );
 
-  const listBlock = (
+  // 3) Freigeschaltet die volle Liste, sonst nur die drei beliebtesten Titel.
+  const topBlock = (
     <section className="mt-10">
-      <h2 className="font-display text-2xl font-bold text-fg">Eure Wunschliste</h2>
-
-      {listIsEmpty ? (
+      <h2 className="font-display text-2xl font-bold text-fg">
+        {unlocked ? 'Eure Wunschliste' : 'Eure Spitzenreiter'}
+      </h2>
+      {topSongs.length === 0 ? (
         <p className="mt-3 leading-relaxed text-fg-muted">
           Noch ist die Liste leer. Sobald eure Gäste den Link öffnen, füllt sie sich hier von allein
         </p>
-      ) : unlocked ? (
+      ) : (
         <ul className="mt-4 space-y-2">
-          {sortedByLikes.map((song) => (
+          {topSongs.map((song) => (
             <li key={song.id} className={rowClass()}>
               <div className="min-w-0 flex-1">
                 <p className="truncate font-medium text-fg">{song.title}</p>
                 <p className="truncate text-sm text-fg-muted">{song.artist}</p>
               </div>
               <LikeCount count={song.vote_count} />
-              <button
-                onClick={() => removeSong(song)}
-                disabled={removingId === song.id}
-                className="shrink-0 text-xs text-fg-muted/85 transition-colors hover:text-danger disabled:opacity-40"
-              >
-                {removingId === song.id ? 'Wird entfernt…' : 'Entfernen'}
-              </button>
             </li>
           ))}
         </ul>
-      ) : (
-        <>
-          <ul className="mt-4 space-y-2">
-            {visible.map((song) => (
-              <li key={song.id} className={rowClass()}>
-                <div className="min-w-0 flex-1">
-                  <p className="truncate font-medium text-fg">{song.title}</p>
-                  <p className="truncate text-sm text-fg-muted">{song.artist}</p>
-                </div>
-                <LikeCount count={song.vote_count} />
-              </li>
-            ))}
-            {blurred.map((song, i) => (
-              <li key={song.id} className={rowClass()}>
-                <div className="min-w-0 flex-1 space-y-2" aria-hidden="true">
-                  <div
-                    className={`h-4 rounded-full bg-fg/25 opacity-70 blur-sm ${BAR_WIDTHS[i % BAR_WIDTHS.length].title}`}
-                  />
-                  <div
-                    className={`h-3 rounded-full bg-fg/10 opacity-70 blur-sm ${BAR_WIDTHS[i % BAR_WIDTHS.length].sub}`}
-                  />
-                </div>
-                <span className="sr-only">Dieser Wunsch ist noch nicht sichtbar</span>
-                <LikeCount count={song.vote_count} />
-              </li>
-            ))}
-          </ul>
-
-          {showPurchase ? (
-            <div className="mt-6 rounded-3xl border border-neon-gold/40 bg-neon-gold/10 p-6 text-center">
-              <p className="font-display text-2xl font-bold text-neon-gold">
-                {hiddenCount === 1
-                  ? '1 weiterer Wunsch wartet auf euch'
-                  : `${hiddenCount} weitere Wünsche warten auf euch`}
-              </p>
-              <p className="mt-2 text-sm leading-relaxed text-fg-muted">
-                Wie viele Herzen jedes Lied bekommen hat, seht ihr schon. Freigeschaltet seht ihr auch,
-                welches Lied dahintersteckt, sortiert nach Beliebtheit
-              </p>
-              <Button onClick={startCheckout} disabled={buying} className="mt-5 w-full sm:w-auto">
-                {buying
-                  ? 'Einen Moment…'
-                  : `Alle ${total} Wünsche sehen, einmalig ${COUPLE_PRICE}`}
-              </Button>
-              <p className="mt-3 text-xs text-fg-muted">Kein Abo, kein Vertrag</p>
-            </div>
-          ) : (
-            <p className="mt-5 text-sm leading-relaxed text-fg-muted">
-              Eure Liste wächst noch. Schickt den Link an ein paar Gäste mehr, dann füllt sie sich von allein
-            </p>
-          )}
-        </>
       )}
     </section>
   );
@@ -531,35 +516,34 @@ export default function FeierPage() {
           </a>
         </header>
 
-        {/* 2) Status als schlichter Satz */}
-        <p className="mt-6 text-lg leading-relaxed text-fg">{statusLine(total, unlocked)}</p>
+        {/* 2) Lebenszeichen */}
+        <div className="mt-6 space-y-1.5">
+          {lifeSignSentences(stats).map((s, i) => (
+            <p key={i} className={i === 0 ? 'text-lg leading-relaxed text-fg' : 'leading-relaxed text-fg-muted'}>
+              {s}
+            </p>
+          ))}
+        </div>
 
-        {/* 3) bis 5) Reihenfolge hängt davon ab, ob schon Wünsche da sind */}
-        {listIsEmpty ? (
-          <>
-            {shareBlock}
-            {listBlock}
-          </>
-        ) : (
-          <>
-            {listBlock}
-            {shareBlock}
-          </>
-        )}
+        {/* 4) Kaufbereich: feste Position direkt nach dem Lebenszeichen-Block,
+            unabhängig vom Zustand, damit er beim Pollen nicht springt */}
+        {purchaseBlock}
+
+        {/* 3) Freigeschaltet die volle Liste, sonst die drei beliebtesten Titel */}
+        {topBlock}
+
+        {/* 5) Teilen: feste Position, gleichbleibende Größe */}
+        {shareBlock}
 
         {/* 6) Der DJ */}
         <section className="mt-14">
-          <p className="leading-relaxed text-fg-muted">
-            Euer DJ entscheidet weiterhin, was wann läuft. Ihr gebt ihm nur die Liste, auf der steht,
-            was eure Gäste wirklich hören wollen
+          <h2 className="font-display text-lg font-bold text-fg">Euer DJ</h2>
+          <p className="mt-2 leading-relaxed text-fg-muted">
+            Euer DJ sieht die Liste am Abend live auf seinem eigenen Gerät. Diesen Link könnt ihr ihm schon jetzt schicken
           </p>
-          {unlocked && djLink && (
+          {djLink && (
             <div className="mt-4 rounded-3xl border border-line bg-panel p-5">
-              <h2 className="font-display text-lg font-bold text-fg">Der Link für euren DJ</h2>
-              <p className="mt-2 text-sm text-fg-muted">
-                Diese Nachricht könnt ihr eurem DJ so weitergeben
-              </p>
-              <p className="mt-3 break-words rounded-2xl border border-line bg-panel-elevated p-4 text-sm leading-relaxed text-fg">
+              <p className="break-words rounded-2xl border border-line bg-panel-elevated p-4 text-sm leading-relaxed text-fg">
                 {djMessage}
               </p>
               <div className="mt-3 flex flex-wrap gap-2">
@@ -574,7 +558,7 @@ export default function FeierPage() {
           )}
         </section>
 
-        {/* Eure Angaben, Ziel des Stiftsymbols oben */}
+        {/* 7) Eure Angaben, Ziel des Stiftsymbols oben */}
         <section id="eure-angaben" className="mt-14 scroll-mt-6">
           <h2 className="font-display text-lg font-bold text-fg">Eure Angaben</h2>
           <form onSubmit={saveDetails} className="mt-4 space-y-3">
@@ -612,7 +596,7 @@ export default function FeierPage() {
         </section>
       </main>
 
-      {/* 7) Fußzeile */}
+      {/* Fußzeile */}
       <footer className="border-t border-line bg-base py-10 text-fg-muted">
         <div className="mx-auto flex w-full max-w-[720px] flex-col items-center justify-between gap-4 px-4 sm:flex-row">
           <span className="font-display text-lg font-bold text-fg">BeatControl</span>

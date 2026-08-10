@@ -102,6 +102,25 @@ async function handleCheckoutCompleted(stripe: Stripe, sessionObj: Stripe.Checko
         stripe_customer_id = COALESCE(stripe_customer_id, ${customerId})
     WHERE id = ${userId}
   `;
+
+  // Beide Kaufwege (Paar auf /feier, DJ auf dem DJ-Screen) tragen die Feier
+  // in den Metadaten und schalten dieselbe Feier frei, unabhängig vom Tarif
+  // des Käufers. Idempotent über die stripe_events-Absicherung oben, deshalb
+  // hier keine zusätzliche Prüfung nötig.
+  const slug = sessionObj.metadata?.slug;
+  if (slug) {
+    await sql`
+      UPDATE events SET unlocked_at = NOW() WHERE slug = ${slug} AND unlocked_at IS NULL
+    `;
+  }
+
+  // Der DJ-Kaufweg schenkt dem Käufer ein Event-Guthaben als Kernanreiz für
+  // die Registrierung im Zuge des Kaufs.
+  if (sessionObj.metadata?.gift_credit === '1') {
+    await sql`
+      UPDATE users SET event_credits = event_credits + 1 WHERE id = ${userId}
+    `;
+  }
 }
 
 // Maps a Stripe price ID back to our internal tier. Built from env at call time
