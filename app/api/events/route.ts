@@ -111,6 +111,14 @@ export async function POST(req: NextRequest) {
     }
   }
 
+  // Guthaben löst auch dann ein, wenn das Limit noch nicht erreicht ist: Ein
+  // kostenloser Tarif würde die Feier sonst verschwommen zeigen, obwohl der
+  // Nutzer ein Event gutgeschrieben hat (etwa der DJ, der eine fremde Feier
+  // freigeschaltet hat). Ohne das wirkte das Geschenk erst ab der zweiten Feier.
+  if (!redeemCredit && plan === 'free' && (owner.event_credits as number) > 0) {
+    redeemCredit = true;
+  }
+
   if (redeemCredit) {
     // Guarded decrement: schlägt bei parallelem Verbrauch fehl statt ins Minus zu laufen.
     const { rows: creditRows } = await sql`
