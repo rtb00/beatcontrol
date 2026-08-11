@@ -3,6 +3,8 @@ import { Playfair_Display, Inter, Baloo_2, JetBrains_Mono } from 'next/font/goog
 import './globals.css';
 import { getCurrentTenant } from '@/app/lib/tenant';
 import { BrandingProvider } from '@/app/lib/branding-context';
+import { Suspense } from 'react';
+import AnalyticsProvider from '@/app/lib/analytics-provider';
 
 // Legacy "Hochzeits-Elegance" faces — kept until every page has migrated to the
 // Confetti Rave design system (see migration plan, Phase 3 cleanup).
@@ -139,7 +141,11 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             dangerouslySetInnerHTML={{ __html: JSON.stringify(SITE_JSON_LD) }}
           />
         )}
-        <BrandingProvider value={tenant}>{children}</BrandingProvider>
+        <Suspense fallback={null}>
+          <AnalyticsProvider>
+            <BrandingProvider value={tenant}>{children}</BrandingProvider>
+          </AnalyticsProvider>
+        </Suspense>
       </body>
     </html>
   );

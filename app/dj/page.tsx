@@ -3,13 +3,13 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
+import { personErkennen, ereignis } from '@/app/lib/analytics-provider';
 import { useSearchParams, useRouter } from 'next/navigation';
 import PaywallModal, { PaywallLimit } from '@/app/components/PaywallModal';
 import { useBranding } from '@/app/lib/branding-context';
 import { Button, Card, Badge, Input } from '@/app/components/ui';
 import type { BadgeColor } from '@/app/components/ui';
 
-const ONBOARDING_KEY = 'beatcontrol-onboarding-seen';
 const PENDING_EVENT_KEY = 'bc_pending_event';
 
 interface Event {
@@ -53,6 +53,14 @@ function fmtFullDate(d: string | null) {
 
 export default function DJDashboard() {
   const { data: session } = useSession();
+
+  // Verknüpft die bisher anonyme Sitzung mit dem Konto. Erst dadurch lässt sich
+  // ein Abbruch wie bei einem hängengebliebenen Kaufweg einer Person zuordnen.
+  useEffect(() => {
+    if (session?.user?.id) {
+      personErkennen(session.user.id, { email: session.user.email ?? undefined });
+    }
+  }, [session?.user?.id, session?.user?.email]);
   const branding = useBranding();
   const brandName = branding.brandingName ?? 'BeatControl';
   const params = useSearchParams();
@@ -80,11 +88,8 @@ export default function DJDashboard() {
   const [formDate, setFormDate] = useState('');
 
   const [exportingSlug, setExportingSlug] = useState<string | null>(null);
-
-  const [showOnboarding, setShowOnboarding] = useState(false);
   const [leavingToFeier, setLeavingToFeier] = useState(false);
   const [autoCreating, setAutoCreating] = useState(false);
-  const [funnelCreated, setFunnelCreated] = useState(false);
 
   const [paywall, setPaywall] = useState<{ open: boolean; type: PaywallLimit; current?: number; max?: number }>({
     open: false,
@@ -101,6 +106,7 @@ export default function DJDashboard() {
   }, [me?.isCouple, router]);
 
   useEffect(() => {
+    ereignis('dashboard_view');
     if (typeof window === 'undefined') {
       loadEvents();
       loadMe();
@@ -146,10 +152,6 @@ export default function DJDashboard() {
       }
       return; // Onboarding-Overlay diesmal überspringen — der Funnel war das Onboarding.
     }
-
-    if (!localStorage.getItem(ONBOARDING_KEY)) {
-      setShowOnboarding(true);
-    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -173,7 +175,6 @@ export default function DJDashboard() {
         setShowForm(true);
         return;
       }
-      setFunnelCreated(true);
       loadEvents();
     } catch {
       setFormTitle(title);
@@ -182,11 +183,6 @@ export default function DJDashboard() {
     } finally {
       setAutoCreating(false);
     }
-  }
-
-  function dismissOnboarding() {
-    localStorage.setItem(ONBOARDING_KEY, '1');
-    setShowOnboarding(false);
   }
 
   async function loadEvents() {
@@ -407,39 +403,6 @@ export default function DJDashboard() {
         </div>
       )}
 
-      {showOnboarding && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-md animate-fade-in">
-          <div className="bg-panel-elevated rounded-3xl border border-line glow-turquoise shadow-xl max-w-lg w-full p-8 sm:p-10 animate-fade-up">
-            <p className="text-turquoise text-2xl text-center mb-2">♪</p>
-            <h2 className="font-display text-3xl font-black uppercase tracking-wide text-fg text-center mb-6">
-              Willkommen bei {brandName}
-            </h2>
-            <ul className="space-y-4 text-fg/90 text-sm sm:text-base leading-relaxed mb-8">
-              <li className="flex gap-3">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5 shrink-0 text-turquoise" aria-hidden="true">
-                  <path fillRule="evenodd" d="M16.704 5.29a1 1 0 010 1.42l-7.5 7.5a1 1 0 01-1.42 0l-3.5-3.5a1 1 0 111.42-1.42l2.79 2.79 6.79-6.79a1 1 0 011.42 0z" clipRule="evenodd" />
-                </svg>
-                <span>Du legst ein Event an und bekommst einen QR-Code für deine Gäste.</span>
-              </li>
-              <li className="flex gap-3">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5 shrink-0 text-turquoise" aria-hidden="true">
-                  <path fillRule="evenodd" d="M16.704 5.29a1 1 0 010 1.42l-7.5 7.5a1 1 0 01-1.42 0l-3.5-3.5a1 1 0 111.42-1.42l2.79 2.79 6.79-6.79a1 1 0 011.42 0z" clipRule="evenodd" />
-                </svg>
-                <span>Gäste scannen den Code und tragen ihre Songwünsche ein.</span>
-              </li>
-              <li className="flex gap-3">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5 shrink-0 text-turquoise" aria-hidden="true">
-                  <path fillRule="evenodd" d="M16.704 5.29a1 1 0 010 1.42l-7.5 7.5a1 1 0 01-1.42 0l-3.5-3.5a1 1 0 111.42-1.42l2.79 2.79 6.79-6.79a1 1 0 011.42 0z" clipRule="evenodd" />
-                </svg>
-                <span>Die Wünsche erscheinen live auf deinem iPad, sortiert nach Beliebtheit.</span>
-              </li>
-            </ul>
-            <Button variant="primary" tone="party" onClick={dismissOnboarding} className="w-full">
-              Los geht&apos;s
-            </Button>
-          </div>
-        </div>
-      )}
 
       <PaywallModal
         isOpen={paywall.open}
@@ -475,20 +438,6 @@ export default function DJDashboard() {
         {autoCreating && (
           <div className="mb-3 rounded-2xl bg-neon-gold/10 border border-neon-gold/40 px-5 py-3 animate-fade-in">
             <p className="text-sm text-fg leading-snug">Dein Event wird angelegt …</p>
-          </div>
-        )}
-        {funnelCreated && (
-          <div className="mb-3 rounded-2xl bg-turquoise/10 border border-turquoise/40 px-5 py-3 flex items-center justify-between gap-3 animate-fade-in">
-            <p className="text-sm text-fg leading-snug">
-              <span className="font-semibold">Dein Event ist startklar 🎉</span>{' '}
-              QR-Code steht, deine Gäste können direkt loslegen.
-            </p>
-            <button
-              onClick={() => setFunnelCreated(false)}
-              className="shrink-0 text-xs text-fg-muted hover:text-fg px-3 py-1 rounded-full border border-line whitespace-nowrap"
-            >
-              Schließen
-            </button>
           </div>
         )}
 
@@ -538,6 +487,7 @@ export default function DJDashboard() {
                 <div className="flex items-center justify-between gap-3">
                   <Link
                     href={`/dj/${event.slug}`}
+                    onClick={() => ereignis('event_open')}
                     className="min-w-0 flex-1 group after:absolute after:inset-0 after:content-['']"
                   >
                     <h2 className="font-display text-xl font-bold text-fg break-words group-hover:text-turquoise transition-colors">
@@ -571,6 +521,22 @@ export default function DJDashboard() {
                     {event.song_count} Songs
                     {event.event_date && <> · {fmtDate(event.event_date)}</>}
                   </span>
+                </div>
+                {/* Die ganze Kachel führt zum Event, aber ohne sichtbaren Hinweis
+                    findet das niemand: auf dem Handy gibt es keinen Hover. Diese
+                    Zeile benennt, was hinter dem Tippen liegt. */}
+                <div className="mt-3 pt-3 border-t border-line flex items-center justify-between gap-3">
+                  <span className="font-display text-xs font-bold uppercase tracking-wide text-turquoise">
+                    QR-Code und Gästelink
+                  </span>
+                  <svg
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                    aria-hidden="true"
+                    className="w-4 h-4 shrink-0 text-turquoise motion-safe:animate-nudge"
+                  >
+                    <path fillRule="evenodd" d="M3 10a.75.75 0 01.75-.75h9.19L9.47 5.78a.75.75 0 111.06-1.06l4.5 4.5a.75.75 0 010 1.06l-4.5 4.5a.75.75 0 11-1.06-1.06l3.47-3.47H3.75A.75.75 0 013 10z" clipRule="evenodd" />
+                  </svg>
                 </div>
               </Card>
             ))}
