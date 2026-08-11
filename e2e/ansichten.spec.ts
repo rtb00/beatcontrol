@@ -213,4 +213,83 @@ test.describe('Freigeschaltete Feier', () => {
 
     await cleanup(page.request, ev.slug);
   });
+
+  test('Zahlung schlägt fehl und die Kulanzzeit ist abgelaufen: eine vorher offene Feier wird wieder gesperrt', async ({
+    page,
+    browser,
+  }) => {
+    test.skip(!webhooksAvailable(), 'kein STRIPE_WEBHOOK_SECRET in .env.local gefunden');
+    await register(page, testEmail('past-due'));
+    const me = await getMe(page.request);
+    const customerId = `cus_e2e_pastdue_${Date.now()}`;
+
+    // Erst einen Kunden anlegen (wie es ein echter Kauf tut), dann eine aktive
+    // Subscription mit einem Abrechnungsende, das schon zehn Tage zurückliegt
+    // — solange plan_status noch "active" ist, bleibt der Plan trotzdem pro.
+    await sendCheckoutCompleted(page.request, me.id, { tier: 'credit_pack_5' }, customerId);
+    const zehnTageZurueck = Math.floor((Date.now() - 10 * 24 * 60 * 60 * 1000) / 1000);
+    await sendSubscriptionActive(page.request, me.id, customerId, zehnTageZurueck);
+    await expect.poll(async () => (await getMe(page.request)).plan, { timeout: 15_000 }).toBe('pro');
+
+    const ev = await createEvent(page.request, 'Past-Due-Feier');
+    await seedSongs(browser, ev.slug, 4);
+    const waehrendPro = await fetchSongs(page.request, ev.slug, 'owner');
+    expect(waehrendPro.unlocked, 'als aktiver Pro-Kunde ist die Feier offen').toBe(true);
+
+    // Jetzt schlägt die Zahlung fehl: plan_status wird past_due, und die
+    // Kulanzzeit (3 Tage über das Periodenende hinaus) ist längst vorbei.
+    await sendPaymentFailed(page.request, customerId);
+    await expect
+      .poll(async () => (await fetchSongs(page.request, ev.slug, 'owner')).unlocked, { timeout: 15_000 })
+      .toBe(false);
+
+    await cleanup(page.request, ev.slug);
+  });
+
+  test('DJ ohne Konto registriert sich über den Live-Screen-Link und bekommt ein Event geschenkt', async ({
+    page,
+    browser,
+  }) => {
+    test.skip(!webhooksAvailable(), 'kein STRIPE_WEBHOOK_SECRET in .env.local gefunden');
+    await register(page, testEmail('brautpaar'));
+    const ev = await createEvent(page.request, 'Zweiter Kaufweg');
+
+    const djKontext = await browser.newContext();
+    const djSeite = await djKontext.newPage();
+    await djSeite.goto(`/dj/${ev.slug}?dj=${ev.dj_token}`);
+    await expect(djSeite.getByRole('button', { name: /Alle Wünsche sehen/ })).toBeVisible({ timeout: 15_000 });
+
+    await djSeite.getByRole('button', { name: /Alle Wünsche sehen/ }).click();
+    await djSeite.waitForURL(/\/auth\/register\?.*slug=.*dj=/, { timeout: 15_000 });
+    const url = new URL(djSeite.url());
+    expect(url.searchParams.get('slug')).toBe(ev.slug);
+    expect(url.searchParams.get('dj')).toBe(ev.dj_token);
+
+    // Ab hier würde die echte Registrierung automatisch in den Stripe-Checkout
+    // laufen. Das lenken wir auf eine harmlose eigene Seite um, damit der Test
+    // nicht auf checkout.stripe.com landet — genau dieser Aufruf beweist aber,
+    // dass der Kaufweg ausgelöst wird.
+    await djSeite.route('**/api/stripe/checkout', (route) =>
+      route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ url: '/dj?checkout=success' }) })
+    );
+
+    await djSeite.fill('input[name=password]', TEST_PASSWORD);
+    await djSeite.fill('input[name=confirm]', TEST_PASSWORD);
+    for (const box of await djSeite.locator('input[type=checkbox]').all()) await box.check();
+    await djSeite.click('button[type=submit]');
+    await djSeite.waitForURL(/checkout=success/, { timeout: 15_000 });
+
+    const djMe = await getMe(djSeite.request);
+    // Der Dankeschön-Anreiz für die Registrierung über den DJ-Link.
+    const webhook = await sendCheckoutCompleted(djSeite.request, djMe.id, {
+      tier: 'couple_pass',
+      slug: ev.slug,
+      gift_credit: '1',
+    });
+    expect(webhook.ok).toBe(true);
+    await expect.poll(async () => (await getMe(djSeite.request)).eventCredits, { timeout: 15_000 }).toBe(1);
+
+    await djKontext.close();
+    await cleanup(page.request, ev.slug);
+  });
 });

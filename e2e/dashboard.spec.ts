@@ -34,7 +34,9 @@ test.describe('DJ-Dashboard: der Weg zum Gästelink', () => {
     await expect(page.getByRole('heading', { name: 'Kachel-Feier' })).toBeVisible();
     await expect(page.getByText('QR-Code und Gästelink')).toBeVisible();
 
-    await page.getByText('QR-Code und Gästelink').click();
+    // Die ganze Kachel ist klickbar (ein über sie gelegter Link); der
+    // eigentliche Navigationsanker ist der Titel-Link.
+    await page.getByRole('link', { name: 'Kachel-Feier' }).click();
     await expect(page).toHaveURL(new RegExp(`/dj/${ev.slug}`));
 
     // Der Live-Screen zeigt tatsächlich QR-Code und Gästelink, nicht nur den
@@ -90,7 +92,7 @@ test.describe('DJ-Dashboard: der Weg zum Gästelink', () => {
     await page.waitForURL(/\/dj/, { timeout: 20_000 });
     await expect(page.getByRole('heading', { name: titel })).toBeVisible({ timeout: 15_000 });
 
-    await page.getByText('QR-Code und Gästelink').click();
+    await page.getByRole('link', { name: titel }).click();
     await page.waitForURL(/\/dj\/.+/, { timeout: 15_000 });
     await expect(page.getByText('Scanne mich!')).toBeVisible();
     await expect(page.getByRole('button', { name: /Gäste-Karte herunterladen/ })).toBeVisible();

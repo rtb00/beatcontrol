@@ -51,6 +51,16 @@ test.describe('Bezahlschranke', () => {
     // Auch mit erfundenem DJ-Token nicht.
     const mitFalschemToken = await fetchSongs(fremdSeite.request, ev.slug, 'dj', 'falsches-token');
     expect(readableTitles(mitFalschemToken).length).toBeLessThanOrEqual(3);
+
+    // view=owner ohne Login muss exakt auf die persönliche Gästeauswahl
+    // zurückfallen, nicht auf die "drei beliebtesten" Auswahl des echten
+    // Besitzers. Sonst könnte jeder Fremde die personalisierte Bezahlschranke
+    // umgehen, indem er einfach view=owner anhängt und die für den Besitzer
+    // bestimmte Auswahl sieht.
+    const alsFremderGast = await fetchSongs(fremdSeite.request, ev.slug, 'guest');
+    const alsFremderOwner = await fetchSongs(fremdSeite.request, ev.slug, 'owner');
+    expect(readableTitles(alsFremderOwner).sort()).toEqual(readableTitles(alsFremderGast).sort());
+
     await fremd.close();
 
     await cleanup(page.request, ev.slug);

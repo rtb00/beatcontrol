@@ -1,14 +1,13 @@
 'use client';
 
 import { useEffect } from 'react';
-import { usePathname, useSearchParams } from 'next/navigation';
 import posthog from 'posthog-js';
 import { PostHogProvider } from 'posthog-js/react';
 
-// Produktanalyse über PostHog. Der Reiz gegenüber selbst gesetzten Ereignissen:
-// Autocapture erfasst Klicks, Eingaben und Seitenwechsel von allein, und die
-// Sitzungsaufzeichnung zeigt, woran jemand tatsächlich hängen bleibt, statt es
-// aus Zahlen zu erraten.
+// Produktanalyse über PostHog, aufgebaut nach der offiziellen Anleitung für
+// Next.js. Der Reiz gegenüber selbst gesetzten Ereignissen: Autocapture erfasst
+// Klicks, Eingaben und Seitenwechsel von allein, und die Sitzungsaufzeichnung
+// zeigt, woran jemand tatsächlich hängen bleibt, statt es aus Zahlen zu raten.
 //
 // Ohne Schlüssel bleibt alles stumm: keine Anfragen, keine Fehler. Damit läuft
 // die Anwendung lokal und in Vorschau-Bereitstellungen unverändert weiter.
@@ -17,62 +16,35 @@ const HOST = process.env.NEXT_PUBLIC_POSTHOG_HOST ?? 'https://eu.i.posthog.com';
 
 let gestartet = false;
 
-function starten() {
-  if (gestartet || !KEY || typeof window === 'undefined') return;
-  posthog.init(KEY, {
-    api_host: HOST,
-    // Seitenaufrufe schicken wir selbst, weil der App Router bei einem Wechsel
-    // ohne Neuladen sonst nichts meldet.
-    capture_pageview: false,
-    capture_pageleave: true,
-    autocapture: true,
-    session_recording: {
-      // Alles, was jemand eintippt, wird maskiert. Songwünsche und Namen von
-      // Gästen gehen niemanden etwas an, auch uns nicht.
-      maskAllInputs: true,
-    },
-    // Datensparsam von Anfang an: keine IP-Adresse, kein Erfassen bei gesetztem
-    // Do-Not-Track, keine automatische Aufzeichnung von Formularinhalten.
-    property_denylist: ['$ip'],
-    respect_dnt: true,
-    persistence: 'localStorage+cookie',
-    // Später, sobald das Einwilligungsbanner steht: auf true stellen und nach
-    // erteilter Einwilligung posthog.opt_in_capturing() aufrufen. Bis dahin
-    // läuft die Erfassung, was ohne Banner rechtlich angreifbar bleibt.
-    opt_out_capturing_by_default: false,
-  });
-  gestartet = true;
-}
-
-/** Meldet Seitenwechsel, die der App Router ohne Neuladen ausführt. */
-function SeitenaufrufMelder() {
-  const pfad = usePathname();
-  const parameter = useSearchParams();
-
-  useEffect(() => {
-    if (!KEY || !pfad) return;
-    const query = parameter?.toString();
-    posthog.capture('$pageview', {
-      $current_url: window.origin + pfad + (query ? `?${query}` : ''),
-    });
-  }, [pfad, parameter]);
-
-  return null;
-}
-
 export default function AnalyticsProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
-    starten();
+    if (gestartet || !KEY) return;
+    posthog.init(KEY, {
+      api_host: HOST,
+      // Die Voreinstellung der Bibliothek. Sie regelt unter anderem, wie
+      // Seitenwechsel im App Router erfasst werden. Ein eigener Melder mit
+      // capture_pageview: false hat hier zuvor dazu geführt, dass die
+      // Einbindung zwar lud, aber kein einziges Ereignis absetzte.
+      defaults: '2026-05-30',
+      session_recording: {
+        // Alles, was jemand eintippt, wird maskiert. Songwünsche und Namen von
+        // Gästen gehen niemanden etwas an, auch uns nicht.
+        maskAllInputs: true,
+      },
+      // Datensparsam von Anfang an: keine IP-Adresse, kein Erfassen bei
+      // gesetztem Do-Not-Track.
+      property_denylist: ['$ip'],
+      respect_dnt: true,
+      // Später, sobald das Einwilligungsbanner steht: auf true stellen und nach
+      // erteilter Einwilligung posthog.opt_in_capturing() aufrufen.
+      opt_out_capturing_by_default: false,
+    });
+    gestartet = true;
   }, []);
 
   if (!KEY) return <>{children}</>;
 
-  return (
-    <PostHogProvider client={posthog}>
-      <SeitenaufrufMelder />
-      {children}
-    </PostHogProvider>
-  );
+  return <PostHogProvider client={posthog}>{children}</PostHogProvider>;
 }
 
 /**
