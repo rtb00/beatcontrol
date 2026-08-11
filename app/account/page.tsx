@@ -313,7 +313,7 @@ export default function AccountPage() {
               <div>
                 <p className="font-semibold text-fg">Free Plan</p>
                 <p className="text-fg-muted text-sm mt-1">
-                  1 aktives Event · bis zu 30 Songwünsche · BeatControl-Branding.
+                  1 aktives Event · unbegrenzte Songwünsche · BeatControl-Branding.
                 </p>
               </div>
               <Link

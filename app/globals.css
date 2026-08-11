@@ -16,6 +16,29 @@
     background-color: var(--bg-base);
   }
 
+  /* Browser-Ausfüllhilfe (v.a. Chrome/WebKit) überschreibt Hintergrund- und
+     Textfarbe von Eingabefeldern per User-Agent-Regel mit !important, sobald
+     ein Feld automatisch befüllt wird oder wurde — betrifft in der Praxis
+     fast nur type="email"-Felder, weil Passwortfelder von dieser einfachen
+     Formularverlaufs-Autofill ausgenommen sind. Ohne Gegenregel wird so ein
+     einzelnes Feld hell, während baugleiche Felder daneben dunkel bleiben.
+     Der lange transition-delay ist der etablierte Trick, um Chromes eigene
+     Übergangsanimation der Autofill-Farbe zu neutralisieren. */
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  input:-webkit-autofill:active {
+    -webkit-text-fill-color: var(--text-primary);
+    caret-color: var(--text-primary);
+    box-shadow: 0 0 0 1000px var(--bg-panel) inset;
+    transition: background-color 9999s ease-in-out 0s, color 9999s ease-in-out 0s;
+  }
+
+  input:autofill {
+    background-color: var(--bg-panel);
+    color: var(--text-primary);
+  }
+
   /*
    * "Confetti Rave" design tokens (Version 3 redesign).
    * Two tones share one palette: .tone-calm (set by <CalmScope>) overrides the

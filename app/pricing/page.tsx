@@ -35,7 +35,8 @@ const FEATURE_GROUPS: FeatureGroup[] = [
     title: 'Events & Songwünsche',
     rows: [
       { label: 'Aktive Events', free: '1', eventPass: '1 Event', pro: 'Unbegrenzt', team: 'Unbegrenzt' },
-      { label: 'Songwünsche', free: 'Bis zu 30', eventPass: 'Unbegrenzt', pro: 'Unbegrenzt', team: 'Unbegrenzt' },
+      { label: 'Songwünsche entgegennehmen', free: 'Unbegrenzt', eventPass: 'Unbegrenzt', pro: 'Unbegrenzt', team: 'Unbegrenzt' },
+      { label: 'Davon sichtbar', free: '3, Rest ab Freischaltung', eventPass: 'Alle', pro: 'Alle', team: 'Alle' },
       { label: 'QR-Code für Gäste', free: true, eventPass: true, pro: true, team: true },
       { label: 'Export der Musikwünsche zur Nachbereitung', free: false, eventPass: true, pro: true, team: true },
       { label: 'Gastkarten mit QR-Code zum Download', free: false, eventPass: true, pro: true, team: true },

@@ -63,7 +63,7 @@ test.describe('Ansichten bei gesperrter Feier', () => {
 
     // Der Screen selbst lädt und zeigt den Hinweis zum Freischalten.
     await dj.goto(`/dj/${ev.slug}?dj=${ev.dj_token}`);
-    await expect(dj.getByText(/freigeschaltet/i).first()).toBeVisible({ timeout: 15_000 });
+    await expect(dj.getByText(/freischalten/i).first()).toBeVisible({ timeout: 15_000 });
 
     await ctx.close();
     await cleanup(page.request, ev.slug);

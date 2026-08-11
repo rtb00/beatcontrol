@@ -58,7 +58,7 @@ describe('getPlanLimits', () => {
   it('free has minimal limits', () => {
     const limits = getPlanLimits('free');
     expect(limits.maxEvents).toBe(1);
-    expect(limits.maxSongs).toBe(30);
+    expect(limits.maxSongs).toBe(Infinity);
     expect(limits.branding).toBe(false);
     expect(limits.export).toBe(false);
     expect(limits.maxSubAccounts).toBe(0);

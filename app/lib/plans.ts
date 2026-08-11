@@ -72,7 +72,7 @@ export function getPlanLimits(plan: Plan): PlanLimits {
     default:
       return {
         maxEvents: 1,
-        maxSongs: 30,
+        maxSongs: Infinity,
         branding: false,
         export: false,
         maxSubAccounts: 0,
@@ -81,5 +81,4 @@ export function getPlanLimits(plan: Plan): PlanLimits {
   }
 }
 
-export const FREE_SONG_LIMIT = 30;
 export const FREE_EVENT_LIMIT = 1;

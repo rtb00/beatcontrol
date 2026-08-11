@@ -29,7 +29,7 @@ const PRICING_JSON_LD = {
       name: 'Free',
       price: '0',
       priceCurrency: 'EUR',
-      description: '1 aktives Event, bis zu 30 Songwünsche, QR-Code für Gäste. Für immer kostenlos.',
+      description: '1 aktives Event, unbegrenzte Songwünsche, QR-Code für Gäste. Für immer kostenlos.',
     },
     {
       '@type': 'Offer',

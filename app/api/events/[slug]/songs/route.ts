@@ -6,7 +6,6 @@ import { readOrCreateGuestId, attachGuestCookie } from '@/app/lib/guest-id';
 import { isRateLimited } from '@/app/lib/rate-limit';
 import { containsProfanity } from '@/app/lib/profanity';
 import { getSongSuggestions } from '@/app/lib/ai';
-import { getEffectivePlan, getPlanLimits } from '@/app/lib/plans';
 import { auth } from '@/auth';
 import {
   FREE_VISIBLE_FOREIGN_SONGS,
@@ -278,42 +277,12 @@ export async function POST(
   }
 
   const { rows: eventRows } = await sql`
-    SELECT id, dj_id, credit_redeemed FROM events WHERE slug = ${params.slug}
+    SELECT id FROM events WHERE slug = ${params.slug}
   `;
   if (eventRows.length === 0) {
     return json({ error: 'event not found' }, { status: 404 });
   }
   const eventId = eventRows[0].id;
-  const djId = eventRows[0].dj_id as string;
-
-  // Plan-Check: DJ-Besitzer laden, Songs zählen, gegen Limit prüfen.
-  // Per Guthaben freigeschaltete Events haben wie der Event-Pass kein Song-Limit.
-  const creditRedeemed = eventRows[0].credit_redeemed === true;
-  const { rows: ownerRows } = await sql`
-    SELECT plan, plan_status, current_period_end
-    FROM users WHERE id = ${djId}
-  `;
-  if (ownerRows.length > 0 && !creditRedeemed) {
-    const owner = ownerRows[0];
-    const plan = getEffectivePlan({
-      plan: owner.plan,
-      plan_status: owner.plan_status,
-      current_period_end: owner.current_period_end,
-    });
-    const limits = getPlanLimits(plan);
-    if (Number.isFinite(limits.maxSongs)) {
-      const { rows: countRows } = await sql`
-        SELECT COUNT(*)::int AS cnt FROM songs WHERE event_id = ${eventId}
-      `;
-      const songCount = countRows[0].cnt as number;
-      if (songCount >= limits.maxSongs) {
-        return json(
-          { error: 'plan_limit', limit: 'songs', current: songCount, max: limits.maxSongs },
-          { status: 402 }
-        );
-      }
-    }
-  }
 
   // Deezer duplicate check
   if (deezerId) {

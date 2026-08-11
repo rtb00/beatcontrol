@@ -100,7 +100,6 @@ export default function DJEventPage() {
   const [deletingId, setDeletingId] = useState<number | null>(null);
   const [downloading, setDownloading] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(true);
-  const [deactivating, setDeactivating] = useState(false);
 
   const [editingTitle, setEditingTitle] = useState(false);
   const [titleDraft, setTitleDraft] = useState('');
@@ -114,6 +113,7 @@ export default function DJEventPage() {
   // window.location statt useSearchParams, um keine Suspense-Boundary zu brauchen.
   const [guestToken, setGuestToken] = useState('');
   const [djLinkCopied, setDjLinkCopied] = useState(false);
+  const [deactivating, setDeactivating] = useState(false);
   const [coupleTextCopied, setCoupleTextCopied] = useState(false);
 
   useEffect(() => {
@@ -225,17 +225,10 @@ export default function DJEventPage() {
     ? `Hallo! Bei eurer Feier können eure Gäste schon Songs wünschen: ${origin}/${slug}\nUm alle Wünsche zu sehen, schaltet eure Feier auf BeatControl einmalig für 49 Euro frei.`
     : '';
 
-  async function copyCoupleText() {
-    if (!coupleMessage) return;
-    try {
-      await navigator.clipboard.writeText(coupleMessage);
-      setCoupleTextCopied(true);
-      setTimeout(() => setCoupleTextCopied(false), 2500);
-    } catch { /* ignore */ }
-  }
-
+  // Nach der Feier schließen: Gäste sollen Tage später nicht weiterwünschen.
+  // Die Aktion hing früher im Song-Limit-Hinweis, der entfallen ist.
   async function handleDeactivate() {
-    if (!confirm('Event wirklich deaktivieren? Gäste können dann keine Songs mehr wünschen.')) return;
+    if (!confirm('Event wirklich schließen? Deine Gäste können dann keine Songs mehr wünschen.')) return;
     setDeactivating(true);
     try {
       await fetch(`/api/events/${slug}`, {
@@ -243,10 +236,19 @@ export default function DJEventPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ active: false }),
       });
-      window.location.href = '/dj';
+      await loadEvent();
     } finally {
       setDeactivating(false);
     }
+  }
+
+  async function copyCoupleText() {
+    if (!coupleMessage) return;
+    try {
+      await navigator.clipboard.writeText(coupleMessage);
+      setCoupleTextCopied(true);
+      setTimeout(() => setCoupleTextCopied(false), 2500);
+    } catch { /* ignore */ }
   }
 
   async function handleToggle(songId: number) {
@@ -378,13 +380,16 @@ export default function DJEventPage() {
   const unplayed = songs.filter((s) => !s.played);
   const played = songs.filter((s) => s.played);
   const guestUrl = `${origin}/${slug}`;
-  const songLimitHit =
-    me?.plan === 'free' && me.limits.maxSongs !== null && songs.length >= me.limits.maxSongs;
-  const songLimitNear =
-    me?.plan === 'free' &&
-    me.limits.maxSongs !== null &&
-    !songLimitHit &&
-    songs.length >= Math.floor(me.limits.maxSongs * 0.8);
+  // Der DJ steht am Pult und will wissen, was die Leute hören wollen. Deshalb
+  // benennt das Banner konkret, was ihm fehlt, statt die Sperre zu erklären.
+  const hiddenSongs = songs.filter((s) => s.hidden);
+  const topHiddenVotes = hiddenSongs.reduce((max, s) => Math.max(max, s.vote_count ?? 0), 0);
+  const lockedHeadline =
+    topHiddenVotes > 1
+      ? `Der beliebteste Wunsch hier hat ${topHiddenVotes} Herzen.`
+      : hiddenSongs.length === 1
+        ? 'Ein weiterer Wunsch liegt auf dieser Feier.'
+        : `${hiddenSongs.length} weitere Wünsche liegen auf dieser Feier.`;
 
   return (
     <div className="h-[100dvh] flex flex-col bg-base overflow-hidden">
@@ -518,48 +523,6 @@ export default function DJEventPage() {
         limitType={paywall.type}
       />
 
-      {songLimitHit && (
-        <div className="shrink-0 bg-red/10 border-b border-red/40 px-4 py-3">
-          <div className="max-w-5xl mx-auto flex flex-col sm:flex-row items-start sm:items-center gap-3">
-            <p className="text-sm text-fg leading-snug flex-1">
-              <span className="font-semibold">Song-Limit erreicht.</span>{' '}
-              Deine Gäste können keine weiteren Songs mehr wünschen. Upgrade auf Pro für unbegrenzte Wünsche.
-            </p>
-            <div className="flex items-center gap-2 shrink-0">
-              <Link
-                href="/pricing?plan=pro_yearly"
-                className="px-4 py-2 rounded-xl bg-gradient-to-r from-red to-neon-gold text-white text-xs font-semibold hover:brightness-110 transition-all"
-              >
-                Upgrade
-              </Link>
-              <button
-                onClick={handleDeactivate}
-                disabled={deactivating}
-                className="px-4 py-2 rounded-xl border border-line text-xs font-semibold text-fg hover:border-turquoise transition-colors disabled:opacity-50"
-              >
-                {deactivating ? '…' : 'Event deaktivieren'}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-      {songLimitNear && (
-        <div className="shrink-0 bg-neon-gold/5 border-b border-neon-gold/30 px-4 py-2.5">
-          <div className="max-w-5xl mx-auto flex flex-col sm:flex-row items-start sm:items-center gap-3">
-            <p className="text-xs sm:text-sm text-fg leading-snug flex-1">
-              <span className="font-semibold">{songs.length} von {me?.limits.maxSongs} Songs.</span>{' '}
-              Sobald das Limit erreicht ist, können deine Gäste nichts mehr wünschen.
-            </p>
-            <Link
-              href="/pricing?plan=pro_yearly"
-              className="shrink-0 px-3 py-1.5 rounded-lg border border-neon-gold text-neon-gold text-xs font-semibold hover:bg-neon-gold hover:text-base transition-colors"
-            >
-              Upgrade
-            </Link>
-          </div>
-        </div>
-      )}
-
       {guestToken && (
         <div className="shrink-0 border-b border-line bg-panel/60 px-4 py-2 text-center">
           <p className="text-xs text-fg-muted">
@@ -617,7 +580,17 @@ export default function DJEventPage() {
                   <path d="M12.232 4.232a2.5 2.5 0 013.536 3.536l-1.225 1.224a.75.75 0 001.061 1.06l1.224-1.224a4 4 0 00-5.656-5.656l-3 3a4 4 0 00.225 5.865.75.75 0 00.977-1.138 2.5 2.5 0 01-.142-3.667l3-3z" />
                   <path d="M11.603 7.963a.75.75 0 00-.977 1.138 2.5 2.5 0 01.142 3.667l-3 3a2.5 2.5 0 01-3.536-3.536l1.225-1.224a.75.75 0 00-1.061-1.06l-1.224 1.224a4 4 0 105.656 5.656l3-3a4 4 0 00-.225-5.865z" />
                 </svg>
-                {djLinkCopied ? 'Link kopiert' : 'Link für deinen DJ'}
+                {djLinkCopied ? 'Link kopiert' : 'Songübersicht für den DJ'}
+              </button>
+            )}
+            {!guestToken && (
+              <button
+                onClick={handleDeactivate}
+                disabled={deactivating}
+                tabIndex={sidebarOpen ? 0 : -1}
+                className="text-xs text-fg-muted/70 hover:text-red transition-colors disabled:opacity-40"
+              >
+                {deactivating ? 'Wird geschlossen…' : 'Event schließen'}
               </button>
             )}
           </div>
@@ -637,10 +610,9 @@ export default function DJEventPage() {
           {!unlocked && !loading && (
             <div className="mb-4 rounded-2xl border border-turquoise/25 bg-panel-elevated/60 px-4 py-3.5 sm:px-5 sm:py-4">
               <p className="text-sm text-fg leading-snug">
-                <span className="font-semibold">Diese Feier ist noch nicht freigeschaltet.</span>{' '}
-                Du siehst die drei beliebtesten Wünsche offen, den Rest verschwommen mit
-                Like-Zahlen. Schaltest du frei, bekommst du dafür ein Event geschenkt, das
-                du bei einer deiner nächsten Feiern einlösen kannst.
+                <span className="font-semibold">{lockedHeadline}</span>{' '}
+                Welche das sind, siehst du nach dem Freischalten. Dann weißt du den ganzen
+                Abend, worauf deine Leute abgehen. Dein nächstes eigenes Event ist gratis dabei.
               </p>
               <div className="mt-3 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
                 <button
@@ -648,14 +620,14 @@ export default function DJEventPage() {
                   disabled={unlocking}
                   className="px-4 py-2.5 rounded-xl bg-turquoise text-[color:var(--bg-base)] text-sm font-semibold hover:brightness-110 transition-all active:scale-95 disabled:opacity-50"
                 >
-                  {unlocking ? '…' : 'Jetzt freischalten'}
+                  {unlocking ? '…' : 'Alle Wünsche sehen · 49€'}
                 </button>
                 <button
                   onClick={copyCoupleText}
                   disabled={!origin}
                   className="px-4 py-2.5 rounded-xl border border-line text-sm text-fg-muted hover:border-turquoise hover:text-turquoise transition-all active:scale-95 disabled:opacity-40"
                 >
-                  {coupleTextCopied ? 'Text kopiert' : 'Text für euer Brautpaar kopieren'}
+                  {coupleTextCopied ? 'Text kopiert' : 'Das Brautpaar fragen'}
                 </button>
               </div>
             </div>

@@ -553,7 +553,7 @@ export default function LandingPage() {
               <ul className="flex flex-col gap-3 text-sm text-fg mb-8 flex-1">
                 {[
                   '1 aktives Event',
-                  'Bis zu 30 Songwünsche',
+                  'Unbegrenzte Songwünsche, 3 davon sichtbar',
                   'BeatControl-Branding',
                   'QR-Code für Gäste',
                 ].map((f) => (

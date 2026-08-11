@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { buttonVariants } from '@/app/components/ui';
 import Modal from '@/app/components/ui/Modal';
 
-export type PaywallLimit = 'songs' | 'events' | 'export' | 'branding';
+export type PaywallLimit = 'events' | 'export' | 'branding';
 
 interface PaywallModalProps {
   isOpen: boolean;
@@ -17,8 +17,6 @@ interface PaywallModalProps {
 export default function PaywallModal({ isOpen, onClose, limitType, current, max }: PaywallModalProps) {
   const headline = (() => {
     switch (limitType) {
-      case 'songs':
-        return `${max ?? 30} Songs erreicht`;
       case 'events':
         return 'Dein Free-Event ist belegt';
       case 'export':
@@ -32,10 +30,6 @@ export default function PaywallModal({ isOpen, onClose, limitType, current, max 
 
   const description = (() => {
     switch (limitType) {
-      case 'songs':
-        return `Deine Gäste haben das Free-Limit von ${max ?? 30} Songwünschen erreicht${
-          typeof current === 'number' ? ` (aktuell ${current})` : ''
-        }. Mit Pro können deine Gäste unbegrenzt viele Songs vorschlagen. Mit dem Event-Pass schaltest du dieses eine Event frei.`;
       case 'events':
         return 'Du hast schon ein aktives Event. Im Free-Plan ist genau eines erlaubt. Mit Pro legst du beliebig viele Events parallel an. Mit dem Event-Pass kaufst du genau dieses zusätzliche Event frei.';
       case 'export':
