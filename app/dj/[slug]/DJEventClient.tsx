@@ -400,7 +400,7 @@ export default function DJEventPage() {
       : `Noch ${freiePlaetze} Wünsche sind frei sichtbar.`;
   const lockedText = etwasVerdeckt
     ? 'Welche das sind, siehst du nach dem Freischalten. Dann weißt du den ganzen Abend, worauf deine Leute abgehen. Dein nächstes eigenes Event ist gratis dabei.'
-    : 'Kommen mehr dazu, siehst du nur noch die drei beliebtesten. Wer freischaltet, sieht alles und bekommt sein nächstes eigenes Event gratis dazu.';
+    : 'Kommen mehr dazu, siehst du nur noch die drei beliebtesten. Schalte dieses Event frei, um immer alle Wünsche zu sehen. Dein nächstes eigenes Event ist gratis dabei.';
 
   return (
     <div className="h-[100dvh] flex flex-col bg-base overflow-hidden">
