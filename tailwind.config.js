@@ -48,11 +48,17 @@ module.exports = {
           '40%': { transform: 'scale(1.25)' },
           '100%': { transform: 'scale(1)' },
         },
+        nudge: {
+          '0%, 60%, 100%': { transform: 'translateX(0)' },
+          '75%': { transform: 'translateX(4px)' },
+          '90%': { transform: 'translateX(1px)' },
+        },
       },
       animation: {
         'fade-up': 'fadeUp 0.35s ease-out',
         'fade-in': 'fadeIn 0.3s ease-out',
         pop: 'pop 0.2s ease-out',
+        nudge: 'nudge 2.4s ease-in-out infinite',
       },
     },
   },

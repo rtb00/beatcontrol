@@ -244,6 +244,23 @@ export default function BrautpaarStartFunnel() {
                   </svg>
                   <p className="text-sm text-fg-muted text-left">Der QR-Code für eure Gäste liegt bereit</p>
                 </div>
+                {/* Tippfläche sichtbar machen: die ganze Karte löst aus, aber
+                    ohne ein Element, das nach Bedienung aussieht, erkennt das
+                    niemand. Die Zeile ist kein eigener Knopf, sondern der
+                    sichtbare Teil der Karte. */}
+                <div className="mt-5 pt-4 border-t border-line flex items-center justify-between gap-3">
+                  <span className="font-display text-sm font-bold uppercase tracking-wide text-neon-gold">
+                    Weiter
+                  </span>
+                  <svg
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                    aria-hidden="true"
+                    className="w-5 h-5 shrink-0 text-neon-gold motion-safe:animate-nudge"
+                  >
+                    <path fillRule="evenodd" d="M3 10a.75.75 0 01.75-.75h9.19L9.47 5.78a.75.75 0 111.06-1.06l4.5 4.5a.75.75 0 010 1.06l-4.5 4.5a.75.75 0 11-1.06-1.06l3.47-3.47H3.75A.75.75 0 013 10z" clipRule="evenodd" />
+                  </svg>
+                </div>
                 {joining && (
                   <div className="absolute inset-0 rounded-3xl bg-base/85 backdrop-blur-sm flex flex-col items-center justify-center gap-4 text-center px-6">
                     <span className="relative flex h-12 w-12" aria-hidden="true">
