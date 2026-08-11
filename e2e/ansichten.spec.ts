@@ -1,5 +1,19 @@
 import { test, expect } from '@playwright/test';
-import { register, createEvent, seedSongs, fetchSongs, readableTitles, cleanup, testEmail } from './helpers';
+import {
+  register,
+  createEvent,
+  seedSongs,
+  fetchSongs,
+  readableTitles,
+  cleanup,
+  testEmail,
+  getMe,
+  sendCheckoutCompleted,
+  sendSubscriptionActive,
+  sendPaymentFailed,
+  webhooksAvailable,
+  TEST_PASSWORD,
+} from './helpers';
 
 // Was die drei Beteiligten tatsächlich auf dem Bildschirm sehen: Gast auf der
 // öffentlichen Seite, DJ auf seinem Screen, und was passiert, wenn eine Feier
@@ -77,6 +91,89 @@ test.describe('Ansichten bei gesperrter Feier', () => {
     const fremd = await ctx.newPage();
     await fremd.goto(`/dj/${ev.slug}`);
     await expect(fremd).toHaveURL(/\/auth\/signin/);
+
+    await ctx.close();
+    await cleanup(page.request, ev.slug);
+  });
+
+  test('das DJ-Token verlässt den Server nur Richtung Besitzer, nicht an einen eingeloggten Fremden', async ({
+    page,
+    browser,
+  }) => {
+    await register(page, testEmail('token-inhaber'));
+    const ev = await createEvent(page.request, 'Token-Schutz');
+
+    const fremdKontext = await browser.newContext();
+    const fremdSeite = await fremdKontext.newPage();
+    await register(fremdSeite, testEmail('token-fremder'));
+
+    const alsFremder = await (await fremdSeite.request.get(`/api/events/${ev.slug}`)).json();
+    expect(alsFremder.dj_token, 'ein fremdes, eingeloggtes Konto bekommt kein Token').toBeUndefined();
+
+    const alsBesitzer = await (await page.request.get(`/api/events/${ev.slug}`)).json();
+    expect(alsBesitzer.dj_token, 'der Besitzer selbst bekommt sein Token').toBe(ev.dj_token);
+
+    await fremdKontext.close();
+    await cleanup(page.request, ev.slug);
+  });
+
+  test('ein zweiter Gast, der denselben Song wünscht, löst automatisch einen Like aus statt eines Fehlers', async ({
+    page,
+    browser,
+  }) => {
+    await register(page, testEmail('duplikat'));
+    const ev = await createEvent(page.request, 'Doppelter Wunsch');
+
+    const gast1 = await browser.newContext();
+    const seite1 = await gast1.newPage();
+    const erster = await seite1.request.post(`/api/events/${ev.slug}/songs`, {
+      data: { title: 'Beliebter Song', artist: 'Star', deezerId: 'dz-e2e-42' },
+    });
+    expect(erster.status()).toBe(201);
+    const songId = (await erster.json()).songId;
+
+    const gast2 = await browser.newContext();
+    const seite2 = await gast2.newPage();
+    const zweiter = await seite2.request.post(`/api/events/${ev.slug}/songs`, {
+      data: { title: 'Beliebter Song', artist: 'Star', deezerId: 'dz-e2e-42' },
+    });
+    expect(zweiter.status()).toBe(200);
+    const zweiteAntwort = await zweiter.json();
+    expect(zweiteAntwort.duplicate).toBe(true);
+    expect(zweiteAntwort.songId).toBe(songId);
+
+    // Beide Wünsche zählen als Like auf denselben Song, nicht als zwei Songs.
+    const stand = await fetchSongs(page.request, ev.slug, 'owner');
+    expect(stand.total).toBe(1);
+    const song = stand.songs.find((s) => s.id === songId);
+    expect(song?.vote_count).toBe(2);
+
+    await gast1.close();
+    await gast2.close();
+    await cleanup(page.request, ev.slug);
+  });
+
+  test('erster Gast einer Feier ohne fremde Songs: alle drei eigenen Wünsche bleiben sichtbar', async ({
+    page,
+    browser,
+  }) => {
+    await register(page, testEmail('erster-gast'));
+    const ev = await createEvent(page.request, 'Erster Gast');
+
+    const ctx = await browser.newContext();
+    const gast = await ctx.newPage();
+    for (let i = 1; i <= 3; i++) {
+      const res = await gast.request.post(`/api/events/${ev.slug}/songs`, {
+        data: { title: `Nur ich ${i}`, artist: 'Solo' },
+      });
+      expect(res.status()).toBe(201);
+    }
+
+    // Derselbe Gast fragt seine eigene Gästesicht ab: keine fremden Songs
+    // vorhanden, der Auffüll-Zweig darf trotzdem nichts verstecken.
+    const alsGast = await fetchSongs(gast.request, ev.slug, 'guest');
+    expect(alsGast.hidden_count, 'ohne fremde Songs bleibt beim ersten Gast alles offen').toBe(0);
+    expect(readableTitles(alsGast)).toHaveLength(3);
 
     await ctx.close();
     await cleanup(page.request, ev.slug);

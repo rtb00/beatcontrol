@@ -1,4 +1,8 @@
 import type { Page, APIRequestContext, Browser } from '@playwright/test';
+import Stripe from 'stripe';
+import { randomUUID } from 'crypto';
+import { readFileSync } from 'fs';
+import path from 'path';
 
 // Gemeinsame Bausteine für die E2E-Tests. Alle Testkonten tragen das Präfix
 // e2e., damit sie in der Datenbank als Testmüll erkennbar bleiben.
@@ -93,4 +97,136 @@ export function readableTitles(res: SongsResponse): string[] {
 /** Deaktiviert das Testevent wieder, damit die Datenbank nicht zuwächst. */
 export async function cleanup(request: APIRequestContext, slug: string): Promise<void> {
   await request.patch(`/api/events/${slug}`, { data: { active: false } }).catch(() => {});
+}
+
+export interface Me {
+  id: string;
+  plan: 'free' | 'pro' | 'event_pass' | 'studio';
+  planStatus: string | null;
+  eventCredits: number;
+  isCouple: boolean;
+  limits: { maxEvents: number | null; maxSongs: number | null; export: boolean };
+}
+
+export async function getMe(request: APIRequestContext): Promise<Me> {
+  return (await (await request.get('/api/me')).json()) as Me;
+}
+
+// --- Stripe-Webhook-Simulation ----------------------------------------------
+// Guthaben, Freischaltung und Plan-Wechsel entstehen in Produktion aus genau
+// einem Ort: app/api/stripe/webhook/route.ts. Statt eines Test-only-Bypasses
+// senden diese Helfer signierte Testereignisse an exakt diese Route — der
+// reale Code läuft also mit, nicht eine Kopie seines Verhaltens. Das Secret
+// liegt in .env.local (wie bei den Skripten unter scripts/); der
+// Playwright-Testprozess liest .env.local nicht automatisch ein wie der
+// Next-Dev-Server, darum hier von Hand geladen.
+let cachedWebhookSecret: string | null | undefined;
+
+function webhookSecret(): string | null {
+  if (cachedWebhookSecret !== undefined) return cachedWebhookSecret;
+  try {
+    const text = readFileSync(path.join(process.cwd(), '.env.local'), 'utf-8');
+    const match = text.match(/^STRIPE_WEBHOOK_SECRET=(.+)$/m);
+    cachedWebhookSecret = match ? match[1].trim().replace(/^["']|["']$/g, '') : null;
+  } catch {
+    cachedWebhookSecret = null;
+  }
+  return cachedWebhookSecret;
+}
+
+/** true, wenn ein Webhook-Secret gefunden wurde und signierte Ereignisse möglich sind. */
+export function webhooksAvailable(): boolean {
+  return webhookSecret() !== null;
+}
+
+async function sendSignedStripeEvent(
+  request: APIRequestContext,
+  type: string,
+  dataObject: Record<string, unknown>
+): Promise<{ ok: boolean; status: number }> {
+  const secret = webhookSecret();
+  if (!secret) return { ok: false, status: 0 };
+  const payload = JSON.stringify({
+    id: `evt_e2e_${randomUUID()}`,
+    object: 'event',
+    type,
+    data: { object: dataObject },
+  });
+  const header = Stripe.webhooks.generateTestHeaderString({ payload, secret });
+  const res = await request.post('/api/stripe/webhook', {
+    data: payload,
+    headers: { 'Content-Type': 'application/json', 'stripe-signature': header },
+  });
+  return { ok: res.ok(), status: res.status() };
+}
+
+/**
+ * Simuliert einen abgeschlossenen Checkout, so wie ihn Stripe nach einem
+ * echten Kauf schickt. metadata.tier='credit_pack_5' schreibt nur Guthaben
+ * gut, metadata.gift_credit='1' schenkt ein Event zusätzlich zum gewählten
+ * Tarif, metadata.slug schaltet eine konkrete Feier frei — alles Metadaten,
+ * die der reale Checkout ebenfalls setzt.
+ */
+export async function sendCheckoutCompleted(
+  request: APIRequestContext,
+  userId: string,
+  metadata: Record<string, string> = {},
+  customerId = `cus_e2e_${randomUUID()}`
+): Promise<{ ok: boolean; status: number }> {
+  return sendSignedStripeEvent(request, 'checkout.session.completed', {
+    id: `cs_e2e_${randomUUID()}`,
+    object: 'checkout.session',
+    mode: 'payment',
+    customer: customerId,
+    client_reference_id: userId,
+    metadata: { user_id: userId, ...metadata },
+  });
+}
+
+/** Simuliert eine aktive Stripe-Subscription (setzt den Plan auf pro/studio). */
+export async function sendSubscriptionActive(
+  request: APIRequestContext,
+  userId: string,
+  customerId: string,
+  currentPeriodEndUnix: number
+): Promise<{ ok: boolean; status: number }> {
+  return sendSignedStripeEvent(request, 'customer.subscription.updated', {
+    id: `sub_e2e_${randomUUID()}`,
+    object: 'subscription',
+    status: 'active',
+    customer: customerId,
+    metadata: { user_id: userId },
+    cancel_at_period_end: false,
+    items: {
+      object: 'list',
+      data: [
+        {
+          price: { id: 'price_e2e_fake', recurring: { interval: 'month' } },
+          current_period_end: currentPeriodEndUnix,
+        },
+      ],
+    },
+  });
+}
+
+/** Simuliert eine fehlgeschlagene Zahlung (setzt plan_status auf past_due). */
+export async function sendPaymentFailed(
+  request: APIRequestContext,
+  customerId: string
+): Promise<{ ok: boolean; status: number }> {
+  return sendSignedStripeEvent(request, 'invoice.payment_failed', {
+    id: `in_e2e_${randomUUID()}`,
+    object: 'invoice',
+    customer: customerId,
+  });
+}
+
+/** Sammelt Konsolenfehler und unbehandelte Fehler einer Seite ab jetzt. */
+export function collectConsoleErrors(page: Page): string[] {
+  const errors: string[] = [];
+  page.on('console', (msg) => {
+    if (msg.type() === 'error') errors.push(msg.text());
+  });
+  page.on('pageerror', (err) => errors.push(err.message));
+  return errors;
 }

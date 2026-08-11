@@ -1,5 +1,6 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { isUnlocked, pickForeignForGuest, redactHiddenSongs, selectionHash } from './visibility';
+import type { UserPlanShape } from './plans';
 
 describe('isUnlocked', () => {
   it('is unlocked when unlocked_at is set, regardless of plan', () => {
@@ -18,6 +19,59 @@ describe('isUnlocked', () => {
   it('is locked otherwise', () => {
     expect(isUnlocked(null, false, null)).toBe(false);
     expect(isUnlocked({ plan: 'free' }, false, null)).toBe(false);
+  });
+});
+
+describe('isUnlocked mit realen UserPlanShape-Objekten', () => {
+  beforeEach(() => {
+    vi.useFakeTimers();
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
+  it('ein aktiver pro-Tarif schaltet frei, ganz ohne unlocked_at oder Guthaben', () => {
+    const pro: UserPlanShape = { plan: 'pro', plan_status: 'active' };
+    expect(isUnlocked(pro, false, null)).toBe(true);
+  });
+
+  it('ein abgelaufener event_pass bleibt gesperrt', () => {
+    const now = new Date('2026-03-01T12:00:00.000Z');
+    vi.setSystemTime(now);
+    const abgelaufen: UserPlanShape = {
+      plan: 'event_pass',
+      current_period_end: new Date(now.getTime() - 1000).toISOString(),
+    };
+    expect(isUnlocked(abgelaufen, false, null)).toBe(false);
+    // aber unlocked_at oder Guthaben setzen sich trotzdem durch
+    expect(isUnlocked(abgelaufen, true, null)).toBe(true);
+    expect(isUnlocked(abgelaufen, false, now)).toBe(true);
+  });
+
+  it('pro bleibt genau an der 3-Tage-Kulanzgrenze noch freigeschaltet (Grenze inklusiv)', () => {
+    const now = new Date('2026-03-01T12:00:00.000Z');
+    vi.setSystemTime(now);
+    const grace = 3 * 24 * 60 * 60 * 1000;
+    // end + grace === now  =>  Bedingung "< now" ist falsch, also noch nicht abgelaufen
+    const genauAnDerGrenze: UserPlanShape = {
+      plan: 'pro',
+      plan_status: 'past_due',
+      current_period_end: new Date(now.getTime() - grace).toISOString(),
+    };
+    expect(isUnlocked(genauAnDerGrenze, false, null)).toBe(true);
+  });
+
+  it('pro fällt 1ms nach der 3-Tage-Kulanzgrenze auf free zurück', () => {
+    const now = new Date('2026-03-01T12:00:00.000Z');
+    vi.setSystemTime(now);
+    const grace = 3 * 24 * 60 * 60 * 1000;
+    const knappDrueber: UserPlanShape = {
+      plan: 'pro',
+      plan_status: 'past_due',
+      current_period_end: new Date(now.getTime() - grace - 1).toISOString(),
+    };
+    expect(isUnlocked(knappDrueber, false, null)).toBe(false);
   });
 });
 
@@ -99,6 +153,20 @@ describe('redactHiddenSongs', () => {
   it('keeps the vote count visible even when hidden (like counts are never blurred)', () => {
     const [, hidden] = redactHiddenSongs(songs, new Set([1]));
     expect(hidden.vote_count).toBe(9);
+  });
+
+  it('setzt has_voted bei null (realer BOOL_OR-Randfall) auf false, sobald der Song versteckt wird', () => {
+    const songsMitNull = [{ ...songs[0], has_voted: null }];
+    const [hidden] = redactHiddenSongs(songsMitNull, new Set());
+    expect(hidden.hidden).toBe(true);
+    expect(hidden.has_voted).toBe(false);
+  });
+
+  it('lässt has_voted bei null unangetastet, solange der Song sichtbar bleibt', () => {
+    const songsMitNull = [{ ...songs[0], has_voted: null }];
+    const [visible] = redactHiddenSongs(songsMitNull, new Set([1]));
+    expect(visible.hidden).toBe(false);
+    expect(visible.has_voted).toBeNull();
   });
 });
 
