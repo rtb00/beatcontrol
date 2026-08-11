@@ -6,6 +6,7 @@ import { useParams } from 'next/navigation';
 import { QRCodeSVG } from 'qrcode.react';
 import { usePolling } from '@/app/lib/use-polling';
 import PaywallModal, { PaywallLimit } from '@/app/components/PaywallModal';
+import { FREE_VISIBLE_SONGS } from '@/app/lib/visibility';
 import { Badge } from '@/app/components/ui';
 
 interface Me {
@@ -380,16 +381,26 @@ export default function DJEventPage() {
   const unplayed = songs.filter((s) => !s.played);
   const played = songs.filter((s) => s.played);
   const guestUrl = `${origin}/${slug}`;
-  // Der DJ steht am Pult und will wissen, was die Leute hören wollen. Deshalb
-  // benennt das Banner konkret, was ihm fehlt, statt die Sperre zu erklären.
+  // Der DJ steht am Pult und will wissen, was die Leute hören wollen. Solange
+  // aber noch gar nichts verdeckt ist, wäre jeder Hinweis auf Verdecktes falsch:
+  // "0 weitere Wünsche liegen auf dieser Feier" ist Unsinn. Deshalb zwei
+  // Zustände, die sich am tatsächlichen Füllstand orientieren.
   const hiddenSongs = songs.filter((s) => s.hidden);
   const topHiddenVotes = hiddenSongs.reduce((max, s) => Math.max(max, s.vote_count ?? 0), 0);
-  const lockedHeadline =
-    topHiddenVotes > 1
+  const freiePlaetze = Math.max(0, FREE_VISIBLE_SONGS - songs.length);
+  const etwasVerdeckt = hiddenSongs.length > 0;
+  const lockedHeadline = etwasVerdeckt
+    ? topHiddenVotes > 1
       ? `Der beliebteste Wunsch hier hat ${topHiddenVotes} Herzen.`
       : hiddenSongs.length === 1
         ? 'Ein weiterer Wunsch liegt auf dieser Feier.'
-        : `${hiddenSongs.length} weitere Wünsche liegen auf dieser Feier.`;
+        : `${hiddenSongs.length} weitere Wünsche liegen auf dieser Feier.`
+    : freiePlaetze === 1
+      ? 'Noch ein Wunsch ist frei sichtbar.'
+      : `Noch ${freiePlaetze} Wünsche sind frei sichtbar.`;
+  const lockedText = etwasVerdeckt
+    ? 'Welche das sind, siehst du nach dem Freischalten. Dann weißt du den ganzen Abend, worauf deine Leute abgehen. Dein nächstes eigenes Event ist gratis dabei.'
+    : 'Kommen mehr dazu, siehst du nur noch die drei beliebtesten. Wer freischaltet, sieht alles und bekommt sein nächstes eigenes Event gratis dazu.';
 
   return (
     <div className="h-[100dvh] flex flex-col bg-base overflow-hidden">
@@ -611,8 +622,7 @@ export default function DJEventPage() {
             <div className="mb-4 rounded-2xl border border-turquoise/25 bg-panel-elevated/60 px-4 py-3.5 sm:px-5 sm:py-4">
               <p className="text-sm text-fg leading-snug">
                 <span className="font-semibold">{lockedHeadline}</span>{' '}
-                Welche das sind, siehst du nach dem Freischalten. Dann weißt du den ganzen
-                Abend, worauf deine Leute abgehen. Dein nächstes eigenes Event ist gratis dabei.
+                {lockedText}
               </p>
               <div className="mt-3 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
                 <button
