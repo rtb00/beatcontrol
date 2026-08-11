@@ -203,8 +203,14 @@ export default function DJEventPage() {
   async function handleUnlockClick() {
     // Ohne Konto (Zugang per geteiltem dj-Token): erst registrieren, die
     // Registrierung führt danach automatisch in denselben Checkout.
-    if (guestToken) {
-      window.location.href = `/auth/register?slug=${encodeURIComponent(slug)}&dj=${encodeURIComponent(guestToken)}`;
+    // Der Token wird hier direkt aus der Adresse gelesen und nicht aus dem
+    // Zustand: Der wird erst nach dem ersten Rendern gesetzt, und wer sofort
+    // klickt, landete sonst im Checkout, wurde mangels Konto abgewiesen und
+    // sah überhaupt keine Reaktion.
+    const token =
+      guestToken || (typeof window !== 'undefined' ? new URLSearchParams(window.location.search).get('dj') ?? '' : '');
+    if (token) {
+      window.location.href = `/auth/register?slug=${encodeURIComponent(slug)}&dj=${encodeURIComponent(token)}`;
       return;
     }
     setUnlocking(true);
@@ -229,7 +235,7 @@ export default function DJEventPage() {
   // Nach der Feier schließen: Gäste sollen Tage später nicht weiterwünschen.
   // Die Aktion hing früher im Song-Limit-Hinweis, der entfallen ist.
   async function handleDeactivate() {
-    if (!confirm('Event wirklich schließen? Deine Gäste können dann keine Songs mehr wünschen.')) return;
+    if (!confirm('Event wirklich beenden? Deine Gäste können dann keine Songs mehr wünschen. Deine Liste bleibt erhalten.')) return;
     setDeactivating(true);
     try {
       await fetch(`/api/events/${slug}`, {
@@ -599,9 +605,9 @@ export default function DJEventPage() {
                 onClick={handleDeactivate}
                 disabled={deactivating}
                 tabIndex={sidebarOpen ? 0 : -1}
-                className="text-xs text-fg-muted/70 hover:text-red transition-colors disabled:opacity-40"
+                className="text-xs text-red/80 hover:text-red transition-colors disabled:opacity-40"
               >
-                {deactivating ? 'Wird geschlossen…' : 'Event schließen'}
+                {deactivating ? 'Wird beendet…' : 'Event beenden'}
               </button>
             )}
           </div>

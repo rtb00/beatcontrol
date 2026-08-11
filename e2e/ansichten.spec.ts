@@ -188,30 +188,36 @@ test.describe('Freigeschaltete Feier', () => {
 
   test('Feier mit Guthaben ist sofort vollständig sichtbar', async ({ page, browser }) => {
     // Bildet den DJ nach, der eine fremde Feier freigeschaltet hat und dafür
-    // ein Event gutgeschrieben bekam. Ohne diese Regel sähe er trotz Guthaben
-    // verdeckte Zeilen, weil das Guthaben früher erst am Limit einlöste.
-    const email = testEmail('guthaben');
-    await register(page, email);
+    // ein Event gutgeschrieben bekam. Das Guthaben löste früher erst am
+    // Event-Limit ein, sodass er trotz Geschenk verdeckte Zeilen sah.
+    test.skip(!webhooksAvailable(), 'kein STRIPE_WEBHOOK_SECRET in .env.local gefunden');
+    await register(page, testEmail('guthaben'));
+    const me = await getMe(page.request);
 
-    const vorher = await (await page.request.get('/api/me')).json();
-    test.skip(!vorher, 'API /api/me nicht erreichbar');
+    // Ausgangslage ohne Guthaben: eine Feier mit vielen Wünschen ist gesperrt.
+    const ohne = await createEvent(page.request, 'Ohne Guthaben');
+    await seedSongs(browser, ohne.slug, 4);
+    const gesperrt = await fetchSongs(page.request, ohne.slug, 'owner');
+    expect(gesperrt.unlocked, 'ohne Guthaben bleibt die Feier gesperrt').toBe(false);
+    expect(gesperrt.hidden_count).toBeGreaterThan(0);
 
-    const ev = await createEvent(page.request, 'Guthaben-Feier');
-    await seedSongs(browser, ev.slug, 4);
+    // Guthaben über den echten Webhook gutschreiben, nicht über eine Abkürzung.
+    await sendCheckoutCompleted(page.request, me.id, { tier: 'credit_pack_5' });
+    await expect
+      .poll(async () => (await getMe(page.request)).eventCredits, { timeout: 15_000 })
+      .toBeGreaterThan(0);
 
-    const info = await (await page.request.get(`/api/events/${ev.slug}`)).json();
-    // Ohne Guthaben ist die Feier gesperrt; das ist der Ausgangszustand.
-    expect(typeof info.unlocked).toBe('boolean');
+    // Die nächste Feier muss das Guthaben sofort einlösen, obwohl das
+    // Event-Limit noch gar nicht erreicht ist.
+    const mit = await createEvent(page.request, 'Mit Guthaben');
+    await seedSongs(browser, mit.slug, 4);
+    const offen = await fetchSongs(page.request, mit.slug, 'owner');
+    expect(offen.unlocked, 'Guthaben schaltet die Feier frei').toBe(true);
+    expect(offen.hidden_count, 'freigeschaltet heißt: nichts verdeckt').toBe(0);
+    expect(readableTitles(offen)).toHaveLength(offen.total);
 
-    const res = await fetchSongs(page.request, ev.slug, 'owner');
-    if (res.unlocked) {
-      expect(res.hidden_count, 'freigeschaltet heißt: nichts verdeckt').toBe(0);
-      expect(readableTitles(res)).toHaveLength(res.total);
-    } else {
-      expect(res.hidden_count).toBeGreaterThan(0);
-    }
-
-    await cleanup(page.request, ev.slug);
+    await cleanup(page.request, ohne.slug);
+    await cleanup(page.request, mit.slug);
   });
 
   test('Zahlung schlägt fehl und die Kulanzzeit ist abgelaufen: eine vorher offene Feier wird wieder gesperrt', async ({
