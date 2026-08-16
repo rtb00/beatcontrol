@@ -23,13 +23,31 @@ export async function GET() {
   }
   try {
     await initDB();
+    // Nur echte, fremde Nutzung zählt. Ohne diese Einschränkung standen eigene
+    // Testkonten, Seed-Daten und der Demo-Gig als Social Proof auf der
+    // Startseite — also erfundene Zahlen mit echtem Anstrich.
     const { rows } = await sql`
+      WITH echte_djs AS (
+        SELECT id FROM users
+        WHERE email IS NOT NULL
+          AND email NOT LIKE '%@example.com'
+          AND email NOT LIKE '%bc-seed.local'
+          AND email NOT LIKE 'demo+%'
+          AND email NOT LIKE 'e2e.%'
+          AND email NOT LIKE '%nibor.bauer1%'
+          AND email NOT LIKE '%henselundkretel%'
+          AND email NOT LIKE '%robin.test%'
+      ),
+      echte_events AS (
+        SELECT e.id FROM events e JOIN echte_djs d ON d.id = e.dj_id
+      )
       SELECT
-        (SELECT COUNT(*) FROM users)               AS djs,
-        (SELECT COUNT(*) FROM events)              AS events,
-        (SELECT COUNT(*) FROM songs)               AS song_requests,
-        (SELECT COUNT(*) FROM votes)               AS votes,
-        (SELECT COUNT(*) FROM songs WHERE played)  AS played_songs
+        (SELECT COUNT(*) FROM echte_djs)                                        AS djs,
+        (SELECT COUNT(*) FROM echte_events)                                     AS events,
+        (SELECT COUNT(*) FROM songs WHERE event_id IN (SELECT id FROM echte_events))  AS song_requests,
+        (SELECT COUNT(*) FROM votes v JOIN songs s ON s.id = v.song_id
+          WHERE s.event_id IN (SELECT id FROM echte_events))                    AS votes,
+        (SELECT COUNT(*) FROM songs WHERE played AND event_id IN (SELECT id FROM echte_events)) AS played_songs
     `;
     const r = rows[0] ?? {};
     const num = (v: unknown) => Number(v ?? 0) || 0;

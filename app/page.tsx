@@ -237,11 +237,14 @@ export default function LandingPage() {
 
   // Kartendefinition: Wert (live), Schwelle (darunter wird die Karte ausgeblendet),
   // Label + Untertitel psychologisch getunt (konkrete Zahl, emotionale Einheit).
+  // Die Schwellen sind bewusst hoch: Eine Karte mit "2 Veranstaltungen" wirkt
+  // schwächer als gar keine. Solange die echte Nutzung darunter liegt, blendet
+  // sich der ganze Block aus, statt kleine Zahlen groß zu zeigen.
   const proofCards = stats
     ? ([
-        { value: stats.events, min: 1, label: 'Veranstaltungen begleitet', sub: 'Hochzeiten, Partys & Firmenfeiern' },
-        { value: stats.songRequests, min: 10, label: 'Songwünsche aus dem Publikum', sub: 'jeder einzelne direkt aus dem Raum' },
-        { value: stats.minutes, min: 10, label: 'Minuten gespielte Wunschsongs', sub: 'live auf der Tanzfläche' },
+        { value: stats.events, min: 10, label: 'Veranstaltungen begleitet', sub: 'Hochzeiten, Partys & Firmenfeiern' },
+        { value: stats.songRequests, min: 100, label: 'Songwünsche aus dem Publikum', sub: 'jeder einzelne direkt aus dem Raum' },
+        { value: stats.minutes, min: 60, label: 'Minuten gespielte Wunschsongs', sub: 'live auf der Tanzfläche' },
       ] as const).filter((s) => s.value >= s.min)
     : [];
 
