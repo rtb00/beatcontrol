@@ -148,10 +148,26 @@ const end = new Date('2026-08-02T00:40:00+02:00').getTime();
 let totalVotes = 0;
 for (const [idx, [title, artist, votes, played]] of SONGS.entries()) {
   const created = new Date(start + ((end - start) * idx) / SONGS.length);
+  // Cover und Kennung von Deezer holen: ohne Bild wirkt die Liste karg, und
+  // genau diese Feier geht als Vorführung an Interessenten.
+  let cover = null;
+  let deezerId = null;
+  try {
+    const res = await fetch(`https://api.deezer.com/search?q=${encodeURIComponent(`${artist} ${title}`)}&limit=1`);
+    const treffer = (await res.json())?.data?.[0];
+    if (treffer?.album?.cover_medium) {
+      cover = treffer.album.cover_medium;
+      deezerId = String(treffer.id);
+    }
+  } catch {
+    /* ohne Cover ist die Feier immer noch brauchbar */
+  }
+  await new Promise((r) => setTimeout(r, 220));
+
   const { rows: songRows } = await c.query(
-    `INSERT INTO songs (event_id, title, artist, played, submitter_ip, created_at)
-     VALUES ($1, $2, $3, $4, $5, $6) RETURNING id`,
-    [eventId, title, artist, played, `demo_sub_${idx}_${randomBytes(4).toString('hex')}`, created.toISOString()]
+    `INSERT INTO songs (event_id, title, artist, played, submitter_ip, created_at, album_art_url, deezer_id)
+     VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id`,
+    [eventId, title, artist, played, `demo_sub_${idx}_${randomBytes(4).toString('hex')}`, created.toISOString(), cover, deezerId]
   );
   for (let v = 0; v < votes; v++) {
     await c.query(`INSERT INTO votes (song_id, voter_ip) VALUES ($1, $2)`, [

@@ -596,7 +596,7 @@ export default function LandingPage() {
                 Jetzt starten
               </Link>
               <p className="text-xs text-fg-muted mt-3 text-center leading-snug">
-                30 Tage Geld-zurück-Garantie
+                {cycle === 'yearly' ? '30 Tage Geld-zurück-Garantie' : 'Monatlich kündbar'}
               </p>
             </Card>
 
