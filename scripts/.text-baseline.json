@@ -7,6 +7,7 @@
     "AGB",
     "Alle Tarife im Detail vergleichen →",
     "Bewirb dich für die kostenlose Pilot-Saison 2026",
+    "Brautpaare zahlen direkt 99 €. Gibst du es für 49 € weiter, verdienst du an jeder Feier mit",
     "DJ-Login",
     "Datenschutz",
     "Dein Gespür für die",
@@ -151,7 +152,7 @@
     "Datum und Name eurer Feier eingeben, fertig. Ihr bekommt schöne Gastkarten mit QR-Code zum Ausdrucken: auf die Tische legen, an die Bar kleben oder mit der Einladung verschicken.",
     "Der DJ sieht alles live",
     "Der interaktive DJ",
-    "Die Deko sehen eure Gäste, die Party fühlen sie. Für 49€ weiß euer DJ den ganzen Abend, was eure Leute hören wollen.",
+    "Die Deko sehen eure Gäste, die Party fühlen sie. Für 99€ weiß euer DJ den ganzen Abend, was eure Leute hören wollen.",
     "Die Sache mit der Musik",
     "Er sieht jederzeit, welche Songs sich gerade die meisten wünschen. Und wenn der Wunsch-Song vom Kolleginnen-Tisch läuft, wissen die das, und stehen als Erste auf der Fläche.",
     "Eure Gäste scannen den QR-Code mit ihrem Handy, wünschen sich bis zu drei Songs und geben den Wünschen der anderen ein Like. Keine App, keine Anmeldung. Wenn eure Oma WhatsApp kann, kann sie das hier auch.",
@@ -160,7 +161,7 @@
     "Ihr legt euer Event an",
     "Impressum",
     "Jetzt starten",
-    "Kostenlos starten · kein Abo · einmalig 49€ für euren großen Tag",
+    "Kostenlos starten · kein Abo · einmalig 99€ für euren großen Tag",
     "Mit BeatControl scannen eure Gäste einen QR-Code, wünschen sich ihre Songs und stimmen über die Wünsche der anderen ab. Mit diesem sechsten Sinn weiß euer DJ den ganzen Abend, welche Songs eure Leute abfeiern.",
     "Mit BeatControl zeigen eure Gäste dem DJ den ganzen Abend, was sie abfeiern. Ihr müsst nur noch tanzen.",
     "Powered by BeatControl",
@@ -173,7 +174,8 @@
     "für eine volle Tanzfläche",
     "was eure Leute feiern",
     "© 2026",
-    "· Für Hochzeiten und die, die sie machen."
+    "· Für Hochzeiten und die, die sie machen.",
+    "Über euren DJ wird es günstiger. Fragt ihn einfach, ob er schon dabei ist"
   ],
   "app/pilot/page.tsx": [
     "*",

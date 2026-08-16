@@ -426,7 +426,7 @@ export default function LandingPage() {
               {[
                 { t: 'Ohne App, ohne Anmeldung', s: 'Deine Gäste scannen den Code und legen los' },
                 { t: 'Rund um die Uhr für dich da', s: 'Wir sind erreichbar, wenn du uns brauchst' },
-                { t: 'Sicher für deine Gäste', s: 'Made in Germany, ohne Konto und ohne Gästedaten' },
+                { t: 'Made in Germany', s: 'Sicher für deine Gäste, ohne Konto und ohne Gästedaten' },
               ].map((v) => (
                 <div key={v.t} className="text-center">
                   <p className="font-display text-lg font-bold text-fg leading-snug mb-1">{v.t}</p>
@@ -707,6 +707,7 @@ export default function LandingPage() {
                   'Dein Branding inklusive',
                   'Export der Musikwünsche zur Nachbereitung',
                   'Kein Abo, keine Bindung',
+                  'Für 49 € an dein Brautpaar weitergeben',
                 ].map((f) => (
                   <li key={f} className="flex items-start gap-2.5">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4 shrink-0 text-turquoise mt-0.5" aria-hidden="true">
@@ -723,6 +724,10 @@ export default function LandingPage() {
               >
                 Einmalig buchen
               </Link>
+              <p className="text-xs text-fg-muted mt-3 text-center leading-snug">
+                Brautpaare zahlen direkt 99 €. Gibst du es für 49 € weiter, verdienst du
+                an jeder Feier mit
+              </p>
             </Card>
           </div>
 

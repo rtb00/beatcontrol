@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useBranding } from '@/app/lib/branding-context';
 import { Accordion, Card, NavBar, buttonVariants } from '@/app/components/ui';
 
-const COUPLE_PRICE = '49';
+const COUPLE_PRICE = '99';
 
 // Icons für die zwei Pain-Karten in Gold:
 // 0 = unbekannte Gäste (Person mit Fragezeichen), 1 = Zettel-Chaos (Notizzettel).
@@ -75,7 +75,10 @@ export default function BrautpaarLanding() {
           </Link>
         </div>
         <p className="text-xs text-fg-muted mt-5">
-          Kostenlos starten · kein Abo · einmalig 49€ für euren großen Tag
+          Kostenlos starten · kein Abo · einmalig 99€ für euren großen Tag
+        </p>
+        <p className="text-xs text-fg-muted/80 mt-2">
+          Über euren DJ wird es günstiger. Fragt ihn einfach, ob er schon dabei ist
         </p>
         <Link
           href="#wie"
@@ -220,7 +223,7 @@ export default function BrautpaarLanding() {
               Bereit für eine volle Tanzfläche?
             </h2>
             <p className="text-fg-muted leading-relaxed max-w-lg mx-auto mb-11">
-              Die Deko sehen eure Gäste, die Party fühlen sie. Für 49€ weiß euer DJ den ganzen Abend, was eure Leute hören wollen.
+              Die Deko sehen eure Gäste, die Party fühlen sie. Für 99€ weiß euer DJ den ganzen Abend, was eure Leute hören wollen.
             </p>
             <Link href="/brautpaar/start" className={`${buttonVariants({ variant: 'primary', size: 'lg' })} whitespace-nowrap max-[400px]:px-4 max-[400px]:text-[13px] max-[340px]:text-xs`}>
               Startet eure Musikwunschliste
@@ -238,7 +241,7 @@ export default function BrautpaarLanding() {
           items={[
             {
               question: 'Was kostet das?',
-              answer: '49€ einmalig. Kein Abo. Gültig 30 Tage vor bis 1 Tag nach eurer Feier. Zum Vergleich: weniger als ein Hochzeitsstrauß, und es wirkt den ganzen Abend.',
+              answer: '99€ einmalig. Kein Abo. Gültig 30 Tage vor bis 1 Tag nach eurer Feier. Zum Vergleich: weniger als ein Hochzeitsstrauß, und es wirkt den ganzen Abend.',
             },
             {
               question: 'Was muss unser DJ tun?',
