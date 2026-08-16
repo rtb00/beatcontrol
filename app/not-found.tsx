@@ -16,7 +16,7 @@ export default function NotFound() {
         <Link href="/" className={buttonVariants({ variant: 'primary', size: 'lg' })}>
           Zur Startseite
         </Link>
-        <Link href="/pricing" className={buttonVariants({ variant: 'secondary', size: 'lg' })}>
+        <Link href="/" className={buttonVariants({ variant: 'secondary', size: 'lg' })}>
           Tarife ansehen
         </Link>
       </div>

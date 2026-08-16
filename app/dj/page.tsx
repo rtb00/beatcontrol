@@ -417,7 +417,7 @@ export default function DJDashboard() {
         <div className="mb-4 flex justify-end items-center gap-2">
           {me && me.plan === 'free' && (
             <Link
-              href="/pricing?plan=pro_yearly"
+              href="/auth/register?plan=pro_yearly"
               className="hidden sm:inline-block px-4 py-2 text-sm text-turquoise border border-turquoise rounded-2xl hover:bg-turquoise hover:text-base transition-all"
             >
               Upgrade

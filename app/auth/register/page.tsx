@@ -23,12 +23,31 @@ const PLAN_LABEL: Record<Plan, string> = {
 
 // Feier freischalten: ein DJ ohne Konto muss sich im Zuge des Kaufs
 // registrieren. slug identifiziert die Feier, dj trägt das DJ-Token aus dem
-// geteilten Link. Beides landet direkt im Checkout, nicht über /pricing —
+// geteilten Link. Beides landet direkt im Checkout —
 // dort gibt es für diesen Weg keinen Plan-Vergleich zu zeigen.
 function parseSlug(raw: string | null): string | null {
   if (!raw) return null;
   const trimmed = raw.trim();
   return trimmed.length > 0 && trimmed.length <= 80 ? trimmed : null;
+}
+
+/** Startet den Checkout für einen Abo-Tarif direkt, ohne Zwischenseite. */
+async function startPlanCheckout(tier: string): Promise<boolean> {
+  try {
+    const res = await fetch('/api/stripe/checkout', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ tier }),
+    });
+    const data = await res.json().catch(() => ({}));
+    if (res.ok && data.url) {
+      window.location.href = data.url;
+      return true;
+    }
+  } catch {
+    /* fällt unten auf die normale Weiterleitung zurück */
+  }
+  return false;
 }
 
 async function startCoupleCheckout(slug: string, unlockGift: boolean): Promise<boolean> {
@@ -69,7 +88,7 @@ function RegisterPageInner() {
   const postRegisterUrl = slug
     ? `/auth/register?slug=${encodeURIComponent(slug)}${djToken ? `&dj=${encodeURIComponent(djToken)}` : ''}`
     : plan
-      ? `/pricing?plan=${plan}`
+      ? '/dj'
       : isCouple
         ? '/feier'
         : '/dj';
@@ -166,6 +185,11 @@ function RegisterPageInner() {
       }
       if (slug) {
         const started = await startCoupleCheckout(slug, isGiftPurchase);
+        if (started) return;
+      } else if (plan) {
+        // Wer mit Tarif-Vorwahl kommt, soll direkt zur Kasse und nicht über
+        // eine Zwischenseite laufen.
+        const started = await startPlanCheckout(plan);
         if (started) return;
       }
       window.location.href = postRegisterUrl;

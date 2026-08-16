@@ -221,6 +221,7 @@ export default function LandingPage() {
   ];
 
   // Social-Proof-Kennzahlen, live aus der DB (/api/stats), niemals erfunden.
+  const [cycle, setCycle] = useState<'yearly' | 'monthly'>('yearly');
   const [stats, setStats] = useState<Stats | null>(null);
   useEffect(() => {
     fetch('/api/stats')
@@ -529,64 +530,46 @@ export default function LandingPage() {
           <p className="text-fg-muted text-center mb-4 max-w-xl mx-auto">
             Kostenlos ausprobieren, dann ein Abo für alle deine Feiern.
           </p>
-          <p className="text-center mb-12 max-w-xl mx-auto">
-            <Link href="/pricing" className="text-xs text-turquoise hover:underline">Alle Tarife im Detail vergleichen →</Link>
-          </p>
 
-          <div className="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto">
+          <div className="max-w-md mx-auto">
 
 
-            {/* Monatlich */}
-            <Card tone="party" className="pt-8 flex flex-col">
-              <div className="flex items-center h-6 mb-3">
-                <p className="font-semibold text-sm text-fg">Monatlich</p>
+            {/* Ein Tarif, zwei Zahlweisen. Der Umschalter steht über der Karte,
+                damit die Karte selbst ruhig bleibt. */}
+            <div className="flex justify-center mb-6">
+              <div className="inline-flex items-center bg-base/40 border border-line rounded-full p-1 text-xs">
+                <button
+                  type="button"
+                  onClick={() => setCycle('yearly')}
+                  className={`px-4 py-1.5 rounded-full font-display font-semibold transition-colors ${
+                    cycle === 'yearly' ? 'bg-turquoise text-[color:var(--bg-base)]' : 'text-fg-muted hover:text-fg'
+                  }`}
+                >
+                  Jährlich −60%
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setCycle('monthly')}
+                  className={`px-4 py-1.5 rounded-full font-display font-semibold transition-colors ${
+                    cycle === 'monthly' ? 'bg-turquoise text-[color:var(--bg-base)]' : 'text-fg-muted hover:text-fg'
+                  }`}
+                >
+                  Monatlich
+                </button>
               </div>
+            </div>
+
+            <Card tone="party" elevated className="pt-8 flex flex-col glow-turquoise">
               <div className="flex items-baseline gap-1 mb-1">
-                <p className="font-display text-4xl font-bold text-fg">€{PRO_PRICE_MONTHLY}</p>
-                <p className="text-sm text-fg-muted">/Monat</p>
-              </div>
-              <p className="text-xs text-fg-muted mb-6 min-h-[2rem]">monatlich kündbar</p>
-              <ul className="flex flex-col gap-3 text-sm text-fg mb-6 flex-1">
-                {[
-                  'Unbegrenzte Events',
-                  'Unbegrenzte Songwünsche',
-                  'Dein Branding mit persönlichem Namen und Logo',
-                  'Gastkarten mit QR-Code zum Download',
-                  'Export der Musikwünsche zur Nachbereitung',
-                ].map((f) => (
-                  <li key={f} className="flex items-start gap-2.5">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4 shrink-0 text-turquoise mt-0.5" aria-hidden="true">
-                      <path fillRule="evenodd" d="M16.704 5.29a1 1 0 010 1.42l-7.5 7.5a1 1 0 01-1.42 0l-3.5-3.5a1 1 0 111.42-1.42l2.79 2.79 6.79-6.79a1 1 0 011.42 0z" clipRule="evenodd" />
-                    </svg>
-                    <span>{f}</span>
-                  </li>
-                ))}
-              </ul>
-              <Link
-                href="/auth/register?plan=pro_monthly"
-                onClick={() => trackCta('pro_monthly')}
-                className={buttonVariants({ variant: 'secondary', size: 'md', className: 'w-full' })}
-              >
-                Monatlich starten
-              </Link>
-            </Card>
-
-            {/* Jährlich */}
-            <Card tone="party" elevated className="pt-8 flex flex-col relative glow-turquoise">
-              <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full p-px bg-gradient-to-r from-red to-neon-gold">
-                <span className="block rounded-full bg-base px-3 py-1 font-display text-xs font-bold uppercase tracking-wide text-neon-gold">
-                  Spart 60 Prozent
-                </span>
-              </span>
-              <div className="flex items-center h-6 mb-3">
-                <p className="font-semibold text-sm text-fg">Jährlich</p>
-              </div>
-              <div className="flex items-baseline gap-1 mb-1">
-                <p className="font-display text-4xl font-bold text-fg">€{PRO_PRICE_YEARLY_PER_MONTH}</p>
+                <p className="font-display text-5xl font-bold text-fg">
+                  €{cycle === 'yearly' ? PRO_PRICE_YEARLY_PER_MONTH : PRO_PRICE_MONTHLY}
+                </p>
                 <p className="text-sm text-fg-muted">/Monat</p>
               </div>
               <p className="text-xs text-fg-muted mb-6 min-h-[2rem]">
-                jährlich abgerechnet, €{PRO_PRICE_YEARLY_TOTAL} im Jahr
+                {cycle === 'yearly'
+                  ? `jährlich abgerechnet, €${PRO_PRICE_YEARLY_TOTAL} im Jahr`
+                  : 'monatlich kündbar'}
               </p>
               <ul className="flex flex-col gap-3 text-sm text-fg mb-6 flex-1">
                 {[
@@ -605,11 +588,11 @@ export default function LandingPage() {
                 ))}
               </ul>
               <Link
-                href="/auth/register?plan=pro_yearly"
-                onClick={() => trackCta('pro_yearly')}
+                href={`/auth/register?plan=${cycle === 'yearly' ? 'pro_yearly' : 'pro_monthly'}`}
+                onClick={() => trackCta(cycle === 'yearly' ? 'pro_yearly' : 'pro_monthly')}
                 className={buttonVariants({ variant: 'primary', size: 'md', className: 'w-full' })}
               >
-                Jährlich starten
+                Jetzt starten
               </Link>
               <p className="text-xs text-fg-muted mt-3 text-center leading-snug">
                 30 Tage Geld-zurück-Garantie

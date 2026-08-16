@@ -104,7 +104,7 @@ export async function POST(req: NextRequest) {
     // Der Brautpaar-Pass wird auf /feier gekauft, also führt der Rückweg auch
     // dorthin zurück und nicht in die DJ-Ansicht.
     success_url: `${origin}${isCouplePass ? '/feier?checkout=success' : '/dj?checkout=success'}`,
-    cancel_url: `${origin}${isCouplePass ? '/feier' : '/pricing'}`,
+    cancel_url: `${origin}${isCouplePass ? '/feier' : '/dj'}`,
     client_reference_id: userId,
     metadata: {
       user_id: userId,

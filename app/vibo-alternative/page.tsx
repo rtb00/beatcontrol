@@ -29,7 +29,7 @@ export default function ViboAlternative() {
         <Link href="/" className="font-display text-xl font-bold tracking-tight">
           {brandName}
         </Link>
-        <Link href="/pricing" className={buttonVariants({ variant: 'primary', size: 'sm' })}>
+        <Link href="/" className={buttonVariants({ variant: 'primary', size: 'sm' })}>
           Tarife ansehen
         </Link>
       </NavBar>

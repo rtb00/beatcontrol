@@ -17,7 +17,7 @@ export default async function SignInPage({
   searchParams?: { error?: string; plan?: string };
 }) {
   const plan = parsePlan(searchParams?.plan);
-  const redirectTo = plan ? `/pricing?plan=${plan}` : '/dj';
+  const redirectTo = '/dj';
 
   const session = await auth();
   if (session?.user) {

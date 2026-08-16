@@ -1,6 +1,6 @@
 // llms.txt: kompakte, maschinenlesbare Produktbeschreibung für KI-Suchsysteme
 // (ChatGPT Search, Perplexity, Claude, Google AI Overviews). Muss inhaltlich
-// mit der Landingpage und /pricing übereinstimmen.
+// mit der Landingpage übereinstimmen.
 const CONTENT = `# BeatControl
 
 > Musikwunsch- und Live-Voting-Web-App für Hochzeits-DJs in Deutschland. Gäste wünschen Songs per QR-Code und voten vom Handy, der DJ sieht live sortiert nach Stimmen, was die Gäste hören wollen. Kein App-Download, läuft im Browser neben Rekordbox und Serato.
@@ -16,7 +16,7 @@ const CONTENT = `# BeatControl
 
 Hochzeits-DJs, Party- und Firmenfeier-DJs im deutschsprachigen Raum sowie Brautpaare, die das Tool direkt für ihre eigene Feier buchen. Team-Tarif für DJ-Kollektive und Eventagenturen (Whitelabel, Sub-Accounts, eigene Subdomain).
 
-## Preise (https://beatcontrol.io/pricing)
+## Preise
 
 - Free: 0 €, für immer kostenlos, 1 aktives Event, unbegrenzte Songwünsche, 3 Wünsche sichtbar bis zur Freischaltung
 - Je Event: 19 € einmalig, kein Abo, unbegrenzte Songwünsche, eigenes Branding
@@ -32,7 +32,6 @@ BeatControl ist eine deutsche Vibo-Alternative mit Fokus auf den Live-Moment am 
 
 - https://beatcontrol.io — Produkt für DJs
 - https://beatcontrol.io/brautpaar — Angebot für Brautpaare
-- https://beatcontrol.io/pricing — Tarife im Vergleich
 - https://beatcontrol.io/vibo-alternative — Vergleich mit Vibo
 
 Kontakt: nibor.bauer1+beatcontrol@gmail.com
