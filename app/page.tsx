@@ -17,9 +17,9 @@ type Stats = {
   minutes: number;
 };
 
-const PRO_PRICE_YEARLY_TOTAL = '49';
-const PRO_PRICE_YEARLY_PER_MONTH = '4,08';
-const PRO_PRICE_MONTHLY = '5,99';
+const PRO_PRICE_YEARLY_TOTAL = '249';
+const PRO_PRICE_YEARLY_PER_MONTH = '20,75';
+const PRO_PRICE_MONTHLY = '49,99';
 
 const AUDIENCE_LABELS: Record<Audience, string> = {
   hochzeit: 'Hochzeit',
