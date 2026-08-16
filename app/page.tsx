@@ -661,8 +661,8 @@ export default function LandingPage() {
                 Pro starten
               </Link>
               <p className="text-xs text-fg-muted mt-3 text-center leading-snug">
-                Gib es deinem Brautpaar für 49,99 € weiter, dann trägt sich schon die
-                erste Feier. 30 Tage Geld zurück, ohne Nachfragen
+                Nimm von jedem Brautpaar 50 € dafür, dann trägt sich das Abo ab der
+                zweiten Feier im Monat. 30 Tage Geld zurück, ohne Nachfragen
               </p>
             </Card>
 

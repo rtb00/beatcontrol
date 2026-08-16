@@ -7,7 +7,6 @@ import { Button, Input } from '@/app/components/ui';
 
 // Ab hier wird die Zeit bis zur Feier im Kopf mitgezählt.
 const COUNTDOWN_WINDOW_DAYS = 90;
-const COUPLE_PRICE = '49 €';
 // Zwischenspeicher des Funnels: Name und Tag der Feier, bevor es ein Konto gab.
 const PENDING_EVENT_KEY = 'bc_pending_event';
 
@@ -161,7 +160,6 @@ export default function FeierPage() {
   const [copied, setCopied] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
 
-  const [buying, setBuying] = useState(false);
 
   const [titleDraft, setTitleDraft] = useState('');
   const [dateDraft, setDateDraft] = useState('');
@@ -291,34 +289,7 @@ export default function FeierPage() {
     }
   }
 
-  async function startCheckout() {
-    if (!event) return;
-    setNotice(null);
-    setBuying(true);
-    try {
-      const res = await fetch('/api/stripe/checkout', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ tier: 'couple_pass', slug: event.slug, event_date: event.event_date }),
-      });
-      const data = await res.json().catch(() => ({}));
-      if (res.status === 503) {
-        setNotice('Die Bezahlung ist gerade nicht erreichbar. Bitte versucht es später noch einmal');
-        return;
-      }
-      if (!res.ok || !data.url) {
-        setNotice('Die Bezahlung konnte nicht gestartet werden. Bitte versucht es noch einmal');
-        return;
-      }
-      window.location.href = data.url;
-    } catch {
-      setNotice('Keine Verbindung. Bitte versucht es noch einmal');
-    } finally {
-      setBuying(false);
-    }
-  }
-
-  async function saveDetails(e: React.FormEvent) {
+async function saveDetails(e: React.FormEvent) {
     e.preventDefault();
     if (!event) return;
     const trimmed = titleDraft.trim();
@@ -405,21 +376,15 @@ export default function FeierPage() {
         {hiddenCount === 1 ? '1 Wunsch ist noch verdeckt' : `${hiddenCount} Wünsche sind noch verdeckt`}
       </p>
       <p className="mt-2 text-sm leading-relaxed text-fg-muted">
-        Freigeschaltet seht ihr alle Titel mit Interpret, sortiert nach Beliebtheit
+        Euer DJ schaltet die volle Liste frei und sieht dann den ganzen Abend, was eure
+        Leute hören wollen. Schickt ihm einfach den Link weiter unten
       </p>
-      <Button onClick={startCheckout} disabled={buying} className="mt-5 w-full sm:w-auto">
-        {buying ? 'Einen Moment…' : `Jetzt freischalten, einmalig ${COUPLE_PRICE}`}
-      </Button>
-      <p className="mt-3 text-xs text-fg-muted">Kein Abo, kein Vertrag</p>
     </div>
   ) : (
     <p className="mt-10 text-sm leading-relaxed text-fg-muted">
       {listIsEmpty
-        ? 'Sobald mehr als drei Wünsche da sind, könnt ihr freischalten und seht sofort alle, sortiert nach Beliebtheit. '
-        : 'Ab vier Wünschen zeigen wir nur noch einen Ausschnitt. Ihr könnt schon jetzt freischalten und seht dann immer alles sofort. '}
-      <button onClick={startCheckout} disabled={buying} className="text-neon-gold underline underline-offset-2 hover:no-underline">
-        {buying ? 'Einen Moment…' : `Schon jetzt freischalten, einmalig ${COUPLE_PRICE}`}
-      </button>
+        ? 'Sobald mehr als drei Wünsche da sind, zeigen wir euch einen Ausschnitt. Die ganze Liste sieht euer DJ, sobald er sie freischaltet.'
+        : 'Ab vier Wünschen zeigen wir nur noch einen Ausschnitt. Die ganze Liste sieht euer DJ, sobald er sie freischaltet.'}
     </p>
   );
 

@@ -41,10 +41,10 @@ const PRICING_JSON_LD = {
     {
       '@type': 'Offer',
       name: 'Pro',
-      price: '49.99',
+      price: '249',
       priceCurrency: 'EUR',
       description:
-        'Jahres-Abo für aktive DJs (49,99 € pro Jahr, monatlich 9,99 €): unbegrenzte Events und Songwünsche, eigenes Branding mit Namen und Logo. 30 Tage Geld-zurück-Garantie.',
+        'Jahres-Abo für aktive DJs (249 € pro Jahr, monatlich 49,99 €): unbegrenzte Events und Songwünsche, eigenes Branding mit Namen und Logo. 30 Tage Geld-zurück-Garantie.',
     },
     {
       '@type': 'Offer',

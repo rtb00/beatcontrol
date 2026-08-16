@@ -181,7 +181,7 @@ export default function StartFunnel() {
                 inputMode="email"
                 autoComplete="email"
                 placeholder="Deine E-Mail-Adresse"
-                className="w-full h-12 px-5 rounded-2xl border border-line/50 bg-transparent text-sm text-fg-muted text-center placeholder:text-fg-muted/45 focus:outline-none focus:border-turquoise focus:text-fg transition-colors mb-3"
+                className="w-full h-14 px-5 rounded-2xl border border-line bg-panel text-fg text-center placeholder:text-fg-muted/60 focus:outline-none focus:border-turquoise transition-colors mb-3"
               />
               <div className="relative h-14 mb-4">
                 <input

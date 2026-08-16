@@ -75,10 +75,10 @@ export default function BrautpaarLanding() {
           </Link>
         </div>
         <p className="text-xs text-fg-muted mt-5">
-          Kostenlos starten · kein Abo · einmalig 99€ für euren großen Tag
+          Kostenlos anlegen · Songs sammeln · euer DJ schaltet die volle Liste frei
         </p>
         <p className="text-xs text-fg-muted/80 mt-2">
-          Über euren DJ wird es günstiger. Fragt ihn einfach, ob er schon dabei ist
+          Fragt euren DJ, ob er BeatControl schon nutzt
         </p>
         <Link
           href="#wie"
@@ -223,7 +223,7 @@ export default function BrautpaarLanding() {
               Bereit für eine volle Tanzfläche?
             </h2>
             <p className="text-fg-muted leading-relaxed max-w-lg mx-auto mb-11">
-              Die Deko sehen eure Gäste, die Party fühlen sie. Für 99€ weiß euer DJ den ganzen Abend, was eure Leute hören wollen.
+              Die Deko sehen eure Gäste, die Party fühlen sie. Legt eure Liste an und euer DJ weiß den ganzen Abend, was eure Leute hören wollen.
             </p>
             <Link href="/brautpaar/start" className={`${buttonVariants({ variant: 'primary', size: 'lg' })} whitespace-nowrap max-[400px]:px-4 max-[400px]:text-[13px] max-[340px]:text-xs`}>
               Startet eure Musikwunschliste
@@ -241,7 +241,7 @@ export default function BrautpaarLanding() {
           items={[
             {
               question: 'Was kostet das?',
-              answer: '99€ einmalig. Kein Abo. Gültig 30 Tage vor bis 1 Tag nach eurer Feier. Zum Vergleich: weniger als ein Hochzeitsstrauß, und es wirkt den ganzen Abend.',
+              answer: 'Für euch kostet es nichts. Ihr legt eure Liste an und sammelt Wünsche, freigeschaltet wird sie über euren DJ. Fragt ihn einfach, ob er BeatControl schon nutzt.',
             },
             {
               question: 'Was muss unser DJ tun?',
