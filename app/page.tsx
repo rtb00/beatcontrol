@@ -20,9 +20,6 @@ type Stats = {
 const PRO_PRICE_YEARLY_TOTAL = '49';
 const PRO_PRICE_YEARLY_PER_MONTH = '4,08';
 const PRO_PRICE_MONTHLY = '5,99';
-const EVENT_PASS_PRICE = '19';
-const CREDIT_PACK_TOTAL = '69';
-const CREDIT_PACK_PER_EVENT = '13,80';
 
 const AUDIENCE_LABELS: Record<Audience, string> = {
   hochzeit: 'Hochzeit',
@@ -211,7 +208,6 @@ export default function LandingPage() {
   const [cycle, setCycle] = useState<Cycle>('yearly');
   // Je-Hochzeit-Karte: Umschalter zwischen Einzelkauf und 5er-Pack,
   // analog zum Jährlich/Monatlich-Toggle der Pro-Karte.
-  const [packSize, setPackSize] = useState<'one' | 'five'>('one');
   const audience: Audience = 'hochzeit';
   const pricingTracked = useRef(false);
   const c = COPY[audience];
@@ -545,7 +541,7 @@ export default function LandingPage() {
             Für jeden Gig der passende Tarif
           </h2>
           <p className="text-fg-muted text-center mb-4 max-w-xl mx-auto">
-            Free zum Ausprobieren. Je Event für Gelegenheits-Gigs. Pro-Abo für aktive DJs.
+            Kostenlos ausprobieren, dann ein Abo für alle deine Feiern.
           </p>
           {/* Einnahme-Rechnung als Pill vor den Preisen: ankert die €30, bevor
               die erste Preiszahl gelesen wird (das Minus ist ein Rechenzeichen,
@@ -664,71 +660,12 @@ export default function LandingPage() {
               >
                 Pro starten
               </Link>
+              <p className="text-xs text-fg-muted mt-3 text-center leading-snug">
+                Gib es deinem Brautpaar für 49,99 € weiter, dann trägt sich schon die
+                erste Feier. 30 Tage Geld zurück, ohne Nachfragen
+              </p>
             </Card>
 
-            {/* Je Event (Pay-per-Use) */}
-            <Card tone="party" className="pt-8 flex flex-col">
-              <div className="flex items-center justify-between h-6 mb-3">
-                <p className="font-semibold text-sm text-fg">Je Event</p>
-                <div className="inline-flex items-center bg-base/40 border border-line rounded-full p-0.5 text-[10px]">
-                  <button
-                    type="button"
-                    onClick={() => setPackSize('one')}
-                    className={`px-2.5 py-0.5 rounded-full font-semibold whitespace-nowrap transition-colors ${
-                      packSize === 'one' ? 'font-display bg-turquoise text-[color:var(--bg-base)]' : 'font-display text-fg-muted hover:text-fg'
-                    }`}
-                  >
-                    Einzeln
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setPackSize('five')}
-                    className={`px-2.5 py-0.5 rounded-full font-semibold whitespace-nowrap transition-colors ${
-                      packSize === 'five' ? 'font-display bg-turquoise text-[color:var(--bg-base)]' : 'font-display text-fg-muted hover:text-fg'
-                    }`}
-                  >
-                    5er-Pack −27%
-                  </button>
-                </div>
-              </div>
-              <div className="flex items-baseline gap-1 mb-1">
-                <p className="font-display text-4xl font-bold text-fg">
-                  €{packSize === 'five' ? CREDIT_PACK_PER_EVENT : EVENT_PASS_PRICE}
-                </p>
-                <p className="text-sm text-fg-muted">/Event</p>
-              </div>
-              <p className="text-xs text-fg-muted mb-6 min-h-[2rem]">
-                {packSize === 'five' ? `einmalig, €${CREDIT_PACK_TOTAL} für 5 Events` : 'einmalig'}
-              </p>
-              <ul className="flex flex-col gap-3 text-sm text-fg mb-8 flex-1">
-                {[
-                  packSize === 'five' ? '5 Events, Guthaben verfällt nicht' : '1 Event, rund um deinen Termin',
-                  'Unbegrenzte Songwünsche',
-                  'Dein Branding inklusive',
-                  'Export der Musikwünsche zur Nachbereitung',
-                  'Kein Abo, keine Bindung',
-                  'Für 49 € an dein Brautpaar weitergeben',
-                ].map((f) => (
-                  <li key={f} className="flex items-start gap-2.5">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4 shrink-0 text-turquoise mt-0.5" aria-hidden="true">
-                      <path fillRule="evenodd" d="M16.704 5.29a1 1 0 010 1.42l-7.5 7.5a1 1 0 01-1.42 0l-3.5-3.5a1 1 0 111.42-1.42l2.79 2.79 6.79-6.79a1 1 0 011.42 0z" clipRule="evenodd" />
-                    </svg>
-                    <span>{f}</span>
-                  </li>
-                ))}
-              </ul>
-              <Link
-                href={`/auth/register?plan=${packSize === 'five' ? 'credit_pack_5' : 'event_pass'}`}
-                onClick={() => trackCta(packSize === 'five' ? 'credit_pack_5' : 'event_pass')}
-                className={buttonVariants({ variant: 'secondary', size: 'md', className: 'w-full' })}
-              >
-                Einmalig buchen
-              </Link>
-              <p className="text-xs text-fg-muted mt-3 text-center leading-snug">
-                Brautpaare zahlen direkt 99 €. Gibst du es für 49 € weiter, verdienst du
-                an jeder Feier mit
-              </p>
-            </Card>
           </div>
 
         </div>
