@@ -461,7 +461,7 @@ export default function LandingPage() {
       </section>
 
       {/* Pain section */}
-      <section className="max-w-4xl mx-auto px-4 py-24">
+      <section className="max-w-6xl mx-auto px-4 py-24">
         <Reveal>
         <p className="text-xs font-mono font-semibold uppercase tracking-widest text-neon-gold mb-6 text-center">
           {c.painEyebrow}
@@ -469,7 +469,7 @@ export default function LandingPage() {
         <h2 className="font-display text-4xl font-bold uppercase text-center leading-tight mb-16">
           {c.painH2}
         </h2>
-        <div className="grid md:grid-cols-3 gap-10">
+        <div className="grid md:grid-cols-3 gap-6 lg:gap-8">
           {c.painCards.map(({ label, text }, i) => (
             <Card key={label} tone="party">
               <div className="flex items-center gap-3 mb-3">
