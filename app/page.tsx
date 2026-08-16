@@ -525,10 +525,11 @@ export default function LandingPage() {
       <section ref={setupPricingObserver} className="bg-panel py-20" id="pricing">
         <div className="max-w-5xl mx-auto px-4">
           <h2 className="font-display text-3xl font-bold uppercase text-center mb-3 text-glow-gold">
-            Für jeden Gig der passende Tarif
+            Ein Preis für alle deine Feiern
           </h2>
           <p className="text-fg-muted text-center mb-4 max-w-xl mx-auto">
-            Kostenlos ausprobieren, dann ein Abo für alle deine Feiern.
+            Keine Staffelung, keine Zusatzkosten pro Event. Erst ausprobieren, dann
+            entscheiden.
           </p>
 
           <div className="max-w-md mx-auto">
