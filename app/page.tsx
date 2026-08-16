@@ -16,8 +16,8 @@ type Stats = {
   minutes: number;
 };
 
-const PRO_PRICE_YEARLY_TOTAL = '249';
-const PRO_PRICE_YEARLY_PER_MONTH = '20,75';
+const PRO_PRICE_YEARLY_TOTAL = '239,88';
+const PRO_PRICE_YEARLY_PER_MONTH = '19,99';
 const PRO_PRICE_MONTHLY = '49,99';
 
 const AUDIENCE_LABELS: Record<Audience, string> = {
@@ -569,17 +569,13 @@ export default function LandingPage() {
               >
                 Monatlich starten
               </Link>
-              <p className="text-xs text-fg-muted mt-3 text-center leading-snug">
-                Nimm von jedem Brautpaar 50 € dafür, dann trägt sich das Abo ab der
-                zweiten Feier im Monat
-              </p>
             </Card>
 
             {/* Jährlich */}
             <Card tone="party" elevated className="pt-8 flex flex-col relative glow-turquoise">
               <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full p-px bg-gradient-to-r from-red to-neon-gold">
                 <span className="block rounded-full bg-base px-3 py-1 font-display text-xs font-bold uppercase tracking-wide text-neon-gold">
-                  Spart 58 Prozent
+                  Spart 60 Prozent
                 </span>
               </span>
               <div className="flex items-center h-6 mb-3">
@@ -616,8 +612,7 @@ export default function LandingPage() {
                 Jährlich starten
               </Link>
               <p className="text-xs text-fg-muted mt-3 text-center leading-snug">
-                30 Tage Geld zurück, ohne Nachfragen. Ab der fünften Feier im Jahr
-                verdienst du dabei
+                30 Tage Geld-zurück-Garantie
               </p>
             </Card>
 

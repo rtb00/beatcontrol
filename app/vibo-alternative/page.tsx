@@ -11,7 +11,7 @@ export default function ViboAlternative() {
   const rows = [
     { feature: 'Live-Voting der Gäste im Saal', vibo: '✕ (Fokus Vorbereitung)', beatcontrol: '✓ Kern-Feature', winner: 'beatcontrol' },
     { feature: 'Nächster Song vom Publikum bestätigt', vibo: '✕', beatcontrol: '✓ live sortiert', winner: 'beatcontrol' },
-    { feature: 'Pricing pro DJ/Monat',    vibo: '$179 (~€165)', beatcontrol: '€20,75 (Pro, jährlich)', winner: 'beatcontrol' },
+    { feature: 'Pricing pro DJ/Monat',    vibo: '$179 (~€165)', beatcontrol: '€19,99 (Pro, jährlich)', winner: 'beatcontrol' },
     { feature: 'Single-Event-Option',     vibo: '✕',           beatcontrol: '€19 einmalig', winner: 'beatcontrol' },
     { feature: 'Whitelabel für DJ-Kollektive', vibo: '✕',           beatcontrol: '€149 Team',    winner: 'beatcontrol' },
     { feature: 'Hosting in EU',           vibo: 'Unklar (US)',   beatcontrol: 'EU (Vercel + Neon)', winner: 'beatcontrol' },
@@ -87,7 +87,7 @@ export default function ViboAlternative() {
             <strong className="text-fg">Du arbeitest im DACH-Markt.</strong> Deutsche AGB, deutscher Support, EU-Hosting, deutsche Brautpaare: BeatControl ist dafür gebaut, Vibo nicht.
           </li>
           <li>
-            <strong className="text-fg">Du willst nicht €165/Mo zahlen.</strong> BeatControl Pro kostet 249 € im Jahr. Für DJs mit 20 bis 30 Hochzeiten im Jahr sind das rund 1.700 € Unterschied.
+            <strong className="text-fg">Du willst nicht €165/Mo zahlen.</strong> BeatControl Pro kostet 239,88 € im Jahr. Für DJs mit 20 bis 30 Hochzeiten im Jahr sind das rund 1.700 € Unterschied.
           </li>
           <li>
             <strong className="text-fg">Du willst Event-Pass-Modell.</strong> Vibo zwingt dich ins Abo. BeatControl gibt deinen Brautpaaren die Option, für ihre Hochzeit einmalig €19 zu zahlen.
