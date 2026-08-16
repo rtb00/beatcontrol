@@ -424,9 +424,9 @@ export default function LandingPage() {
           <div className="mt-16 md:mt-20 pt-10 border-t border-line">
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-6">
               {[
-                { t: 'Von einem DJ gebaut', s: 'Seit 2007 selbst auf Hochzeiten am Pult' },
-                { t: 'Hilfe direkt vom Entwickler', s: 'Am Tag deiner Feier bin ich erreichbar' },
                 { t: 'Ohne App, ohne Anmeldung', s: 'Deine Gäste scannen den Code und legen los' },
+                { t: 'Rund um die Uhr für dich da', s: 'Wir sind erreichbar, wenn du uns brauchst' },
+                { t: 'Sicher für deine Gäste', s: 'Made in Germany, ohne Konto und ohne Gästedaten' },
               ].map((v) => (
                 <div key={v.t} className="text-center">
                   <p className="font-display text-lg font-bold text-fg leading-snug mb-1">{v.t}</p>
