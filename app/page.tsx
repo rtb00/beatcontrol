@@ -528,8 +528,7 @@ export default function LandingPage() {
             Ein Preis für alle deine Feiern
           </h2>
           <p className="text-fg-muted text-center mb-4 max-w-xl mx-auto">
-            Keine Staffelung, keine Zusatzkosten pro Event. Erst ausprobieren, dann
-            entscheiden.
+            Erst ausprobieren, dann entscheiden.
           </p>
 
           <div className="max-w-md mx-auto">
