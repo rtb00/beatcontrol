@@ -67,7 +67,7 @@ const COPY: Record<Audience, {
     transitionBody:
       'Deine Gäste voten für die Songs, die sie hören wollen. Du liest den Raum wie immer, nur mit einem Sinn mehr. Ob du zugreifst, entscheidest du.',
     finalBody:
-      'Kein Risiko: Free-Tarif für immer kostenlos, keine Kreditkarte nötig. In zwei Minuten ist dein erstes Event startklar.',
+      'Kein Risiko: kostenlos ausprobieren, keine Kreditkarte nötig. In zwei Minuten ist dein erstes Event startklar.',
   },
   geburtstag: {
     eyebrow: 'Für DJs · Geburtstag & Party',
@@ -97,7 +97,7 @@ const COPY: Record<Audience, {
     transitionBody:
       'Deine Gäste voten für die Songs, die sie hören wollen. Du liest den Raum wie immer, nur mit einem Sinn mehr. Ob du zugreifst, entscheidest du.',
     finalBody:
-      'Kein Risiko: Free-Tarif für immer kostenlos, keine Kreditkarte nötig. In zwei Minuten ist dein erstes Event startklar.',
+      'Kein Risiko: kostenlos ausprobieren, keine Kreditkarte nötig. In zwei Minuten ist dein erstes Event startklar.',
   },
   firma: {
     eyebrow: 'Für DJs · Firmenfeier',
@@ -127,7 +127,7 @@ const COPY: Record<Audience, {
     transitionBody:
       'Deine Gäste voten für die Songs, die sie hören wollen. Ohne Briefing, ohne Wunschliste weißt du auf einen Blick, was diese fremde Crowd trägt. Ob du zugreifst, entscheidest du.',
     finalBody:
-      'Kein Risiko: Free-Tarif für immer kostenlos, keine Kreditkarte nötig. In zwei Minuten ist dein erstes Event startklar.',
+      'Kein Risiko: kostenlos ausprobieren, keine Kreditkarte nötig. In zwei Minuten ist dein erstes Event startklar.',
   },
 };
 
