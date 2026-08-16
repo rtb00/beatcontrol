@@ -416,6 +416,27 @@ export default function LandingPage() {
         </div>
         </div>
 
+        {/* Vertrauensmerkmale, solange es zu wenige echte Zahlen gibt. Sie sind
+            überprüfbar wahr und tragen den Block, statt kleine Zahlen groß zu
+            zeigen. Sobald genug echte Nutzung da ist, ersetzen die Kennzahlen
+            darunter diesen Block. */}
+        {proofCards.length < 2 && (
+          <div className="mt-16 md:mt-20 pt-10 border-t border-line">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-6">
+              {[
+                { t: 'Von einem DJ gebaut', s: 'Seit 2007 selbst auf Hochzeiten am Pult' },
+                { t: 'Hilfe direkt vom Entwickler', s: 'Am Tag deiner Feier bin ich erreichbar' },
+                { t: 'Ohne App, ohne Anmeldung', s: 'Deine Gäste scannen den Code und legen los' },
+              ].map((v) => (
+                <div key={v.t} className="text-center">
+                  <p className="font-display text-lg font-bold text-fg leading-snug mb-1">{v.t}</p>
+                  <p className="text-sm text-fg-muted leading-snug">{v.s}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
         {/* Social Proof, Live-Kennzahlen aus der DB, direkt in der Hero-Section. Blendet sich aus, solange die Zahlen zu klein sind. */}
         {proofCards.length >= 2 && (
           <div className="mt-16 md:mt-20 pt-10 border-t border-line">
