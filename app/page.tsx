@@ -6,7 +6,6 @@ import { QRCodeSVG } from 'qrcode.react';
 import { useBranding } from '@/app/lib/branding-context';
 import { Card, NavBar, Reveal, Accordion, buttonVariants } from '@/app/components/ui';
 
-type Cycle = 'yearly' | 'monthly';
 type Audience = 'hochzeit' | 'geburtstag' | 'firma';
 type Stats = {
   djs: number;
@@ -205,7 +204,6 @@ export default function LandingPage() {
   const brandName = branding.brandingName ?? 'BeatControl';
   const isWhiteLabel = !!branding.subdomain;
 
-  const [cycle, setCycle] = useState<Cycle>('yearly');
   // Je-Hochzeit-Karte: Umschalter zwischen Einzelkauf und 5er-Pack,
   // analog zum Jährlich/Monatlich-Toggle der Pro-Karte.
   const audience: Audience = 'hochzeit';
@@ -265,18 +263,6 @@ export default function LandingPage() {
   function trackCta(tier: string) {
     track('cta_click', tier);
   }
-
-  // Beide Zyklen zeigen den Monatspreis, damit der Vergleich direkt ist;
-  // die Jahressumme steht dezent im Hinweis darunter.
-  const proPrice = cycle === 'yearly' ? PRO_PRICE_YEARLY_PER_MONTH : PRO_PRICE_MONTHLY;
-  const proHint =
-    cycle === 'yearly'
-      ? `jährlich abgerechnet, €${PRO_PRICE_YEARLY_TOTAL} im Jahr`
-      : 'monatlich kündbar';
-  const proFootnote =
-    cycle === 'yearly'
-      ? '30 Tage Geld-zurück-Garantie'
-      : '30 Tage Geld-zurück-Garantie · monatlich kündbar';
 
   return (
     <div className="min-h-screen bg-rave-gradient text-fg font-sans">
@@ -543,97 +529,23 @@ export default function LandingPage() {
           <p className="text-fg-muted text-center mb-4 max-w-xl mx-auto">
             Kostenlos ausprobieren, dann ein Abo für alle deine Feiern.
           </p>
-          {/* Einnahme-Rechnung als Pill vor den Preisen: ankert die €30, bevor
-              die erste Preiszahl gelesen wird (das Minus ist ein Rechenzeichen,
-              kein Gedankenstrich) */}
-          <div className="flex justify-center mb-4 px-2">
-            <p className="inline-block rounded-2xl border border-neon-gold/40 bg-neon-gold/5 px-5 py-3 text-sm text-fg text-center">
-              €49 vom Brautpaar für das Live-Voting − €19 für BeatControl ={' '}
-              <span className="text-neon-gold font-semibold">€30 bleiben bei dir</span>. Pro Hochzeit.
-            </p>
-          </div>
           <p className="text-center mb-12 max-w-xl mx-auto">
             <Link href="/pricing" className="text-xs text-turquoise hover:underline">Alle Tarife im Detail vergleichen →</Link>
           </p>
 
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto">
 
-            {/* Free */}
+
+            {/* Monatlich */}
             <Card tone="party" className="pt-8 flex flex-col">
-              {/* Einheitliches Karten-Skelett: Namenszeile (h-6), Preiszeile,
-                  Hinweis (min-h für 2 Zeilen) — hält Preis und Plan über alle
-                  drei Karten auf gleicher Höhe. */}
               <div className="flex items-center h-6 mb-3">
-                <p className="font-semibold text-sm text-fg">Free</p>
+                <p className="font-semibold text-sm text-fg">Monatlich</p>
               </div>
               <div className="flex items-baseline gap-1 mb-1">
-                <p className="font-display text-4xl font-bold text-fg">€0</p>
-              </div>
-              <p className="text-xs text-fg-muted mb-6 min-h-[2rem]">für immer kostenlos</p>
-              <ul className="flex flex-col gap-3 text-sm text-fg mb-8 flex-1">
-                {[
-                  '1 aktives Event',
-                  'Unbegrenzte Songwünsche, 3 davon sichtbar',
-                  'BeatControl-Branding',
-                  'QR-Code für Gäste',
-                ].map((f) => (
-                  <li key={f} className="flex items-start gap-2.5">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4 shrink-0 text-turquoise mt-0.5" aria-hidden="true">
-                      <path fillRule="evenodd" d="M16.704 5.29a1 1 0 010 1.42l-7.5 7.5a1 1 0 01-1.42 0l-3.5-3.5a1 1 0 111.42-1.42l2.79 2.79 6.79-6.79a1 1 0 011.42 0z" clipRule="evenodd" />
-                    </svg>
-                    <span>{f}</span>
-                  </li>
-                ))}
-              </ul>
-              <Link
-                href="/start"
-                onClick={() => trackCta('free')}
-                className={buttonVariants({ variant: 'secondary', size: 'md', className: 'w-full' })}
-              >
-                Kostenlos ausprobieren
-              </Link>
-            </Card>
-
-            {/* Pro */}
-            <Card tone="party" elevated className="pt-8 flex flex-col relative glow-turquoise">
-              {/* Gradient-Rahmen (rot zu gold) mit solidem dunklem Kern statt
-                  halbtransparentem Türkis-Badge */}
-              <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full p-px bg-gradient-to-r from-red to-neon-gold">
-                <span className="block rounded-full bg-base px-3 py-1 font-display text-xs font-bold uppercase tracking-wide text-neon-gold">
-                  Für aktive DJs
-                </span>
-              </span>
-              {/* Name und kompakter Zyklus-Toggle in einer Zeile, damit die
-                  Preiszeile auf gleicher Höhe wie bei den Nachbarkarten bleibt */}
-              <div className="flex items-center justify-between h-6 mb-3">
-                <p className="font-semibold text-sm text-fg">Pro</p>
-                <div className="inline-flex items-center bg-base/40 border border-line rounded-full p-0.5 text-[10px]">
-                  <button
-                    type="button"
-                    onClick={() => setCycle('yearly')}
-                    className={`px-2.5 py-0.5 rounded-full font-semibold transition-colors ${
-                      cycle === 'yearly' ? 'font-display bg-turquoise text-[color:var(--bg-base)]' : 'font-display text-fg-muted hover:text-fg'
-                    }`}
-                  >
-                    Jährlich −28%
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setCycle('monthly')}
-                    className={`px-2.5 py-0.5 rounded-full font-semibold transition-colors ${
-                      cycle === 'monthly' ? 'font-display bg-turquoise text-[color:var(--bg-base)]' : 'font-display text-fg-muted hover:text-fg'
-                    }`}
-                  >
-                    Monatlich
-                  </button>
-                </div>
-              </div>
-
-              <div className="flex items-baseline gap-1 mb-1">
-                <p className="font-display text-4xl font-bold text-fg">€{proPrice}</p>
+                <p className="font-display text-4xl font-bold text-fg">€{PRO_PRICE_MONTHLY}</p>
                 <p className="text-sm text-fg-muted">/Monat</p>
               </div>
-              <p className="text-xs text-fg-muted mb-6 min-h-[2rem]">{proHint}</p>
+              <p className="text-xs text-fg-muted mb-6 min-h-[2rem]">monatlich kündbar</p>
               <ul className="flex flex-col gap-3 text-sm text-fg mb-6 flex-1">
                 {[
                   'Unbegrenzte Events',
@@ -650,19 +562,62 @@ export default function LandingPage() {
                   </li>
                 ))}
               </ul>
-              <p className="text-[11px] text-fg-muted mb-3 text-center">
-                {proFootnote}
-              </p>
               <Link
-                href={`/auth/register?plan=${cycle === 'yearly' ? 'pro_yearly' : 'pro_monthly'}`}
-                onClick={() => trackCta(cycle === 'yearly' ? 'pro_yearly' : 'pro_monthly')}
-                className={buttonVariants({ variant: 'primary', size: 'md', className: 'w-full' })}
+                href="/auth/register?plan=pro_monthly"
+                onClick={() => trackCta('pro_monthly')}
+                className={buttonVariants({ variant: 'secondary', size: 'md', className: 'w-full' })}
               >
-                Pro starten
+                Monatlich starten
               </Link>
               <p className="text-xs text-fg-muted mt-3 text-center leading-snug">
                 Nimm von jedem Brautpaar 50 € dafür, dann trägt sich das Abo ab der
-                zweiten Feier im Monat. 30 Tage Geld zurück, ohne Nachfragen
+                zweiten Feier im Monat
+              </p>
+            </Card>
+
+            {/* Jährlich */}
+            <Card tone="party" elevated className="pt-8 flex flex-col relative glow-turquoise">
+              <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full p-px bg-gradient-to-r from-red to-neon-gold">
+                <span className="block rounded-full bg-base px-3 py-1 font-display text-xs font-bold uppercase tracking-wide text-neon-gold">
+                  Spart 58 Prozent
+                </span>
+              </span>
+              <div className="flex items-center h-6 mb-3">
+                <p className="font-semibold text-sm text-fg">Jährlich</p>
+              </div>
+              <div className="flex items-baseline gap-1 mb-1">
+                <p className="font-display text-4xl font-bold text-fg">€{PRO_PRICE_YEARLY_PER_MONTH}</p>
+                <p className="text-sm text-fg-muted">/Monat</p>
+              </div>
+              <p className="text-xs text-fg-muted mb-6 min-h-[2rem]">
+                jährlich abgerechnet, €{PRO_PRICE_YEARLY_TOTAL} im Jahr
+              </p>
+              <ul className="flex flex-col gap-3 text-sm text-fg mb-6 flex-1">
+                {[
+                  'Unbegrenzte Events',
+                  'Unbegrenzte Songwünsche',
+                  'Dein Branding mit persönlichem Namen und Logo',
+                  'Gastkarten mit QR-Code zum Download',
+                  'Export der Musikwünsche zur Nachbereitung',
+                ].map((f) => (
+                  <li key={f} className="flex items-start gap-2.5">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4 shrink-0 text-turquoise mt-0.5" aria-hidden="true">
+                      <path fillRule="evenodd" d="M16.704 5.29a1 1 0 010 1.42l-7.5 7.5a1 1 0 01-1.42 0l-3.5-3.5a1 1 0 111.42-1.42l2.79 2.79 6.79-6.79a1 1 0 011.42 0z" clipRule="evenodd" />
+                    </svg>
+                    <span>{f}</span>
+                  </li>
+                ))}
+              </ul>
+              <Link
+                href="/auth/register?plan=pro_yearly"
+                onClick={() => trackCta('pro_yearly')}
+                className={buttonVariants({ variant: 'primary', size: 'md', className: 'w-full' })}
+              >
+                Jährlich starten
+              </Link>
+              <p className="text-xs text-fg-muted mt-3 text-center leading-snug">
+                30 Tage Geld zurück, ohne Nachfragen. Ab der fünften Feier im Jahr
+                verdienst du dabei
               </p>
             </Card>
 
